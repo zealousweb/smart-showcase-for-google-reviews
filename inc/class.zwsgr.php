@@ -28,5 +28,4 @@ if ( !class_exists( 'ZWSGR' ) ) {
 function ZWSGR() {
 	return ZWSGR::instance();
 }
-
 ZWSGR();

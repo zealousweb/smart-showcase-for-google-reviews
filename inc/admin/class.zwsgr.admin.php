@@ -5,8 +5,8 @@
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Contact Form 7 - Stripe Add-on
- * @since 1.0
+ * @subpackage Smart Google Reviews
+ * @since 1.0.0
  */
 
 // Exit if accessed directly
@@ -19,9 +19,7 @@ if ( !class_exists( 'ZWSGR_Admin' ) ) {
 	 */
 	class ZWSGR_Admin {
 
-		var $action = null,
-		    $filter = null;
-
+		
 		function __construct() {
 			
 

@@ -5,7 +5,7 @@
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Google Reviews Plugin Using Contact Form 7
+ * @subpackage Smart Google Reviews
  * @since 1.0.0
  */
 

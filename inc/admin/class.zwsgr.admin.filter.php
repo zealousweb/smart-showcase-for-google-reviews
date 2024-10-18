@@ -5,8 +5,8 @@
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Contact Form 7 - Stripe Add-on
- * @since 1.0
+ * @subpackage Smart Google Reviews
+ * @since 1.0.0
  */
 
 // Exit if accessed directly
