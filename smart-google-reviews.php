@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Smart Google Reviews
  * Plugin URL: https://wordpress.org/plugin-url/
- * Description: 
+ * Description: The Smart Google Reviews enables users to easily embed Google Reviews on your WordPress site.
  * Version: 1.0.0
  * Author: ZealousWeb
  * Author URI: https://www.zealousweb.com/

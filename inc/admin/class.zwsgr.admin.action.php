@@ -20,8 +20,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 	class ZWSGR_Admin_Action {
 
 		function __construct()  {
+
 			
-            		
+		}
+		
+		function action__admin_init() {
+
+			
 		}
 	}
 }

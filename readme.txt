@@ -11,7 +11,7 @@ License: GPLv3 or later
 Version: 1.0.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-The Smart Google Reviews enables users to easily embed Google Reviews on your WordPress site using Contact Form 7
+The Smart Google Reviews enables users to easily embed Google Reviews on your WordPress site.
 
 == Description ==
 
