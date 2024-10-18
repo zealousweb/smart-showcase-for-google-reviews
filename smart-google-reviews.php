@@ -55,7 +55,7 @@ if ( !defined( 'ZWSGR_PREFIX' ) ) {
 }
 
 if( !defined( 'ZWSGR_POST_TYPE' ) ) {
-	define( 'ZWSGR_POST_TYPE', 'ZWSGRs_data' ); // Plugin Google Reviews post type name
+	define( 'ZWSGR_POST_TYPE', 'zuserreg_data' ); // Plugin Google Reviews post type name
 }
 
 /**
