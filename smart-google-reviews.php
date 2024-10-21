@@ -54,8 +54,11 @@ if ( !defined( 'ZWSGR_PREFIX' ) ) {
 	define( 'ZWSGR_PREFIX', 'ZWSGR' ); // Plugin prefix
 }
 
-if( !defined( 'ZWSGR_POST_TYPE' ) ) {
-	define( 'ZWSGR_POST_TYPE', 'zuserreg_data' ); // Plugin Google Reviews post type name
+if( !defined( 'ZWSGR_POST_REVIEW_TYPE' ) ) {
+	define( 'ZWSGR_POST_REVIEW_TYPE', 'zuserreg_data' ); // Plugin Google Reviews post type name
+}
+if( !defined( 'ZWSGR_POST_WIDGET_TYPE' ) ) {
+	define( 'ZWSGR_POST_WIDGET_TYPE', 'zwsgr_data_widget' ); // Plugin Google Widget post type name
 }
 
 /**
