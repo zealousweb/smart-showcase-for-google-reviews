@@ -124,6 +124,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_submenu_page(
 				'zwsgr_dashboard',
+				__('Layout', 'zw-smart-google-reviews'),
+				__('Layout', 'zw-smart-google-reviews'),
+				'manage_options',
+				'zwsgr_layout',
+				array($this, 'zwsgr_layout_callback')
+			);
+
+			add_submenu_page(
+				'zwsgr_dashboard',
 				__('Settings', 'zw-smart-google-reviews'),
 				__('Settings', 'zw-smart-google-reviews'),
 				'manage_options',
@@ -486,6 +495,177 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<h1>Dashboard</h1>';
 			// Dashboard content can be added here
 		}
+
+		/**
+		 * Action: action_admin_menu
+		 * Add admin registration Dashboard page for the plugin
+		 * @method zwsgr_dashboard_page
+		 */
+
+		 function zwsgr_layout_callback() {
+			// Define your options and layouts with corresponding HTML content
+			$options = [
+				'slider' => [
+					'<div class="slider-item" id="slider1">
+						Slider 1 Content
+						<ul>
+							<li>1</li>
+							<li>2</li>
+							<li>3</li>
+						</ul>
+					</div>',
+					'<div class="slider-item" id="slider2">Slider 2 Content</div>',
+					'<div class="slider-item" id="slider3">Slider 3 Content</div>',
+					'<div class="slider-item" id="slider4">Slider 4 Content</div>',
+					'<div class="slider-item" id="slider5">Slider 5 Content</div>'
+				],
+				'grid' => [
+					'<div class="grid-item" id="grid1">Grid 1 Content</div>',
+					'<div class="grid-item" id="grid2">Grid 2 Content</div>',
+					'<div class="grid-item" id="grid3">Grid 3 Content</div>',
+					'<div class="grid-item" id="grid4">Grid 4 Content</div>',
+					'<div class="grid-item" id="grid5">Grid 5 Content</div>'
+				],
+				'list' => [
+					'<div class="list-item" id="list1">List 1 Content</div>',
+					'<div class="list-item" id="list2">List 2 Content</div>',
+					'<div class="list-item" id="list3">List 3 Content</div>',
+					'<div class="list-item" id="list4">List 4 Content</div>',
+					'<div class="list-item" id="list5">List 5 Content</div>'
+				],
+				'badge' => [
+					'<div class="badge-item" id="badge1">Badge 1 Content</div>',
+					'<div class="badge-item" id="badge2">Badge 2 Content</div>',
+					'<div class="badge-item" id="badge3">Badge 3 Content</div>',
+					'<div class="badge-item" id="badge4">Badge 4 Content</div>',
+					'<div class="badge-item" id="badge5">Badge 5 Content</div>'
+				],
+				'popup' => [
+					'<div class="popup-item" id="popup1">Popup 1 Content</div>',
+					'<div class="popup-item" id="popup2">Popup 2 Content</div>',
+					'<div class="popup-item" id="popup3">Popup 3 Content</div>',
+					'<div class="popup-item" id="popup4">Popup 4 Content</div>',
+					'<div class="popup-item" id="popup5">Popup 5 Content</div>'
+				]
+			];
+			?>
+			
+			<div class="zwsgr-dashboard">
+				<h3>Select Display Options</h3>
+		
+				<!-- Dynamically Render Radio Buttons -->
+				<label><input type="radio" name="display_option" value="all" checked> All</label><br>
+				<?php foreach ($options as $key => $layouts) : ?>
+					<label><input type="radio" name="display_option" value="<?php echo $key; ?>"> <?php echo ucfirst($key); ?></label><br>
+				<?php endforeach; ?>
+		
+				<!-- Dynamically Render Layout Options -->
+				<?php
+				$layout_count = 1;
+				foreach ($options as $option_type => $layouts) {
+					foreach ($layouts as $layout_content) {
+						echo '<div id="layout-' . $layout_count . '" class="option-item" data-type="' . $option_type . '">';
+						echo $layout_content; // Render the HTML content
+						echo '<button class="select-btn" data-option="layout-' . $layout_count . '">Select Option</button>';
+						echo '</div>';
+						$layout_count++;
+					}
+				}
+				?>
+		
+				<!-- Render selected option here -->
+				<h3>Selected Option</h3>
+				<div id="selected-option-display" class="selected-option-display"></div>
+		
+				<!-- Render generated shortcode here -->
+				<h3>Generated Shortcode</h3>
+				<div id="generated-shortcode-display" class="generated-shortcode-display"></div>
+			</div>
+		
+			<!-- JavaScript for Dynamic Functionality -->
+			<script type="text/javascript">
+				document.addEventListener('DOMContentLoaded', function () {
+					const radioButtons = document.querySelectorAll('input[name="display_option"]');
+					const selectButtons = document.querySelectorAll('.select-btn');
+					const selectedOptionDisplay = document.getElementById('selected-option-display');
+					const generatedShortcodeDisplay = document.getElementById('generated-shortcode-display');
+		
+					let currentDisplayOption = 'all';
+		
+					// Add event listeners to radio buttons for dynamic filtering
+					radioButtons.forEach(radio => {
+						radio.addEventListener('change', function () {
+							currentDisplayOption = this.value;
+							updateOptions(currentDisplayOption);
+						});
+					});
+		
+					// Function to show/hide options based on the selected radio button
+					function updateOptions(value) {
+						document.querySelectorAll('.option-item').forEach(item => {
+							if (value === 'all' || item.getAttribute('data-type') === value) {
+								item.style.display = 'block';
+							} else {
+								item.style.display = 'none';
+							}
+						});
+					}
+		
+					// Set default view (show all options)
+					updateOptions('all');
+		
+					// Function to render the selected option and generate the shortcode
+					function renderSelectedOption(optionElement) {
+						const layoutElement = optionElement.parentNode; // Get the parent element of the button
+						const layoutHTML = layoutElement.innerHTML.replace(optionElement.outerHTML, ''); // Remove the button HTML
+
+						// Extract the ID from the layout HTML
+						const tempDiv = document.createElement('div');
+						tempDiv.innerHTML = layoutHTML; // Load the HTML into a temporary div to extract the ID
+						const idElement = tempDiv.querySelector('[id]'); // Get the first element with an ID
+						const sectionID = idElement ? idElement.id : 'No ID Found'; // Get the ID or a fallback message
+
+						// Update selectedOptionDisplay with separate divs
+						selectedOptionDisplay.innerHTML = `
+							<div class="selected-id">
+								<strong>You selected:</strong> <p>${sectionID}</p>
+							</div>
+							<div class="selected-layout">
+								${layoutHTML}
+							</div>`; // Separate divs for section ID and layout HTML
+						generatedShortcodeDisplay.innerHTML = '[smart-google-reviews type="' + currentDisplayOption + '"]'; // Show the generated shortcode
+					}
+		
+					// Add event listeners to select buttons for selecting an option
+					selectButtons.forEach(button => {
+						button.addEventListener('click', function () {
+							renderSelectedOption(this); // Pass the selected button element
+						});
+					});
+				});
+			</script>
+		
+			<style>
+				.option-item {
+					display: none;
+					margin: 5px 0;
+					padding: 5px;
+					border: 1px solid #ddd;
+					background-color: #f9f9f9;
+				}
+		
+				.selected-option-display,
+				.generated-shortcode-display {
+					margin-top: 20px;
+					padding: 10px;
+					background-color: #e0e0e0;
+					border: 1px solid #ccc;
+					font-size: 18px;
+				}
+			</style>
+			<?php
+		}
+			
 
 	}
 }
