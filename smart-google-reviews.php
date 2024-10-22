@@ -47,11 +47,11 @@ if ( !defined( 'ZWSGR_PLUGIN_BASENAME' ) ) {
 }
 
 if ( !defined( 'ZWSGR_META_PREFIX' ) ) {
-	define( 'ZWSGR_META_PREFIX', 'ZWSGR_' ); // Plugin metabox prefix
+	define( 'ZWSGR_META_PREFIX', 'zwsgr_' ); // Plugin metabox prefix
 }
 
 if ( !defined( 'ZWSGR_PREFIX' ) ) {
-	define( 'ZWSGR_PREFIX', 'ZWSGR' ); // Plugin prefix
+	define( 'ZWSGR_PREFIX', 'zwsgr' ); // Plugin prefix
 }
 
 if( !defined( 'ZWSGR_POST_TYPE' ) ) {
