@@ -254,9 +254,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// SEO & Notifications Settings
 			register_setting('zwsgr_notification_settings', 'zwsgr_admin_notification_enabled');
-			register_setting('zwsgr_notification_settings', 'zwsgr_admin_notification_emails');
-			register_setting('zwsgr_notification_settings', 'zwsgr_admin_notification_emails_subject');
-			register_setting('zwsgr_notification_settings', 'zwsgr_admin_notification_email_body');
 			register_setting('zwsgr_notification_settings', 'zwsgr_google_analytics_tracking_id');
 
 			//Advance Setting
@@ -305,32 +302,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_notification_section'
 			);
 
-			add_settings_field(
-				'zwsgr_admin_notification_emails',
-				__('Custom Email Addresses', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_admin_notification_emails_callback'),
-				'zwsgr_notification_settings',
-				'zwsgr_notification_section'
-			);
-
-			add_settings_field(
-				'zwsgr_admin_notification_emails_subject',
-				__('Custom Email Subject', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_admin_notification_emails_subject_callback'),
-				'zwsgr_notification_settings',
-				'zwsgr_notification_section'
-			);
-
-			add_settings_field(
-				'zwsgr_admin_notofication_email_body',
-				__('Custom Email body', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_admin_notofication_email_body_callback'),
-				'zwsgr_notification_settings',
-				'zwsgr_notification_section'
-			);
-			
-
-			
 			// Add settings for the Advanced tab
 			add_settings_section(
 				'zwsgr_advanced_section',
@@ -375,7 +346,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			$value = get_option('zwsgr_admin_notification_enabled', '0');
 			echo '<label class="switch">';
-			echo '<input type="checkbox" id="zwsgr_admin_notification_enabled" name="zwsgr_admin_notification_enabled" value="1" ' . checked(1, $value, false) . ' />';
+			echo '<input type="checkbox" id="zwsgr_admin_notification_enabled" name="zwsgr_admin_notification_enabled" value="1" ' . checked(0, $value, false) . ' />';
 			echo '<span class="slider"></span>';
 			echo '</label>';
 		}
@@ -383,6 +354,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_admin_notification_emails_callback()
 		{
 			$value = get_option('zwsgr_admin_notification_emails', '');
+			echo '<label>Custom Email Addresses</label>';
 			echo '<input type="text" id="zwsgr_admin_notification_emails" name="zwsgr_admin_notification_emails" rows="5" cols="50" value="' . esc_attr($value) . '" />';
 			echo '<p class="description">' . __('Enter email addresses separated by commas.', 'zw-smart-google-reviews') . '</p>';
 		}
@@ -390,6 +362,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_admin_notification_emails_subject_callback()
 		{
 			$value = get_option('zwsgr_admin_notification_emails_subject', '');
+			echo '<label>Custom Email Subject</label>';
 			echo '<input type="text" id="zwsgr_admin_notification_emails_subject" name="zwsgr_admin_notification_emails_subject" rows="5" cols="50" value="' . esc_attr(
 				$value) . '" />';
 		}
@@ -408,11 +381,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				),
 				'textarea_rows' => 10, // Set the number of rows for the editor
 			);
-		
-			// Output the WYSIWYG editor
-			wp_editor($value, 'zwsgr_admin_notification_email_body', $settings);
-			
-			echo '<p class="description">' . __('Enter your custom email body content here.', 'zw-smart-google-reviews') . '</p>';
+
+			echo '<div class="zwsgr-editor-wrapper">';
+				echo '<label for="zwsgr_admin_notification_email_body">' . __('Email Body', 'zw-smart-google-reviews') . '</label>';
+				wp_editor($value, 'zwsgr_admin_notification_email_body', $settings);
+				echo '<p class="description">' . __('Enter your custom email body content here.', 'zw-smart-google-reviews') . '</p>';
+			echo '</div>';
 		}
 		
 
@@ -449,6 +423,33 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			settings_errors('zwsgr_google_account_settings');
 			settings_errors('zwsgr_advanced_account_settings');
 
+		
+			// Check if the notification settings were saved
+			if (isset($_POST['zwsgr_admin_notification_emails'])) {
+				$emails = sanitize_text_field($_POST['zwsgr_admin_notification_emails']);
+				$subject = sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']); // Get the subject
+				$body = sanitize_textarea_field($_POST['zwsgr_admin_notification_email_body']); // Get the email body
+
+				// Send the email
+				$email_addresses = explode(',', $emails);
+
+				foreach ($email_addresses as $email) {
+					$email = trim($email); // Trim any whitespace
+					if (is_email($email)) { // Validate email
+						wp_mail($email, $subject, $body);
+					}
+				}
+			}
+
+			// Reset values after form submission
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['option_page'])) {
+				if ($_POST['option_page'] == 'zwsgr_notification_settings') {
+					update_option('zwsgr_admin_notification_emails', '');
+					update_option('zwsgr_admin_notification_emails_subject', '');
+					update_option('zwsgr_admin_notification_email_body', '');
+				}
+			}
+
 			// Store the current tab in a variable, defaulting to 'google' if not set
 			$current_tab = isset($_GET['tab']) ? $_GET['tab'] : 'google';
 			?>
@@ -472,12 +473,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						?>
 					</form>
 				<?php elseif ($current_tab === 'notifications'): ?>
-					<form action="options.php" method="post">
+					<form action="" method="post">
 						<?php
 						settings_fields('zwsgr_notification_settings');
 						do_settings_sections('zwsgr_notification_settings');
-						submit_button('Save Notification Settings');
-						?>
+						echo '<div class="notification-fields" style="display:none;">';
+							$this->zwsgr_admin_notification_emails_callback();
+							$this->zwsgr_admin_notification_emails_subject_callback();
+							$this->zwsgr_admin_notofication_email_body_callback();
+						echo '</div>';
+				
+						submit_button('Send Notification Emails'); ?>
 					</form>
 				<?php elseif ($current_tab === 'advanced'): ?>
 					<form action="options.php" method="post">
