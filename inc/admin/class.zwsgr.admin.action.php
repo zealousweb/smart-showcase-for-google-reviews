@@ -585,64 +585,67 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			<!-- JavaScript for Dynamic Functionality -->
 			<script type="text/javascript">
 				document.addEventListener('DOMContentLoaded', function () {
-					const radioButtons = document.querySelectorAll('input[name="display_option"]');
-					const selectButtons = document.querySelectorAll('.select-btn');
-					const selectedOptionDisplay = document.getElementById('selected-option-display');
-					const generatedShortcodeDisplay = document.getElementById('generated-shortcode-display');
-		
-					let currentDisplayOption = 'all';
-		
-					// Add event listeners to radio buttons for dynamic filtering
-					radioButtons.forEach(radio => {
-						radio.addEventListener('change', function () {
-							currentDisplayOption = this.value;
-							updateOptions(currentDisplayOption);
-						});
-					});
-		
-					// Function to show/hide options based on the selected radio button
-					function updateOptions(value) {
-						document.querySelectorAll('.option-item').forEach(item => {
-							if (value === 'all' || item.getAttribute('data-type') === value) {
-								item.style.display = 'block';
-							} else {
-								item.style.display = 'none';
-							}
-						});
-					}
-		
-					// Set default view (show all options)
-					updateOptions('all');
-		
-					// Function to render the selected option and generate the shortcode
-					function renderSelectedOption(optionElement) {
-						const layoutElement = optionElement.parentNode; // Get the parent element of the button
-						const layoutHTML = layoutElement.innerHTML.replace(optionElement.outerHTML, ''); // Remove the button HTML
+				const radioButtons = document.querySelectorAll('input[name="display_option"]');
+				const selectButtons = document.querySelectorAll('.select-btn');
+				const selectedOptionDisplay = document.getElementById('selected-option-display');
+				const generatedShortcodeDisplay = document.getElementById('generated-shortcode-display');
 
-						// Extract the ID from the layout HTML
-						const tempDiv = document.createElement('div');
-						tempDiv.innerHTML = layoutHTML; // Load the HTML into a temporary div to extract the ID
-						const idElement = tempDiv.querySelector('[id]'); // Get the first element with an ID
-						const sectionID = idElement ? idElement.id : 'No ID Found'; // Get the ID or a fallback message
+				let currentDisplayOption = 'all';
 
-						// Update selectedOptionDisplay with separate divs
-						selectedOptionDisplay.innerHTML = `
-							<div class="selected-id">
-								<strong>You selected:</strong> <p>${sectionID}</p>
-							</div>
-							<div class="selected-layout">
-								${layoutHTML}
-							</div>`; // Separate divs for section ID and layout HTML
-						generatedShortcodeDisplay.innerHTML = '[smart-google-reviews type="' + currentDisplayOption + '"]'; // Show the generated shortcode
-					}
-		
-					// Add event listeners to select buttons for selecting an option
-					selectButtons.forEach(button => {
-						button.addEventListener('click', function () {
-							renderSelectedOption(this); // Pass the selected button element
-						});
+				// Add event listeners to radio buttons for dynamic filtering
+				radioButtons.forEach(radio => {
+					radio.addEventListener('change', function () {
+						currentDisplayOption = this.value;
+						updateOptions(currentDisplayOption);
 					});
 				});
+
+				// Function to show/hide options based on the selected radio button
+				function updateOptions(value) {
+					document.querySelectorAll('.option-item').forEach(item => {
+						if (value === 'all' || item.getAttribute('data-type') === value) {
+							item.style.display = 'block';
+						} else {
+							item.style.display = 'none';
+						}
+					});
+				}
+
+				// Set default view (show all options)
+				updateOptions('all');
+
+				// Function to render the selected option and generate the shortcode
+				function renderSelectedOption(optionElement) {
+					const layoutElement = optionElement.parentNode; // Get the parent element of the button
+					const layoutHTML = layoutElement.innerHTML.replace(optionElement.outerHTML, ''); // Remove the button HTML
+
+					// Extract the ID from the layout HTML
+					const tempDiv = document.createElement('div');
+					tempDiv.innerHTML = layoutHTML; // Load the HTML into a temporary div to extract the ID
+					const idElement = tempDiv.querySelector('[id]'); // Get the first element with an ID
+					const sectionID = idElement ? idElement.id : 'No ID Found'; // Get the ID or a fallback message
+
+					selectedOptionDisplay.innerHTML = `
+						<div class="selected-id">
+							<strong>You selected:</strong> <p>${sectionID}</p>
+						</div>
+						<div class="selected-layout">
+							${layoutHTML}
+						</div>`; //  Separate divs for section ID and layout HTML		
+								
+					// Dynamically generate the shortcode based on the selected option and type
+					const selectedType = layoutElement.getAttribute('data-type'); // Get the type of the layout
+					generatedShortcodeDisplay.innerHTML = '[smart-google-reviews type="' + selectedType + '"]'; // Show the generated shortcode
+				}
+
+				// Add event listeners to select buttons for selecting an option
+				selectButtons.forEach(button => {
+					button.addEventListener('click', function () {
+						renderSelectedOption(this); // Pass the selected button element
+					});
+				});
+			});
+
 			</script>
 		
 			<style>
@@ -665,7 +668,5 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			</style>
 			<?php
 		}
-			
-
 	}
 }
