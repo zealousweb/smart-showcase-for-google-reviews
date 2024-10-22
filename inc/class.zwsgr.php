@@ -32,7 +32,13 @@ if ( !class_exists( 'ZWSGR' ) ) {
 		function __construct() {
 
 			add_action( 'setup_theme',   array( $this, 'action__setup_theme' ) );
+			add_action( 'plugins_loaded', array( $this, 'action__plugins_loaded' ), 1 );
+			add_filter( 'plugin_action_links',array( $this,'action__zwsgr_plugin_action_links'), 10, 2 );
 			
+		}
+
+		function action__plugins_loaded() {
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 
 		function action__setup_theme() {
@@ -49,6 +55,29 @@ if ( !class_exists( 'ZWSGR' ) ) {
 			}
 			ZWSGR()->lib = new ZWSGR_Lib;
 				
+		}
+
+		/**
+		 * Action: plugin_action_links
+		 * Add Subscription link after active links.
+		 * @method action__zwsgr_plugin_action_links
+		 * @return $links
+		*/
+		function action__zwsgr_plugin_action_links( $links, $file ) 
+		{
+
+			if ( $file != ZWSGR_PLUGIN_BASENAME ) {
+				return $links;
+			}
+			if ( is_plugin_active( 'smart-google-reviews/smart-google-reviews.php' )  )
+			{
+				$support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'zw-smart-google-reviews' ). '</a>';
+				$document_link = '<a href="https://store.zealousweb.com/" target="_blank">' .__( 'Document', 'zw-smart-google-reviews' ). '</a>';
+				$donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'zw-smart-google-reviews' ) . '</a>';
+
+				array_unshift( $links , $support_link, $document_link, $donateLink );
+			}
+			return $links;
 		}
 	}
 }

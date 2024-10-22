@@ -38,11 +38,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function action__admin_init() {
 
 			// admin js
-			wp_enqueue_script( ZWSGR_PREFIX . '-admin-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-admin-js', ZWSGR_URL . 'assets/js/admin.js', array( 'jquery-core' ), ZWSGR_VERSION );
 
 			// admin css
-			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
-			
+			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
+			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );			
 		}
 
 		/**
@@ -327,15 +328,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_notification_settings',
 				'zwsgr_notification_section'
 			);
+			
 
-			add_settings_field(
-				'zwsgr_google_analytics_tracking_id',
-				__('Google Analytics Tracking ID', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_analytics_tracking_id_callback'),
-				'zwsgr_notification_settings',
-				'zwsgr_notification_section'
-			);
-
+			
 			// Add settings for the Advanced tab
 			add_settings_section(
 				'zwsgr_advanced_section',
@@ -344,7 +339,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_advanced_account_settings'
 			);
 
-			// Advanced settings
 			add_settings_field(
 				'zwsgr_sync_reviews',
 				__('Sync Reviews', 'zw-smart-google-reviews'),
@@ -352,6 +346,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_advanced_account_settings',
 				'zwsgr_advanced_section'
 			);
+
+			add_settings_field(
+				'zwsgr_google_analytics_tracking_id',
+				__('Google Analytics Tracking ID', 'zw-smart-google-reviews'),
+				array($this, 'zwsgr_google_analytics_tracking_id_callback'),
+				'zwsgr_advanced_account_settings',
+				'zwsgr_advanced_section'
+			);
+
 		}
 
 		// Google API Key callback
@@ -371,8 +374,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_admin_notification_enabled_callback()
 		{
 			$value = get_option('zwsgr_admin_notification_enabled', '0');
+			echo '<label class="switch">';
 			echo '<input type="checkbox" id="zwsgr_admin_notification_enabled" name="zwsgr_admin_notification_enabled" value="1" ' . checked(1, $value, false) . ' />';
-			echo '<label for="zwsgr_admin_notification_enabled">' . __('Enable Admin Notifications', 'zw-smart-google-reviews') . '</label>';
+			echo '<span class="slider"></span>';
+			echo '</label>';
 		}
 
 		function zwsgr_admin_notification_emails_callback()
@@ -411,13 +416,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 		
 
-		function zwsgr_google_analytics_tracking_id_callback()
-		{
-			$value = get_option('zwsgr_google_analytics_tracking_id', '');
-			echo '<input type="text" id="zwsgr_google_analytics_tracking_id" name="zwsgr_google_analytics_tracking_id" value="' . esc_attr($value) . '" />';
-			echo '<p class="description">' . __('Enter your Google Analytics Tracking ID (e.g., UA-XXXXXXXXX-Y).', 'zw-smart-google-reviews') . '</p>';
-		}
-
 		//Advance Section 
 		function zwsgr_sync_reviews_callback()
 		{
@@ -427,6 +425,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<option value="weekly" ' . selected($value, 'weekly', false) . '>Weekly</option>
 					<option value="monthly" ' . selected($value, 'monthly', false) . '>Monthly</option>
 				</select>';
+		}
+
+		function zwsgr_google_analytics_tracking_id_callback()
+		{
+			$value = get_option('zwsgr_google_analytics_tracking_id', '');
+			echo '<input type="text" id="zwsgr_google_analytics_tracking_id" name="zwsgr_google_analytics_tracking_id" value="' . esc_attr($value) . '" />';
+			echo '<p class="description">' . __('Enter your Google Analytics Tracking ID (e.g., UA-XXXXXXXXX-Y).', 'zw-smart-google-reviews') . '</p>';
 		}
 
 		/**
@@ -444,19 +449,21 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			settings_errors('zwsgr_google_account_settings');
 			settings_errors('zwsgr_advanced_account_settings');
 
+			// Store the current tab in a variable, defaulting to 'google' if not set
+			$current_tab = isset($_GET['tab']) ? $_GET['tab'] : 'google';
 			?>
 			<div class="wrap">
 				<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 				<h2 class="nav-tab-wrapper">
 					<a href="?page=zwsgr_settings&tab=google"
-						class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'google') ? 'nav-tab-active' : ''; ?>"><?php _e('Google', 'zw-smart-google-reviews'); ?></a>
+						class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>"><?php _e('Google', 'zw-smart-google-reviews'); ?></a>
 					<a href="?page=zwsgr_settings&tab=notifications"
-						class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'notifications') ? 'nav-tab-active' : ''; ?>"><?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?></a>
+						class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>"><?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?></a>
 					<a href="?page=zwsgr_settings&tab=advanced"
-						class="nav-tab <?php echo (isset($_GET['tab']) && $_GET['tab'] === 'advanced') ? 'nav-tab-active' : ''; ?>"><?php _e('Advanced', 'zw-smart-google-reviews'); ?></a>
+						class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>"><?php _e('Advanced', 'zw-smart-google-reviews'); ?></a>
 				</h2>
 
-				<?php if (!isset($_GET['tab']) || $_GET['tab'] === 'google'): ?>
+				<?php if ($current_tab === 'google'): ?>
 					<form action="options.php" method="post">
 						<?php
 						settings_fields('zwsgr_google_account_settings');
@@ -464,7 +471,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						submit_button('Save Google Settings');
 						?>
 					</form>
-				<?php elseif ($_GET['tab'] === 'notifications'): ?>
+				<?php elseif ($current_tab === 'notifications'): ?>
 					<form action="options.php" method="post">
 						<?php
 						settings_fields('zwsgr_notification_settings');
@@ -472,7 +479,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						submit_button('Save Notification Settings');
 						?>
 					</form>
-				<?php elseif ($_GET['tab'] === 'advanced'): ?>
+				<?php elseif ($current_tab === 'advanced'): ?>
 					<form action="options.php" method="post">
 						<?php
 						settings_fields('zwsgr_advanced_account_settings');
