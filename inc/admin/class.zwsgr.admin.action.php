@@ -639,11 +639,18 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<?php
 					$layout_count = 1;
 					foreach ($options as $option_type => $layouts) {
+						$layout_count = 1; // Reset count for each option type
 						foreach ($layouts as $layout_content) {
-							echo '<div id="' . $option_type .'-' . $layout_count . '" class="option-item" data-type="' . $option_type . '">';
+							// Generate the ID in the desired format (e.g., slider-1, grid-1, etc.)
+							$element_id = $option_type . '-' . $layout_count;
+					
+							// Render the HTML content and the button with the correct ID
+							echo '<div id="' . $element_id . '" class="option-item" data-type="' . $option_type . '">';
 							echo $layout_content; // Render the HTML content
-							echo '<button class="select-btn" data-option="'.$option_type.'-' . $layout_count . '">Select Option</button>';
+							echo '<button class="select-btn" data-option="' . $element_id . '">Select Option</button>';
 							echo '</div>';
+					
+							// Increment the count for the current option type
 							$layout_count++;
 						}
 					}
