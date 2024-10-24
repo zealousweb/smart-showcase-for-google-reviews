@@ -44,6 +44,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// admin css
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );			
+		
+			// Slick js
+			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			
+			// Slick css
+			wp_enqueue_style( ZWSGR_PREFIX . '-slick-css', ZWSGR_URL . 'assets/css/slick.css', array(), ZWSGR_VERSION );
+		
 		}
 
 		/**
@@ -528,14 +535,53 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$options = [
 				'slider' => [
 					'<div class="slider-item" id="slider1">
-						Slider 1 Content
-						<ul>
-							<li>1</li>
-							<li>2</li>
-							<li>3</li>
-						</ul>
+						<div class="slider-1">
+							<div class="slide-item">
+								<h2>Title1</h2>
+								<p> Lorem </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title2</h2>
+								<p> Lorem </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title3</h2>
+								<p> Lorem </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title4</h2>
+								<p> Lorem </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title5</h2>
+								<p> Lorem </p>
+							</div>
+						</div>
 					</div>',
-					'<div class="slider-item" id="slider2">Slider 2 Content</div>',
+					'<div class="slider-item" id="slider2">
+						<div class="slider-2">
+							<div class="slide-item">
+								<h2>Title2</h2>
+								<p> Lorem2 </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title2</h2>
+								<p> Lorem2 </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title2</h2>
+								<p> Lorem2 </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title2</h2>
+								<p> Lorem2 </p>
+							</div>
+							<div class="slide-item">
+								<h2>Title2</h2>
+								<p> Lorem2 </p>
+							</div>
+						</div>
+					</div>',
 					'<div class="slider-item" id="slider3">Slider 3 Content</div>',
 					'<div class="slider-item" id="slider4">Slider 4 Content</div>',
 					'<div class="slider-item" id="slider5">Slider 5 Content</div>'
@@ -572,121 +618,49 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			?>
 			
 			<div class="zwsgr-dashboard">
-				<h3>Select Display Options</h3>
-		
-				<!-- Dynamically Render Radio Buttons -->
-				<label><input type="radio" name="display_option" value="all" checked> All</label><br>
-				<?php foreach ($options as $key => $layouts) : ?>
-					<label><input type="radio" name="display_option" value="<?php echo $key; ?>"> <?php echo ucfirst($key); ?></label><br>
-				<?php endforeach; ?>
-		
-				<!-- Dynamically Render Layout Options -->
-				<?php
-				$layout_count = 1;
-				foreach ($options as $option_type => $layouts) {
-					foreach ($layouts as $layout_content) {
-						echo '<div id="layout-' . $layout_count . '" class="option-item" data-type="' . $option_type . '">';
-						echo $layout_content; // Render the HTML content
-						echo '<button class="select-btn" data-option="layout-' . $layout_count . '">Select Option</button>';
-						echo '</div>';
-						$layout_count++;
-					}
-				}
-				?>
-		
-				<!-- Render selected option here -->
-				<h3>Selected Option</h3>
-				<div id="selected-option-display" class="selected-option-display"></div>
-		
-				<!-- Render generated shortcode here -->
-				<h3>Generated Shortcode</h3>
-				<div id="generated-shortcode-display" class="generated-shortcode-display"></div>
-			</div>
-		
-			<!-- JavaScript for Dynamic Functionality -->
-			<script type="text/javascript">
-				document.addEventListener('DOMContentLoaded', function () {
-				const radioButtons = document.querySelectorAll('input[name="display_option"]');
-				const selectButtons = document.querySelectorAll('.select-btn');
-				const selectedOptionDisplay = document.getElementById('selected-option-display');
-				const generatedShortcodeDisplay = document.getElementById('generated-shortcode-display');
+    			<h3>Select Display Options</h3>
 
-				let currentDisplayOption = 'all';
+				<!-- Tab Navigation -->
+				<ul class="tab-nav">
+					<li class="tab-item active" data-tab="tab-options">Select Display Options</li>
+					<li class="tab-item" data-tab="tab-selected">Selected Option</li>
+					<li class="tab-item" data-tab="tab-shortcode">Generated Shortcode</li>
+				</ul>
 
-				// Add event listeners to radio buttons for dynamic filtering
-				radioButtons.forEach(radio => {
-					radio.addEventListener('change', function () {
-						currentDisplayOption = this.value;
-						updateOptions(currentDisplayOption);
-					});
-				});
+				<!-- Tab Content Areas -->
+				<div class="tab-content" id="tab-options">
+					<!-- Dynamically Render Radio Buttons -->
+					<label><input type="radio" name="display_option" value="all" checked> All</label><br>
+					<?php foreach ($options as $key => $layouts) : ?>
+						<label><input type="radio" name="display_option" value="<?php echo $key; ?>"> <?php echo ucfirst($key); ?></label><br>
+					<?php endforeach; ?>
 
-				// Function to show/hide options based on the selected radio button
-				function updateOptions(value) {
-					document.querySelectorAll('.option-item').forEach(item => {
-						if (value === 'all' || item.getAttribute('data-type') === value) {
-							item.style.display = 'block';
-						} else {
-							item.style.display = 'none';
+					<!-- Dynamically Render Layout Options -->
+					<?php
+					$layout_count = 1;
+					foreach ($options as $option_type => $layouts) {
+						foreach ($layouts as $layout_content) {
+							echo '<div id="' . $option_type .'-' . $layout_count . '" class="option-item" data-type="' . $option_type . '">';
+							echo $layout_content; // Render the HTML content
+							echo '<button class="select-btn" data-option="'.$option_type.'-' . $layout_count . '">Select Option</button>';
+							echo '</div>';
+							$layout_count++;
 						}
-					});
-				}
+					}
+					?>
+				</div>
 
-				// Set default view (show all options)
-				updateOptions('all');
+				<div class="tab-content" id="tab-selected" style="display:none;">
+					<h3>Selected Option</h3>
+					<div id="selected-option-display" class="selected-option-display"></div>
+				</div>
 
-				// Function to render the selected option and generate the shortcode
-				function renderSelectedOption(optionElement) {
-					const layoutElement = optionElement.parentNode; // Get the parent element of the button
-					const layoutHTML = layoutElement.innerHTML.replace(optionElement.outerHTML, ''); // Remove the button HTML
+				<div class="tab-content" id="tab-shortcode" style="display:none;">
+					<h3>Generated Shortcode</h3>
+					<div id="generated-shortcode-display" class="generated-shortcode-display"></div>
+				</div>
+			</div>
 
-					// Extract the ID from the layout HTML
-					const tempDiv = document.createElement('div');
-					tempDiv.innerHTML = layoutHTML; // Load the HTML into a temporary div to extract the ID
-					const idElement = tempDiv.querySelector('[id]'); // Get the first element with an ID
-					const sectionID = idElement ? idElement.id : 'No ID Found'; // Get the ID or a fallback message
-
-					selectedOptionDisplay.innerHTML = `
-						<div class="selected-id">
-							<strong>You selected:</strong> <p>${sectionID}</p>
-						</div>
-						<div class="selected-layout">
-							${layoutHTML}
-						</div>`; //  Separate divs for section ID and layout HTML		
-								
-					// Dynamically generate the shortcode based on the selected option and type
-					const selectedType = layoutElement.getAttribute('data-type'); // Get the type of the layout
-					generatedShortcodeDisplay.innerHTML = '[smart-google-reviews type="' + selectedType + '"]'; // Show the generated shortcode
-				}
-
-				// Add event listeners to select buttons for selecting an option
-				selectButtons.forEach(button => {
-					button.addEventListener('click', function () {
-						renderSelectedOption(this); // Pass the selected button element
-					});
-				});
-			});
-
-			</script>
-		
-			<style>
-				.option-item {
-					display: none;
-					margin: 5px 0;
-					padding: 5px;
-					border: 1px solid #ddd;
-					background-color: #f9f9f9;
-				}
-		
-				.selected-option-display,
-				.generated-shortcode-display {
-					margin-top: 20px;
-					padding: 10px;
-					background-color: #e0e0e0;
-					border: 1px solid #ccc;
-					font-size: 18px;
-				}
-			</style>
 			<?php
 		}
 	}
