@@ -653,6 +653,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-selected" style="display:none;">
 					<h3>Selected Option</h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
+					<button id="save-get-code-btn">Save & Get Code</button>
 				</div>
 
 				<div class="tab-content" id="tab-shortcode" style="display:none;">
