@@ -422,6 +422,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Show error messages for both settings groups
 			settings_errors('zwsgr_google_account_settings');
 			settings_errors('zwsgr_advanced_account_settings');
+			settings_errors('zwsgr_settings&tab=notifications');
 
 		
 			// Check if the notification settings were saved
@@ -449,19 +450,22 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					update_option('zwsgr_admin_notification_email_body', '');
 				}
 			}
-
-			// Store the current tab in a variable, defaulting to 'google' if not set
+			
+			// Now render the form and tabs
 			$current_tab = isset($_GET['tab']) ? $_GET['tab'] : 'google';
 			?>
 			<div class="wrap">
 				<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 				<h2 class="nav-tab-wrapper">
-					<a href="?page=zwsgr_settings&tab=google"
-						class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>"><?php _e('Google', 'zw-smart-google-reviews'); ?></a>
-					<a href="?page=zwsgr_settings&tab=notifications"
-						class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>"><?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?></a>
-					<a href="?page=zwsgr_settings&tab=advanced"
-						class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>"><?php _e('Advanced', 'zw-smart-google-reviews'); ?></a>
+					<a href="?page=zwsgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
+						<?php _e('Google', 'zw-smart-google-reviews'); ?>
+					</a>
+					<a href="?page=zwsgr_settings&tab=notifications" class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
+						<?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?>
+					</a>
+					<a href="?page=zwsgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
+						<?php _e('Advanced', 'zw-smart-google-reviews'); ?>
+					</a>
 				</h2>
 
 				<?php if ($current_tab === 'google'): ?>
@@ -473,17 +477,21 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						?>
 					</form>
 				<?php elseif ($current_tab === 'notifications'): ?>
-					<form action="" method="post">
+					<form id="notification-form" action="" method="post">
 						<?php
 						settings_fields('zwsgr_notification_settings');
 						do_settings_sections('zwsgr_notification_settings');
-						echo '<div class="notification-fields" style="display:none;">';
-							$this->zwsgr_admin_notification_emails_callback();
-							$this->zwsgr_admin_notification_emails_subject_callback();
-							$this->zwsgr_admin_notofication_email_body_callback();
-						echo '</div>';
-				
-						submit_button('Send Notification Emails'); ?>
+						?>
+						<div class="notification-fields">
+							<?php $this->zwsgr_admin_notification_emails_callback(); ?>
+							<?php $this->zwsgr_admin_notification_emails_subject_callback(); ?>
+							<?php $this->zwsgr_admin_notofication_email_body_callback(); ?>
+						</div>
+						<!-- Error message container -->
+						<span id="email-error" style="color: red; display: none;"></span>
+						<!-- Success message container -->
+						<span id="email-success" style="color: green; display: none;"></span>
+						<?php submit_button('Send Notification Emails'); ?>
 					</form>
 				<?php elseif ($current_tab === 'advanced'): ?>
 					<form action="options.php" method="post">
