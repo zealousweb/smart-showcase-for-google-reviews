@@ -11,19 +11,76 @@ License: GPLv3 or later
 Version: 1.0.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-The Smart Google Reviews enables users to easily embed Google Reviews on your WordPress site.
+Smart Google Reviews is a WordPress plugin that allows businesses to display customer reviews from Google on their website
 
 == Description ==
 
-It allows you to collect Google reviews display them on your website, enhancing credibility and user engagement.
+Smart Google Reviews is a WordPress plugin that allows businesses to display customer reviews from Google on their website
 
 = Features of Smart Google Reviews =
 
-* Display Reviews: Easily showcase reviews on any page using a shortcode.
+* Syncing of Google reviews from Google My Business
+* Cron Job has Option daily, weekly, monthly
+* Review Reply Form Feilds - name, email, review title, and review message - Admin manage Form
+* Filters for sorting reviews by Rating, Keywords
+* Display Option Grid, List, Slider, Badge, Popup
+* Custom CSS support for design tweaks
+* Generate Shortcodes for embedding reviews anywhere on the site with attributes
+    * Number of reviews displayed
+    * Rating filters
+    * Location wise"
+* Customize number of reviews displayed
+* 5+ Widget Design layouts
+* Compatibility with standard page builders like elementor, WPBakery, and Divi
+* Load more review and Limit Functionlity
+* Trim long reviews with “read more” link
+* Responsive Slider, Grid, and List layouts
+* Notify admins of new reviews - with selection admin or other
+* Send notification emails to users after submitting reply to reviews
+* Keep all reviews in a WordPress database (CPT)
+* Multi-language support
+* Full GDPR support
+* Admin approval system for reviews
+* Multilingual support with automatic translation options for user-submitted reviews
+* Create and display review widgets in sidebars and footers, showing the latest reviews and average star ratings.
+* ‘Review us on G’ button to collect new Google Reviews
+* Show/hide any elements (business photo, name, rating, reviews, avatars, names, time and etc)
 
 = Features of Google Reviews Plugin Using Contact Form 7 Pro =
 
-* Display Reviews: Easily showcase reviews on any page using a shortcode.
+* Dashboard for review statistics
+    * Total reviews
+    * Average rating
+    * Top reviews
+    * Date range filter
+    * Color Selection"
+* Multi-location support to pull reviews from multiple Google Business listings
+* Structured data support for products, services, and local businesses
+* Upload your own Google business photo
+* Option to export/import reviews in CSV format
+* Integration with WooCommerce to display reviews on product pages - Aligned with filter option
+* Options to highlight featured reviews or pin important reviews at the top
+* Customizable templates for automatic replies to approved reviews
+* Advanced spam detection using AI or machine learning algorithms like adult content etc
+* Automatic replies to users based on their star rating (positive or negative) (Using AI)
+* Integration with Google Analytics to track user interaction with reviews
+
+
+<strong>[Demo for Smart Google Reviews Pro]()</strong>
+
+**OUR OTHER PLUGINS**
+
+* <strong>[Accept PayPal Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-paypal-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Stripe Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-stripe-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Authorize.NET Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-authorize-net-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept 2Checkout Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-2checkout-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Sagepay(Opayo) Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-sage-pay-opayo-payments-using-contact-form-7-pro)</strong>
+* <strong>[User Registration Using Contact Form 7 Pro](https://store.zealousweb.com/user-registration-using-contact-form-7-pro)</strong>
+* <strong>[Abandoned Contact Form 7 Pro](https://store.zealousweb.com/abandoned-contact-form-7-pro)</strong>
+* <strong>[Smart Appointment & Booking Pro](https://store.zealousweb.com/smart-appointment-booking-pro)</strong>
+* <strong>[Custom Product Options WooCommerce Pro](https://store.zealousweb.com/custom-product-options-woocommerce-pro)</strong>
+* <strong>[Generate PDF Using Contact Form 7 Pro](https://store.zealousweb.com/generate-pdf-using-contact-form-7-pro)</strong>
+* <strong>[Accept Elavon Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-elavon-payments-using-contact-form-7-pro)</strong>
 
 == Installation ==
 
