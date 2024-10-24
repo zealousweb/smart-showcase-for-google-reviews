@@ -46,7 +46,7 @@ Smart Google Reviews is a WordPress plugin that allows businesses to display cus
 * ‘Review us on G’ button to collect new Google Reviews
 * Show/hide any elements (business photo, name, rating, reviews, avatars, names, time and etc)
 
-= Features of Google Reviews Plugin Using Contact Form 7 Pro =
+= Features of Smart Google Reviews Pro =
 
 * Dashboard for review statistics
     * Total reviews

@@ -1,7 +1,7 @@
 # Smart Google Reviews
 Smart Google Reviews is a WordPress plugin that allows businesses to display customer reviews from Google on their website
 
-**Features of Abandoned Contact Form 7**
+**Features of Smart Google Reviews**
 
 - Syncing of Google reviews from Google My Business
 - Cron Job has Option daily, weekly, monthly
@@ -30,7 +30,7 @@ Smart Google Reviews is a WordPress plugin that allows businesses to display cus
 - ‘Review us on G’ button to collect new Google Reviews
 - Show/hide any elements (business photo, name, rating, reviews, avatars, names, time and etc)
 
-**Features of Abandoned Contact Form 7 Pro**
+**Features of Smart Google Reviews Pro**
 
 - Dashboard for review statistics
     - Total reviews
