@@ -28,7 +28,7 @@ Smart Google Reviews is a WordPress plugin that allows businesses to display cus
 * Generate Shortcodes for embedding reviews anywhere on the site with attributes
     * Number of reviews displayed
     * Rating filters
-    * Location wise"
+    * Location wise
 * Customize number of reviews displayed
 * 5+ Widget Design layouts
 * Compatibility with standard page builders like elementor, WPBakery, and Divi
@@ -53,7 +53,7 @@ Smart Google Reviews is a WordPress plugin that allows businesses to display cus
     * Average rating
     * Top reviews
     * Date range filter
-    * Color Selection"
+    * Color Selection
 * Multi-location support to pull reviews from multiple Google Business listings
 * Structured data support for products, services, and local businesses
 * Upload your own Google business photo
