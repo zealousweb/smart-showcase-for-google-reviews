@@ -11,11 +11,13 @@ License: GPLv3 or later
 Version: 1.0.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Smart Google Reviews is a WordPress plugin that allows businesses to display customer reviews from Google on their website
+Smart Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites.
 
 == Description ==
 
-Smart Google Reviews is a WordPress plugin that allows businesses to display customer reviews from Google on their website
+Smart Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites. By syncing reviews directly from Google My Business, this plugin helps build trust and credibility with potential customers. With a range of display options including grids, lists, sliders, badges, and popups, you can showcase reviews in a format that best suits your site’s design.
+
+Customize the look and feel with custom CSS, and place reviews anywhere on your site using shortcodes. The plugin also supports multiple languages and complies with GDPR, ensuring a seamless and secure user experience. Additionally, Smart Google Reviews offers admin management features, including form fields for review replies, filters for sorting reviews, and notification systems for new reviews and replies. Whether you’re using Elementor, WPBakery, or Divi, this plugin integrates smoothly with your page builder to enhance your site’s functionality and appearance.
 
 = Features of Smart Google Reviews =
 
