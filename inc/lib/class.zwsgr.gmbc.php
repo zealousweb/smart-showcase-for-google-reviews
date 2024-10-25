@@ -135,4 +135,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         }
 
     }
+
+    new Zwsgr_Google_My_Business_Connector();
+        
 }
