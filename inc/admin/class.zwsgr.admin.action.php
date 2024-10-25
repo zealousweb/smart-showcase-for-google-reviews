@@ -26,8 +26,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_action('admin_init', array($this, 'zwsgr_register_settings')); // Register settings when admin initializes
 			add_action('init', array($this, 'zwsgr_register_widget_cpt'));  // Register Widget Custom Post Type
 			add_action('init', array($this, 'zwsgr_register_review_cpt'));  // Register Review Custom Post Type
-			
-            		
+
+			add_filter('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwsgr_manage_data_posts_columns'), 10, 3);
+			add_action('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
+			add_action('wp_ajax_toggle_visibility', array($this, 'zwsgr_toggle_visibility'));
+		
 		}
 		/**
 		 * Action: admin_init
@@ -50,6 +53,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			
 			// Slick css
 			wp_enqueue_style( ZWSGR_PREFIX . '-slick-css', ZWSGR_URL . 'assets/css/slick.css', array(), ZWSGR_VERSION );
+
+			//Toggle Ajax
+			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce' => wp_create_nonce(action: 'toggle-visibility-nonce')
+			));
 		
 		}
 
@@ -246,6 +255,78 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
+		}
+
+		/**
+		 * Filter: manage_zuserreg_data_posts_columns
+		 *
+		 * - Used to add new column fields for the "zuserreg_data" CPT
+		 *
+		 * @method filter__zwsgr_manage_zuserreg_data_posts_columns
+		 *
+		 * @param  array $columns
+		 *
+		 * @return array
+		 */
+		function filter__zwsgr_manage_data_posts_columns($columns)
+		{
+			unset($columns['date']);
+			unset($columns['title']);
+			$columns['title'] = __('Review', 'zw-google-reviews');
+			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'zw-google-reviews');
+			$columns['date'] = __('Date', 'zw-google-reviews');
+			return $columns;
+		}
+
+		/**
+		 * Render the visibility column content
+		 *
+		 * @param string $column
+		 * @param int $post_id
+		 */
+		function render_hide_column_content( $column, $post_id ) {
+			if ( $column === ZWSGR_META_PREFIX . 'user_login' ) {
+				$is_hidden = get_post_meta( $post_id, '_is_hidden', true );
+				$icon = $is_hidden ? 'hidden' : 'visibility';
+
+				// Display the toggle button with the current state
+				echo '<a href="#" class="zwsgr-toggle-visibility" data-post-id="' . esc_attr( $post_id ) . '">';
+				echo '<span class="dashicons dashicons-' . esc_attr( $icon ) . '"></span>';
+				echo '</a>';
+			}
+		}
+
+		/**
+		 * Toggle visibility (AJAX callback)
+		 */
+		function zwsgr_toggle_visibility() {
+			check_ajax_referer( 'toggle-visibility-nonce', 'nonce' );
+		
+			$post_id = intval( $_POST['post_id'] );
+		
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				wp_send_json_error( array( 'message' => 'Not authorized' ) );
+			}
+		
+			$is_hidden = get_post_meta( $post_id, '_is_hidden', true );
+		
+			if ( $is_hidden ) {
+				// If currently hidden, set to visibility and delete meta
+				delete_post_meta( $post_id, '_is_hidden' );
+				$new_state = 'show';
+				$icon = 'visibility';
+			} else {
+				// If currently visibility, set to hidden
+				update_post_meta( $post_id, '_is_hidden', 1 );
+				$new_state = 'hidden';
+				$icon = 'hidden';
+			}
+		
+			// Send JSON response back to the front-end
+			wp_send_json_success( array(
+				'icon' => $icon,
+				'state' => $new_state // Send the current state (hidden/show)
+			));
 		}
 
 		/**
