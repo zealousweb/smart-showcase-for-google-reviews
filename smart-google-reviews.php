@@ -47,11 +47,11 @@ if ( !defined( 'ZWSGR_PLUGIN_BASENAME' ) ) {
 }
 
 if ( !defined( 'ZWSGR_META_PREFIX' ) ) {
-	define( 'ZWSGR_META_PREFIX', 'ZWSGR_' ); // Plugin metabox prefix
+	define( 'ZWSGR_META_PREFIX', 'zwsgr_' ); // Plugin metabox prefix
 }
 
 if ( !defined( 'ZWSGR_PREFIX' ) ) {
-	define( 'ZWSGR_PREFIX', 'ZWSGR' ); // Plugin prefix
+	define( 'ZWSGR_PREFIX', 'zwsgr' ); // Plugin prefix
 }
 
 if( !defined( 'ZWSGR_POST_REVIEW_TYPE' ) ) {
@@ -70,7 +70,7 @@ if ( !function_exists( 'ZWSGR' ) ) {
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.action.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.filter.php' );
-		
+		require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.gmbc.php' );
 	} else {
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.php' );
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.action.php' );
