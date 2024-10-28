@@ -630,31 +630,31 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="slider-1">
 							<div class="slide-item">
 								<h2 class="title">Title1</h2>
-								<h5 class="date">25/10/2024</h5>
+								<h5 class="date" data-original-date="25/10/2024">25/10/2024</h5>
 								<h6 class="rating">5 Star</h6>
 								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
 								<h2 class="title">Title2</h2>
-								<h5 class="date">24/10/2024</h5>
+								<h5 class="date" data-original-date="24/10/2024">24/10/2024</h5>
 								<h6 class="rating">4 Star</h6>
 								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
 								<h2 class="title">Title3</h2>
-								<h5 class="date">23/10/2024</h5>
+								<h5 class="date" data-original-date="23/10/2024">23/10/2024</h5>
 								<h6 class="rating">3 Star</h6>
 								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
 								<h2 class="title">Title4</h2>
-								<h5 class="date">22/10/2024</h5>
+								<h5 class="date" data-original-date="22/10/2024">22/10/2024</h5>
 								<h6 class="rating">2 Star</h6>
 								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
 								<h2 class="title">Title5</h2>
-								<h5 class="date">21/10/2024</h5>
+								<h5 class="date" data-original-date="21/10/2024">21/10/2024</h5>
 								<h6 class="rating">1 Star</h6>
 								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>

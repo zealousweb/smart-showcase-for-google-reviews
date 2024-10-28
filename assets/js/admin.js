@@ -288,10 +288,10 @@ jQuery(document).ready(function($) {
     // Call toggleElements on page load to apply any initial settings with fade effect
     toggleElements();
 
-	function formatDate(dateString, format) {
+	function formatDate(dateString, format, lang) {
 		let dateParts;
 		let date;
-
+	
 		// Check for various formats and parse accordingly
 		if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
 			dateParts = dateString.split('/');
@@ -305,11 +305,12 @@ jQuery(document).ready(function($) {
 		} else {
 			date = new Date(dateString); // ISO or fallback
 		}
-
+	
 		// Return original if date is invalid
 		if (isNaN(date.getTime())) return dateString;
-
-		// Format date based on selected format
+	
+		// Format date based on selected format and language
+		const options = { year: 'numeric', month: 'long', day: 'numeric' };
 		switch (format) {
 			case 'DD/MM/YYYY':
 				return date.toLocaleDateString('en-GB'); // e.g., 01/01/2024
@@ -318,105 +319,124 @@ jQuery(document).ready(function($) {
 			case 'YYYY/MM/DD':
 				return date.toISOString().split('T')[0].replace(/-/g, '/'); // e.g., 2024/01/01
 			case 'full':
-				return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // January 1, 2024
+				return date.toLocaleDateString(lang, options); // January 1, 2024 in selected language
 			default:
 				return dateString;
 		}
 	}
-
 	// Event listener for date format dropdown
 	$('#date-format-select').on('change', function() {
 		const selectedFormat = $(this).val();
-		updateDateDisplay(selectedFormat);
+		updateDisplayedDates(); // Updated to ensure it re-renders based on new format
 	});
 
 	// Function to update date display based on format
-	function updateDateDisplay(format) {
-		if (format === 'hide') {
-			// Hide date elements if 'Hide' is selected
-			$('#selected-option-display .date').fadeOut(200);
+	function updateDisplayedDates() {
+		const lang = $('#language-select').val(); // Get selected language
+		const format = $('#date-format-select').val(); // Get selected date format
+	
+		$('.date').each(function() {
+			const originalDate = $(this).data('original-date'); // Get the original date
+			if (format === 'hide') {
+				$(this).text(''); // Hide the date
+			} else {
+				const formattedDate = formatDate(originalDate, format, lang); // Pass lang to formatDate
+				$(this).text(formattedDate); // Update the text with the formatted date
+			}
+		});
+	}
+
+	// Translations for "Read more" in different languages
+	var translations = {
+		en: 'Read more',
+		es: 'Leer más',
+		fr: 'Lire la suite',
+		de: 'Mehr lesen',
+		it: 'Leggi di più',
+		pt: 'Leia mais',
+		ru: 'Читать далее',
+		zh: '阅读更多',
+		ja: '続きを読む',
+		hi: 'और पढ़ें',
+		ar: 'اقرأ أكثر',
+		ko: '더 읽기',
+		tr: 'Daha fazla oku',
+		bn: 'আরও পড়ুন',
+		ms: 'Baca lagi',
+		nl: 'Lees meer',
+		pl: 'Czytaj więcej',
+		sv: 'Läs mer',
+		th: 'อ่านเพิ่มเติม',
+	};
+
+	// Function to update Read more link based on language
+	function updateReadMoreLink($element, lang) {
+		var charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
+		var fullText = $element.data('full-text'); // Get the stored full text
+
+		if (charLimit && fullText.length > charLimit) {
+			var trimmedText = fullText.substring(0, charLimit) + '... ';
+			$element.html(trimmedText + `<a href="#" class="read-more-link">${translations[lang]}</a>`);
+			
+			// Re-apply the "Read more" click event
+			$element.find('.read-more-link').on('click', function (e) {
+				e.preventDefault();
+				$element.text(fullText);
+			});
 		} else {
-			// Show date elements with the selected format
-			$('#selected-option-display .date').each(function() {
-				const originalDate = $(this).text();
-				const formattedDate = formatDate(originalDate, format);
-				$(this).fadeOut(200, function() {
-					$(this).text(formattedDate).fadeIn(200);
-				});
-			}).fadeIn(200); // Make sure dates are shown when format is not 'hide'
+			$element.text(fullText); // Show full text if no limit
 		}
 	}
 
-
-
+	// On character limit input change
 	$('#review-char-limit').on('input', function () {
-        var charLimit = parseInt($(this).val(), 10); // Get character limit from input
+		var charLimit = parseInt($(this).val(), 10); // Get character limit from input
+		var lang = $('#language-select').val(); // Get selected language
 
-        // Loop through each content block and apply the limit
-        $('.content').each(function () {
-            var $this = $(this);
-            var fullText = $this.data('full-text') || $this.text(); // Store the original full text
+		// Loop through each content block and apply the limit and language
+		$('.content').each(function () {
+			var $this = $(this);
+			var fullText = $this.data('full-text') || $this.text(); // Store the original full text
 
-            // Only store full text once to prevent resetting to trimmed text
-            if (!$this.data('full-text')) {
-                $this.data('full-text', fullText);
-            }
+			// Only store full text once to prevent resetting to trimmed text
+			if (!$this.data('full-text')) {
+				$this.data('full-text', fullText);
+			}
 
-            if (charLimit && fullText.length > charLimit) {
-                // Trim the text to the character limit
-                var trimmedText = fullText.substring(0, charLimit) + '... ';
-                $this.html(trimmedText + '<a href="#" class="read-more-link">Read more</a>');
+			updateReadMoreLink($this, lang); // Update the Read more link with the correct language
+		});
+	});
 
-                // Show full text on "Read more" click
-                $this.find('.read-more-link').on('click', function (e) {
-                    e.preventDefault();
-                    $this.text(fullText);
-                });
-            } else {
-                // If the character limit is removed, show full text
-                $this.text(fullText);
-            }
-        });
-    });
+	   // Function to update displayed dates based on selected language and format
+	   function updateDisplayedDates() {
+		const lang = $('#language-select').val(); // Get selected language
+		const format = $('#date-format-select').val(); // Get selected date format
+	
+		$('.date').each(function () {
+			const originalDate = $(this).data('original-date'); // Get the original date
+			if (format === 'hide') {
+				$(this).text(''); // Hide the date
+			} else {
+				const formattedDate = formatDate(originalDate, format, lang);
+				$(this).text(formattedDate); // Update the text with the formatted date
+			}
+		});
+	}
+	
 
-	 // Function to apply word limit with "read more" functionality
-	//  function applyWordLimit() {
-    //     var wordLimit = parseInt($('#review-char-limit').val(), 10); // Get word limit input
-    //     $('.selected-option-display .content').each(function() {
-    //         var $this = $(this);
-    //         var fullText = $this.data('full-text') || $this.text();
+	// On language select change
+	$('#language-select').on('change', function () {
+		var lang = $(this).val(); // Get selected language
+		updateDisplayedDates(); // Re-render dates when language changes
 
-    //         // Store the full text to avoid re-trimming
-    //         if (!$this.data('full-text')) {
-    //             $this.data('full-text', fullText);
-    //         }
+		// Loop through each content block and update the Read more link with the new language
+		$('.content').each(function () {
+			var $this = $(this);
+			updateReadMoreLink($this, lang);
+		});
+	});
 
-    //         // Split the text into words
-    //         var words = fullText.split(/\s+/);
-
-    //         // Apply word limit and add "read more" if necessary
-    //         if (wordLimit && words.length > wordLimit) {
-    //             var trimmedText = words.slice(0, wordLimit).join(" ") + '... ';
-    //             $this.html(trimmedText + '<a href="#" class="read-more-link">Read more</a>');
-
-    //             // Expand to full text on "read more" click
-    //             $this.find('.read-more-link').on('click', function(e) {
-    //                 e.preventDefault();
-    //                 $this.text(fullText); // Show the full text
-    //             });
-    //         } else {
-    //             $this.text(fullText); // Show full text if within limit
-    //         }
-    //     });
-    // }
-
-    // // Trigger applyWordLimit function when the word limit input changes
-    // $('#review-char-limit').on('input', applyWordLimit);
-
-    // // Initial application of word limit on page load
-    // applyWordLimit();
-
-
+	$('#date-format-select').on('change', updateDisplayedDates); // Ensure dates update on format change
 
 	// Toggle for Google Review link
     $('#toggle-google-review').on('change', function() {
