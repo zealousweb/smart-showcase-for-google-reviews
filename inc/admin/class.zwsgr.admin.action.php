@@ -618,48 +618,58 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					'<div class="slider-item" id="slider1">
 						<div class="slider-1">
 							<div class="slide-item">
-								<h2>Title1</h2>
-								<p> Lorem </p>
+								<h2 class="title">Title1</h2>
+								<h5 class="date">25/10/2024</h5>
+								<h6 class="rating">5 Star</h6>
+								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title2</h2>
-								<p> Lorem </p>
+								<h2 class="title">Title2</h2>
+								<h5 class="date">24/10/2024</h5>
+								<h6 class="rating">4 Star</h6>
+								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title3</h2>
-								<p> Lorem </p>
+								<h2 class="title">Title3</h2>
+								<h5 class="date">23/10/2024</h5>
+								<h6 class="rating">3 Star</h6>
+								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title4</h2>
-								<p> Lorem </p>
+								<h2 class="title">Title4</h2>
+								<h5 class="date">22/10/2024</h5>
+								<h6 class="rating">2 Star</h6>
+								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title5</h2>
-								<p> Lorem </p>
+								<h2 class="title">Title5</h2>
+								<h5 class="date">21/10/2024</h5>
+								<h6 class="rating">1 Star</h6>
+								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
 							</div>
 						</div>
 					</div>',
 					'<div class="slider-item" id="slider2">
 						<div class="slider-2">
 							<div class="slide-item">
-								<h2>Title2</h2>
-								<p> Lorem2 </p>
+								<h2 class="title">Title2</h2>
+								<p class="content"> Lorem2 </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title2</h2>
-								<p> Lorem2 </p>
+								<h2 class="title">Title2</h2>
+								<p class="content"> Lorem2 </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title2</h2>
-								<p> Lorem2 </p>
+								<h2 class="title">Title2</h2>
+								<p class="content"> Lorem2 </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title2</h2>
-								<p> Lorem2 </p>
+								<h2 class="title">Title2</h2>
+								<p class="content"> Lorem2 </p>
 							</div>
 							<div class="slide-item">
-								<h2>Title2</h2>
-								<p> Lorem2 </p>
+								<h2 class="title">Title2</h2>
+								<p class="content"> Lorem2 </p>
 							</div>
 						</div>
 					</div>',
@@ -741,6 +751,141 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-selected" style="display:none;">
 					<h3>Selected Option</h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
+					<div class="widget-settings">
+						<h2>Widget Settings</h2>
+						<div>
+							<h3>Hide Element</h3>
+							<ul>
+								<li>
+									<input type="checkbox" id="review-title" name="review-element" value="review-title">
+									<label for="review-title">Title</label>
+								</li>
+								<li>
+									<input type="checkbox" id="review-rating" name="review-element" value="review-rating">
+									<label for="review-rating">Rating</label>
+								</li>
+								<li>
+									<input type="checkbox" id="review-days-ago" name="review-element" value="review-days-ago">
+									<label for="review-days-ago">Days Ago</label>
+								</li>
+								<li>
+									<input type="checkbox" id="review-content" name="review-element" value="review-content">
+									<label for="review-content">Review Content</label>
+								</li>
+								<li>
+									<input type="checkbox" id="reviewiew-photo" name="review-element" value="reviewiew-photo">
+									<label for="reviewiew-photo">Reviewer Photo</label>
+								</li>
+								<!-- Add more elements as needed -->
+							</ul>
+						</div>
+						<div>
+							<h3>Filter Rating</h3>
+							<div class="filter-rating">
+								<span class="star-filter" data-rating="5" title="5 Stars">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
+									</svg>
+								</span>
+								<span class="star-filter" data-rating="4" title="4 Stars">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
+									</svg>
+								</span>
+								<span class="star-filter" data-rating="3" title="3 Stars">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
+									</svg>
+								</span>
+								<span class="star-filter" data-rating="2" title="2 Stars">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
+									</svg>
+								</span>
+								<span class="star-filter" data-rating="1" title="1 Star">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
+									</svg>
+								</span>
+							</div>
+						</div>
+
+						<div>
+							<h3>Date Format</h3>
+							<select id="date-format-select">
+								<option value="DD/MM/YYYY">DD/MM/YYYY</option>
+								<option value="MM-DD-YYYY">MM-DD-YYYY</option>
+								<option value="YYYY/MM/DD">YYYY/MM/DD</option>
+								<option value="full">Full Date (e.g., January 1, 2024)</option>
+								<option value="hide">Hide</option>
+							</select>
+						</div>
+
+						<div>
+							<h3>Trim long reviews with a "read more" link</h3>
+							<input type="number" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit">
+						</div>
+
+						<div>
+							<h3>Language</h3>
+							<select id="language-select">
+								<option value="en">English</option>
+								<option value="es">Spanish</option>
+								<option value="fr">French</option>
+								<option value="de">German</option>
+								<option value="it">Italian</option>
+								<option value="pt">Portuguese</option>
+								<option value="ru">Russian</option>
+								<option value="zh">Chinese</option>
+								<option value="ja">Japanese</option>
+								<option value="hi">Hindi</option>
+								<option value="ar">Arabic</option>
+								<option value="ko">Korean</option>
+								<option value="tr">Turkish</option>
+								<option value="bn">Bengali</option>
+								<option value="ms">Malay</option>
+								<option value="nl">Dutch</option>
+								<option value="pl">Polish</option>
+								<option value="sv">Swedish</option>
+								<option value="th">Thai</option>
+								<!-- Add more languages as needed -->
+							</select>
+						</div>
+
+						<div>
+							<h3>Sort By</h3>
+							<select id="sort-by-select">
+								<option value="relevant">Most Relevant</option>
+								<option value="newest">Newest</option>
+								<option value="highest">Highest Rating</option>
+								<option value="lowest">Lowest Rating</option>
+							</select>
+						</div>
+
+						<div>
+							<h3>Load More</h3>
+							<label class="switch">
+								<input type="checkbox" id="enable-load-more">
+								<span class="slider"></span>
+							</label>
+						</div>
+
+						<div>
+							<h3>Review us on Google</h3>
+							<label class="switch">
+								<input type="checkbox" id="toggle-google-review">
+								<span class="slider"></span>
+							</label>
+						</div>
+
+						<div id="color-picker-options" style="display: none; margin-top: 10px;">
+							<label for="bg-color-picker">Background Color:</label>
+							<input type="color" id="bg-color-picker" name="bg-color-picker" value="#ffffff">
+
+							<label for="text-color-picker">Text Color:</label>
+							<input type="color" id="text-color-picker" name="text-color-picker" value="#000000">
+						</div>
+					</div>
 					<button id="save-get-code-btn">Save & Get Code</button>
 				</div>
 
