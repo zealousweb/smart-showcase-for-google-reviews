@@ -74,22 +74,51 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             if (isset($_GET['code'])) {
 
-                $code = sanitize_text_field($_GET['code']);
-                
+                $code  = sanitize_text_field($_GET['code']);
                 $token = $this->client->fetchAccessTokenWithAuthCode($code);
 
                 if (isset($token['access_token'])) {
 
-                    update_option('zwsgr_access_token', sanitize_text_field($token['access_token']));
+                     // Use the 'expires_in' value if provided by the API response, or default to 1 hour if not set
+                    $expires_in = isset($token['expires_in']) ? (int) $token['expires_in'] : HOUR_IN_SECONDS;
+            
+                    // Store the access token in a transient with dynamic expiration
+                    $zwsgr_is_transient_set = set_transient('zwsgr_access_token', sanitize_text_field($token['access_token']), $expires_in);
+
+                    // Check if the transient was set successfully
+                    if (!$zwsgr_is_transient_set) {
+                        // Log the error
+                        error_log('[' . date('m/d/Y h:i:s A') . '] ZWSGR - Failed to set transient zwsgr_access_token: Unable to store the access token.');
+
+                        // Display error message using WordPress admin notices
+                        add_action('admin_notices', function() {
+                            echo '<div class="notice notice-error is-dismissible">
+                                <p>' . esc_html__('Error: There was an error please try again.') . '</p>
+                            </div>';
+                        });
+                    }
                 
                     if (isset($token['refresh_token'])) {
                         
-                        update_option('zwsgr_refresh_token', sanitize_text_field($token['refresh_token']));
+                        $zwsgr_is_refresh_token_updated = update_option('zwsgr_refresh_token', sanitize_text_field($token['refresh_token']));
+
+                        // Check if the option was updated successfully
+                        if (!$zwsgr_is_refresh_token_updated) {
+                            // Log the error
+                            error_log('[' . date('m/d/Y h:i:s A') . '] ZWSGR - Failed to update option zwsgr_refresh_token: Unable to store the refresh token.');
+
+                            // Display error message using WordPress admin notices
+                            add_action('admin_notices', function() {
+                                echo '<div class="notice notice-error is-dismissible">
+                                    <p>' . esc_html__('Error: There was an error. Please try again.') . '</p>
+                                </div>';
+                            });
+                        }
 
                     } else {
 
-                        $this->show_error_notice('There was an error please try again.');                        
-                        error_log('Missing refresh token during OAuth flow callback.');
+                        $this->show_error_notice('There was an error please try again.');
+                        error_log('[' . date('m/d/Y h:i:s A') . '] ZWSGR - Missing refresh token during OAuth flow callback.');
 
                     }
 
@@ -98,16 +127,15 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
                 } else {
 
-                    // Handle error
                     $this->show_error_notice('Authorization failed. Please try again.');
-                    error_log('Authorization failed: ' . print_r($token, true));
+                    error_log('[' . date('Y-m-d H:i:s') . '] ZWSGR - Authorization failed: ' . print_r($token, true));
 
                 }
                 
             } else {
 
                 $this->show_error_notice('We could not complete the connection process. Please try again.');
-                error_log('No authorization code returned during OAuth flow callback.');
+                error_log('[' . date('Y-m-d H:i:s') . '] ZWSGR - No authorization code returned during OAuth flow callback.');
 
             }
 
