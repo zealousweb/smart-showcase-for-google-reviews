@@ -100,3 +100,21 @@ input:checked + .slider:before {
 .star-filter.selected svg path {
     fill: #FFD700; /* Gold color for selected stars */
 }
+
+.keywords-list {
+    margin-top: 10px;
+}
+
+.keyword-item {
+    display: inline-block;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.remove-keyword {
+    cursor: pointer;
+    color: red;
+    margin-left: 5px;
+}

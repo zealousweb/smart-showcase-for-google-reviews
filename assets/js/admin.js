@@ -441,5 +441,51 @@ jQuery(document).ready(function($) {
         $('#google-review-section').css('color', textColor);
     });
 
+	const updateInputField = () => {
+        const keywords = [];
+        $('#keywords-list .keyword-item').each(function () {
+            keywords.push($(this).text().trim().replace(' ✖', ''));
+        });
+        $('#keywords-input').val(keywords.join(', ')); // Update input field with all keywords
+    };
+
+    $('#keywords-input').on('keypress', function (e) {
+        if (e.which === 13) { // Check for Enter key
+            e.preventDefault(); // Prevent default form submission
+
+            // Get the input value and split it into keywords
+            const keywords = $(this).val().split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
+
+            $(this).val(''); // Clear input field
+			console.log( $(this).val(''));
+
+            keywords.forEach(function (keyword) {
+                // Check if the keyword is already in the list
+                if ($('#keywords-list .keyword-item').filter(function () {
+                    return $(this).text().trim() === keyword;
+                }).length === 0) {
+                    // Create a new keyword item
+                    const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
+                    const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
+
+                    // Append remove button to the keyword item
+                    keywordItem.append(removeButton);
+
+                    // Append the keyword item to the keywords list
+                    $('#keywords-list').append(keywordItem);
+
+                    // Update input field
+                    updateInputField();
+
+                    // Set up click event to remove keyword
+                    removeButton.on('click', function () {
+                        keywordItem.remove(); // Remove keyword from list
+                        updateInputField(); // Update input field after removal
+                    });
+                }
+            });
+        }
+    });
+
 	
 });
