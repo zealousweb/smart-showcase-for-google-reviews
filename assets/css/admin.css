@@ -89,3 +89,14 @@ input:checked + .slider:before {
 .tab-content.active {
     display: block;
 }
+
+.star-filter {
+    cursor: pointer;
+    display: inline-block;
+    margin: 5px;
+    transition: fill 0.2s ease;
+}
+
+.star-filter.selected svg path {
+    fill: #FFD700; /* Gold color for selected stars */
+}
