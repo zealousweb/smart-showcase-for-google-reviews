@@ -446,7 +446,7 @@ jQuery(document).ready(function($) {
         $('#keywords-list .keyword-item').each(function () {
             keywords.push($(this).text().trim().replace(' ✖', ''));
         });
-        $('#keywords-input').val(keywords.join(', ')); // Update input field with all keywords
+        //$('#keywords-input').val(keywords.join(', ')); // Update input field with all keywords
     };
 
     $('#keywords-input').on('keypress', function (e) {
@@ -489,3 +489,4 @@ jQuery(document).ready(function($) {
 
 	
 });
+

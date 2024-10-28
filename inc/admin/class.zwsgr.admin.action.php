@@ -810,7 +810,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</div>
 						</div>
 
-
 						<div>
 							<h3>Keywords</h3>
 							<label for="keywords-input">Enter Keywords (separate by commas):</label>
@@ -818,7 +817,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<small>Type keywords separated by commas</small>
 							<div id="keywords-list" class="keywords-list"></div> <!-- Container for keywords -->
 						</div>
-						
+
 						<div>
 							<h3>Date Format</h3>
 							<select id="date-format-select">
