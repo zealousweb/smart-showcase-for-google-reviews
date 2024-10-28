@@ -35,17 +35,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Remove transient and options on deactivation
 			$zwsgr_access_token_deleted  = delete_transient( 'zwsgr_access_token' );
 			$zwsgr_refresh_token_deleted = delete_option( 'zwsgr_refresh_token' );
-		
-			// Get the current date and time
-			$timestamp = date('Y-m-d H:i:s');
 
 			// Check if deletion was successful and log errors if not
 			if ( ! $zwsgr_access_token_deleted ) {
-				error_log("[{$timestamp}] ZWSGR - Error: Failed to delete transient 'zwsgr_access_token'.");
+				error_log("ZWSGR - Error: Failed to delete transient 'zwsgr_access_token'.");
 			}
 
 			if ( ! $zwsgr_refresh_token_deleted ) {
-				error_log("[{$timestamp}] ZWSGR - Error: Failed to delete option 'zwsgr_refresh_token'.");
+				error_log("ZWSGR - Error: Failed to delete option 'zwsgr_refresh_token'.");
 			}
 
 		}

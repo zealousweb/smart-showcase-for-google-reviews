@@ -88,7 +88,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     // Check if the transient was set successfully
                     if (!$zwsgr_is_transient_set) {
                         // Log the error
-                        error_log('[' . date('m/d/Y h:i:s A') . '] ZWSGR - Failed to set transient zwsgr_access_token: Unable to store the access token.');
+                        error_log('ZWSGR - Failed to set transient zwsgr_access_token: Unable to store the access token.');
 
                         // Display error message using WordPress admin notices
                         add_action('admin_notices', function() {
@@ -105,7 +105,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                         // Check if the option was updated successfully
                         if (!$zwsgr_is_refresh_token_updated) {
                             // Log the error
-                            error_log('[' . date('m/d/Y h:i:s A') . '] ZWSGR - Failed to update option zwsgr_refresh_token: Unable to store the refresh token.');
+                            error_log('ZWSGR - Failed to update option zwsgr_refresh_token: Unable to store the refresh token.');
 
                             // Display error message using WordPress admin notices
                             add_action('admin_notices', function() {
@@ -118,7 +118,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     } else {
 
                         $this->show_error_notice('There was an error please try again.');
-                        error_log('[' . date('m/d/Y h:i:s A') . '] ZWSGR - Missing refresh token during OAuth flow callback.');
+                        error_log('ZWSGR - Missing refresh token during OAuth flow callback.');
 
                     }
 
@@ -128,14 +128,14 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 } else {
 
                     $this->show_error_notice('Authorization failed. Please try again.');
-                    error_log('[' . date('Y-m-d H:i:s') . '] ZWSGR - Authorization failed: ' . print_r($token, true));
+                    error_log('ZWSGR - Authorization failed: ' . print_r($token, true));
 
                 }
                 
             } else {
 
                 $this->show_error_notice('We could not complete the connection process. Please try again.');
-                error_log('[' . date('Y-m-d H:i:s') . '] ZWSGR - No authorization code returned during OAuth flow callback.');
+                error_log('ZWSGR - No authorization code returned during OAuth flow callback.');
 
             }
 
