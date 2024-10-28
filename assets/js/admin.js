@@ -268,5 +268,178 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
+
+
+
+	// Function to hide or show elements with a smooth effect
+    function toggleElements() {
+        $('#review-title').is(':checked') ? $('.selected-option-display .title').fadeOut(600) : $('.selected-option-display .title').fadeIn(600);
+        $('#review-rating').is(':checked') ? $('.selected-option-display .rating').fadeOut(600) : $('.selected-option-display .rating').fadeIn(600);
+        $('#review-days-ago').is(':checked') ? $('.selected-option-display .days-ago').fadeOut(600) : $('.selected-option-display .days-ago').fadeIn(600);
+        $('#review-content').is(':checked') ? $('.selected-option-display .content').fadeOut(600) : $('.selected-option-display .content').fadeIn(600);
+        $('#reviewiew-photo').is(':checked') ? $('.selected-option-display .reviewer-photo').fadeOut(600) : $('.selected-option-display .reviewer-photo').fadeIn(600);
+    }
+
+    // Attach change event listeners to checkboxes
+    $('input[name="review-element"]').on('change', function() {
+        toggleElements(); // Call function to toggle elements with fade effect
+    });
+
+    // Call toggleElements on page load to apply any initial settings with fade effect
+    toggleElements();
+
+	function formatDate(dateString, format) {
+		let dateParts;
+		let date;
+
+		// Check for various formats and parse accordingly
+		if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+			dateParts = dateString.split('/');
+			date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]); // DD/MM/YYYY
+		} else if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+			dateParts = dateString.split('-');
+			date = new Date(dateParts[2], dateParts[0] - 1, dateParts[1]); // MM-DD-YYYY
+		} else if (/^\d{4}\/\d{2}\/\d{2}$/.test(dateString)) {
+			dateParts = dateString.split('/');
+			date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // YYYY/MM/DD
+		} else {
+			date = new Date(dateString); // ISO or fallback
+		}
+
+		// Return original if date is invalid
+		if (isNaN(date.getTime())) return dateString;
+
+		// Format date based on selected format
+		switch (format) {
+			case 'DD/MM/YYYY':
+				return date.toLocaleDateString('en-GB'); // e.g., 01/01/2024
+			case 'MM-DD-YYYY':
+				return date.toLocaleDateString('en-US').replace(/\//g, '-'); // e.g., 01-01-2024
+			case 'YYYY/MM/DD':
+				return date.toISOString().split('T')[0].replace(/-/g, '/'); // e.g., 2024/01/01
+			case 'full':
+				return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); // January 1, 2024
+			default:
+				return dateString;
+		}
+	}
+
+	// Event listener for date format dropdown
+	$('#date-format-select').on('change', function() {
+		const selectedFormat = $(this).val();
+		updateDateDisplay(selectedFormat);
+	});
+
+	// Function to update date display based on format
+	function updateDateDisplay(format) {
+		if (format === 'hide') {
+			// Hide date elements if 'Hide' is selected
+			$('#selected-option-display .date').fadeOut(200);
+		} else {
+			// Show date elements with the selected format
+			$('#selected-option-display .date').each(function() {
+				const originalDate = $(this).text();
+				const formattedDate = formatDate(originalDate, format);
+				$(this).fadeOut(200, function() {
+					$(this).text(formattedDate).fadeIn(200);
+				});
+			}).fadeIn(200); // Make sure dates are shown when format is not 'hide'
+		}
+	}
+
+
+
+	$('#review-char-limit').on('input', function () {
+        var charLimit = parseInt($(this).val(), 10); // Get character limit from input
+
+        // Loop through each content block and apply the limit
+        $('.content').each(function () {
+            var $this = $(this);
+            var fullText = $this.data('full-text') || $this.text(); // Store the original full text
+
+            // Only store full text once to prevent resetting to trimmed text
+            if (!$this.data('full-text')) {
+                $this.data('full-text', fullText);
+            }
+
+            if (charLimit && fullText.length > charLimit) {
+                // Trim the text to the character limit
+                var trimmedText = fullText.substring(0, charLimit) + '... ';
+                $this.html(trimmedText + '<a href="#" class="read-more-link">Read more</a>');
+
+                // Show full text on "Read more" click
+                $this.find('.read-more-link').on('click', function (e) {
+                    e.preventDefault();
+                    $this.text(fullText);
+                });
+            } else {
+                // If the character limit is removed, show full text
+                $this.text(fullText);
+            }
+        });
+    });
+
+	 // Function to apply word limit with "read more" functionality
+	//  function applyWordLimit() {
+    //     var wordLimit = parseInt($('#review-char-limit').val(), 10); // Get word limit input
+    //     $('.selected-option-display .content').each(function() {
+    //         var $this = $(this);
+    //         var fullText = $this.data('full-text') || $this.text();
+
+    //         // Store the full text to avoid re-trimming
+    //         if (!$this.data('full-text')) {
+    //             $this.data('full-text', fullText);
+    //         }
+
+    //         // Split the text into words
+    //         var words = fullText.split(/\s+/);
+
+    //         // Apply word limit and add "read more" if necessary
+    //         if (wordLimit && words.length > wordLimit) {
+    //             var trimmedText = words.slice(0, wordLimit).join(" ") + '... ';
+    //             $this.html(trimmedText + '<a href="#" class="read-more-link">Read more</a>');
+
+    //             // Expand to full text on "read more" click
+    //             $this.find('.read-more-link').on('click', function(e) {
+    //                 e.preventDefault();
+    //                 $this.text(fullText); // Show the full text
+    //             });
+    //         } else {
+    //             $this.text(fullText); // Show full text if within limit
+    //         }
+    //     });
+    // }
+
+    // // Trigger applyWordLimit function when the word limit input changes
+    // $('#review-char-limit').on('input', applyWordLimit);
+
+    // // Initial application of word limit on page load
+    // applyWordLimit();
+
+
+
+	// Toggle for Google Review link
+    $('#toggle-google-review').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#google-review-section').fadeIn();
+            $('#color-picker-options').fadeIn(); // Show color picker options
+        } else {
+            $('#google-review-section').fadeOut();
+            $('#color-picker-options').fadeOut(); // Hide color picker options
+        }
+    });
+
+	 // Color picker for background color
+	 $('#bg-color-picker').on('input', function() {
+        var bgColor = $(this).val();
+        $('#google-review-section').css('background-color', bgColor);
+    });
+
+    // Color picker for text color
+    $('#text-color-picker').on('input', function() {
+        var textColor = $(this).val();
+        $('#google-review-section').css('color', textColor);
+    });
+
 	
 });
