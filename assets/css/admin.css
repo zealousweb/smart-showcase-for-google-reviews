@@ -110,3 +110,14 @@ input:checked + .slider:before {
 #fetch-gmb-data .notice {
     margin: 10px 0 !important;
 }
+
+.star-filter {
+    cursor: pointer;
+    display: inline-block;
+    margin: 5px;
+    transition: fill 0.2s ease;
+}
+
+.star-filter.selected svg path {
+    fill: #FFD700; /* Gold color for selected stars */
+}
