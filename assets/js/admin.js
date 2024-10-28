@@ -254,7 +254,7 @@ jQuery(document).ready(function($) {
 			data: {
 				action: 'toggle_visibility',
 				post_id: post_id,
-				nonce: zwsgr_admin.nonce
+				nonce: zwsgr_admin.gmb_fetch_accounts
 			},
 			success: function(response) {
 				if (response.success) {
@@ -440,6 +440,25 @@ jQuery(document).ready(function($) {
         var textColor = $(this).val();
         $('#google-review-section').css('color', textColor);
     });
+
+	$('#fetch-gmb-data #fetch-gmd-accounts').on('click', function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: zwsgr_admin.ajax_url,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'zwsgr_fetch_gmb_accounts',
+				nonce: zwsgr_admin.nonce
+			},
+			success: function(response) {
+				// Handle success
+			},
+			error: function(xhr, status, error) {
+				// Handle error
+			}
+		});
+	});
 
 	
 });

@@ -1,0 +1,305 @@
+{
+    "accounts": [
+        {
+            "name": "accounts/1",
+            "accountName": "Business Account 1",
+            "primaryOwner": "owners/1",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000001",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business1.com",
+                "phoneNumber": "+1000000001"
+            }
+        },
+        {
+            "name": "accounts/2",
+            "accountName": "Business Account 2",
+            "primaryOwner": "owners/2",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000002",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business2.com",
+                "phoneNumber": "+1000000002"
+            }
+        },
+        {
+            "name": "accounts/3",
+            "accountName": "Business Account 3",
+            "primaryOwner": "owners/3",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000003",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business3.com",
+                "phoneNumber": "+1000000003"
+            }
+        },
+        {
+            "name": "accounts/4",
+            "accountName": "Business Account 4",
+            "primaryOwner": "owners/4",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000004",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business4.com",
+                "phoneNumber": "+1000000004"
+            }
+        },
+        {
+            "name": "accounts/5",
+            "accountName": "Business Account 5",
+            "primaryOwner": "owners/5",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000005",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business5.com",
+                "phoneNumber": "+1000000005"
+            }
+        },
+        {
+            "name": "accounts/6",
+            "accountName": "Business Account 6",
+            "primaryOwner": "owners/6",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000006",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business6.com",
+                "phoneNumber": "+1000000006"
+            }
+        },
+        {
+            "name": "accounts/7",
+            "accountName": "Business Account 7",
+            "primaryOwner": "owners/7",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000007",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business7.com",
+                "phoneNumber": "+1000000007"
+            }
+        },
+        {
+            "name": "accounts/8",
+            "accountName": "Business Account 8",
+            "primaryOwner": "owners/8",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000008",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business8.com",
+                "phoneNumber": "+1000000008"
+            }
+        },
+        {
+            "name": "accounts/9",
+            "accountName": "Business Account 9",
+            "primaryOwner": "owners/9",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000009",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business9.com",
+                "phoneNumber": "+1000000009"
+            }
+        },
+        {
+            "name": "accounts/10",
+            "accountName": "Business Account 10",
+            "primaryOwner": "owners/10",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000010",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business10.com",
+                "phoneNumber": "+1000000010"
+            }
+        },
+        {
+            "name": "accounts/11",
+            "accountName": "Business Account 11",
+            "primaryOwner": "owners/11",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000011",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business11.com",
+                "phoneNumber": "+1000000011"
+            }
+        },
+        {
+            "name": "accounts/12",
+            "accountName": "Business Account 12",
+            "primaryOwner": "owners/12",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000012",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business12.com",
+                "phoneNumber": "+1000000012"
+            }
+        },
+        {
+            "name": "accounts/13",
+            "accountName": "Business Account 13",
+            "primaryOwner": "owners/13",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000013",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business13.com",
+                "phoneNumber": "+1000000013"
+            }
+        },
+        {
+            "name": "accounts/14",
+            "accountName": "Business Account 14",
+            "primaryOwner": "owners/14",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000014",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business14.com",
+                "phoneNumber": "+1000000014"
+            }
+        },
+        {
+            "name": "accounts/15",
+            "accountName": "Business Account 15",
+            "primaryOwner": "owners/15",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000015",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business15.com",
+                "phoneNumber": "+1000000015"
+            }
+        },
+        {
+            "name": "accounts/16",
+            "accountName": "Business Account 16",
+            "primaryOwner": "owners/16",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000016",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business16.com",
+                "phoneNumber": "+1000000016"
+            }
+        },
+        {
+            "name": "accounts/17",
+            "accountName": "Business Account 17",
+            "primaryOwner": "owners/17",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000017",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business17.com",
+                "phoneNumber": "+1000000017"
+            }
+        },
+        {
+            "name": "accounts/18",
+            "accountName": "Business Account 18",
+            "primaryOwner": "owners/18",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000018",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business18.com",
+                "phoneNumber": "+1000000018"
+            }
+        },
+        {
+            "name": "accounts/19",
+            "accountName": "Business Account 19",
+            "primaryOwner": "owners/19",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000019",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business19.com",
+                "phoneNumber": "+1000000019"
+            }
+        },
+        {
+            "name": "accounts/20",
+            "accountName": "Business Account 20",
+            "primaryOwner": "owners/20",
+            "type": "BUSINESS",
+            "role": "OWNER",
+            "verificationState": "VERIFIED",
+            "vettedState": "VETTED",
+            "accountNumber": "1000000020",
+            "permissionLevel": "OWNER_LEVEL",
+            "organizationInfo": {
+                "registeredDomain": "business20.com",
+                "phoneNumber": "+1000000020"
+            }
+        }
+    ],
+    "nextPageToken": "page-token-1"
+}

@@ -26,6 +26,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_action('admin_init', array($this, 'zwsgr_register_settings')); // Register settings when admin initializes
 			add_action('init', array($this, 'zwsgr_register_widget_cpt'));  // Register Widget Custom Post Type
 			add_action('init', array($this, 'zwsgr_register_review_cpt'));  // Register Review Custom Post Type
+			add_action('init', array($this, 'zwsgr_register_accounts_cpt'));  // Register Review Custom Post Type
 
 			add_filter('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwsgr_manage_data_posts_columns'), 10, 3);
 			add_action('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
@@ -76,7 +77,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			//Toggle Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
-				'nonce' => wp_create_nonce(action: 'toggle-visibility-nonce')
+				'nonce' => wp_create_nonce('toggle-visibility-nonce')
 			));
 		
 		}
@@ -274,6 +275,55 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
+		}
+
+		function zwsgr_register_accounts_cpt()
+		{
+			$labels = array(
+				'name'               => __('Accounts', 'zw-smart-google-reviews'),
+				'singular_name'      => __('Account', 'zw-smart-google-reviews'),
+				'menu_name'          => __('Accounts', 'admin menu', 'zw-smart-google-reviews'),
+				'name_admin_bar'     => __('Account', 'add new on admin bar', 'zw-smart-google-reviews'),
+				'add_new'            => __('Add New', 'account', 'zw-smart-google-reviews'),
+				'add_new_item'       => __('Add New Account', 'zw-smart-google-reviews'),
+				'new_item'           => __('New Account', 'zw-smart-google-reviews'),
+				'edit_item'          => __('Edit Account', 'zw-smart-google-reviews'),
+				'view_item'          => __('View Account', 'zw-smart-google-reviews'),
+				'all_items'          => __('All Accounts', 'zw-smart-google-reviews'),
+				'search_items'       => __('Search Accounts', 'zw-smart-google-reviews'),
+				'not_found'          => __('No Accounts found.', 'zw-smart-google-reviews'),
+				'not_found_in_trash' => __('No Accounts found in Trash.', 'zw-smart-google-reviews')
+			);
+
+			$args = array(
+				'label' 	  		 => __('Accounts', 'zw-smart-google-reviews'),
+				'labels' 	  		 => $labels,
+				'description' 		 => '',
+				'public' 	  		 => true,
+				'publicly_queryable' => true,
+				'show_ui' 			 => true,
+				'delete_with_user'   => true,
+				'show_in_rest' => false,
+				'rest_base' => '',
+				'show_in_menu' => false,  // This will prevent it from appearing in the main menu
+				'query_var' => false,
+				'rewrite' => false,
+				'capability_type' => 'post',
+				'has_archive' => true,
+				'show_in_nav_menus' => false,
+				'exclude_from_search' => true,
+				'capabilities' => array(
+					'read' => true,
+					'create_posts' => true,
+					'publish_posts' => true,
+				),
+				'map_meta_cap' => true,
+				'hierarchical' => false,
+				'menu_position' => null,
+				'supports' => array('title', 'editor')
+			);
+
+			register_post_type('zwsgr_account', $args);
 		}
 
 		/**
