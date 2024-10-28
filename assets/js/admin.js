@@ -457,7 +457,6 @@ jQuery(document).ready(function($) {
             const keywords = $(this).val().split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
 
             $(this).val(''); // Clear input field
-			console.log( $(this).val(''));
 
             keywords.forEach(function (keyword) {
                 // Check if the keyword is already in the list
