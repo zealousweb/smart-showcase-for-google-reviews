@@ -70,7 +70,7 @@ if ( !function_exists( 'ZWSGR' ) ) {
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.action.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.filter.php' );
-		require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.gmbc.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/class.'   . ZWSGR_PREFIX . '.gmbc.php' );
 	} else {
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.php' );
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.action.php' );
@@ -83,3 +83,6 @@ if ( !function_exists( 'ZWSGR' ) ) {
 	require_once( ZWSGR_DIR . '/inc/class.' . ZWSGR_PREFIX . '.php' );
 
 }
+
+// Register plugin deactivation hook
+register_deactivation_hook(ZWSGR_FILE, array('ZWSGR_Admin_Action', 'zwsgr_configure_plugin_deactivation'));
