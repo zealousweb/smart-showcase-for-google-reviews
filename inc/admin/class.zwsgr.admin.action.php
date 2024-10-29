@@ -621,8 +621,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 * @method zwsgr_dashboard_page
 		 */
 
-		 function zwsgr_layout_callback() 
-		 {
+		function zwsgr_layout_callback() 
+		{
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
@@ -826,8 +826,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<label for="keywords-input">Enter Keywords (separate by commas):</label>
 							<input type="text" id="keywords-input" name="keywords-input" placeholder="e.g., keyword1, keyword2, keyword3">
 							<small>Type keywords separated by commas</small>
-							<div id="keywords-list" class="keywords-list"></div> <!-- Container for keywords -->
-						</div>
+							<div id="keywords-list" class="keywords-list"></div>
+							<div id="error-message" class="error-message" style="display: none; color: red;">You can only enter a maximum of 5 keywords.</div> 
+						</div>  
 
 						<div>
 							<h3>Date Format</h3>
