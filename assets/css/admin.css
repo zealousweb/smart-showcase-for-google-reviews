@@ -118,3 +118,7 @@ input:checked + .slider:before {
     color: red;
     margin-left: 5px;
 }
+.error-message {
+    margin-top: 5px;  
+    font-size: 14px; 
+}
