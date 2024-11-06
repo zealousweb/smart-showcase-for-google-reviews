@@ -1,0 +1,25 @@
+{
+    "locations": [
+        {
+        "name": "Location 41",
+        "storeCode": "LOC041"
+        },
+        {
+        "name": "Location 42",
+        "storeCode": "LOC042"
+        },
+        {
+        "name": "Location 43",
+        "storeCode": "LOC043"
+        },
+        {
+        "name": "Location 44",
+        "storeCode": "LOC044"
+        },
+        {
+        "name": "Location 45",
+        "storeCode": "LOC045"
+        }
+    ],
+    "totalSize": 45
+}  

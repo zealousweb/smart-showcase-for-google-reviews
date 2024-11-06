@@ -13,8 +13,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
             // Initialize the Google Client
             $this->client = new Google_Client();
             $this->client->setApplicationName('Smart Google Reviews');
-            $this->client->setClientId('637773123304-na845vs42isjuaeuham894p2d7v7jq4a.apps.googleusercontent.com');
-            $this->client->setClientSecret('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');
+            $this->client->setClientId('425400367447-r6rphvd0gcuriahkigm3mgs1v5pkmh1t.apps.googleusercontent.com');
+            $this->client->setClientSecret('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');
             $this->client->setRedirectUri(admin_url('admin.php?page=zwsgr_handle_oauth_flow'));
             $this->client->addScope('https://www.googleapis.com/auth/business.manage');
             $this->client->setPrompt('consent');
@@ -99,6 +99,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     }
                 
                     if (isset($token['refresh_token'])) {
+
                         
                         $zwsgr_is_refresh_token_updated = update_option('zwsgr_refresh_token', sanitize_text_field($token['refresh_token']));
 
@@ -140,18 +141,77 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
             }
 
         }
-
+        
         public function zwsgr_widget_configurator_callback() {
-
+           
             echo '<div id="fetch-gmb-data">';
                 $this->show_success_notice('Successfully connected to Google. You are now authorized to access and manage your reviews.');
-                echo '<a href="#" class="button button-primary" id="fetch-gmd-accounts">
-                    Fetch Accounts
-                </a>
-            </div>';
-                
-        }        
+        
+            // Query to get all accounts from the custom post type 'zwsgr_account'
+            $args = [
+                'post_type'      => 'zwsgr_account',
+                'posts_per_page' => -1, // Retrieve all accounts
+                'post_status'    => 'publish',
+            ];
+        
+            $accounts_query = new WP_Query($args);
+        
+            if ($accounts_query->have_posts()) {
+                // Display the select dropdown if accounts are found
+                echo '<select id="zwsgr-account-select" name="zwsgr_account">
+                    <option value="">Select an Account</option>';
+                    while ($accounts_query->have_posts()) {
+                        $accounts_query->the_post();
+                        $account_id = get_the_ID();
+                        $account_name = get_the_title($account_id);
+                        $account_number = get_post_meta($account_id, 'zwsgr_account_number', true);
+            
+                        // Ensure account number is available before displaying in the dropdown
+                        if (!empty($account_number)) {
+                            echo '<option value="' . esc_attr($account_number) . '">' . esc_html($account_name) . '</option>';
+                        }
+                    }
+                echo '</select>';
 
+                // Fetch the post ID
+                $zwsgr_post_id = get_posts(array(
+                    'post_type'      => 'zwsgr_account',
+                    'posts_per_page' => 1,
+                    'post_status'    => 'publish',
+                    'meta_key'       => 'zwsgr_account_number',
+                    'meta_value'     => '1000000007',
+                    'fields'         => 'ids', // Only return post IDs
+                ))[0] ?? null;
+
+                // Fetch the zwsgr_gmb_locations custom field value
+                $zwsgr_gmb_locations = get_post_meta($zwsgr_post_id, 'zwsgr_account_locations', true);
+
+                // Check if the custom field has a value
+                if ($zwsgr_gmb_locations) {
+                    echo '<select id="zwsgr-location-select" name="zwsgr_location">
+                        <option value="">Select a Location</option>';
+                        foreach ($zwsgr_gmb_locations as $location) {
+                            echo '<option value="' . esc_attr($location['storeCode']) . '">' . esc_html($location['name']) . '</option>';
+                        }
+                    echo '</select>
+                    <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
+                        Fetch Reviews
+                    </a>';
+                } else {
+                }
+
+            } else {
+                // Display the "Fetch Accounts" button and a message if no accounts exist
+                echo '<p> Please fetch the accounts by initiating the data sync. </p>
+                <a href="#" class="button button-secondary" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts"> Fetch Accounts </a>';
+            }
+        
+            // Reset post data
+            wp_reset_postdata();
+        
+            echo '</div>';
+        }
+        
         // Show error notices in the admin dashboard
         public function show_error_notice($message) {
             echo '<div class="notice notice-error is-dismissible"><p>' . esc_html($message) . '</p></div>';
