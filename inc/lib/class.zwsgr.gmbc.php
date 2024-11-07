@@ -197,7 +197,6 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
                         Fetch Reviews
                     </a>';
-                } else {
                 }
 
             } else {

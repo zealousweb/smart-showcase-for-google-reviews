@@ -474,14 +474,29 @@ jQuery(document).ready(function ($) {
   });
 
   $("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (e) {
-    e.preventDefault();
-    const $zwsgr_button = $(this);
-    const zwsgr_gmb_data_type = $zwsgr_button.data("fetch-type");
 
-    $zwsgr_button.prop("disabled", true);
-    $zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
+    e.preventDefault();
+    const zwsgr_button = $(this);
+    const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
+
+    zwsgr_button.prop("disabled", true);
+    zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 
     processBatch(zwsgr_gmb_data_type);
+
+  });
+
+  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
+
+    e.preventDefault();
+    const zwsgr_button = $(this);
+    const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
+
+    zwsgr_button.prop("disabled", true);
+    zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
+
+    processBatch(zwsgr_gmb_data_type, 1000000007, 'LOC001');
+
   });
 
   // Listen for changes in the account dropdown and process batch if changed
@@ -497,45 +512,53 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  function processBatch(zwsgr_gmb_data_type, zwsgr_account_number) {
+  function processBatch(zwsgr_gmb_data_type, zwsgr_account_number, zwsgr_location_code) {
     $.ajax({
       url: zwsgr_admin.ajax_url,
       type: "POST",
       dataType: "json",
       data: {
         action: "zwsgr_fetch_gmb_data",
-        nonce: zwsgr_admin.nonce,
+        security: zwsgr_admin.zwsr_batch_processing_nonce,
         zwsgr_gmb_data_type: zwsgr_gmb_data_type,
-        zwsgr_account_number: zwsgr_account_number, // Pass the fetch type to the AJAX request
+        zwsgr_account_number: zwsgr_account_number,
+        zwsgr_location_code: zwsgr_location_code
       },
       success: function (response) {
-        console.log(response);
+        if (response.success) {
+          console.log(response.data.message, 'response');
+        }
       },
       error: function (xhr, status, error) {
-        console.error("Request failed: " + error);
+        //console.error("Error:", error);
+        //console.error("Status:", status);
+        //console.error("Response:", xhr.responseText);
       },
     });
-    batchInterval = setInterval(checkBatchStatus, 2000);
+    batchInterval = setInterval(checkBatchStatus, 1000);
   }
+
+  
 
   function checkBatchStatus() {
     $.ajax({
-      url: ajaxurl,
+      url: zwsgr_admin.ajax_url,  // Use localized AJAX URL
       method: "POST",
       data: {
-        action: "zwsgr_get_batch_status",
+         action: "zwsgr_get_batch_processing_status",
+         security: zwsgr_admin.zwsr_batch_processing_nonce  // Corrected to match PHP
       },
       success: function (response) {
-        console.log(response, "response");
         if (response.success && !response.data.zwsgr_batch_process_status) {
-          location.reload();
-        } else {
-          console.log(response, "response");
+            location.reload();
         }
       },
-      error: function () {
-        $("#batch-status").text("AJAX error.");
-      },
-    });
-  }
+      error: function (xhr, status, error) {
+         //console.error("Error:", error);
+         //console.error("Status:", status);
+         //console.error("Response:", xhr.responseText);
+      }
+   });  
+  }  
+
 });

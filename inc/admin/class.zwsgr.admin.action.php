@@ -77,7 +77,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			//Toggle Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
-				'nonce' => wp_create_nonce('toggle-visibility-nonce')
+				'nonce' => wp_create_nonce('toggle-visibility-nonce'),
+				'zwsr_batch_processing_nonce' => wp_create_nonce('zwsr_batch_processing_nonce') // Make sure this matches
 			));
 		
 		}

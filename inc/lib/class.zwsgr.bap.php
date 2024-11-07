@@ -15,6 +15,7 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
             $this->$zwsgr_gmb_data_type  = isset($zwsr_batch_data['zwsgr_gmb_data_type']) ? $zwsr_batch_data['zwsgr_gmb_data_type'] : null;
             $this->zwsgr_current_index   = isset($zwsr_batch_data['zwsgr_current_index']) ? $zwsr_batch_data['zwsgr_current_index'] : null;
             $zwsgr_account_number        = isset($zwsr_batch_data['zwsgr_account_number']) ? $zwsr_batch_data['zwsgr_account_number'] : [];
+            $zwsgr_location_code         = isset($zwsr_batch_data['zwsgr_location_code']) ? $zwsr_batch_data['zwsgr_location_code'] : [];
             $this->next_page_token       = isset($zwsgr_gmb_data['nextPageToken']) ? $zwsgr_gmb_data['nextPageToken'] : null;
 
             if ($this->$zwsgr_gmb_data_type == 'zwsgr_gmb_accounts') {
@@ -22,7 +23,7 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
             } else if ($this->$zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
                 $this->process_zwsgr_gmb_locations($zwsgr_gmb_data, $zwsgr_account_number);
             } else if ($this->$zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
-                $this->process_zwsgr_gmb_reviews($zwsgr_gmb_data);
+                $this->process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number, $zwsgr_location_code);
             }
 
             return false;
@@ -119,8 +120,43 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
             return;
         }              
 
-        protected function process_zwsgr_gmb_reviews () {
-            error_log('function process_zwsgr_gmb_reviews executed');
+        protected function process_zwsgr_gmb_reviews ($zwsgr_gmb_data, $zwsgr_account_number, $zwsgr_location_code) {
+
+            if (isset($zwsgr_gmb_data['reviews']) && is_array($zwsgr_gmb_data['reviews'])) {
+                foreach ($zwsgr_gmb_data['reviews'] as $zwsgr_review) {
+
+                    // Prepare post data
+                    $zwsgr_review_data = array(
+                        'post_title'    => $zwsgr_review['zwsgr_reviewer']['displayName'] ?? 'Anonymous',
+                        'post_content'  => $zwsgr_review['comment'] ?? '',
+                        'post_status'   => 'publish',
+                        'post_type'     => 'zwsgr_reviews'
+                    );
+        
+                    // Insert the review post
+                    $zwsgr_review_id = wp_insert_post($zwsgr_review_data);
+        
+                    // Check if post was inserted successfully
+                    if ($zwsgr_review_id && !is_wp_error($zwsgr_review_id)) {
+                        // Add custom fields
+                        update_post_meta($post_id, 'zwsgr_review_id', $review['reviewId']);
+                        update_post_meta($post_id, 'zwsgr_reviewer_name', $review['reviewer']['displayName'] ?? 'Anonymous');
+                        update_post_meta($post_id, 'zwsgr_reviewer_photo_url', $review['reviewer']['profilePhotoUrl'] ?? '');
+                        update_post_meta($post_id, 'zwsgr_star_rating', $review['starRating']);
+                        update_post_meta($post_id, 'zwsgr_review_comment', $review['comment']);
+                        update_post_meta($post_id, 'zwsgr_review_create_time', $review['createTime']);
+                        update_post_meta($post_id, 'zwsgr_review_update_time', $review['updateTime']);
+                        
+                        if (isset($zwsgr_review['reviewReply'])) {
+                            update_post_meta($post_id, 'reply_comment', $review['reviewReply']['comment']);
+                            update_post_meta($post_id, 'reply_update_time', $review['reviewReply']['updateTime']);
+                        }
+                    }
+                }
+            }
+
+            return;
+
         }
 
         protected function complete() {
@@ -139,8 +175,9 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
                 
                 update_option('zwsgr_batch_process_status', true);
                 $batch_processing->zwsgr_update_current_index($this->zwsgr_current_index + 1);
-                sleep(1);
-                $batch_processing->zwsgr_fetch_gmb_data();
+                sleep(0.5);
+
+                $batch_processing->zwsgr_fetch_gmb_data(true);
 
             } else {
 
@@ -172,13 +209,27 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
 
         }
 
-        public function zwsgr_fetch_gmb_data() {
+        public function zwsgr_fetch_gmb_data($internal_call = false) {
 
-            $zwsgr_gmb_data_type = isset($_POST['zwsgr_gmb_data_type']) ? sanitize_text_field($_POST['zwsgr_gmb_data_type']) : get_option('zwsgr_gmb_data_type');
+            if (!$internal_call && defined('DOING_AJAX') && DOING_AJAX) {
+
+                check_ajax_referer('zwsr_batch_processing_nonce', 'security');
+
+                // If nonce verification fails
+                if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'zwsr_batch_processing_nonce')) {
+                    wp_send_json_error(array('message' => 'Nonce verification failed.'));
+                    return;
+                }
+
+            }
+
+            $zwsgr_gmb_data_type  = isset($_POST['zwsgr_gmb_data_type']) ? sanitize_text_field($_POST['zwsgr_gmb_data_type']) : get_option('zwsgr_gmb_data_type');
             $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : get_option('zwsgr_account_number');
+            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : get_option('zwsgr_location_code');
 
             update_option('zwsgr_gmb_data_type', $zwsgr_gmb_data_type);
             update_option('zwsgr_account_number', $zwsgr_account_number);
+            update_option('zwsgr_location_code', $zwsgr_location_code);
 
             $zwsgr_current_index = $this->zwsgr_fetch_current_index();
 
@@ -187,6 +238,7 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
             } else if ($zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
                 $file_path = plugin_dir_path(__FILE__) . "locations/locations-response-$zwsgr_account_number-$zwsgr_current_index.json";
             } else if ($zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+                $file_path = plugin_dir_path(__FILE__) . "reviews/reviews-response-$zwsgr_account_number-$zwsgr_location_code-$zwsgr_current_index.json";
             }
 
             if (file_exists($file_path)) {
@@ -199,6 +251,7 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
                     'zwsgr_gmb_data'       => $zwsgr_gmb_data,
                     'zwsgr_gmb_data_type'  => $zwsgr_gmb_data_type,
                     'zwsgr_account_number' => $zwsgr_account_number,
+                    'zwsgr_location_code'  => $zwsgr_location_code,
                     'zwsgr_current_index'  => $zwsgr_current_index
                 ];
 
@@ -216,6 +269,9 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
             } else {
 
                 $this->zwsgr_reset_current_index();
+
+                delete_option('zwsgr_batch_status');
+                delete_option('zwsgr_batch_process_status');
                 
                 wp_send_json_error(
                     array(
@@ -227,6 +283,7 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
             }
 
             wp_die();
+        
         }
 
         // Helper function to get the current index from the database
@@ -249,10 +306,26 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
     new Zwsgr_Batch_Processing();
 }
 
-add_action('wp_ajax_zwsgr_get_batch_status', 'zwsgr_get_batch_status');
-add_action('wp_ajax_nopriv_zwsgr_get_batch_status', 'zwsgr_get_batch_status');
+// Register AJAX action for authenticated users only
+add_action('wp_ajax_zwsgr_get_batch_processing_status', 'zwsgr_get_batch_processing_status');
 
-function zwsgr_get_batch_status() {
+/**
+ * Retrieves the current batch processing status and sends it in a JSON response.
+ *
+ * This function checks the 'zwsgr_batch_process_status' option to determine
+ * the status of batch processing, and returns the result as a JSON response.
+ * Only accessible by authenticated users in the admin area with a valid nonce.
+ */
+function zwsgr_get_batch_processing_status() {
+
+    // Verify nonce for security
+    check_ajax_referer('zwsr_batch_processing_nonce', 'security');
+
+    // If nonce verification fails
+    if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'zwsr_batch_processing_nonce')) {
+        wp_send_json_error(array('message' => 'Nonce verification failed.'));
+        return;
+    }
 
     $zwsgr_batch_status  = get_option('zwsgr_batch_status', [
         'status' => 'in_progress',
@@ -265,9 +338,8 @@ function zwsgr_get_batch_status() {
     $response = [
         'zwsgr_batch_status'         => $zwsgr_batch_status,
         'zwsgr_batch_process_status' => $zwsgr_batch_process_status
-    ];
+    ];  
 
-    // Send JSON response with the combined status
+    // Send a successful JSON response with the batch processing status
     wp_send_json_success($response);
-
 }
