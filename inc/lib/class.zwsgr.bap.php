@@ -1,6 +1,6 @@
 <?php
 
-require_once 'wp-background-processing/wp-background-processing.php';
+require_once 'wp-background-processing/vendor/autoload.php';
 
 if (!class_exists('Zwsgr_GMB_Data_Process')) {
 
