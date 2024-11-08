@@ -72,6 +72,7 @@ if ( !function_exists( 'ZWSGR' ) ) {
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.filter.php' );
 		require_once( ZWSGR_DIR . '/inc/lib/class.'   . ZWSGR_PREFIX . '.bap.php' );
 		require_once( ZWSGR_DIR . '/inc/lib/class.'   . ZWSGR_PREFIX . '.gmbc.php' );
+
 	} else {
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.php' );
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.action.php' );

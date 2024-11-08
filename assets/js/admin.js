@@ -522,7 +522,8 @@ jQuery(document).ready(function ($) {
         security: zwsgr_admin.zwsr_batch_processing_nonce,
         zwsgr_gmb_data_type: zwsgr_gmb_data_type,
         zwsgr_account_number: zwsgr_account_number,
-        zwsgr_location_code: zwsgr_location_code
+        zwsgr_location_code: zwsgr_location_code,
+        action_param: false
       },
       success: function (response) {
         if (response.success) {
@@ -535,7 +536,7 @@ jQuery(document).ready(function ($) {
         //console.error("Response:", xhr.responseText);
       },
     });
-    batchInterval = setInterval(checkBatchStatus, 1000);
+    batchInterval = setInterval(checkBatchStatus, 50);
   }
 
   
@@ -549,8 +550,10 @@ jQuery(document).ready(function ($) {
          security: zwsgr_admin.zwsr_batch_processing_nonce  // Corrected to match PHP
       },
       success: function (response) {
+        console.log(response, 'response');
+        console.log('response.data.zwsgr_batch_process_status', response.data.zwsgr_batch_process_status);
         if (response.success && !response.data.zwsgr_batch_process_status) {
-            location.reload();
+            //location.reload();
         }
       },
       error: function (xhr, status, error) {

@@ -179,7 +179,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     'posts_per_page' => 1,
                     'post_status'    => 'publish',
                     'meta_key'       => 'zwsgr_account_number',
-                    'meta_value'     => '1000000007',
+                    'meta_value'     => '116877069734578727132',
                     'fields'         => 'ids', // Only return post IDs
                 ))[0] ?? null;
 
@@ -187,16 +187,21 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 $zwsgr_gmb_locations = get_post_meta($zwsgr_post_id, 'zwsgr_account_locations', true);
 
                 // Check if the custom field has a value
-                if ($zwsgr_gmb_locations) {
+                if ( $zwsgr_gmb_locations ) {
                     echo '<select id="zwsgr-location-select" name="zwsgr_location">
-                        <option value="">Select a Location</option>';
-                        foreach ($zwsgr_gmb_locations as $location) {
-                            echo '<option value="' . esc_attr($location['storeCode']) . '">' . esc_html($location['name']) . '</option>';
-                        }
+                            <option value="">Select a Location</option>';
+                            
+                    foreach ( $zwsgr_gmb_locations as $location ) {
+                        // Assuming $location['name'] contains something like "locations/3261749413517737208"
+                        $location_id = $location['name'] ? ltrim( strrchr( $location['name'], '/' ), '/' ) : '';
+
+                        echo '<option value="' . esc_attr( $location_id ) . '">' . esc_html( $location['name'] ) . '</option>';
+                    }
+                    
                     echo '</select>
-                    <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
-                        Fetch Reviews
-                    </a>';
+                        <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
+                            Fetch Reviews
+                        </a>';
                 }
 
             } else {

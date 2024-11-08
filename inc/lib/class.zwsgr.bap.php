@@ -2,6 +2,8 @@
 
 require_once 'wp-background-processing/vendor/autoload.php';
 
+require_once( 'class.'   . ZWSGR_PREFIX . '.api.php' );
+
 if (!class_exists('Zwsgr_GMB_Data_Process')) {
 
     class Zwsgr_GMB_Data_Process extends WP_Background_Process {
@@ -23,7 +25,7 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
             } else if ($this->$zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
                 $this->process_zwsgr_gmb_locations($zwsgr_gmb_data, $zwsgr_account_number);
             } else if ($this->$zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
-                $this->process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number, $zwsgr_location_code);
+                $this->process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number, '2519044039477379423');
             }
 
             return false;
@@ -44,7 +46,8 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
             
                     // Check if a post with this title already exists
                     $existing_post  = get_page_by_title($zwsgr_account_data['post_title'], OBJECT, 'zwsgr_account');
-                    $account_number = isset($account['accountNumber']) ? sanitize_text_field($account['accountNumber']) : '';
+                    $zwsgr_account_name = isset($account['name']) ? sanitize_text_field($account['name']) : '';
+                    $account_number = $zwsgr_account_name ? ltrim(strrchr($zwsgr_account_name, '/'), '/') : '';
                     
                     if ($existing_post) {
                         // Update existing post
@@ -122,41 +125,101 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
 
         protected function process_zwsgr_gmb_reviews ($zwsgr_gmb_data, $zwsgr_account_number, $zwsgr_location_code) {
 
-            if (isset($zwsgr_gmb_data['reviews']) && is_array($zwsgr_gmb_data['reviews'])) {
-                foreach ($zwsgr_gmb_data['reviews'] as $zwsgr_review) {
-
-                    // Prepare post data
-                    $zwsgr_review_data = array(
-                        'post_title'    => $zwsgr_review['zwsgr_reviewer']['displayName'] ?? 'Anonymous',
-                        'post_content'  => $zwsgr_review['comment'] ?? '',
-                        'post_status'   => 'publish',
-                        'post_type'     => 'zwsgr_reviews'
-                    );
-        
-                    // Insert the review post
-                    $zwsgr_review_id = wp_insert_post($zwsgr_review_data);
-        
-                    // Check if post was inserted successfully
-                    if ($zwsgr_review_id && !is_wp_error($zwsgr_review_id)) {
-                        // Add custom fields
-                        update_post_meta($post_id, 'zwsgr_review_id', $review['reviewId']);
-                        update_post_meta($post_id, 'zwsgr_reviewer_name', $review['reviewer']['displayName'] ?? 'Anonymous');
-                        update_post_meta($post_id, 'zwsgr_reviewer_photo_url', $review['reviewer']['profilePhotoUrl'] ?? '');
-                        update_post_meta($post_id, 'zwsgr_star_rating', $review['starRating']);
-                        update_post_meta($post_id, 'zwsgr_review_comment', $review['comment']);
-                        update_post_meta($post_id, 'zwsgr_review_create_time', $review['createTime']);
-                        update_post_meta($post_id, 'zwsgr_review_update_time', $review['updateTime']);
+            if ( isset( $zwsgr_gmb_data['reviews'] ) && is_array( $zwsgr_gmb_data['reviews'] ) ) {
+                foreach ( $zwsgr_gmb_data['reviews'] as $zwsgr_review ) {
+            
+                    $review_id = $zwsgr_review['reviewId'];
+                    
+                    // Check if the review already exists
+                    $existing_review_query = new WP_Query([
+                        'post_type'  => 'zwsgr_reviews',
+                        'meta_query' => [
+                            [
+                                'key'   => 'zwsgr_review_id',
+                                'value' => $review_id,
+                            ],
+                        ],
+                    ]);
+            
+                    if ( $existing_review_query->have_posts() ) {
+                        // Review exists, update it
+                        $existing_review_query->the_post();
+                        $post_id = get_the_ID();
+                    } else {
+                        // Review does not exist, insert it
+                        $zwsgr_review_data = [
+                            'post_title'   => $zwsgr_review['reviewer']['displayName'] ?? 'Anonymous',
+                            'post_content' => $zwsgr_review['comment'] ?? '',
+                            'post_status'  => 'publish',
+                            'post_type'    => 'zwsgr_reviews',
+                            'post_date'      => isset( $zwsgr_review['createTime'] ) ? date( 'Y-m-d H:i:s', strtotime( $zwsgr_review['createTime'] ) ) : current_time( 'mysql' ),
+                            'post_modified'  => isset( $zwsgr_review['updateTime'] ) ? date( 'Y-m-d H:i:s', strtotime( $zwsgr_review['updateTime'] ) ) : current_time( 'mysql' ),
+                        ];
                         
-                        if (isset($zwsgr_review['reviewReply'])) {
-                            update_post_meta($post_id, 'reply_comment', $review['reviewReply']['comment']);
-                            update_post_meta($post_id, 'reply_update_time', $review['reviewReply']['updateTime']);
-                        }
+                        $post_id = wp_insert_post( $zwsgr_review_data );
                     }
+            
+                    // Check if post was inserted or updated successfully
+                    if ( $post_id && ! is_wp_error( $post_id ) ) {
+
+                        // Download and set the featured image
+                        // if ( ! empty( $zwsgr_review['reviewer']['profilePhotoUrl'] ) ) {
+                        //     $zwsgr_image_url = $zwsgr_review['reviewer']['profilePhotoUrl'];
+                        //     $zwsgr_image_id = $this->zwsgr_upload_image_to_media_library( $zwsgr_image_url, $zwsgr_post_id );
+
+                        //     if ( $zwsgr_image_id && ! is_wp_error( $zwsgr_image_id ) ) {
+                        //         set_post_thumbnail( $zwsgr_post_id, $zwsgr_image_id );
+                        //     }
+                        // }
+
+                        // Update custom fields
+                        update_post_meta( $post_id, 'zwsgr_review_id', $review_id );
+                        update_post_meta( $post_id, 'zwsgr_reviewer_name', $zwsgr_review['reviewer']['displayName'] ?? 'Anonymous' );
+                        update_post_meta( $post_id, 'zwsgr_star_rating', $zwsgr_review['starRating'] );
+                        if ( isset( $zwsgr_review['reviewReply'] ) ) {
+                            update_post_meta( $post_id, 'zwsgr_reply_comment', $zwsgr_review['reviewReply']['comment'] );
+                            update_post_meta( $post_id, 'zwsgr_reply_update_time', $zwsgr_review['reviewReply']['updateTime'] );
+                        }
+                    } else {
+                        error_log( "Failed to insert/update review: " . ( is_wp_error( $post_id ) ? $post_id->get_error_message() : "Unknown error" ) );
+                    }
+            
+                    // Reset post data after each query
+                    wp_reset_postdata();
                 }
-            }
+            }            
 
             return;
 
+        }
+
+        public function zwsgr_upload_image_to_media_library( $zwsgr_image_url, $zwsgr_post_id ) {
+            $zwsgr_image_data = file_get_contents( $zwsgr_image_url );
+            $zwsgr_filename = basename( $zwsgr_image_url );
+        
+            // Set upload directory
+            $zwsgr_upload_dir = wp_upload_dir();
+            $zwsgr_img_file = $zwsgr_upload_dir['path'] . '/' . $zwsgr_filename;
+        
+            // Save image file
+            file_put_contents( $zwsgr_img_file, $zwsgr_image_data );
+        
+            // Check the file type and create attachment
+            $zwsgr_wp_filetype = wp_check_filetype( $zwsgr_filename, null );
+            $zwsgr_attachment = array(
+                'post_mime_type' => $zwsgr_wp_filetype['type'],
+                'post_title'     => sanitize_file_name( $zwsgr_filename ),
+                'post_content'   => '',
+                'post_status'    => 'inherit'
+            );
+        
+            // Insert the attachment and generate metadata
+            $zwsgr_attach_id = wp_insert_attachment( $zwsgr_attachment, $zwsgr_img_file, $zwsgr_post_id );
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+            $zwsgr_attach_data = wp_generate_attachment_metadata( $zwsgr_attach_id, $zwsgr_img_file );
+            wp_update_attachment_metadata( $zwsgr_attach_id, $zwsgr_attach_data );
+        
+            return $zwsgr_attach_id;
         }
 
         protected function complete() {
@@ -168,6 +231,8 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
                 'status' => 'completed',
                 'zwsgr_current_index' => $this->zwsgr_current_index
             ]);
+
+            error_log('zwsgr_batch_status' . print_r(get_option('zwsgr_batch_status'), true));
             
             $batch_processing = new Zwsgr_Batch_Processing();
 
@@ -177,7 +242,7 @@ if (!class_exists('Zwsgr_GMB_Data_Process')) {
                 $batch_processing->zwsgr_update_current_index($this->zwsgr_current_index + 1);
                 sleep(0.5);
 
-                $batch_processing->zwsgr_fetch_gmb_data(true);
+                $batch_processing->zwsgr_fetch_gmb_data(true, $this->next_page_token);
 
             } else {
 
@@ -209,9 +274,11 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
 
         }
 
-        public function zwsgr_fetch_gmb_data($internal_call = false) {
+        public function zwsgr_fetch_gmb_data($zwsgr_internal_call = false, $next_page_token = false) {
 
-            if (!$internal_call && defined('DOING_AJAX') && DOING_AJAX) {
+            $zwsgr_gmb_api = new ZWSGR_GMB_API( 'ya29.a0AeDClZDlkZimDuP8GeTEwR7L1KoXN8_l51BTnx6RFu68EPVG6acQYeV97pQvTcGcHnDLVPOoBGeBckNiXgyNm8aYE7R55DJZMhAQb9_yXdmVQjZyiSBdcBn7VaDRgOKa9QkixuMmkM_vdc9kUUUZ7ZB0iOmZGEJHd3tJDvSgcgaCgYKAVoSARMSFQHGX2Mibb5InM2u4mLk1tp22xrdPQ0177' );
+
+            if (!$zwsgr_internal_call && defined('DOING_AJAX') && DOING_AJAX) {
 
                 check_ajax_referer('zwsr_batch_processing_nonce', 'security');
 
@@ -234,17 +301,14 @@ if (!class_exists('Zwsgr_Batch_Processing')) {
             $zwsgr_current_index = $this->zwsgr_fetch_current_index();
 
             if ($zwsgr_gmb_data_type == 'zwsgr_gmb_accounts') {
-                $file_path = plugin_dir_path(__FILE__) . "accounts/accounts-response-$zwsgr_current_index.json";
+                $zwsgr_gmb_data = $zwsgr_gmb_api->get_accounts();
             } else if ($zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
-                $file_path = plugin_dir_path(__FILE__) . "locations/locations-response-$zwsgr_account_number-$zwsgr_current_index.json";
+                $zwsgr_gmb_data = $zwsgr_gmb_api->get_locations($zwsgr_account_number);
             } else if ($zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
-                $file_path = plugin_dir_path(__FILE__) . "reviews/reviews-response-$zwsgr_account_number-$zwsgr_location_code-$zwsgr_current_index.json";
+                $zwsgr_gmb_data = $zwsgr_gmb_api->get_reviews('116877069734578727132', '2519044039477379423', $next_page_token);
             }
 
-            if (file_exists($file_path)) {
-
-                // Decode the file content
-                $zwsgr_gmb_data = json_decode(file_get_contents($file_path), true);
+            if (!empty($zwsgr_gmb_data)) {
 
                 // Prepare data to be pushed to the queue
                 $zwsgr_push_data_to_queue = [
@@ -339,6 +403,8 @@ function zwsgr_get_batch_processing_status() {
         'zwsgr_batch_status'         => $zwsgr_batch_status,
         'zwsgr_batch_process_status' => $zwsgr_batch_process_status
     ];  
+
+    error_log(print_r($response, true));
 
     // Send a successful JSON response with the batch processing status
     wp_send_json_success($response);
