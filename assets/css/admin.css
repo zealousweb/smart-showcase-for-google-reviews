@@ -122,3 +122,6 @@ input:checked + .slider:before {
     margin-top: 5px;  
     font-size: 14px; 
 }
+.option-item.selected {
+    border: 5px solid red;
+}
