@@ -26,7 +26,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_action('admin_init', array($this, 'zwsgr_register_settings')); // Register settings when admin initializes
 			add_action('init', array($this, 'zwsgr_register_widget_cpt'));  // Register Widget Custom Post Type
 			add_action('init', array($this, 'zwsgr_register_review_cpt'));  // Register Review Custom Post Type
-			add_action('init', array($this, 'zwsgr_register_accounts_cpt'));  // Register Review Custom Post Type
+			add_action('add_meta_boxes', array($this, 'zwsgr_add_review_meta_box'));
+
+			add_action('init', array($this, 'zwsgr_register_request_data_cpt'));  // Register Review Custom Post Type
+
+			add_action('add_meta_boxes', array($this, 'zwsgr_add_account_number_meta_box'));
 
 			add_filter('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwsgr_manage_data_posts_columns'), 10, 3);
 			add_action('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
@@ -78,7 +82,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('toggle-visibility-nonce'),
-				'zwsr_batch_processing_nonce' => wp_create_nonce('zwsr_batch_processing_nonce') // Make sure this matches
+				'zwsgr_queue_manager_nounce' => wp_create_nonce('zwsgr_queue_manager_nounce') // Make sure this matches
 			));
 		
 		}
@@ -272,60 +276,161 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'map_meta_cap' => true,
 				'hierarchical' => false,
 				'menu_position' => null,
-				'supports' => array('title', 'editor')
+				'supports' => array('title')
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
 		}
 
-		function zwsgr_register_accounts_cpt()
+		// Register a single meta box to display all review details
+		function zwsgr_add_review_meta_box() {
+			add_meta_box(
+				'zwsgr_review_details_meta_box',
+				__('Review Details', 'zw-smart-google-reviews'),
+				array($this, 'zwsgr_display_review_details_meta_box'),
+				'zwsgr_reviews',
+				'normal',
+				'high'
+			);
+		}
+
+		// Display all review details in one meta box
+		function zwsgr_display_review_details_meta_box($zwsgr_review) {
+			// Retrieve review fields
+			$zwsgr_review_id 		  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_id', true);
+			$zwsgr_review_comment	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_comment', true);
+			$zwsgr_reviewer_name 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reviewer_name', true);
+			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
+			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
+			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
+
+			echo '<table class="form-table">
+				<tr>
+					<th>
+						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_review_id) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_reviewer_name) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_comment">' . __('Reviewer Comment', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<textarea readonly class="regular-text" rows="5" style="width:100%;">' . esc_textarea($zwsgr_review_comment) . '</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_star_rating">' . __('Star Rating', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_review_star_rating) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reply_comment">' . __('Reply Comment', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<textarea readonly class="regular-text" rows="3" style="width:100%;">' . esc_textarea($zwsgr_reply_comment) . '</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_reply_update_time) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+			</table>';
+			
+		}
+		
+
+		function zwsgr_register_request_data_cpt()
 		{
 			$labels = array(
-				'name'               => __('Accounts', 'zw-smart-google-reviews'),
-				'singular_name'      => __('Account', 'zw-smart-google-reviews'),
-				'menu_name'          => __('Accounts', 'admin menu', 'zw-smart-google-reviews'),
-				'name_admin_bar'     => __('Account', 'add new on admin bar', 'zw-smart-google-reviews'),
-				'add_new'            => __('Add New', 'account', 'zw-smart-google-reviews'),
-				'add_new_item'       => __('Add New Account', 'zw-smart-google-reviews'),
-				'new_item'           => __('New Account', 'zw-smart-google-reviews'),
-				'edit_item'          => __('Edit Account', 'zw-smart-google-reviews'),
-				'view_item'          => __('View Account', 'zw-smart-google-reviews'),
-				'all_items'          => __('All Accounts', 'zw-smart-google-reviews'),
-				'search_items'       => __('Search Accounts', 'zw-smart-google-reviews'),
-				'not_found'          => __('No Accounts found.', 'zw-smart-google-reviews'),
-				'not_found_in_trash' => __('No Accounts found in Trash.', 'zw-smart-google-reviews')
+				'name'               => __('Request Data', 'zw-smart-google-reviews'),
+				'singular_name'      => __('Request Data', 'zw-smart-google-reviews'),
+				'menu_name'          => __('Request Data', 'zw-smart-google-reviews'),
+				'name_admin_bar'     => __('Request Data', 'zw-smart-google-reviews'),
+				'add_new'            => __('Add New', 'zw-smart-google-reviews'),
+				'add_new_item'       => __('Add New Request Data', 'zw-smart-google-reviews'),
+				'new_item'           => __('New Request Data', 'zw-smart-google-reviews'),
+				'edit_item'          => __('Edit Request Data', 'zw-smart-google-reviews'),
+				'view_item'          => __('View Request Data', 'zw-smart-google-reviews'),
+				'all_items'          => __('All Request Data', 'zw-smart-google-reviews'),
+				'search_items'       => __('Search Request Data', 'zw-smart-google-reviews'),
+				'not_found'          => __('No Request Data found.', 'zw-smart-google-reviews'),
+				'not_found_in_trash' => __('No Request Data found in Trash.', 'zw-smart-google-reviews')
 			);
 
 			$args = array(
-				'label' 	  		 => __('Accounts', 'zw-smart-google-reviews'),
-				'labels' 	  		 => $labels,
-				'description' 		 => '',
-				'public' 	  		 => true,
-				'publicly_queryable' => true,
-				'show_ui' 			 => true,
-				'delete_with_user'   => true,
-				'show_in_rest' => false,
-				'rest_base' => '',
-				'show_in_menu' => false,  // This will prevent it from appearing in the main menu
-				'query_var' => false,
-				'rewrite' => false,
-				'capability_type' => 'post',
-				'has_archive' => true,
-				'show_in_nav_menus' => false,
-				'exclude_from_search' => true,
-				'capabilities' => array(
-					'read' => true,
-					'create_posts' => true,
-					'publish_posts' => true,
+				'label'               => __('Request Data', 'zw-smart-google-reviews'),
+				'labels'              => $labels,
+				'description'         => '',
+				'public'              => true,
+				'publicly_queryable'  => true,
+				'show_ui'             => true,
+				'delete_with_user'    => true,
+				'show_in_rest'        => false,
+				'rest_base'           => '',
+				'show_in_menu'        => false,  // Prevent from showing in the main menu
+				'query_var'           => false,
+				'rewrite'             => array(
+					'slug' => 'zwsgr_request_data',
+					'with_front' => false
 				),
-				'map_meta_cap' => true,
-				'hierarchical' => false,
-				'menu_position' => null,
-				'supports' => array('title', 'editor')
+				'capability_type'     => 'post',
+				'has_archive'         => true,
+				'show_in_nav_menus'   => false,
+				'exclude_from_search' => true,
+				'capabilities'        => array(
+					'read' => true,
+					'create_posts' => 'do_not_allow',
+					'publish_posts' => 'do_not_allow',
+				),
+				'map_meta_cap'        => true,
+				'hierarchical'        => false,
+				'menu_position'       => null,
+				'supports'            => array('title')
 			);
 
-			register_post_type('zwsgr_account', $args);
+			register_post_type('zwsgr_request_data', $args);  // Updated post type name to zwsgr_request_data
 		}
+
+		// Register the meta box
+		function zwsgr_add_account_number_meta_box() {
+			add_meta_box(
+				'zwsgr_account_number_meta_box', // Meta box ID
+				__('Account Number', 'zw-smart-google-reviews'), // Title
+				array($this, 'zwsgr_display_account_number_meta_box'), // Callback function to display the meta box content
+				'zwsgr_request_data', // Post type
+				'normal', // Context (where to display: 'normal', 'side', 'advanced')
+				'high' // Priority (high, default, low)
+			);
+		}
+
+		// Display the account number in the meta box
+		function zwsgr_display_account_number_meta_box($post) {
+			// Retrieve the account number from post meta
+			$zwsgr_account_number = get_post_meta($post->ID, 'zwsgr_account_number', true);
+			
+			// Display the account number (non-editable)
+			echo '<input type="text" value="' . esc_attr($zwsgr_account_number) . '" readonly="readonly" class="regular-text" />';
+		}
+
 
 		/**
 		 * Filter: manage_zuserreg_data_posts_columns

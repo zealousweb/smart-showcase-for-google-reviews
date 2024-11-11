@@ -1,26 +1,19 @@
 <?php
 
+
+
 if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
-    
-    require_once ZWSGR_DIR . '/inc/lib/google-api-php-client/vendor/autoload.php';
 
     class Zwsgr_Google_My_Business_Connector {
-        
+
         private $client;
 
         public function __construct() {
 
-            // Initialize the Google Client
-            $this->client = new Google_Client();
-            $this->client->setApplicationName('Smart Google Reviews');
-            $this->client->setClientId('425400367447-r6rphvd0gcuriahkigm3mgs1v5pkmh1t.apps.googleusercontent.com');
-            $this->client->setClientSecret('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');
-            $this->client->setRedirectUri(admin_url('admin.php?page=zwsgr_handle_oauth_flow'));
-            $this->client->addScope('https://www.googleapis.com/auth/business.manage');
-            $this->client->setPrompt('consent');
-
             // Hook to add admin menu items
             add_action('admin_menu', [$this, 'zwsgr_gmbc_add_menu_items'], 20);
+
+            $this->client = new ZWSGR_GMB_API('');
 
         }
 
@@ -57,158 +50,132 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         }
         
 
-        // Display the "Connect with Google" button
+        // Display the "Connect with Google" button and process connection request
         public function zwsgr_connect_google_callback() {
-            $this->client->setAccessType('offline');
-            $auth_url = $this->client->createAuthUrl();
-            echo '<div class="gmbc-outer-wrapper">
-                <div class="gmbc-inner-wrapper">
-                    <span style="margin-right: 10px;">Connect With Google:</span>
-                    <a href="' . esc_url($auth_url) . '" class="button button-primary">Connect with Google</a>
-                </div>
-            </div>';
-        }
 
-        // Handle the OAuth callback after user authorizes the app
-        public function zwsgr_handle_oauth_flow_callback() {
+            // Check if the 'auth_code' is present in the URL
+            if (isset($_GET['auth_code']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
 
-            if (isset($_GET['code'])) {
+                $zwsgr_auth_code = $_GET['auth_code'];
 
-                $code  = sanitize_text_field($_GET['code']);
-                $token = $this->client->fetchAccessTokenWithAuthCode($code);
+                $zwsgr_fetch_jwt_token_response = $this->client->zwsgr_fetch_jwt_token($zwsgr_auth_code);
 
-                if (isset($token['access_token'])) {
+                // Check if the response was successful and contains the JWT token
+                if (isset($zwsgr_fetch_jwt_token_response['success']) && $zwsgr_fetch_jwt_token_response['success'] == true && isset($zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'])) {
+                    
+                    // Extract the JWT token
+                    $zwsgr_jwt_token = $zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'];
 
-                     // Use the 'expires_in' value if provided by the API response, or default to 1 hour if not set
-                    $expires_in = isset($token['expires_in']) ? (int) $token['expires_in'] : HOUR_IN_SECONDS;
-            
-                    // Store the access token in a transient with dynamic expiration
-                    $zwsgr_is_transient_set = set_transient('zwsgr_access_token', sanitize_text_field($token['access_token']), $expires_in);
+                    // Save the JWT token in the wp_options table
+                    update_option('zwsgr_jwt_token', $zwsgr_jwt_token);
 
-                    // Check if the transient was set successfully
-                    if (!$zwsgr_is_transient_set) {
-                        // Log the error
-                        error_log('ZWSGR - Failed to set transient zwsgr_access_token: Unable to store the access token.');
+                    echo '<div class="gmbc-outer-wrapper">
+                        <div class="gmbc-inner-wrapper">
+                            <span style="margin-right: 10px;">Congratulations! Connected to google</span>
+                        </div>
+                    </div>';
 
-                        // Display error message using WordPress admin notices
-                        add_action('admin_notices', function() {
-                            echo '<div class="notice notice-error is-dismissible">
-                                <p>' . esc_html__('Error: There was an error please try again.') . '</p>
-                            </div>';
-                        });
-                    }
-                
-                    if (isset($token['refresh_token'])) {
-
-                        
-                        $zwsgr_is_refresh_token_updated = update_option('zwsgr_refresh_token', sanitize_text_field($token['refresh_token']));
-
-                        // Check if the option was updated successfully
-                        if (!$zwsgr_is_refresh_token_updated) {
-                            // Log the error
-                            error_log('ZWSGR - Failed to update option zwsgr_refresh_token: Unable to store the refresh token.');
-
-                            // Display error message using WordPress admin notices
-                            add_action('admin_notices', function() {
-                                echo '<div class="notice notice-error is-dismissible">
-                                    <p>' . esc_html__('Error: There was an error. Please try again.') . '</p>
-                                </div>';
-                            });
-                        }
-
-                    } else {
-
-                        $this->show_error_notice('There was an error please try again.');
-                        error_log('ZWSGR - Missing refresh token during OAuth flow callback.');
-
-                    }
-
-                    wp_redirect(admin_url('admin.php?page=zwsgr_widget_configurator'));
-                    exit;
 
                 } else {
-
-                    $this->show_error_notice('Authorization failed. Please try again.');
-                    error_log('ZWSGR - Authorization failed: ' . print_r($token, true));
-
+                    echo 'there was an error while trying to fetch jwt token';
                 }
-                
+
             } else {
-
-                $this->show_error_notice('We could not complete the connection process. Please try again.');
-                error_log('ZWSGR - No authorization code returned during OAuth flow callback.');
-
+                echo '<div class="gmbc-outer-wrapper">
+                    <div class="gmbc-inner-wrapper">
+                        <span style="margin-right: 10px;">Connect With Google:</span>
+                        <a href="#" class="button button-primary fetch-gmb-auth-url">Connect with Google</a>
+                    </div>
+                </div>';
             }
-
         }
         
         public function zwsgr_widget_configurator_callback() {
            
             echo '<div id="fetch-gmb-data">';
                 $this->show_success_notice('Successfully connected to Google. You are now authorized to access and manage your reviews.');
-        
-            // Query to get all accounts from the custom post type 'zwsgr_account'
-            $args = [
-                'post_type'      => 'zwsgr_account',
-                'posts_per_page' => -1, // Retrieve all accounts
-                'post_status'    => 'publish',
-            ];
-        
-            $accounts_query = new WP_Query($args);
-        
-            if ($accounts_query->have_posts()) {
-                // Display the select dropdown if accounts are found
-                echo '<select id="zwsgr-account-select" name="zwsgr_account">
-                    <option value="">Select an Account</option>';
-                    while ($accounts_query->have_posts()) {
-                        $accounts_query->the_post();
-                        $account_id = get_the_ID();
-                        $account_name = get_the_title($account_id);
-                        $account_number = get_post_meta($account_id, 'zwsgr_account_number', true);
-            
-                        // Ensure account number is available before displaying in the dropdown
-                        if (!empty($account_number)) {
-                            echo '<option value="' . esc_attr($account_number) . '">' . esc_html($account_name) . '</option>';
+
+                $zwsgr_widget_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
+
+                // Check if the widget ID is not empty
+                if (!empty($zwsgr_widget_id)) {
+                    // Get the post meta for the widget ID
+                    $zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
+
+                    // Get all posts where the zwsgr_account_number matches
+                    $zwsgr_request_data = get_posts(array(
+                        'post_type'      => 'zwsgr_request_data',
+                        'posts_per_page' => -1,
+                        'post_status'    => 'publish',
+                        'meta_key'       => 'zwsgr_account_number',
+                        'meta_value'     => '', // Empty value to get all posts for the custom field
+                        'fields'         => 'ids', // Only return post IDs
+                    ));
+
+                    if ($zwsgr_request_data) {
+
+                        // Display the select dropdown if accounts are found
+                        echo '<select id="zwsgr-account-select" name="zwsgr_account">
+                            <option value="">Select an Account</option>';
+                        // Loop through each post
+                        foreach ($zwsgr_request_data as $post_id) {
+                            // Get the account number and name for each post
+                            $account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+                            $account_name = get_the_title($post_id);
+
+                            // Check if the account number matches the GET parameter
+                            $selected = ($account_number === $zwsgr_account_number) ? 'selected' : '';
+
+                            // Output each account option, with the selected attribute if matching
+                            echo '<option value="' . esc_attr($account_number) . '" ' . $selected . '>' . esc_html($account_name) . '</option>';
                         }
-                    }
-                echo '</select>';
 
-                // Fetch the post ID
-                $zwsgr_post_id = get_posts(array(
-                    'post_type'      => 'zwsgr_account',
-                    'posts_per_page' => 1,
-                    'post_status'    => 'publish',
-                    'meta_key'       => 'zwsgr_account_number',
-                    'meta_value'     => '116877069734578727132',
-                    'fields'         => 'ids', // Only return post IDs
-                ))[0] ?? null;
+                        echo '</select>';
 
-                // Fetch the zwsgr_gmb_locations custom field value
-                $zwsgr_gmb_locations = get_post_meta($zwsgr_post_id, 'zwsgr_account_locations', true);
+                        // Retrieve the selected location number from the post meta
+                        $zwsgr_location_number = get_post_meta($zwsgr_widget_id, 'zwsgr_location_number', true);
 
-                // Check if the custom field has a value
-                if ( $zwsgr_gmb_locations ) {
-                    echo '<select id="zwsgr-location-select" name="zwsgr_location">
-                            <option value="">Select a Location</option>';
-                            
-                    foreach ( $zwsgr_gmb_locations as $location ) {
-                        // Assuming $location['name'] contains something like "locations/3261749413517737208"
-                        $location_id = $location['name'] ? ltrim( strrchr( $location['name'], '/' ), '/' ) : '';
-
-                        echo '<option value="' . esc_attr( $location_id ) . '">' . esc_html( $location['name'] ) . '</option>';
-                    }
+                        $zwsgr_request_data_id = get_posts(array(
+                            'post_type'      => 'zwsgr_request_data',
+                            'posts_per_page' => 1,
+                            'post_status'    => 'publish',
+                            'meta_key'       => 'zwsgr_account_number',
+                            'meta_value'     => $zwsgr_account_number,
+                            'fields'         => 'ids',
+                        ))[0] ?? null;
                     
-                    echo '</select>
-                        <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
-                            Fetch Reviews
-                        </a>';
-                }
+                        if (!$zwsgr_request_data_id) {
+                            // If no post is found, return early
+                            return;
+                        }
+                    
+                        // Retrieve existing locations or initialize an empty array
+                        $zwsgr_account_locations = get_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', true);
+        
+                        // Check if the custom field has a value
+                        if ( $zwsgr_account_locations ) {
+                            echo '<select id="zwsgr-location-select" name="zwsgr_location">
+                                    <option value="">Select a Location</option>';
+                                    foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
+                                        $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
+                                        $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
+                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . '>' . esc_html($zwsgr_account_location['name']) . '</option>';
+                                    }                    
+                            echo '</select>
+                            <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
+                                Fetch Reviews
+                            </a>';
+                        }
 
-            } else {
-                // Display the "Fetch Accounts" button and a message if no accounts exist
-                echo '<p> Please fetch the accounts by initiating the data sync. </p>
-                <a href="#" class="button button-secondary" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts"> Fetch Accounts </a>';
-            }
+                    } else {
+                        echo ' <a href="#" class="button button-secondary" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
+                            Fetch Accounts
+                        </a>';
+                    }
+
+                } else {
+                    echo 'There was an error while trying to edit the widget';
+                }
         
             // Reset post data
             wp_reset_postdata();

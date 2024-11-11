@@ -474,7 +474,6 @@ jQuery(document).ready(function ($) {
   });
 
   $("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (e) {
-
     e.preventDefault();
     const zwsgr_button = $(this);
     const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
@@ -483,51 +482,112 @@ jQuery(document).ready(function ($) {
     zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 
     processBatch(zwsgr_gmb_data_type);
+  });
+
+  $(".fetch-gmb-auth-url").on("click", function (e) {
+    e.preventDefault();
+
+    // Get the current URL
+    var zwsgr_site_url = window.location.href;
+
+    // AJAX call
+    $.ajax({
+      url: zwsgr_admin.ajax_url,
+        type: "POST",
+        dataType: "json",
+        data: {
+          action: "zwsgr_fetch_oauth_url",
+          zwsgr_site_url: zwsgr_site_url
+        },
+        success: function (response) {
+          if (response.success) {
+            // Redirect the user to the OAuth URL
+              window.location.href = response.data.zwsgr_oauth_url;
+          } else {
+              alert('Error generating OAuth URL');
+          }
+        },
+        error: function (xhr, status, error) {
+            // Handle any errors here
+            console.error('AJAX request failed:', status, error);
+        }
+    });
 
   });
 
   $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
-
     e.preventDefault();
     const zwsgr_button = $(this);
     const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
 
+    // Get selected account and location from the dropdowns
+    const zwsgr_account_number = $(
+      "#fetch-gmb-data #zwsgr-account-select"
+    ).val();
+    const zwsgr_location_number = $(
+      "#fetch-gmb-data #zwsgr-location-select"
+    ).val();
+    const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+
     zwsgr_button.prop("disabled", true);
     zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 
-    processBatch(zwsgr_gmb_data_type, 1000000007, 'LOC001');
-
+    processBatch(
+      zwsgr_gmb_data_type,
+      zwsgr_account_number,
+      zwsgr_location_number,
+      zwsgr_widget_id
+    );
   });
+
+  // Function to get URL parameter by name
+  function zwsgr_getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
 
   // Listen for changes in the account dropdown and process batch if changed
   $("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
     const zwsgr_account_number = $(this).val();
     if (zwsgr_account_number) {
-		// Add loading spinner and disable the dropdown to prevent multiple selections
-		$(this).prop("disabled", true);
-		$('#fetch-gmb-data #zwsgr-location-select').remove();
-		$('#fetch-gmb-data #fetch-gmd-reviews').remove();
-		// Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
-		processBatch("zwsgr_gmb_locations", zwsgr_account_number);
+      // Add loading spinner and disable the dropdown to prevent multiple selections
+      $(this).prop("disabled", true);
+      $("#fetch-gmb-data #zwsgr-location-select").remove();
+      $("#fetch-gmb-data #fetch-gmd-reviews").remove();
+
+      const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+
+      // Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
+      processBatch(
+        "zwsgr_gmb_locations",
+        zwsgr_account_number,
+        null,
+        zwsgr_widget_id
+      );
     }
   });
 
-  function processBatch(zwsgr_gmb_data_type, zwsgr_account_number, zwsgr_location_code) {
+  function processBatch(
+    zwsgr_gmb_data_type,
+    zwsgr_account_number,
+    zwsgr_location_number,
+    zwsgr_widget_id
+  ) {
     $.ajax({
       url: zwsgr_admin.ajax_url,
       type: "POST",
       dataType: "json",
       data: {
         action: "zwsgr_fetch_gmb_data",
-        security: zwsgr_admin.zwsr_batch_processing_nonce,
+        security: zwsgr_admin.zwsgr_queue_manager_nounce,
         zwsgr_gmb_data_type: zwsgr_gmb_data_type,
         zwsgr_account_number: zwsgr_account_number,
-        zwsgr_location_code: zwsgr_location_code,
-        action_param: false
+        zwsgr_location_number: zwsgr_location_number,
+        zwsgr_widget_id: zwsgr_widget_id,
       },
       success: function (response) {
         if (response.success) {
-          console.log(response.data.message, 'response');
+          console.log(response.data.message, "response");
         }
       },
       error: function (xhr, status, error) {
@@ -536,32 +596,29 @@ jQuery(document).ready(function ($) {
         //console.error("Response:", xhr.responseText);
       },
     });
-    batchInterval = setInterval(checkBatchStatus, 50);
+    batchInterval = setInterval(checkBatchStatus, 1000);
   }
-
-  
 
   function checkBatchStatus() {
     $.ajax({
-      url: zwsgr_admin.ajax_url,  // Use localized AJAX URL
+      url: zwsgr_admin.ajax_url, // Use localized AJAX URL
       method: "POST",
       data: {
-         action: "zwsgr_get_batch_processing_status",
-         security: zwsgr_admin.zwsr_batch_processing_nonce  // Corrected to match PHP
+        action: "zwsgr_get_batch_processing_status",
+        security: zwsgr_admin.zwsgr_queue_manager_nounce, // Corrected to match PHP
       },
       success: function (response) {
-        console.log(response, 'response');
-        console.log('response.data.zwsgr_batch_process_status', response.data.zwsgr_batch_process_status);
         if (response.success && !response.data.zwsgr_batch_process_status) {
-            //location.reload();
+          alert("Data retrieved successfully.");
+          location.reload();
+          clearInterval(batchInterval);
         }
       },
       error: function (xhr, status, error) {
-         //console.error("Error:", error);
-         //console.error("Status:", status);
-         //console.error("Response:", xhr.responseText);
-      }
-   });  
-  }  
-
+        //console.error("Error:", error);
+        //console.error("Status:", status);
+        //console.error("Response:", xhr.responseText);
+      },
+    });
+  }
 });

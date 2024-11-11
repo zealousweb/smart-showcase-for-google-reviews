@@ -17,6 +17,8 @@
 /wp-*.php
 /xmlrpc.php
 
+/inc/lib/wp-background-processing/*
+
 # Configuration
 wp-config.php
 
