@@ -30,6 +30,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_filter('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwsgr_manage_data_posts_columns'), 10, 3);
 			add_action('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
 			add_action('wp_ajax_toggle_visibility', array($this, 'zwsgr_toggle_visibility'));
+
+			add_action('admin_init', array($this, 'redirect_custom_post_edit'));
+			add_action('wp_ajax_save_widget_data',array($this, 'save_widget_data'));
+			add_action('wp_ajax_nopriv_save_widget_data', array($this, 'save_widget_data'));
 		
 		}
 		/**
@@ -59,6 +63,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('toggle-visibility-nonce')
 			));
+
+			//Save Widget Ajax
+			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'my_widget', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('my_widget_nonce')
+            ));
 		
 		}
 
@@ -140,7 +150,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			add_submenu_page(
-				'zwsgr_dashboard',
+				null,
 				__('Layout', 'zw-smart-google-reviews'),
 				__('Layout', 'zw-smart-google-reviews'),
 				'manage_options',
@@ -623,6 +633,33 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		function zwsgr_layout_callback() 
 		{
+			
+			$post_id = $_GET['post_id'];
+			$post_objct = get_post($post_id);
+			if (!isset($post_id) || !$post_objct ) {
+				wp_die( 'Invalid post ID.' ) ;
+			}
+
+			// Get stored widget settings
+			$display_option = get_post_meta($post_id, 'display_option', true);
+			$layout_option = get_post_meta($post_id, 'layout_option', true);
+			$selected_elements = get_post_meta($post_id, 'selected_elements', true);
+			$rating_filter = get_post_meta($post_id, 'rating_filter', true);
+			$keywords = get_post_meta($post_id, 'keywords', true);
+			$date_format = get_post_meta($post_id, 'date_format', true);
+			$char_limit = get_post_meta($post_id, 'char_limit', true);
+			$language = get_post_meta($post_id, 'language', true);
+			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
+			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
+			$bg_color = get_post_meta($post_id, 'bg_color', true);
+			$text_color = get_post_meta($post_id, 'text_color', true);
+
+			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
+			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
+			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
+			$generated_shortcode = '[zwsgr_layout id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
+	
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
@@ -732,60 +769,67 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<!-- Tab Content Areas -->
 				<div class="tab-content" id="tab-options">
 					<!-- Dynamically Render Radio Buttons -->
-					<label><input type="radio" name="display_option" value="all" checked> All</label><br>
+					<label><input type="radio" name="display_option" value="all" <?php echo $selected_display_option === 'all' ? 'checked' : ''; ?>> All</label><br>
 					<?php foreach ($options as $key => $layouts) : ?>
-						<label><input type="radio" name="display_option" value="<?php echo $key; ?>"> <?php echo ucfirst($key); ?></label><br>
+						<label><input type="radio" name="display_option" value="<?php echo esc_attr($key); ?>" <?php echo $selected_display_option === $key ? 'checked' : ''; ?>> <?php echo ucfirst($key); ?></label><br>
 					<?php endforeach; ?>
 
-					<!-- Dynamically Render Layout Options -->
-					<?php
-					$layout_count = 1;
-					foreach ($options as $option_type => $layouts) {
-						$layout_count = 1; // Reset count for each option type
-						foreach ($layouts as $layout_content) {
-							// Generate the ID in the desired format (e.g., slider-1, grid-1, etc.)
-							$element_id = $option_type . '-' . $layout_count;
-					
-							// Render the HTML content and the button with the correct ID
-							echo '<div id="' . $element_id . '" class="option-item" data-type="' . $option_type . '">';
-							echo $layout_content; // Render the HTML content
-							echo '<button class="select-btn" data-option="' . $element_id . '">Select Option</button>';
-							echo '</div>';
-					
-							// Increment the count for the current option type
-							$layout_count++;
+					<!-- Dynamically Render Layout Options Based on Selected Display Option -->
+					<div id="layout-options">
+						<?php
+						foreach ($options as $option_type => $layouts) {
+							$layout_count = 1;
+							foreach ($layouts as $layout_content) {
+								$element_id = $option_type . '-' . $layout_count;
+
+								// Only show layouts for the selected display option
+								$display_style = ($selected_display_option === $option_type || $selected_display_option === 'all') ? 'block' : 'none';
+								$selected_class = ($element_id === $layout_option) ? ' selected' : ''; // Check if this layout is selected
+
+								echo '<div id="' . esc_attr($element_id) . '" class="option-item' . $selected_class . '" data-type="' . esc_attr($option_type) . '" style="display: ' . $display_style . ';">';
+								echo $layout_content;
+								echo '<button class="select-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
+								echo '</div>';
+
+								$layout_count++;
+							}
 						}
-					}
-					?>
+						?>
+					</div>
 				</div>
 
 				<div class="tab-content" id="tab-selected" style="display:none;">
 					<h3>Selected Option</h3>
-					<div id="selected-option-display" class="selected-option-display"></div>
+					<div id="selected-option-display" class="selected-option-display"><?php //echo wp_kses_post($selected_html); ?></div>
 					<div class="widget-settings">
 						<h2>Widget Settings</h2>
 						<div>
 							<h3>Hide Element</h3>
 							<ul>
 								<li>
-									<input type="checkbox" id="review-title" name="review-element" value="review-title">
+									<input type="checkbox" id="review-title" name="review-element" value="review-title" 
+									<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
 									<label for="review-title">Title</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-rating" name="review-element" value="review-rating">
+									<input type="checkbox" id="review-rating" name="review-element" value="review-rating" 
+									<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
 									<label for="review-rating">Rating</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-days-ago" name="review-element" value="review-days-ago">
+									<input type="checkbox" id="review-days-ago" name="review-element" value="review-days-ago" 
+									<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
 									<label for="review-days-ago">Days Ago</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-content" name="review-element" value="review-content">
+									<input type="checkbox" id="review-content" name="review-element" value="review-content" 
+									<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
 									<label for="review-content">Review Content</label>
 								</li>
 								<li>
-									<input type="checkbox" id="reviewiew-photo" name="review-element" value="reviewiew-photo">
-									<label for="reviewiew-photo">Reviewer Photo</label>
+									<input type="checkbox" id="review-photo" name="review-element" value="review-photo" 
+									<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
+									<label for="review-photo">Reviewer Photo</label>
 								</li>
 								<!-- Add more elements as needed -->
 							</ul>
@@ -826,66 +870,85 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<label for="keywords-input">Enter Keywords (separate by commas):</label>
 							<input type="text" id="keywords-input" name="keywords-input" placeholder="e.g., keyword1, keyword2, keyword3">
 							<small>Type keywords separated by commas</small>
-							<div id="keywords-list" class="keywords-list"></div>
-							<div id="error-message" class="error-message" style="display: none; color: red;">You can only enter a maximum of 5 keywords.</div> 
-						</div>  
 
+							<!-- Hidden input field to store comma-separated keywords for submission -->
+							<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
+
+							<!-- Display the list of saved keywords -->
+							<?php
+							$keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
+							if (is_array($keywords) && !empty($keywords)) {
+								echo '<div id="keywords-list" class="keywords-list">';
+								foreach ($keywords as $keyword) {
+									echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
+								}
+								echo '</div>';
+							} else {
+								echo '<div id="keywords-list" class="keywords-list"></div>';
+							}
+							?>
+
+							<div id="error-message" class="error-message" style="display: none; color: red;">
+								You can only enter a maximum of 5 keywords.
+							</div> 
+						</div>
+  
 						<div>
 							<h3>Date Format</h3>
-							<select id="date-format-select">
-								<option value="DD/MM/YYYY">DD/MM/YYYY</option>
-								<option value="MM-DD-YYYY">MM-DD-YYYY</option>
-								<option value="YYYY/MM/DD">YYYY/MM/DD</option>
-								<option value="full">Full Date (e.g., January 1, 2024)</option>
-								<option value="hide">Hide</option>
+							<select id="date-format-select" name="date-format">
+								<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
+								<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
+								<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
+								<option value="full" <?php echo ($date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
+								<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
 							</select>
 						</div>
 
 						<div>
 							<h3>Trim long reviews with a "read more" link</h3>
-							<input type="number" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit">
+							<input type="number" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
 						</div>
 
 						<div>
 							<h3>Language</h3>
-							<select id="language-select">
-								<option value="en">English</option>
-								<option value="es">Spanish</option>
-								<option value="fr">French</option>
-								<option value="de">German</option>
-								<option value="it">Italian</option>
-								<option value="pt">Portuguese</option>
-								<option value="ru">Russian</option>
-								<option value="zh">Chinese</option>
-								<option value="ja">Japanese</option>
-								<option value="hi">Hindi</option>
-								<option value="ar">Arabic</option>
-								<option value="ko">Korean</option>
-								<option value="tr">Turkish</option>
-								<option value="bn">Bengali</option>
-								<option value="ms">Malay</option>
-								<option value="nl">Dutch</option>
-								<option value="pl">Polish</option>
-								<option value="sv">Swedish</option>
-								<option value="th">Thai</option>
+							<select id="language-select" name="language">
+								<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
+								<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
+								<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
+								<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
+								<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
+								<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
+								<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
+								<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
+								<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
+								<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
+								<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
+								<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
+								<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
+								<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
+								<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
+								<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
+								<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
+								<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
+								<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
 								<!-- Add more languages as needed -->
 							</select>
 						</div>
 
 						<div>
 							<h3>Sort By</h3>
-							<select id="sort-by-select">
-								<option value="relevant">Most Relevant</option>
-								<option value="newest">Newest</option>
-								<option value="highest">Highest Rating</option>
-								<option value="lowest">Lowest Rating</option>
+							<select id="sort-by-select" name="sort_by">
+								<option value="relevant" <?php echo ($sort_by === 'relevant') ? 'selected' : ''; ?>>Most Relevant</option>
+								<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
+								<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
+								<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
 							</select>
 						</div>
 
 						<div>
 							<h3>Load More</h3>
 							<label class="switch">
-								<input type="checkbox" id="enable-load-more">
+								<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more) ? 'checked' : ''; ?>>
 								<span class="slider"></span>
 							</label>
 						</div>
@@ -893,17 +956,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div>
 							<h3>Review us on Google</h3>
 							<label class="switch">
-								<input type="checkbox" id="toggle-google-review">
+								<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
 								<span class="slider"></span>
 							</label>
 						</div>
 
 						<div id="color-picker-options" style="display: none; margin-top: 10px;">
 							<label for="bg-color-picker">Background Color:</label>
-							<input type="color" id="bg-color-picker" name="bg-color-picker" value="#ffffff">
+							<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
 
 							<label for="text-color-picker">Text Color:</label>
-							<input type="color" id="text-color-picker" name="text-color-picker" value="#000000">
+							<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color); ?>">
 						</div>
 					</div>
 					<button id="save-get-code-btn">Save & Get Code</button>
@@ -911,11 +974,129 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<div class="tab-content" id="tab-shortcode" style="display:none;">
 					<h3>Generated Shortcode</h3>
-					<div id="generated-shortcode-display" class="generated-shortcode-display"></div>
+					<div id="generated-shortcode-display" class="generated-shortcode-display">
+						<?php echo esc_html($generated_shortcode); ?>
+					</div>
 				</div>
 			</div>
 
 			<?php
+		}
+
+		// On Edit it redirect to layout page
+		function redirect_custom_post_edit() {
+			 // Check if we're on the edit post screen
+			 if (isset($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit') {
+				// Get the post ID from the URL
+				$post_id = intval($_GET['post']);
+				$layout_option = get_post_meta($post_id, 'layout_option', true);
+				// Specify the custom post type (replace 'your_custom_post_type' with your actual custom post type)
+				$custom_post_type = ZWSGR_POST_WIDGET_TYPE;
+		
+				// Get the post object to check its type
+				$post = get_post($post_id);
+		
+				// Check if the post exists and is of the desired custom post type
+				if ($post && $post->post_type === $custom_post_type) {
+					// Redirect to the desired URL
+					wp_redirect(admin_url('admin.php?page=zwsgr_layout&selectedOption=' . $layout_option . '&post_id=' . $post_id));
+					exit; // Always call exit after wp_redirect
+				}
+			}
+		}
+
+		// Handle AJAX Request to Save Dashboard Data
+		function save_widget_data() {
+			// Check security nonce
+			check_ajax_referer('my_widget_nonce', 'security');
+
+			// Check security nonce
+			if (!check_ajax_referer('my_widget_nonce', 'security', false)) {
+				error_log('Nonce verification failed.');
+				wp_send_json_error('Nonce verification failed.');
+				return;
+			}
+			error_log('Nonce verified successfully.');
+
+			// Get and sanitize post ID
+			$post_id = intval($_POST['post_id']);
+			if (!$post_id) {
+				error_log('Invalid post ID');
+				wp_send_json_error('Invalid post ID.');
+				return;
+			}
+			error_log('Post ID: ' . $post_id);
+
+			// Check if post exists
+			if (get_post_status($post_id) === false) {
+				error_log('Post does not exist: ' . $post_id);
+				wp_send_json_error('Post does not exist.');
+				return;
+			}
+			error_log('Post exists, ID: ' . $post_id);
+
+			$post_id = intval($_POST['post_id']);
+			if (!$post_id) {
+				error_log('Invalid post ID');
+				wp_send_json_error('Invalid post ID.');
+				return;
+			}
+
+			// Check if the post exists
+			if (get_post_status($post_id) === false) {
+				error_log('Post does not exist: ' . $post_id);
+				wp_send_json_error('Post does not exist.');
+				return;
+			}
+
+			// Ensure user has permission to edit the post
+			if (!current_user_can('edit_post', $post_id)) {
+				error_log('User does not have permission to edit post: ' . $post_id);
+				wp_send_json_error('You do not have permission to edit this post.');
+				return;
+			}
+			
+			$setting_tb = ( isset( $_POST['settings'] ) && ! empty( $_POST['settings'] ) ) ? sanitize_text_field( $_POST['settings'] ) : '';
+
+			if(  $setting_tb == 'tab-options' ){
+				$display_option = isset($_POST['display_option']) ? sanitize_text_field($_POST['display_option']) : '';
+				update_post_meta($post_id, 'display_option', $display_option);
+
+				$layout_option =  isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : '';
+				update_post_meta($post_id, 'layout_option', $layout_option);
+
+			}
+
+			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : array();
+			$rating_filter = isset($_POST['rating_filter']) ? sanitize_text_field($_POST['rating_filter']) : '';
+			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
+			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : '';
+			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : 0;
+			$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : '';
+			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : '';
+			$enable_load_more = isset($_POST['enable_load_more']) ? intval($_POST['enable_load_more']) : 0;
+			$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
+			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
+			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
+			$shortcode = isset($_POST['shortcode']) ? sanitize_text_field($_POST['shortcode']) : '';
+
+			
+			update_post_meta($post_id, 'selected_elements', $selected_elements);
+			update_post_meta($post_id, 'rating_filter', $rating_filter);
+			update_post_meta($post_id, 'keywords', $keywords);
+			update_post_meta($post_id, 'date_format', $date_format);
+			update_post_meta($post_id, 'char_limit', $char_limit);
+			update_post_meta($post_id, 'language', $language);
+			update_post_meta($post_id, 'sort_by', $sort_by);
+			update_post_meta($post_id, 'enable_load_more', $enable_load_more);
+			update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
+			update_post_meta($post_id, 'bg_color', $bg_color);
+			update_post_meta($post_id, 'text_color', $text_color);
+			update_post_meta($post_id, '_generated_shortcode', $shortcode);
+		
+
+			// Respond with success message
+			wp_send_json_success('Settings updated successfully.' . $setting_tb );
 		}
 	}
 }

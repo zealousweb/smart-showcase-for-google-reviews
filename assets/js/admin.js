@@ -88,18 +88,44 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-
-			
 	// Select Layout option functionality
 	const radioButtons = $('input[name="display_option"]');
-
 	let currentDisplayOption = 'all';
 
 	// Add event listeners to radio buttons for dynamic filtering
 	radioButtons.change(function () {
 		currentDisplayOption = $(this).val();
 		updateOptions(currentDisplayOption);
+		saveSelectedOption(currentDisplayOption); // Save the selected display option
 	});
+
+	// Function to save the selected display option and layout option via AJAX
+	function saveSelectedOption(option) {
+		var postId = getQueryParam('post_id');
+		var settings = $('.tab-item.active').attr('data-tab');
+		var selectedLayout = $('.option-item:visible .select-btn.selected').data('option'); // Get selected layout option
+
+		console.log(postId);
+		$.ajax({
+			url: ajaxurl,
+			type: 'POST',
+			async: false,  // Make the request synchronous
+			data: {
+				action: 'save_widget_data',
+				security: my_widget.nonce,
+				display_option: option,
+				layout_option: selectedLayout, // Send selected layout
+				post_id: postId,
+				settings: settings
+			},
+			success: function(response) {
+				console.log('Display and layout option saved:', response);
+			},
+			error: function(error) {
+				console.error('Error saving options:', error);
+			}
+		});
+	}
 
 	// Function to show/hide options based on the selected radio button
 	function updateOptions(value) {
@@ -111,12 +137,7 @@ jQuery(document).ready(function($) {
 			}
 		});
 	}
-
-	// Set default view (show all options)
-	updateOptions('all');
 				
-
-	
 	// Function to get query parameter by name
 	function getQueryParam(param) {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -146,22 +167,26 @@ jQuery(document).ready(function($) {
 		}, 100);
 	}
 
-	// If on the "Generated Shortcode" tab, display the generated shortcode
-	if (activeTab === 'tab-shortcode' && selectedOption) {
-		var shortcode = '[zwsgr_layout id="' + selectedOption + '"]';
-		$('#generated-shortcode-display').text(shortcode);
-	}
-
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
 		var tabId = $(this).data('tab');
 		var currentUrl = window.location.href.split('?')[0]; // Get the base URL
-		var selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
 
-		// Preserve the page parameter and append tab, and keep selected option in the URL
+		// Get existing query parameters
+		var selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
+		var postId = getQueryParam('post_id'); // Get the post_id from the URL if it exists
+
+		// Start building the new URL with page and tab parameters
 		var newUrl = currentUrl + '?page=zwsgr_layout&tab=' + tabId;
+
+		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
 			newUrl += '&selectedOption=' + selectedOption;
+		}
+
+		// Add post_id to the URL if it exists
+		if (postId) {
+			newUrl += '&post_id=' + postId;
 		}
 
 		// Redirect to the new URL
@@ -169,22 +194,72 @@ jQuery(document).ready(function($) {
 	});
 
 	// Handle click events for "Select Option" buttons
-	$('.select-btn').on('click', function() {
-		var optionId = $(this).data('option');
-		var currentUrl = window.location.href.split('?')[0]; // Get the base URL
+    $('.select-btn').on('click', function() {
+        var optionId = $(this).data('option');
+        var postId = getQueryParam('post_id');
+        var currentUrl = window.location.href.split('?')[0];
 
-		// Preserve the page parameter and append tab and selected option
-		window.location.href = currentUrl + '?page=zwsgr_layout&tab=tab-selected&selectedOption=' + optionId;
-	});
+        if (!postId) {
+            alert('Post ID not found!');
+            return;
+        }
 
-	// Handle the Save & Get Code Button
-	$('#save-get-code-btn').on('click', function() {
-		var selectedOption = getQueryParam('selectedOption');
-		var currentUrl = window.location.href.split('?')[0]; // Get the base URL
+		// Fetch the HTML for the selected option using the correct optionId
+		var selectedOptionElement = $('#' + optionId).clone(); // Clone the selected option's element
+		$('#selected-option-display').html(selectedOptionElement); // Update the display area
+		$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
+	
+		// Get the outer HTML of the selected element
+		var selectedHtml = selectedOptionElement.prop('outerHTML');
+		console.log(selectedHtml); // Check if the HTML is correct
 
-		// Redirect to the "Generated Shortcode" tab with selected option in the URL
-		window.location.href = currentUrl + '?page=zwsgr_layout&tab=tab-shortcode&selectedOption=' + selectedOption;
-	});
+		// Get the current display option (assuming you have a variable for this)
+		var displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
+		var settings = $('.tab-item.active').attr('data-tab');
+
+		$.ajax({
+			url: ajaxurl,  // This is the WordPress AJAX URL
+			type: 'POST',
+			async: false,  // Make the request synchronous
+			data: {
+				action: 'save_widget_data',
+				security: my_widget.nonce,
+				layout_option: optionId,
+				display_option: displayOption, // The selected display option
+				post_id: postId   ,// The post ID
+				settings: settings,
+			},
+			success: function(response) {
+				if (response.success) {
+					alert('Layout option saved successfully!');
+					console.log('Layout option saved successfully!');
+				} else {
+					alert('Failed to save layout option.');
+				}
+			},
+			error: function() {
+				alert('An error occurred.');
+			}
+		});
+
+        // Append post_id and selected option to the URL
+        window.location.href = currentUrl + '?page=zwsgr_layout&tab=tab-selected&selectedOption=' + optionId + '&post_id=' + postId;
+    });
+
+    // Handle the Save & Get Code Button
+    $('#save-get-code-btn').on('click', function() {
+        var selectedOption = getQueryParam('selectedOption');
+        var postId = getQueryParam('post_id');
+        var currentUrl = window.location.href.split('?')[0];
+
+        if (!postId) {
+            alert('Post ID not found!');
+            return;
+        }
+
+        // Redirect to the "Generated Shortcode" tab with selected option and post_id
+        window.location.href = currentUrl + '?page=zwsgr_layout&tab=tab-shortcode&selectedOption=' + selectedOption + '&post_id=' + postId;
+    });
 
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider(container) {
@@ -222,7 +297,6 @@ jQuery(document).ready(function($) {
 		}
 	}
 
-		
 	// Slick sliders
 	$('.slider-1').slick({
 		infinite: true,
@@ -250,6 +324,7 @@ jQuery(document).ready(function($) {
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
 			type: 'POST',
+			async: false,  // Make the request synchronous
 			dataType: 'json',
 			data: {
 				action: 'toggle_visibility',
@@ -268,8 +343,6 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-
-
 
 	// Function to hide or show elements with a smooth effect
     function toggleElements() {
@@ -461,60 +534,144 @@ jQuery(document).ready(function($) {
         $('#google-review-section').css('color', textColor);
     });
 
-	const updateInputField = () => {
-		const keywords = [];
-		$('#keywords-list .keyword-item').each(function () {
-			keywords.push($(this).text().trim().replace(' ✖', ''));
-		});
-	};
+	// Function to update the hidden input field with the keywords in a comma-separated format
+    const updateInputField = () => {
+        const keywords = [];
+        $('#keywords-list .keyword-item').each(function () {
+            keywords.push($(this).text().trim().replace(' ✖', ''));
+        });
+        $('#keywords-input-hidden').val(keywords.join(', ')); // Store the keywords in a hidden input
+    };
+
+    // Initialize the hidden input field based on the existing keywords
+    updateInputField();
+
+    // Handle the enter key press to add keywords
+    $('#keywords-input').on('keypress', function (e) {
+        if (e.which === 13) { // Check for Enter key
+            e.preventDefault(); // Prevent default form submission
+
+            // Get the input value and split it into keywords
+            const newKeywords = $(this).val().split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
+
+            // Get the current number of keywords in the list
+            const currentKeywordsCount = $('#keywords-list .keyword-item').length;
+
+            // Check if adding new keywords exceeds the limit of 5
+            if (currentKeywordsCount + newKeywords.length > 5) {
+                $('#error-message').show(); // Show the error message
+                return; // Stop further execution
+            } else {
+                $('#error-message').hide(); // Hide the error message if under limit
+            }
+
+            $(this).val(''); // Clear input field
+
+            newKeywords.forEach(function (keyword) {
+                // Check if the keyword is already in the list
+                if ($('#keywords-list .keyword-item').filter(function () {
+                    return $(this).text().trim() === keyword;
+                }).length === 0) {
+                    // Create a new keyword item
+                    const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
+                    const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
+
+                    // Append remove button to the keyword item
+                    keywordItem.append(removeButton);
+
+                    // Append the keyword item to the keywords list
+                    $('#keywords-list').append(keywordItem);
+
+                    // Update hidden input field
+                    updateInputField();
+
+                    // Set up click event to remove keyword
+                    removeButton.on('click', function () {
+                        keywordItem.remove(); // Remove keyword from list
+                        updateInputField(); // Update input field after removal
+                    });
+                }
+            });
+        }
+    });
+
+    // Set up click event to remove existing keywords (on page load)
+    $('#keywords-list').on('click', '.remove-keyword', function () {
+        $(this).parent('.keyword-item').remove(); // Remove the clicked keyword
+        updateInputField(); // Update the hidden input after removal
+    });
 	
-	$('#keywords-input').on('keypress', function (e) {
-		if (e.which === 13) { // Check for Enter key
-			e.preventDefault(); // Prevent default form submission
+	// Save the all Widget and Generate the shortcode
+	$('#save-get-code-btn').on('click', function(e) {
+		e.preventDefault();
 	
-			// Get the input value and split it into keywords
-			const newKeywords = $(this).val().split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
+		var postId = getQueryParam('post_id'); // Get post_id from the URL
+		var displayOption = $('input[name="display_option"]:checked').val();
+		var selectedElements = $('input[name="review-element"]:checked').map(function() {
+			return $(this).val();
+		}).get();
+		var ratingFilter = $('.star-filter.selected').data('rating') || '';
+		var keywords = $('#keywords-list .keyword-item').map(function() {
+			return $(this).text().trim().replace(' ✖', '');
+		}).get();
+		var dateFormat = $('#date-format-select').val();
+		var charLimit = $('#review-char-limit').val();
+		var language = $('#language-select').val();
+		var sortBy = $('#sort-by-select').val();
+		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
+		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
+		var bgColor = $('#bg-color-picker').val();
+		var textColor = $('#text-color-picker').val();
+		var settings = $('.tab-item.active').attr('data-tab');
 	
-			// Get the current number of keywords in the list
-			const currentKeywordsCount = $('#keywords-list .keyword-item').length;
+		// Generate the shortcode based on the selected options
+		var shortcode = '[zwsgr_layout id="' + displayOption + '" layout_option="' + selectedOption + '"]';
+		console.log(shortcode);
 	
-			// Check if adding new keywords exceeds the limit of 5
-			if (currentKeywordsCount + newKeywords.length > 5) {
-				$('#error-message').show(); // Show the error message
-				return; // Stop further execution
-			} else {
-				$('#error-message').hide(); // Hide the error message if under limit
-			}
+		// Show the shortcode in the HTML div
+		$('#generated-shortcode-display').text(shortcode);
 	
-			$(this).val(''); // Clear input field
+		// Make sure the tab is shown if it's hidden
+		$('#tab-shortcode').show();
 	
-			newKeywords.forEach(function (keyword) {
-				// Check if the keyword is already in the list
-				if ($('#keywords-list .keyword-item').filter(function () {
-					return $(this).text().trim() === keyword;
-				}).length === 0) {
-					// Create a new keyword item
-					const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
-					const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
-	
-					// Append remove button to the keyword item
-					keywordItem.append(removeButton);
-	
-					// Append the keyword item to the keywords list
-					$('#keywords-list').append(keywordItem);
-	
-					// Update input field
-					updateInputField();
-	
-					// Set up click event to remove keyword
-					removeButton.on('click', function () {
-						keywordItem.remove(); // Remove keyword from list
-						updateInputField(); // Update input field after removal
-					});
+		// Send AJAX request to store the widget data and shortcode
+		$.ajax({
+			url: ajaxurl,
+			type: 'POST',
+			async: false,  // Make the request synchronous
+			data: {
+				action: 'save_widget_data',
+				security: my_widget.nonce,
+				post_id: postId,
+				display_option: displayOption,
+				selected_elements: selectedElements,
+				rating_filter: ratingFilter,
+				keywords: keywords,
+				date_format: dateFormat,
+				char_limit: charLimit,
+				language: language,
+				sort_by: sortBy,
+				enable_load_more: enableLoadMore,
+				google_review_toggle: googleReviewToggle,
+				bg_color: bgColor,
+				text_color: textColor,
+				settings: settings,
+				layout_option: selectedOption, // Use selectedOption here
+				shortcode: shortcode, // Include the generated shortcode in the AJAX request
+			},
+			success: function(response) {
+				if (response.success) {
+					console.log('Settings and shortcode saved successfully.');
+					alert('Settings and shortcode saved successfully.');
+				} else {
+					alert('Error: ' + response.data);
 				}
-			});
-		}
-	});		
-	
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log('AJAX Error: ', textStatus, errorThrown);
+				alert('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown);
+			}
+		});
+	});
 });
 
