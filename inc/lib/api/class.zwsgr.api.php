@@ -27,6 +27,8 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $this->zwsgr_base_url = "https://mybusiness.googleapis.com/{$this->zwsgr_api_version}/";
 
             add_action('wp_ajax_zwsgr_fetch_oauth_url', array($this, 'zwsgr_fetch_oauth_url'));
+            add_action('wp_ajax_zwsgr_add_update_review_reply', array($this, 'zwsgr_add_update_review_reply'));
+            add_action('wp_ajax_zwsgr_delete_review_reply', array($this, 'zwsgr_delete_review_reply'));
         }
 
         /**
@@ -57,7 +59,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
             if ( $zwsgr_api_method === 'GET' && ! empty( $zwsgr_api_params ) ) {
                 $zwsgr_api_url = add_query_arg( $zwsgr_api_params, $zwsgr_api_url );
-            } elseif ( in_array( $zwsgr_api_method, ['POST'] ) && ! empty( $zwsgr_api_params ) ) {
+            } elseif ( in_array( $zwsgr_api_method, ['POST', 'PUT'] ) && ! empty( $zwsgr_api_params ) ) {
                 $zwsgr_api_args['body'] = json_encode( $zwsgr_api_params );
                 $zwsgr_api_args['headers']['Content-Type'] = 'application/json';
             }
@@ -72,7 +74,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             
             if ( $zwsgr_api_status_code !== 200 ) {
                 throw new Exception( "API Request failed with response code: $zwsgr_api_status_code, Response: $zwsgr_api_response_body, Endpoint: {$zwsgr_api_endpoint}" );
-            }
+            }            
 
             return json_decode( $zwsgr_api_response_body, true );
 
@@ -158,11 +160,6 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 
                 // Store the new access token in a transient for future use.
                 set_transient('zwsgr_access_token', $access_token, 3600); // Store for 1 hour or as needed.
-
-                echo '<pre>';
-                print_r($access_token);
-                echo '</pre>';
-                die();
                 
                 // Return the access token.
                 return $access_token;
@@ -231,6 +228,87 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
             // Make the API request to fetch reviews.
             return $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET');
+        }
+
+        /**
+         * Adds or updates a reply to a specific Google My Business review using the review ID.
+         *
+         * @param string $zwsgr_account_id The account ID associated with the Google My Business account.
+         * @param string $zwsgr_location_id The location ID for the specific business location.
+         * @param string $zwsgr_review_id The ID of the review to reply to.
+         * @param string $zwsgr_reply_comment The text of the reply to add or update.
+         * @return array The decoded JSON response from the API.
+         * @throws Exception If the API request fails or returns an error.
+         */
+        public function zwsgr_add_update_review_reply( ) {
+
+            // Check nonce and AJAX referer
+            check_ajax_referer('zwsgr_add_update_reply_nonce', 'security');
+
+            // Retrieve POST values
+            $zwsgr_reply_comment  = isset($_POST['zwsgr_reply_comment']) ? sanitize_textarea_field($_POST['zwsgr_reply_comment']) : '';
+            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
+            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
+            $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
+            $zwsgr_wp_review_id   = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : ''; // Capture post ID
+
+            // Check that all parameters are provided
+            if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) || empty( $zwsgr_reply_comment ) ) {
+                wp_send_json_error(
+                    array(
+                        'message' => 'Account ID, location ID, review ID, and reply comment all are required.',
+                        'status'  => 400
+                    )
+                );
+                return;
+            }
+
+            $this->zwsgr_get_access_token();
+
+            // Prepare the payload for the request
+            $zwsgr_payload_data = [
+                'comment' => $zwsgr_reply_comment,
+            ];
+
+            // Construct the Google My Business endpoint URL using account, location, and review IDs
+            $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_code}/reviews/{$zwsgr_review_id}/reply";
+
+            // Make the API request to add/update the review reply on Google’s server
+            $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, $zwsgr_payload_data, 'PUT', 'v4');
+
+            if (isset($zwsgr_response) && isset($zwsgr_response['comment']) && isset($zwsgr_response['updateTime'])) {
+
+                $zwsgr_reply_comment     = $zwsgr_response['comment'];
+                $zwsgr_reply_update_time = $zwsgr_response['updateTime'];
+
+                update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_comment', $zwsgr_reply_comment);
+                update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_update_time', $zwsgr_reply_update_time);
+
+                wp_send_json_success(
+                    array(
+                        'message' => __('Review updated successfully', 'zw-smart-google-reviews')
+                    )
+                );
+                exit;
+
+            } else {
+                wp_send_json_error(
+                    array(
+                        'message' => __('There was an error while updating the review', 'zw-smart-google-reviews')
+                    )
+                );
+                exit;
+            }
+
+            wp_die();
+        }
+
+        public function zwsgr_delete_review_reply() {
+
+            // Check nonce and AJAX referer
+            check_ajax_referer('zwsgr_delete_review_reply', 'security');
+
+            wp_die();
         }
 
         public function zwsgr_fetch_oauth_url() {

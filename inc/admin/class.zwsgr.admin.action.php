@@ -80,9 +80,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			//Toggle Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
-				'ajax_url' => admin_url('admin-ajax.php'),
-				'nonce' => wp_create_nonce('toggle-visibility-nonce'),
-				'zwsgr_queue_manager_nounce' => wp_create_nonce('zwsgr_queue_manager_nounce') // Make sure this matches
+				'ajax_url' 					   => admin_url('admin-ajax.php'),
+				'nonce' 					   => wp_create_nonce('toggle-visibility-nonce'),
+				'zwsgr_queue_manager_nounce'   => wp_create_nonce('zwsgr_queue_manager_nounce'),
+				'zwsgr_add_update_reply_nonce' => wp_create_nonce('zwsgr_add_update_reply_nonce'),
+				'zwsgr_delete_review_reply'	   => wp_create_nonce('zwsgr_delete_review_reply'),
+				'zwsgr_wp_review_id' 		   => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
 			));
 		
 		}
@@ -297,6 +300,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		// Display all review details in one meta box
 		function zwsgr_display_review_details_meta_box($zwsgr_review) {
 			// Retrieve review fields
+			$zwsgr_account_number 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_account_number', true);
+			$zwsgr_location_code 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_location_code', true);
 			$zwsgr_review_id 		  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_id', true);
 			$zwsgr_review_comment	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_comment', true);
 			$zwsgr_reviewer_name 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reviewer_name', true);
@@ -304,13 +309,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
 			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
 
-			echo '<table class="form-table">
+			echo '<table class="form-table" id="gmb-review-data">
+				<tr>
+					<th>
+						<label for="zwsgr_review_id">' . __('Account ID', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_account_number) . '" name="zwsgr_account_number" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_id">' . __('Location', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_location_code) . '" name="zwsgr_location_code" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
 				<tr>
 					<th>
 						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwsgr_review_id) . '" readonly class="regular-text" style="width:100%;" />
+						<input type="text" value="' . esc_attr($zwsgr_review_id) . '" name="zwsgr_review_id" readonly class="regular-text" style="width:100%;" />
 					</td>
 				</tr>
 				<tr>
@@ -339,19 +360,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_reply_comment">' . __('Reply Comment', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<textarea readonly class="regular-text" rows="3" style="width:100%;">' . esc_textarea($zwsgr_reply_comment) . '</textarea>
-					</td>
-				</tr>
-				<tr>
-					<th>
 						<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<input type="text" value="' . esc_attr($zwsgr_reply_update_time) . '" readonly class="regular-text" style="width:100%;" />
 					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reply_comment"> ' . __('Reply Comment', 'zw-smart-google-reviews') . ' </label>
+					</th>
+					<td>
+						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
+							' . esc_textarea($zwsgr_reply_comment) . '
+						</textarea>';
+						if (!empty($zwsgr_reply_comment)) {
+							echo '<button class="button button-primary button-large" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+						} else {
+							echo '<button class="button button-primary button-large" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
+						}
+						if (!empty($zwsgr_reply_comment)) {
+							echo '<button class="button button-primary button-large" id="delete-replay" style="background-color: red; color: white; border-color: red; margin-left: 10px;">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+						}						
+					echo '</td>
 				</tr>
 			</table>';
 			

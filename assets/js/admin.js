@@ -621,4 +621,84 @@ jQuery(document).ready(function ($) {
       },
     });
   }
+
+  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
+
+    e.preventDefault();
+
+    // Get the value of the 'Reply Comment' textarea
+    var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
+
+    // Get the value of the 'Account ID' input
+    var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
+
+    // Get the value of the 'Location' input
+    var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
+
+    // Get the value of the 'Review ID' input
+    var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+
+    // Send AJAX request to handle the reply update
+    $.ajax({
+        url: zwsgr_admin.ajax_url,
+        type: 'POST',
+        data: {
+            action: 'zwsgr_add_update_review_reply',
+            zwsgr_reply_comment: zwsgr_reply_comment,
+            zwsgr_account_number: zwsgr_account_number,
+            zwsgr_location_code: zwsgr_location_code,
+            zwsgr_review_id: zwsgr_review_id,
+            zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+            security: zwsgr_admin.zwsgr_add_update_reply_nonce
+        },
+        success: function(response) {
+            if (response.success) {
+                alert('Reply successfully added!');
+            } else {
+                alert('There was an issue with adding the reply.');
+            }
+        },
+        error: function(xhr, status, error) {
+        }
+    });
+
+  });
+
+  $("#gmb-review-data #delete-replay").on("click", function (e) {
+    
+    e.preventDefault();
+
+    // Get the value of the 'Account ID' input
+    var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
+
+    // Get the value of the 'Location' input
+    var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
+
+    // Get the value of the 'Review ID' input
+    var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+
+    // Send AJAX request to handle the reply update
+    $.ajax({
+        url: zwsgr_admin.ajax_url,
+        type: 'POST',
+        data: {
+            action: 'zwsgr_delete_review_reply',
+            zwsgr_account_number: zwsgr_account_number,
+            zwsgr_location_code: zwsgr_location_code,
+            zwsgr_review_id: zwsgr_review_id,
+            security: zwsgr_admin.zwsgr_delete_review_reply
+        },
+        success: function(response) {
+            if (response.success) {
+                alert('Reply deleted added!');
+            } else {
+                alert('There was an issue while deleting your replay.');
+            }
+        },
+        error: function(xhr, status, error) {
+        }
+    });
+
+  });
+
 });

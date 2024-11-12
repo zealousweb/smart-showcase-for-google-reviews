@@ -182,11 +182,16 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                     // Check if post was inserted or updated successfully
                     if ( $zwsgr_wp_review_id && ! is_wp_error( $zwsgr_wp_review_id ) ) {
 
+                        //Update parent account & locations meta
+                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_account_number', $zwsgr_account_number );
+                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_location_code', $zwsgr_location_code);
+
                         // Update custom fields
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_id', $zwsgr_review_id );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_comment', $zwsgr_review['comment'] );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_reviewer_name', $zwsgr_review['reviewer']['displayName'] ?? 'Anonymous' );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_star_rating', $zwsgr_review['starRating'] );
+                        
                         if ( isset( $zwsgr_review['reviewReply'] ) ) {
                             update_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_comment', $zwsgr_review['reviewReply']['comment'] );
                             update_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_update_time', $zwsgr_review['reviewReply']['updateTime'] );
