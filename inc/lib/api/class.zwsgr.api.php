@@ -59,7 +59,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
             if ( $zwsgr_api_method === 'GET' && ! empty( $zwsgr_api_params ) ) {
                 $zwsgr_api_url = add_query_arg( $zwsgr_api_params, $zwsgr_api_url );
-            } elseif ( in_array( $zwsgr_api_method, ['POST', 'PUT'] ) && ! empty( $zwsgr_api_params ) ) {
+            } elseif ( in_array( $zwsgr_api_method, ['POST', 'PUT', 'DELETE'] ) && ! empty( $zwsgr_api_params ) ) {
                 $zwsgr_api_args['body'] = json_encode( $zwsgr_api_params );
                 $zwsgr_api_args['headers']['Content-Type'] = 'application/json';
             }
@@ -74,7 +74,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             
             if ( $zwsgr_api_status_code !== 200 ) {
                 throw new Exception( "API Request failed with response code: $zwsgr_api_status_code, Response: $zwsgr_api_response_body, Endpoint: {$zwsgr_api_endpoint}" );
-            }            
+            }
 
             return json_decode( $zwsgr_api_response_body, true );
 
@@ -302,13 +302,53 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
             wp_die();
         }
-
+        
+        /**
+         * Deletes a reply to a specific Google My Business review using the review ID.
+         *
+         * This function sends a DELETE request to the Google My Business API to remove
+         * an existing reply associated with a specific review.
+         *
+         * @param string $zwsgr_account_id The account ID associated with the Google My Business account.
+         * @param string $zwsgr_location_id The location ID for the specific business location.
+         * @param string $zwsgr_review_id The ID of the review from which the reply will be deleted.
+         * @return array The decoded JSON response from the API if successful.
+         * @throws Exception If the API request fails or returns an error.
+         */
         public function zwsgr_delete_review_reply() {
 
-            // Check nonce and AJAX referer
+            // Check nonce and AJAX referer for security
             check_ajax_referer('zwsgr_delete_review_reply', 'security');
 
+            // Sanitize and retrieve account number, location code, and review ID from AJAX request
+            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
+            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
+            $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
+
+            // Ensure all required parameters are provided
+            if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
+                // Send a JSON error response if any parameters are missing
+                wp_send_json_error(
+                    array(
+                        'message' => 'Account ID, location ID, and review ID are all required.',
+                        'status'  => 400
+                    )
+                );
+                return;
+            }
+
+            // Get the access token required to authenticate with Google My Business API
+            $this->zwsgr_get_access_token();
+
+            // Construct the Google My Business API endpoint URL for deleting the reply to the specified review
+            $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_code}/reviews/{$zwsgr_review_id}/reply";
+
+            // Send the DELETE request to the Google My Business API to delete the review reply
+            $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, [], 'DELETE', 'v4' );
+
+            // Terminate execution and send an appropriate HTTP response
             wp_die();
+
         }
 
         public function zwsgr_fetch_oauth_url() {
