@@ -826,7 +826,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_widget_configurator_callback() 
 		{
 
-			$post_id = $_GET['post_id'];
+			$post_id = $_GET['zwsgr_widget_id'];
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
 				wp_die( 'Invalid post ID.' ) ;

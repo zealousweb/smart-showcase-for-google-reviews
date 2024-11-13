@@ -108,7 +108,7 @@ jQuery(document).ready(function($) {
 
 	// Function to save the selected display option and layout option via AJAX
 	function saveSelectedOption(option) {
-		var postId = getQueryParam('post_id');
+		var postId = getQueryParam('zwsgr_widget_id');
 		var settings = $('.tab-item.active').attr('data-tab');
 		var selectedLayout = $('.option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
@@ -181,7 +181,7 @@ jQuery(document).ready(function($) {
 
 		// Get existing query parameters
 		var selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
-		var postId = getQueryParam('post_id'); // Get the post_id from the URL if it exists
+		var postId = getQueryParam('zwsgr_widget_id'); // Get the post_id from the URL if it exists
 
 		// Start building the new URL with page and tab parameters
 		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
@@ -193,7 +193,7 @@ jQuery(document).ready(function($) {
 
 		// Add post_id to the URL if it exists
 		if (postId) {
-			newUrl += '&post_id=' + postId;
+			newUrl += '&zwsgr_widget_id=' + postId;
 		}
 
 		// Redirect to the new URL
@@ -203,7 +203,7 @@ jQuery(document).ready(function($) {
 	// Handle click events for "Select Option" buttons
     $('.select-btn').on('click', function() {
         var optionId = $(this).data('option');
-        var postId = getQueryParam('post_id');
+        var postId = getQueryParam('zwsgr_widget_id');
         var currentUrl = window.location.href.split('?')[0];
 
         if (!postId) {
@@ -250,13 +250,13 @@ jQuery(document).ready(function($) {
 		});
 
         // Append post_id and selected option to the URL
-        window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-selected&selectedOption=' + optionId + '&post_id=' + postId;
+        window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-selected&selectedOption=' + optionId + '&zwsgr_widget_id=' + postId;
     });
 
     // Handle the Save & Get Code Button
     $('#save-get-code-btn').on('click', function() {
         var selectedOption = getQueryParam('selectedOption');
-        var postId = getQueryParam('post_id');
+        var postId = getQueryParam('zwsgr_widget_id');
         var currentUrl = window.location.href.split('?')[0];
 
         if (!postId) {
@@ -265,7 +265,7 @@ jQuery(document).ready(function($) {
         }
 
         // Redirect to the "Generated Shortcode" tab with selected option and post_id
-        window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&post_id=' + postId;
+        window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&zwsgr_widget_id=' + postId;
     });
 
 	// Function to reinitialize the selected Slick Slider
@@ -621,7 +621,7 @@ jQuery(document).ready(function($) {
 	$('#save-get-code-btn').on('click', function(e) {
 		e.preventDefault();
 	
-		var postId = getQueryParam('post_id'); // Get post_id from the URL
+		var postId = getQueryParam('zwsgr_widget_id'); // Get post_id from the URL
 		var displayOption = $('input[name="display_option"]:checked').val();
 		var selectedElements = $('input[name="review-element"]:checked').map(function() {
 			return $(this).val();

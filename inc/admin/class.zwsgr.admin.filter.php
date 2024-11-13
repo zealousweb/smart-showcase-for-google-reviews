@@ -47,7 +47,7 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 				$layout_option = get_post_meta($post->ID, 'layout_option', true);
 				
 				// Modify the edit URL to redirect to the widget configurator page
-				$url = admin_url('admin.php?page=zwsgr_widget_configurator&selectedOption=' . $layout_option . '&post_id=' . $post->ID);
+				$url = admin_url('admin.php?page=zwsgr_widget_configurator&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $post->ID);
 			}
 		
 			return $url;
