@@ -55,7 +55,7 @@ if ( !defined( 'ZWSGR_PREFIX' ) ) {
 }
 
 if( !defined( 'ZWSGR_POST_REVIEW_TYPE' ) ) {
-	define( 'ZWSGR_POST_REVIEW_TYPE', 'zuserreg_data' ); // Plugin Google Reviews post type name
+	define( 'ZWSGR_POST_REVIEW_TYPE', 'zwsgr_reviews' ); // Plugin Google Reviews post type name
 }
 if( !defined( 'ZWSGR_POST_WIDGET_TYPE' ) ) {
 	define( 'ZWSGR_POST_WIDGET_TYPE', 'zwsgr_data_widget' ); // Plugin Google Widget post type name
@@ -68,8 +68,11 @@ if ( !function_exists( 'ZWSGR' ) ) {
 
 	if ( is_admin() ) {
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/api/class.' . ZWSGR_PREFIX . '.api.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.gmbc.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.action.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.filter.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/zwsgr-batch-processing/class.' . ZWSGR_PREFIX . '.zqm.php' );
 		
 	} else {
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.php' );

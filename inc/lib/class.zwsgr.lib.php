@@ -22,7 +22,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		function __construct() {
 			add_action('wp_enqueue_scripts', array($this, 'ZWSGR_lib_public_enqueue'));  
 
-			add_shortcode( 'zwsgr_layout', array($this,'shortcode_load_more'));
+			add_shortcode( 'zwsgr_widget_configurator', array($this,'shortcode_load_more'));
 			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
 			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
 
@@ -45,7 +45,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'post-id' => '',  // Default value for the post-id attribute
 				),
 				$atts,
-				'zwsgr_layout'
+				'zwsgr_widget_configurator'
 			);
 		
 			// Retrieve the post ID from the shortcode attributes
