@@ -1,16 +1,23 @@
 jQuery(document).ready(function($) {
 
-	//widget should active 
-    var widget_post_type = 'zwsgr_data_widget';
-    if ($('body.post-type-' + widget_post_type).length || $('body.post-php.post-type-' + widget_post_type).length ) {
-		$('.toplevel_page_zwsgr_dashboard').removeClass('wp-not-current-submenu').addClass('wp-has-current-submenu');
-		$('ul.wp-submenu li a[href="edit.php?post_type=zwsgr_data_widget"]').parent('li').addClass('current');
-	}
+	var widget_post_type = 'zwsgr_data_widget';
 
-	if ($('body.post-new-php.post-type-' + widget_post_type).length) {
-		$('.toplevel_page_zwsgr_dashboard').removeClass('wp-not-current-submenu').addClass('wp-has-current-submenu');
-		$('ul.wp-submenu li a[href="edit.php?post_type=zwsgr_data_widget"]').parent('li').addClass('current');
-	}
+    // Check if we're on the edit, new post, or the custom layout page for the widget post type
+    if ($('body.post-type-' + widget_post_type).length || 
+        $('body.post-php.post-type-' + widget_post_type).length || 
+        $('body.post-new-php.post-type-' + widget_post_type).length || 
+        window.location.href.indexOf('admin.php?page=zwsgr_layout') !== -1) {
+
+        // Ensure the parent menu (dashboard) is highlighted as active
+        $('.toplevel_page_zwsgr_dashboard')
+            .removeClass('wp-not-current-submenu')
+            .addClass('wp-has-current-submenu wp-menu-open');
+
+        // Ensure the specific submenu item for zwsgr_data_widget is active
+        $('ul.wp-submenu li a[href="edit.php?post_type=' + widget_post_type + '"]')
+            .parent('li')
+            .addClass('current');
+    }
 
 	//SEO and Notification Email Toggle 
 	var toggle = $('#zwsgr_admin_notification_enabled');
@@ -522,6 +529,15 @@ jQuery(document).ready(function($) {
         }
     });
 
+	// Toggle for enabling 'Load More' settings
+	$('#enable-load-more').on('change', function() {
+		if ($(this).is(':checked')) {
+			$('#load-more-settings').fadeIn();  // Show the settings div
+		} else {
+			$('#load-more-settings').fadeOut(); // Hide the settings div
+		}
+    });
+
 	 // Color picker for background color
 	 $('#bg-color-picker').on('input', function() {
         var bgColor = $(this).val();
@@ -623,17 +639,8 @@ jQuery(document).ready(function($) {
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
 		var settings = $('.tab-item.active').attr('data-tab');
-	
-		// Generate the shortcode based on the selected options
-		var shortcode = '[zwsgr_layout id="' + displayOption + '" layout_option="' + selectedOption + '"]';
-		console.log(shortcode);
-	
-		// Show the shortcode in the HTML div
-		$('#generated-shortcode-display').text(shortcode);
-	
-		// Make sure the tab is shown if it's hidden
-		$('#tab-shortcode').show();
-	
+		var postsPerPage = $('#posts-per-page').val();
+		
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
 			url: ajaxurl,
@@ -656,8 +663,7 @@ jQuery(document).ready(function($) {
 				bg_color: bgColor,
 				text_color: textColor,
 				settings: settings,
-				layout_option: selectedOption, // Use selectedOption here
-				shortcode: shortcode, // Include the generated shortcode in the AJAX request
+				posts_per_page: postsPerPage
 			},
 			success: function(response) {
 				if (response.success) {

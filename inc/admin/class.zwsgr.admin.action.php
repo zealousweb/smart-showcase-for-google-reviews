@@ -654,12 +654,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
 			$bg_color = get_post_meta($post_id, 'bg_color', true);
 			$text_color = get_post_meta($post_id, 'text_color', true);
+			$posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
 
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
 			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
 			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
-			$generated_shortcode = '[zwsgr_layout id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
-	
+			// $generated_shortcode = '[zwsgr_layout id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
+			// Generate the shortcode by calling the new function
+			$generated_shortcode = $this->generate_shortcode($post_id);
+
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
@@ -953,6 +956,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</label>
 						</div>
 
+						<div id="load-more-settings" style="display: <?php echo ($enable_load_more) ? 'block' : 'none'; ?>">
+							<label for="posts-per-page">Posts per page:</label>
+							<select id="posts-per-page" name="posts_per_page">
+								<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
+								<option value="2" <?php echo ($posts_per_page == 2) ? 'selected' : ''; ?>>2</option>
+								<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>
+								<option value="4" <?php echo ($posts_per_page == 4) ? 'selected' : ''; ?>>4</option>
+								<option value="5" <?php echo ($posts_per_page == 5) ? 'selected' : ''; ?>>5</option>
+							</select>
+						</div>
+
 						<div>
 							<h3>Review us on Google</h3>
 							<label class="switch">
@@ -961,7 +975,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</label>
 						</div>
 
-						<div id="color-picker-options" style="display: none; margin-top: 10px;">
+						<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'block' : 'none'; ?>">
 							<label for="bg-color-picker">Background Color:</label>
 							<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
 
@@ -1078,9 +1092,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
 			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
 			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
-			$shortcode = isset($_POST['shortcode']) ? sanitize_text_field($_POST['shortcode']) : '';
+			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
 
-			
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);
@@ -1092,11 +1105,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
 			update_post_meta($post_id, 'bg_color', $bg_color);
 			update_post_meta($post_id, 'text_color', $text_color);
-			update_post_meta($post_id, '_generated_shortcode', $shortcode);
+			update_post_meta($post_id, 'posts_per_page', $posts_per_page);
 		
-
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
 		}
+
+		function generate_shortcode($post_id) {
+			// Build the shortcode with attributes
+			$shortcode = '[zwsgr_layout post-id="' . esc_attr($post_id) . '"]';
+			update_post_meta($post_id, '_generated_shortcode_new', $shortcode);
+			return $shortcode;
+		}		
 	}
 }
