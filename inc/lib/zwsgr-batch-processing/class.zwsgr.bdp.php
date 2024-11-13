@@ -1,6 +1,6 @@
 <?php
 
-require_once( ZWSGR_DIR . '/inc/lib/wp-background-processing/wp-background-processing.php' );
+require_once( ZWSGR_DIR . '/inc/lib/zwsgr-background-processing/vendor/autoload.php' );
 
 if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
