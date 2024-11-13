@@ -20,7 +20,8 @@ if ( !class_exists( 'ZWSGR_Front' ) ) {
 	class ZWSGR_Front {
 
 		
-		function __construct() {
+		function __construct() 
+		{
 		
 		}
 

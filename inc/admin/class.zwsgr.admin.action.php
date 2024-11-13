@@ -23,7 +23,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		private $zwsgr_gmbc;
 
-		function __construct()  {
+		function __construct()  
+		{
 
 			add_action( 'admin_init', array( $this, 'action__admin_init' ) );
 			add_action('admin_menu', array($this, 'zwsgr_admin_menu_registration'));
@@ -50,7 +51,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 * - Register admin min js and admin min css
 		 *
 		 */
-		function action__admin_init() {
+		function action__admin_init() 
+		{
 
 			// admin js
 			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
@@ -286,7 +288,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Register a single meta box to display all review details
-		function zwsgr_add_review_meta_box() {
+		function zwsgr_add_review_meta_box() 
+		{
 			add_meta_box(
 				'zwsgr_review_details_meta_box',
 				__('Review Details', 'zw-smart-google-reviews'),
@@ -298,7 +301,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Display all review details in one meta box
-		function zwsgr_display_review_details_meta_box($zwsgr_review) {
+		function zwsgr_display_review_details_meta_box($zwsgr_review) 
+		{
 			// Retrieve review fields
 			$zwsgr_account_number 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_account_number', true);
 			$zwsgr_location_code 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_location_code', true);
@@ -441,7 +445,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Register the meta box
-		function zwsgr_add_account_number_meta_box() {
+		function zwsgr_add_account_number_meta_box() 
+		{
 			add_meta_box(
 				'zwsgr_account_number_meta_box', // Meta box ID
 				__('Account Number', 'zw-smart-google-reviews'), // Title
@@ -467,9 +472,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			unset($columns['date']);
 			unset($columns['title']);
-			$columns['title'] = __('Review', 'zw-google-reviews');
-			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'zw-google-reviews');
-			$columns['date'] = __('Date', 'zw-google-reviews');
+			$columns['title'] = __('Review', 'zw-smart-google-reviews');
+			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'zw-smart-google-reviews');
+			$columns['date'] = __('Date', 'zw-smart-google-reviews');
 			return $columns;
 		}
 
@@ -479,7 +484,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 * @param string $column
 		 * @param int $post_id
 		 */
-		function render_hide_column_content( $column, $post_id ) {
+		function render_hide_column_content( $column, $post_id ) 
+		{
 			if ( $column === ZWSGR_META_PREFIX . 'user_login' ) {
 				$is_hidden = get_post_meta( $post_id, '_is_hidden', true );
 				$icon = $is_hidden ? 'hidden' : 'visibility';
@@ -494,7 +500,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		/**
 		 * Toggle visibility (AJAX callback)
 		 */
-		function zwsgr_toggle_visibility() {
+		function zwsgr_toggle_visibility() 
+		{
 			check_ajax_referer( 'toggle-visibility-nonce', 'nonce' );
 		
 			$post_id = intval( $_POST['post_id'] );
@@ -1183,14 +1190,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Handle AJAX Request to Save Dashboard Data
-		function save_widget_data() {
+		function save_widget_data() 
+		{
 			// Check security nonce
 			check_ajax_referer('my_widget_nonce', 'security');
 
 			// Check security nonce
 			if (!check_ajax_referer('my_widget_nonce', 'security', false)) {
 				error_log('Nonce verification failed.');
-				wp_send_json_error('Nonce verification failed.');
+				wp_send_json_error(esc_html__('Nonce verification failed.', 'zw-smart-google-reviews'));
 				return;
 			}
 			error_log('Nonce verified successfully.');
@@ -1199,37 +1207,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$post_id = intval($_POST['post_id']);
 			if (!$post_id) {
 				error_log('Invalid post ID');
-				wp_send_json_error('Invalid post ID.');
+				wp_send_json_error(esc_html__('Invalid post ID.', 'zw-smart-google-reviews'));
 				return;
 			}
 			error_log('Post ID: ' . $post_id);
 
-			// Check if post exists
+			// Check if the post exists
 			if (get_post_status($post_id) === false) {
 				error_log('Post does not exist: ' . $post_id);
-				wp_send_json_error('Post does not exist.');
+				wp_send_json_error(esc_html__('Post does not exist.', 'zw-smart-google-reviews'));
 				return;
 			}
 			error_log('Post exists, ID: ' . $post_id);
 
-			$post_id = intval($_POST['post_id']);
-			if (!$post_id) {
-				error_log('Invalid post ID');
-				wp_send_json_error('Invalid post ID.');
-				return;
-			}
-
-			// Check if the post exists
-			if (get_post_status($post_id) === false) {
-				error_log('Post does not exist: ' . $post_id);
-				wp_send_json_error('Post does not exist.');
-				return;
-			}
-
 			// Ensure user has permission to edit the post
 			if (!current_user_can('edit_post', $post_id)) {
 				error_log('User does not have permission to edit post: ' . $post_id);
-				wp_send_json_error('You do not have permission to edit this post.');
+				wp_send_json_error(esc_html__('You do not have permission to edit this post.', 'zw-smart-google-reviews'));
 				return;
 			}
 			
@@ -1274,11 +1268,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
 		}
 
-		function generate_shortcode($post_id) {
+		function generate_shortcode($post_id) 
+		{
 			// Build the shortcode with attributes
-			$shortcode = '[zwsgr_widget_configurator post-id="' . esc_attr($post_id) . '"]';
+			$shortcode = '[zwsgr_widget post-id="' . esc_attr($post_id) . '"]';
 			update_post_meta($post_id, '_generated_shortcode_new', $shortcode);
-			return $shortcode;
+			return $shortcode;	
 		}		
 	}
 }

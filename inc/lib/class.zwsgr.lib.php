@@ -19,16 +19,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 	 */
 	class ZWSGR_Lib {
 		
-		function __construct() {
+		function __construct() 
+		{
 			add_action('wp_enqueue_scripts', array($this, 'ZWSGR_lib_public_enqueue'));  
 
-			add_shortcode( 'zwsgr_widget_configurator', array($this,'shortcode_load_more'));
+			add_shortcode( 'zwsgr_widget', array($this,'shortcode_load_more'));
 			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
 			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
 
 
 		}
-		function ZWSGR_lib_public_enqueue() {
+		function ZWSGR_lib_public_enqueue() 
+		{
 			wp_enqueue_script( ZWSGR_PREFIX . '_script_js', ZWSGR_URL . 'assets/js/script.js', array( 'jquery-core' ), ZWSGR_VERSION, true );
 			
 			wp_localize_script(ZWSGR_PREFIX . '_script_js', 'load_more', array(
@@ -38,14 +40,15 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		}
 		
 		// Shortcode to render initial posts and Load More button
-		function shortcode_load_more($atts) {
+		function shortcode_load_more($atts) 
+		{
 			// Extract the attributes passed to the shortcode
 			$atts = shortcode_atts(
 				array(
 					'post-id' => '',  // Default value for the post-id attribute
 				),
 				$atts,
-				'zwsgr_widget_configurator'
+				'zwsgr_widget'
 			);
 		
 			// Retrieve the post ID from the shortcode attributes
@@ -53,7 +56,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		
 			// Check if a post ID is provided and it exists
 			if (empty($post_id) || !get_post($post_id)) {
-				return 'Invalid post ID.';
+				return esc_html__('Invalid post ID.', 'zw-smart-google-reviews');
 			}
 		
 			// Retrieve the 'enable_load_more' setting from post meta
@@ -83,7 +86,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				while ($query->have_posts()) {
 					$query->the_post();
 					echo '<div>';
-					echo '<h2>' . get_the_title() . '</h2>';
+					echo '<h2>' . esc_html(get_the_title()) . '</h2>';
 					echo '</div>';
 				}
 		
@@ -91,10 +94,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more) {
-					echo '<button class="load-more-meta" data-page="2" data-post-id="' . esc_attr($post_id) . '">Load More</button>';
+					echo '<button class="load-more-meta" data-page="2" data-post-id="' . esc_attr($post_id) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 			} else {
-				echo '<p>No posts found.</p>';
+				echo '<p>' . esc_html__('No posts found.', 'zw-smart-google-reviews') . '</p>';
 			}
 		
 			// Reset post data
@@ -104,10 +107,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		}
 		
 		// AJAX handler to load more posts
-		function load_more_meta_data() {
+		function load_more_meta_data() 
+		{
 			// Verify nonce for security
 			if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'zwsgr_load_more_nonce')) {
-				wp_send_json_error('Nonce verification failed.');
+				wp_send_json_error(esc_html__('Nonce verification failed.', 'zw-smart-google-reviews'));
 				return;
 			}
 
@@ -117,7 +121,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Ensure the post_id exists
 			if (empty($post_id) || !get_post($post_id)) {
-				wp_send_json_error('Invalid post ID.');
+				wp_send_json_error(esc_html__('Invalid post ID.', 'zw-smart-google-reviews'));
 				return;
 			}
 
@@ -147,7 +151,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				while ($query->have_posts()) {
 					$query->the_post();
 					$output .= '<div class="post-item">';
-					$output .= '<h2>' . get_the_title() . '</h2>';  // Customize the HTML as needed
+					$output .= '<h2>' . esc_html(get_the_title()) . '</h2>';  // Customize the HTML as needed
 					$output .= '</div>';
 				}
 
@@ -168,7 +172,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				wp_send_json_success($response);
 			} else {
 				// No more posts available
-				wp_send_json_error('No more posts.');
+				wp_send_json_error(esc_html__('No more posts.', 'zw-smart-google-reviews'));
 			}
 
 			wp_die();  // Properly terminate the AJAX request
