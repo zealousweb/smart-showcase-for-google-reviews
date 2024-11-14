@@ -1,16 +1,23 @@
 jQuery(document).ready(function($) {
 
-	//widget should active 
-    var widget_post_type = 'zwsgr_data_widget';
-    if ($('body.post-type-' + widget_post_type).length || $('body.post-php.post-type-' + widget_post_type).length ) {
-		$('.toplevel_page_zwsgr_dashboard').removeClass('wp-not-current-submenu').addClass('wp-has-current-submenu');
-		$('ul.wp-submenu li a[href="edit.php?post_type=zwsgr_data_widget"]').parent('li').addClass('current');
-	}
+	var widget_post_type = 'zwsgr_data_widget';
 
-	if ($('body.post-new-php.post-type-' + widget_post_type).length) {
-		$('.toplevel_page_zwsgr_dashboard').removeClass('wp-not-current-submenu').addClass('wp-has-current-submenu');
-		$('ul.wp-submenu li a[href="edit.php?post_type=zwsgr_data_widget"]').parent('li').addClass('current');
-	}
+    // Check if we're on the edit, new post, or the custom layout page for the widget post type
+    if ($('body.post-type-' + widget_post_type).length || 
+        $('body.post-php.post-type-' + widget_post_type).length || 
+        $('body.post-new-php.post-type-' + widget_post_type).length || 
+        window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator') !== -1) {
+
+        // Ensure the parent menu (dashboard) is highlighted as active
+        $('.toplevel_page_zwsgr_dashboard')
+            .removeClass('wp-not-current-submenu')
+            .addClass('wp-has-current-submenu wp-menu-open');
+
+        // Ensure the specific submenu item for zwsgr_data_widget is active
+        $('ul.wp-submenu li a[href="edit.php?post_type=' + widget_post_type + '"]')
+            .parent('li')
+            .addClass('current');
+    }
 
 	//SEO and Notification Email Toggle 
 	var toggle = $('#zwsgr_admin_notification_enabled');
@@ -177,7 +184,7 @@ jQuery(document).ready(function($) {
 		var postId = getQueryParam('post_id'); // Get the post_id from the URL if it exists
 
 		// Start building the new URL with page and tab parameters
-		var newUrl = currentUrl + '?page=zwsgr_layout&tab=' + tabId;
+		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
 
 		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
@@ -243,7 +250,7 @@ jQuery(document).ready(function($) {
 		});
 
         // Append post_id and selected option to the URL
-        window.location.href = currentUrl + '?page=zwsgr_layout&tab=tab-selected&selectedOption=' + optionId + '&post_id=' + postId;
+        window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-selected&selectedOption=' + optionId + '&post_id=' + postId;
     });
 
     // Handle the Save & Get Code Button
@@ -258,7 +265,7 @@ jQuery(document).ready(function($) {
         }
 
         // Redirect to the "Generated Shortcode" tab with selected option and post_id
-        window.location.href = currentUrl + '?page=zwsgr_layout&tab=tab-shortcode&selectedOption=' + selectedOption + '&post_id=' + postId;
+        window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&post_id=' + postId;
     });
 
 	// Function to reinitialize the selected Slick Slider
@@ -522,6 +529,15 @@ jQuery(document).ready(function($) {
         }
     });
 
+	// Toggle for enabling 'Load More' settings
+	$('#enable-load-more').on('change', function() {
+		if ($(this).is(':checked')) {
+			$('#load-more-settings').fadeIn();  // Show the settings div
+		} else {
+			$('#load-more-settings').fadeOut(); // Hide the settings div
+		}
+    });
+
 	 // Color picker for background color
 	 $('#bg-color-picker').on('input', function() {
         var bgColor = $(this).val();
@@ -623,17 +639,8 @@ jQuery(document).ready(function($) {
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
 		var settings = $('.tab-item.active').attr('data-tab');
-	
-		// Generate the shortcode based on the selected options
-		var shortcode = '[zwsgr_layout id="' + displayOption + '" layout_option="' + selectedOption + '"]';
-		console.log(shortcode);
-	
-		// Show the shortcode in the HTML div
-		$('#generated-shortcode-display').text(shortcode);
-	
-		// Make sure the tab is shown if it's hidden
-		$('#tab-shortcode').show();
-	
+		var postsPerPage = $('#posts-per-page').val();
+		
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
 			url: ajaxurl,
@@ -656,8 +663,7 @@ jQuery(document).ready(function($) {
 				bg_color: bgColor,
 				text_color: textColor,
 				settings: settings,
-				layout_option: selectedOption, // Use selectedOption here
-				shortcode: shortcode, // Include the generated shortcode in the AJAX request
+				posts_per_page: postsPerPage
 			},
 			success: function(response) {
 				if (response.success) {
@@ -673,5 +679,284 @@ jQuery(document).ready(function($) {
 			}
 		});
 	});
-});
 
+	$("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (e) {
+		e.preventDefault();
+		const zwsgr_button = $(this);
+		const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
+	
+		zwsgr_button.prop("disabled", true);
+		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
+	
+		processBatch(zwsgr_gmb_data_type);
+	  });
+	
+	  $(".fetch-gmb-auth-url").on("click", function (e) {
+		e.preventDefault();
+	
+		// Get the current URL
+		var zwsgr_site_url = window.location.href;
+	
+		// AJAX call
+		$.ajax({
+		  url: zwsgr_admin.ajax_url,
+			type: "POST",
+			dataType: "json",
+			data: {
+			  action: "zwsgr_fetch_oauth_url",
+			  zwsgr_site_url: zwsgr_site_url
+			},
+			success: function (response) {
+			  if (response.success) {
+				// Redirect the user to the OAuth URL
+				  window.location.href = response.data.zwsgr_oauth_url;
+			  } else {
+				  alert('Error generating OAuth URL');
+			  }
+			},
+			error: function (xhr, status, error) {
+				// Handle any errors here
+				console.error('AJAX request failed:', status, error);
+			}
+		});
+	
+	  });
+	
+	  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
+		e.preventDefault();
+		const zwsgr_button = $(this);
+		const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
+	
+		// Get selected account and location from the dropdowns
+		const zwsgr_account_number = $(
+		  "#fetch-gmb-data #zwsgr-account-select"
+		).val();
+		const zwsgr_location_number = $(
+		  "#fetch-gmb-data #zwsgr-location-select"
+		).val();
+		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+	
+		zwsgr_button.prop("disabled", true);
+		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
+	
+		processBatch(
+		  zwsgr_gmb_data_type,
+		  zwsgr_account_number,
+		  zwsgr_location_number,
+		  zwsgr_widget_id
+		);
+	  });
+	
+	  // Function to get URL parameter by name
+	  function zwsgr_getUrlParameter(name) {
+		const urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get(name);
+	  }
+	
+	  // Listen for changes in the account dropdown and process batch if changed
+	  $("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
+		const zwsgr_account_number = $(this).val();
+		if (zwsgr_account_number) {
+		  // Add loading spinner and disable the dropdown to prevent multiple selections
+		  $(this).prop("disabled", true);
+		  $("#fetch-gmb-data #zwsgr-location-select").remove();
+		  $("#fetch-gmb-data #fetch-gmd-reviews").remove();
+	
+		  const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+	
+		  // Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
+		  processBatch(
+			"zwsgr_gmb_locations",
+			zwsgr_account_number,
+			null,
+			zwsgr_widget_id
+		  );
+		}
+	  });
+	
+	  function processBatch(
+		zwsgr_gmb_data_type,
+		zwsgr_account_number,
+		zwsgr_location_number,
+		zwsgr_widget_id
+	  ) {
+		$.ajax({
+		  url: zwsgr_admin.ajax_url,
+		  type: "POST",
+		  dataType: "json",
+		  data: {
+			action: "zwsgr_fetch_gmb_data",
+			security: zwsgr_admin.zwsgr_queue_manager_nounce,
+			zwsgr_gmb_data_type: zwsgr_gmb_data_type,
+			zwsgr_account_number: zwsgr_account_number,
+			zwsgr_location_number: zwsgr_location_number,
+			zwsgr_widget_id: zwsgr_widget_id,
+		  },
+		  success: function (response) {
+			if (response.success) {
+			  console.log(response.data.message, "response");
+			}
+		  },
+		  error: function (xhr, status, error) {
+			//console.error("Error:", error);
+			//console.error("Status:", status);
+			//console.error("Response:", xhr.responseText);
+		  },
+		});
+		batchInterval = setInterval(checkBatchStatus, 1000);
+	  }
+	
+	  function checkBatchStatus() {
+		$.ajax({
+		  url: zwsgr_admin.ajax_url, // Use localized AJAX URL
+		  method: "POST",
+		  data: {
+			action: "zwsgr_get_batch_processing_status",
+			security: zwsgr_admin.zwsgr_queue_manager_nounce, // Corrected to match PHP
+		  },
+		  success: function (response) {
+			if (response.success && !response.data.zwsgr_batch_process_status) {
+			  alert("Data retrieved successfully.");
+			  location.reload();
+			  clearInterval(batchInterval);
+			}
+		  },
+		  error: function (xhr, status, error) {
+			//console.error("Error:", error);
+			//console.error("Status:", status);
+			//console.error("Response:", xhr.responseText);
+		  },
+		});
+	  }
+	
+	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
+	
+		e.preventDefault();
+
+		// Show the WordPress loader
+		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
+		$("#delete-replay").after(loader);
+	
+		// Get the value of the 'Reply Comment' textarea
+		var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
+	
+		// Get the value of the 'Account ID' input
+		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
+	
+		// Get the value of the 'Location' input
+		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
+	
+		// Get the value of the 'Review ID' input
+		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+	
+		// Send AJAX request to handle the reply update
+		$.ajax({
+			url: zwsgr_admin.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'zwsgr_add_update_review_reply',
+				zwsgr_reply_comment: zwsgr_reply_comment,
+				zwsgr_account_number: zwsgr_account_number,
+				zwsgr_location_code: zwsgr_location_code,
+				zwsgr_review_id: zwsgr_review_id,
+				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				security: zwsgr_admin.zwsgr_add_update_reply_nonce
+			},
+			success: function(response) {
+
+				loader.remove();
+
+				if (response.success) {
+
+					// Append the error message below the reply button
+					$("#json-response-message").html(response.data.message);
+
+					setTimeout(function() {
+						location.reload();
+					}, 2000);
+
+				}
+
+			},
+			error: function(xhr, status, error) {
+
+				// Construct the error message to be appended
+				var errorMessage = $("<div>", {
+					class: "error-message",
+					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
+				});
+
+				// Append the error message below the reply button
+				$("#json-response-message").html(errorMessage);
+
+				loader.remove();
+
+			}
+		});
+	
+	  });
+	
+	  $("#gmb-review-data #delete-replay").on("click", function (e) {
+		
+		e.preventDefault();
+
+		// Show the WordPress loader
+		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
+		$("#delete-replay").after(loader);
+	
+		// Get the value of the 'Account ID' input
+		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
+	
+		// Get the value of the 'Location' input
+		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
+	
+		// Get the value of the 'Review ID' input
+		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+	
+		// Send AJAX request to handle the reply update
+		$.ajax({
+			url: zwsgr_admin.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'zwsgr_delete_review_reply',
+				zwsgr_account_number: zwsgr_account_number,
+				zwsgr_location_code: zwsgr_location_code,
+				zwsgr_review_id: zwsgr_review_id,
+				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				security: zwsgr_admin.zwsgr_delete_review_reply
+			},
+			success: function(response) {
+				
+				loader.remove();
+
+				if (response.success) {
+
+					// Append the error message below the reply button
+					$("#json-response-message").html(response.data.message);
+
+					setTimeout(function() {
+						location.reload();
+					}, 2000);
+
+				}
+
+			},
+			error: function(xhr, status, error) {
+				
+				// Construct the error message to be appended
+				var errorMessage = $("<div>", {
+					class: "error-message",
+					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
+				});
+
+				// Append the error message below the reply button
+				$("#json-response-message").html(errorMessage);
+
+				loader.remove();
+
+			}
+		});
+	
+	});
+
+});

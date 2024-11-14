@@ -125,3 +125,48 @@ input:checked + .slider:before {
 .option-item.selected {
     border: 5px solid red;
 }
+
+.gmbc-outer-wrapper {
+    background-color: white;
+    position: relative;
+    height: 100vh;
+    width: 100%;
+}
+
+.gmbc-inner-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#fetch-gmb-data .notice {
+    margin: 10px 0 !important;
+}
+
+/* General button styles */
+#gmb-review-data .button-large {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Update button specific style */
+#gmb-review-data #update-replay {
+    margin: 10px 10px 0 0;
+}
+
+/* Add Replay button specific style */
+#gmb-review-data #add-replay {
+    margin: 10px 10px 0 0;
+}
+
+/* Delete button specific style */
+#gmb-review-data #delete-replay {
+    background-color: red;
+    color: white;
+    border-color: red;
+    margin: 10px 10px 0 0;
+}

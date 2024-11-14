@@ -19,6 +19,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 	 */
 	class ZWSGR_Admin_Action {
 
+		private $client;
+
+		private $zwsgr_gmbc;
+
 		function __construct()  {
 
 			add_action( 'admin_init', array( $this, 'action__admin_init' ) );
@@ -27,15 +31,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_action('init', array($this, 'zwsgr_register_widget_cpt'));  // Register Widget Custom Post Type
 			add_action('init', array($this, 'zwsgr_register_review_cpt'));  // Register Review Custom Post Type
 
+			add_action('add_meta_boxes', array($this, 'zwsgr_add_review_meta_box'));
+			add_action('init', array($this, 'zwsgr_register_request_data_cpt'));
+			add_action('add_meta_boxes', array($this, 'zwsgr_add_account_number_meta_box'));
+
 			add_filter('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwsgr_manage_data_posts_columns'), 10, 3);
 			add_action('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
 			add_action('wp_ajax_toggle_visibility', array($this, 'zwsgr_toggle_visibility'));
 
-			add_action('admin_init', array($this, 'redirect_custom_post_edit'));
 			add_action('wp_ajax_save_widget_data',array($this, 'save_widget_data'));
 			add_action('wp_ajax_nopriv_save_widget_data', array($this, 'save_widget_data'));
 		
 		}
+		
 		/**
 		 * Action: admin_init
 		 *
@@ -62,6 +70,16 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('toggle-visibility-nonce')
+			));
+
+			//Toggle Ajax
+			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
+				'ajax_url' 					   => admin_url('admin-ajax.php'),
+				'nonce' 					   => wp_create_nonce('toggle-visibility-nonce'),
+				'zwsgr_queue_manager_nounce'   => wp_create_nonce('zwsgr_queue_manager_nounce'),
+				'zwsgr_add_update_reply_nonce' => wp_create_nonce('zwsgr_add_update_reply_nonce'),
+				'zwsgr_delete_review_reply'	   => wp_create_nonce('zwsgr_delete_review_reply'),
+				'zwsgr_wp_review_id' 		   => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
 			));
 
 			//Save Widget Ajax
@@ -150,13 +168,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			add_submenu_page(
-				null,
-				__('Layout', 'zw-smart-google-reviews'),
-				__('Layout', 'zw-smart-google-reviews'),
-				'manage_options',
-				'zwsgr_layout',
-				array($this, 'zwsgr_layout_callback')
-			);
+                null,
+                'Widget Configurator',             
+                'Widget Configurator',
+                'manage_options',
+                'zwsgr_widget_configurator',
+                [$this, 'zwsgr_widget_configurator_callback']
+            );
 
 			add_submenu_page(
 				'zwsgr_dashboard',
@@ -265,6 +283,176 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
+		}
+
+		// Register a single meta box to display all review details
+		function zwsgr_add_review_meta_box() {
+			add_meta_box(
+				'zwsgr_review_details_meta_box',
+				__('Review Details', 'zw-smart-google-reviews'),
+				array($this, 'zwsgr_display_review_details_meta_box'),
+				'zwsgr_reviews',
+				'normal',
+				'high'
+			);
+		}
+
+		// Display all review details in one meta box
+		function zwsgr_display_review_details_meta_box($zwsgr_review) {
+			// Retrieve review fields
+			$zwsgr_account_number 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_account_number', true);
+			$zwsgr_location_code 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_location_code', true);
+			$zwsgr_review_id 		  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_id', true);
+			$zwsgr_review_comment	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_comment', true);
+			$zwsgr_reviewer_name 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reviewer_name', true);
+			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
+			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
+			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
+
+			echo '<table class="form-table" id="gmb-review-data">
+				<tr>
+					<th>
+						<label for="zwsgr_review_id">' . __('Account ID', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_account_number) . '" name="zwsgr_account_number" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_id">' . __('Location', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_location_code) . '" name="zwsgr_location_code" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_review_id) . '" name="zwsgr_review_id" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_reviewer_name) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_comment">' . __('Reviewer Comment', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<textarea readonly class="regular-text" rows="5" style="width:100%;">' . esc_textarea($zwsgr_review_comment) . '</textarea>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_review_star_rating">' . __('Star Rating', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_review_star_rating) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_reply_update_time) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="zwsgr_reply_comment"> ' . __('Reply Comment', 'zw-smart-google-reviews') . ' </label>
+					</th>
+					<td>
+						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
+						
+						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
+							' . esc_textarea($zwsgr_reply_comment) . '
+						</textarea>';
+
+						if (!empty($zwsgr_reply_comment)) {
+							echo '<button class="button button-primary button-large" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+						} else {
+							echo '<button class="button button-primary button-large" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
+						}
+						if (!empty($zwsgr_reply_comment)) {
+							echo '<button class="button button-primary button-large" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+						}
+					echo '</td>
+				</tr>
+			</table>';
+			
+		}
+
+		function zwsgr_register_request_data_cpt()
+		{
+			$labels = array(
+				'name'               => __('Request Data', 'zw-smart-google-reviews'),
+				'singular_name'      => __('Request Data', 'zw-smart-google-reviews'),
+				'menu_name'          => __('Request Data', 'zw-smart-google-reviews'),
+				'name_admin_bar'     => __('Request Data', 'zw-smart-google-reviews'),
+				'add_new'            => __('Add New', 'zw-smart-google-reviews'),
+				'add_new_item'       => __('Add New Request Data', 'zw-smart-google-reviews'),
+				'new_item'           => __('New Request Data', 'zw-smart-google-reviews'),
+				'edit_item'          => __('Edit Request Data', 'zw-smart-google-reviews'),
+				'view_item'          => __('View Request Data', 'zw-smart-google-reviews'),
+				'all_items'          => __('All Request Data', 'zw-smart-google-reviews'),
+				'search_items'       => __('Search Request Data', 'zw-smart-google-reviews'),
+				'not_found'          => __('No Request Data found.', 'zw-smart-google-reviews'),
+				'not_found_in_trash' => __('No Request Data found in Trash.', 'zw-smart-google-reviews')
+			);
+
+			$args = array(
+				'label'               => __('Request Data', 'zw-smart-google-reviews'),
+				'labels'              => $labels,
+				'description'         => '',
+				'public'              => true,
+				'publicly_queryable'  => true,
+				'show_ui'             => true,
+				'delete_with_user'    => true,
+				'show_in_rest'        => false,
+				'rest_base'           => '',
+				'show_in_menu'        => false,  // Prevent from showing in the main menu
+				'query_var'           => false,
+				'rewrite'             => array(
+					'slug' => 'zwsgr_request_data',
+					'with_front' => false
+				),
+				'capability_type'     => 'post',
+				'has_archive'         => true,
+				'show_in_nav_menus'   => false,
+				'exclude_from_search' => true,
+				'capabilities'        => array(
+					'read' => true,
+					'create_posts' => 'do_not_allow',
+					'publish_posts' => 'do_not_allow',
+				),
+				'map_meta_cap'        => true,
+				'hierarchical'        => false,
+				'menu_position'       => null,
+				'supports'            => array('title')
+			);
+
+			register_post_type('zwsgr_request_data', $args);  // Updated post type name to zwsgr_request_data
+		}
+
+		// Register the meta box
+		function zwsgr_add_account_number_meta_box() {
+			add_meta_box(
+				'zwsgr_account_number_meta_box', // Meta box ID
+				__('Account Number', 'zw-smart-google-reviews'), // Title
+				array($this, 'zwsgr_display_account_number_meta_box'), // Callback function to display the meta box content
+				'zwsgr_request_data', // Post type
+				'normal', // Context (where to display: 'normal', 'side', 'advanced')
+				'high' // Priority (high, default, low)
+			);
 		}
 
 		/**
@@ -631,9 +819,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 * @method zwsgr_dashboard_page
 		 */
 
-		function zwsgr_layout_callback() 
+		function zwsgr_widget_configurator_callback() 
 		{
-			
+
 			$post_id = $_GET['post_id'];
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
@@ -654,12 +842,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
 			$bg_color = get_post_meta($post_id, 'bg_color', true);
 			$text_color = get_post_meta($post_id, 'text_color', true);
+			$posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
 
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
 			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
 			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
-			$generated_shortcode = '[zwsgr_layout id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
-	
+			// $generated_shortcode = '[zwsgr_widget_configurator id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
+			// Generate the shortcode by calling the new function
+			$generated_shortcode = $this->generate_shortcode($post_id);
+
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
@@ -953,6 +1144,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</label>
 						</div>
 
+						<div id="load-more-settings" style="display: <?php echo ($enable_load_more) ? 'block' : 'none'; ?>">
+							<label for="posts-per-page">Posts per page:</label>
+							<select id="posts-per-page" name="posts_per_page">
+								<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
+								<option value="2" <?php echo ($posts_per_page == 2) ? 'selected' : ''; ?>>2</option>
+								<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>
+								<option value="4" <?php echo ($posts_per_page == 4) ? 'selected' : ''; ?>>4</option>
+								<option value="5" <?php echo ($posts_per_page == 5) ? 'selected' : ''; ?>>5</option>
+							</select>
+						</div>
+
 						<div>
 							<h3>Review us on Google</h3>
 							<label class="switch">
@@ -961,7 +1163,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</label>
 						</div>
 
-						<div id="color-picker-options" style="display: none; margin-top: 10px;">
+						<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'block' : 'none'; ?>">
 							<label for="bg-color-picker">Background Color:</label>
 							<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
 
@@ -981,28 +1183,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			</div>
 
 			<?php
-		}
-
-		// On Edit it redirect to layout page
-		function redirect_custom_post_edit() {
-			 // Check if we're on the edit post screen
-			 if (isset($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit') {
-				// Get the post ID from the URL
-				$post_id = intval($_GET['post']);
-				$layout_option = get_post_meta($post_id, 'layout_option', true);
-				// Specify the custom post type (replace 'your_custom_post_type' with your actual custom post type)
-				$custom_post_type = ZWSGR_POST_WIDGET_TYPE;
-		
-				// Get the post object to check its type
-				$post = get_post($post_id);
-		
-				// Check if the post exists and is of the desired custom post type
-				if ($post && $post->post_type === $custom_post_type) {
-					// Redirect to the desired URL
-					wp_redirect(admin_url('admin.php?page=zwsgr_layout&selectedOption=' . $layout_option . '&post_id=' . $post_id));
-					exit; // Always call exit after wp_redirect
-				}
-			}
 		}
 
 		// Handle AJAX Request to Save Dashboard Data
@@ -1078,9 +1258,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
 			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
 			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
-			$shortcode = isset($_POST['shortcode']) ? sanitize_text_field($_POST['shortcode']) : '';
+			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
 
-			
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);
@@ -1092,11 +1271,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
 			update_post_meta($post_id, 'bg_color', $bg_color);
 			update_post_meta($post_id, 'text_color', $text_color);
-			update_post_meta($post_id, '_generated_shortcode', $shortcode);
+			update_post_meta($post_id, 'posts_per_page', $posts_per_page);
 		
-
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
 		}
+
+		function generate_shortcode($post_id) {
+			// Build the shortcode with attributes
+			$shortcode = '[zwsgr_widget_configurator post-id="' . esc_attr($post_id) . '"]';
+			update_post_meta($post_id, '_generated_shortcode_new', $shortcode);
+			return $shortcode;
+		}		
 	}
 }
