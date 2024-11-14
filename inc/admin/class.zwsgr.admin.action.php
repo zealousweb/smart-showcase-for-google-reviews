@@ -378,13 +378,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</textarea>';
 
 						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="update-replay" style="margin: 10px 10px 0 0;"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+							echo '<button class="button button-primary button-large" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
 						} else {
-							echo '<button class="button button-primary button-large" id="add-replay" style="margin: 10px 10px 0 0;"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
+							echo '<button class="button button-primary button-large" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
 						}
 						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="delete-replay" style="background-color: red; color: white; border-color: red; margin: 10px 10px 0 0;">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
-						}						
+							echo '<button class="button button-primary button-large" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+						}
 					echo '</td>
 				</tr>
 			</table>';
