@@ -751,8 +751,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$current_tab = isset($_GET['tab']) ? $_GET['tab'] : 'google';
 			?>
 			<div class="wrap">
-				<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-				<h2 class="nav-tab-wrapper">
+				<h1 class="zwsgr-page-title"><?php echo esc_html(get_admin_page_title()); ?></h1>
+				<h2 class="nav-tab-wrapper zwsgr-nav-tab-wrapper">
 					<a href="?page=zwsgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
 						<?php _e('Google', 'zw-smart-google-reviews'); ?>
 					</a>
