@@ -64,19 +64,54 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 $zwsgr_api_args['headers']['Content-Type'] = 'application/json';
             }
 
-            $zwsgr_api_response      = wp_remote_request( $zwsgr_api_url, $zwsgr_api_args );
-            $zwsgr_api_status_code   = wp_remote_retrieve_response_code( $zwsgr_api_response );
-            $zwsgr_api_response_body = wp_remote_retrieve_body( $zwsgr_api_response );
+            try {
 
-            if ( is_wp_error( $zwsgr_api_response ) ) {
-                throw new Exception( 'Request Error: ' . $zwsgr_api_response->get_error_message() . " Endpoint: {$zwsgr_api_endpoint}" );
-            }
-            
-            if ( $zwsgr_api_status_code !== 200 ) {
-                throw new Exception( "API Request failed with response code: $zwsgr_api_status_code, Response: $zwsgr_api_response_body, Endpoint: {$zwsgr_api_endpoint}" );
-            }
+                // Make the API request
+                $zwsgr_api_response = wp_remote_request( $zwsgr_api_url, $zwsgr_api_args );
+        
+                // Check if there was an error with the request
+                if ( is_wp_error( $zwsgr_api_response ) ) {
+                    throw new Exception( 'Request failed: ' . $zwsgr_api_response->get_error_message() );
+                }
+        
+                // Check the response status code
+                $zwsgr_api_status_code = wp_remote_retrieve_response_code( $zwsgr_api_response );
 
-            return json_decode( $zwsgr_api_response_body, true );
+                if ( $zwsgr_api_status_code !== 200 ) {
+                    throw new Exception( "API Request failed with response code: $zwsgr_api_status_code" );
+                }
+        
+                // Get the response body and decode it
+                $zwsgr_api_response_body = wp_remote_retrieve_body( $zwsgr_api_response );
+                return json_decode( $zwsgr_api_response_body, true );
+        
+            } catch (Exception $e) {
+
+                if (defined('DOING_AJAX') && DOING_AJAX) {
+                    
+                    // For AJAX requests, send a JSON error response
+                    wp_send_json_error([
+                        'status'  => 'error',
+                        'message' => $e->getMessage(),
+                    ]);
+
+                } elseif (is_admin()) {
+                    
+                    // For admin requests, display a WordPress admin notice
+                    add_action('admin_notices', function() use ($e) {
+                        echo "<div class='notice notice-error'><p>Error: {$e->getMessage()}</p></div>";
+                    });
+
+                } else {
+
+                    // For other contexts, log the error
+                    error_log("API Error: {$e->getMessage()}");
+                    
+                }
+
+                return false;
+
+            }
 
         }
 
@@ -276,6 +311,17 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Make the API request to add/update the review reply on Google’s server
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, $zwsgr_payload_data, 'PUT', 'v4');
 
+            // Check if the API response was successful
+            if ( isset($zwsgr_response['error']) ) {
+
+                // If there's an error in the response, send a JSON error response
+                wp_send_json_error( array(
+                    'status'  => 'error',
+                    'message' => $zwsgr_response['error']['message'] ?? 'Unknown error occurred.',
+                ));
+
+            }
+
             if (isset($zwsgr_response) && isset($zwsgr_response['comment']) && isset($zwsgr_response['updateTime'])) {
 
                 $zwsgr_reply_comment     = $zwsgr_response['comment'];
@@ -284,23 +330,14 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_comment', $zwsgr_reply_comment);
                 update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_update_time', $zwsgr_reply_update_time);
 
-                wp_send_json_success(
-                    array(
-                        'message' => __('Review updated successfully', 'zw-smart-google-reviews')
-                    )
-                );
+                // Send a success response back to the client
+                wp_send_json_success( array(
+                    'message' => __('Review updated successfully', 'zw-smart-google-reviews'),
+                    'status'  => 200,
+                ));
                 exit;
 
-            } else {
-                wp_send_json_error(
-                    array(
-                        'message' => __('There was an error while updating the review', 'zw-smart-google-reviews')
-                    )
-                );
-                exit;
             }
-
-            wp_die();
         }
         
         /**
@@ -324,6 +361,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
             $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
             $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
+            $zwsgr_wp_review_id   = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
 
             // Ensure all required parameters are provided
             if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
@@ -346,8 +384,27 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Send the DELETE request to the Google My Business API to delete the review reply
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, [], 'DELETE', 'v4' );
 
-            // Terminate execution and send an appropriate HTTP response
-            wp_die();
+            // Check if the API response was successful
+            if ( isset($zwsgr_response['error']) ) {
+
+                // If there's an error in the response, send a JSON error response
+                wp_send_json_error( array(
+                    'status'  => 'error',
+                    'message' => $zwsgr_response['error']['message'] ?? 'Unknown error occurred.',
+                ));
+
+            }
+
+            // Delete the reply comment from the postmeta table if it's associated with the review
+            if ( !empty( $zwsgr_wp_review_id ) ) {
+                delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_comment' );
+            }
+
+            // Send a success response back to the client
+            wp_send_json_success( array(
+                'message' => 'Review reply successfully deleted.',
+                'status'  => 200,
+            ));
 
         }
 
