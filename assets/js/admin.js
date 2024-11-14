@@ -832,6 +832,10 @@ jQuery(document).ready(function($) {
 	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
 	
 		e.preventDefault();
+
+		// Show the WordPress loader
+		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
+		$("#delete-replay").after(loader);
 	
 		// Get the value of the 'Reply Comment' textarea
 		var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
@@ -859,13 +863,34 @@ jQuery(document).ready(function($) {
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
 			success: function(response) {
+
+				loader.remove();
+
 				if (response.success) {
-					alert('Reply successfully added!');
-				} else {
-					alert('There was an issue with adding the reply.');
+
+					// Append the error message below the reply button
+					$("#json-response-message").html(response.data.message);
+
+					setTimeout(function() {
+						location.reload();
+					}, 2000);
+
 				}
+
 			},
 			error: function(xhr, status, error) {
+
+				// Construct the error message to be appended
+				var errorMessage = $("<div>", {
+					class: "error-message",
+					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
+				});
+
+				// Append the error message below the reply button
+				$("#json-response-message").html(errorMessage);
+
+				loader.remove();
+
 			}
 		});
 	
@@ -874,6 +899,10 @@ jQuery(document).ready(function($) {
 	  $("#gmb-review-data #delete-replay").on("click", function (e) {
 		
 		e.preventDefault();
+
+		// Show the WordPress loader
+		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
+		$("#delete-replay").after(loader);
 	
 		// Get the value of the 'Account ID' input
 		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
@@ -893,19 +922,41 @@ jQuery(document).ready(function($) {
 				zwsgr_account_number: zwsgr_account_number,
 				zwsgr_location_code: zwsgr_location_code,
 				zwsgr_review_id: zwsgr_review_id,
+				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
 			success: function(response) {
+				
+				loader.remove();
+
 				if (response.success) {
-					alert('Reply deleted added!');
-				} else {
-					alert('There was an issue while deleting your replay.');
+
+					// Append the error message below the reply button
+					$("#json-response-message").html(response.data.message);
+
+					setTimeout(function() {
+						location.reload();
+					}, 2000);
+
 				}
+
 			},
 			error: function(xhr, status, error) {
+				
+				// Construct the error message to be appended
+				var errorMessage = $("<div>", {
+					class: "error-message",
+					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
+				});
+
+				// Append the error message below the reply button
+				$("#json-response-message").html(errorMessage);
+
+				loader.remove();
+
 			}
 		});
 	
-	  });
+	});
 
 });

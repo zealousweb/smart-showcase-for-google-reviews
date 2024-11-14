@@ -371,6 +371,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_reply_comment"> ' . __('Reply Comment', 'zw-smart-google-reviews') . ' </label>
 					</th>
 					<td>
+						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
 							' . esc_textarea($zwsgr_reply_comment) . '
 						</textarea>';
