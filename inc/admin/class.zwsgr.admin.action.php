@@ -372,17 +372,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
+						
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
 							' . esc_textarea($zwsgr_reply_comment) . '
 						</textarea>';
+
 						if (!empty($zwsgr_reply_comment)) {
 							echo '<button class="button button-primary button-large" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
 						} else {
 							echo '<button class="button button-primary button-large" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
 						}
 						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="delete-replay" style="background-color: red; color: white; border-color: red; margin-left: 10px;">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
-						}						
+							echo '<button class="button button-primary button-large" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+						}
 					echo '</td>
 				</tr>
 			</table>';
