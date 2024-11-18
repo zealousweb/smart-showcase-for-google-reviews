@@ -20,7 +20,8 @@ if ( !class_exists( 'ZWSGR_Admin' ) ) {
 	class ZWSGR_Admin {
 
 		
-		function __construct() {
+		function __construct() 
+		{
 			
 
 		}
