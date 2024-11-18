@@ -80,6 +80,7 @@ if ( !function_exists( 'ZWSGR' ) ) {
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.filter.php' );
 	}
 
+	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.cs.php' );
 	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.lib.php' );
 
 	//Initialize all the things.
