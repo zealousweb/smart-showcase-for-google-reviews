@@ -100,7 +100,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     $zwsgr_gmb_data = $this->client->zwsgr_get_locations($zwsgr_account_number, $zwsgr_next_page_token);
                     break;
                 case 'zwsgr_gmb_reviews':
-                    $zwsgr_gmb_data = $this->client->zwsgr_get_reviews($zwsgr_account_number, $zwsgr_location_number, $zwsgr_next_page_token);                    
+                    $zwsgr_gmb_data = $this->client->zwsgr_get_reviews($zwsgr_account_number, $zwsgr_location_number, $zwsgr_next_page_token);            
                     break;
                 default:
                     error_log("Invalid GMB data type: " . $zwsgr_gmb_data_type);
@@ -121,12 +121,18 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 $this->process->push_to_queue($zwsgr_push_data_to_queue);
 
                 $this->process->save()->dispatch();
-                
-                wp_send_json_success(
-                    array(
-                        'message' => "Batch Processing started.",
-                    )
-                );
+
+                if ( empty($zwsgr_gmb_data['nextPageToken']) ) {
+                    return false;
+                }
+
+                if (defined('DOING_AJAX') && DOING_AJAX) {
+                    wp_send_json_success(
+                        array(
+                            'message' => "Batch Processing started.",
+                        )
+                    );
+                }
 
             } else {
 
@@ -147,6 +153,8 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 } else {
                     error_log("Failed to delete option 'zwsgr_batch_process_status: Failed at index " . $zwsgr_current_index);
                 }
+
+                return;
                 
                 wp_send_json_error(
                     array(
@@ -157,7 +165,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
             }
 
-            wp_die();
+            return;
         
         }
 

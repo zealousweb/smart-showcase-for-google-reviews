@@ -43,8 +43,13 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
 
             $this->client = new Zwsgr_Queue_Manager();
 
-            // Hook into WordPress 'init' action to schedule the cron job.
-            add_action( 'init', [$this, 'zwsgr_cron_scheduler_callback'] );
+            add_action( 'cron_schedules', [$this, 'zwsgr_add_custom_cron_schedules'] );
+
+            // Hook into 'init' to set the default cron schedule if no option is selected
+            add_action( 'admin_init', [$this, 'zwsgr_set_default_cron_schedule'] );
+
+            // Update cron schedule on option change
+            add_action( 'update_option_zwsgr_sync_reviews', [ $this, 'zwsgr_sync_reviews_scheduler_callback' ], 10, 2 );
 
             // Hook into the 'zwsgr_data_sync' action to trigger the data sync task.
             add_action( 'zwsgr_data_sync', [$this, 'zwsgr_data_sync_callback'] );
@@ -52,25 +57,93 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
         }
 
         /**
-         * Callback for the 'init' action to schedule the cron job.
+         * Adds custom 'monthly' and 'weekly' cron schedule intervals to WordPress.
          *
-         * This method checks if the cron event for 'zwsgr_data_sync' is already scheduled.
-         * If not, it schedules the cron event to run daily. The event will trigger the 
-         * `zwsgr_data_sync` action that will be processed by the callback function.
+         * This function hooks into the 'cron_schedules' filter to add custom
+         * schedule intervals for running cron jobs once every month (approximately
+         * 30 days) and once every week.
+         *
+         * @param array $schedules Existing cron schedules.
+         * @return array Modified cron schedules with the added 'monthly' and 'weekly' intervals.
+         */
+        function zwsgr_add_custom_cron_schedules( $zwsgr_cron_schedules ) {
+
+            // Add a custom 'monthly' interval with a 30-day frequency
+            $zwsgr_cron_schedules['monthly'] = array(
+                'interval' => 30 * DAY_IN_SECONDS,
+                'display'  => __( 'Once Monthly' ), 
+            );
+
+            // Add a custom 'weekly' interval with a 7-day frequency
+            $zwsgr_cron_schedules['weekly'] = array(
+                'interval' => 7 * DAY_IN_SECONDS,
+                'display'  => __( 'Once Weekly' ),
+            );
+
+            // Return the modified list of schedules
+            return $zwsgr_cron_schedules;
+        }
+
+         /**
+         * Sets the default cron schedule to 'monthly' if no option is selected already.
+         * This method checks the value of the 'zwsgr_sync_reviews' option and schedules 
+         * the cron job accordingly.
+         *
+         * @since 1.0.0
+         */
+        public function zwsgr_set_default_cron_schedule() {
+
+            $zwsgr_new_frequency = get_option( 'zwsgr_sync_reviews');
+
+            if ( empty( $zwsgr_new_frequency ) ) {
+                update_option( 'zwsgr_sync_reviews', 'monthly' );
+            }
+
+            $this->zwsgr_sync_reviews_scheduler_callback( '', $zwsgr_new_frequency );
+
+        }
+
+        /**
+         * Callback for the 'init' action to schedule the cron job based on the 
+         * 'zwsgr_sync_reviews' option.
+         *
+         * This method checks the value of the 'zwsgr_sync_reviews' option and schedules 
+         * the cron job accordingly. If no valid value is set, it does not schedule the cron.
          * 
          * @since 1.0.0
          */
-        public function zwsgr_cron_scheduler_callback() {
-            // Check if the 'zwsgr_data_sync' cron job is already scheduled
-            if ( ! wp_next_scheduled( 'zwsgr_data_sync' ) ) {
-                // Schedule the 'zwsgr_data_sync' event to run daily
-                wp_schedule_event( time(), 'daily', 'zwsgr_data_sync' );
-                error_log( 'Scheduled zwsgr_data_sync cron job' );
-            } else {
-                // Log if the cron job is already scheduled
-                error_log( 'zwsgr_data_sync cron job already scheduled' );
+        public function zwsgr_sync_reviews_scheduler_callback($zwsgr_old_frequency, $zwsgr_new_frequency) {
+            
+            error_log('within function');
+
+            // Ensure the new frequency is valid
+            if ( !in_array( $zwsgr_new_frequency, ['daily', 'weekly', 'monthly'], true ) ) {
+                error_log( "Invalid frequency: $zwsgr_new_frequency" );
+                return;
             }
+
+            // Check if a cron job is already scheduled
+            if ( wp_next_scheduled( 'zwsgr_data_sync' ) ) {
+                // If the old frequency exists, clear the existing cron event
+                wp_clear_scheduled_hook( 'zwsgr_data_sync' );
+                error_log( "Existing cron cleared with old frequency: $zwsgr_old_frequency" );
+            }
+
+             // Calculate the start time based on the selected frequency
+            $zwsgr_frequency_to_time = [
+                'daily' => 'tomorrow midnight',
+                'weekly' => 'next week midnight',
+                'monthly' => 'first day of next month midnight',
+            ];
+
+            $zwsgr_start_time = strtotime( $zwsgr_frequency_to_time[ $zwsgr_new_frequency ] );
+
+            // Schedule a new cron event with the new frequency
+            wp_schedule_event( $zwsgr_start_time, $zwsgr_new_frequency, 'zwsgr_data_sync' );
+            error_log( "New cron scheduled with frequency: $zwsgr_new_frequency, starting at: " . date( 'Y-m-d H:i:s', $zwsgr_start_time ) );
+
         }
+
 
         /**
          * Callback function for the 'zwsgr_data_sync' cron event.
@@ -82,8 +155,48 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
          */
         public function zwsgr_data_sync_callback() {
 
-            $this->client->zwsgr_fetch_gmb_data(false, false, 'zwsgr_gmb_reviews', '111552359828900887169', '2718280351551476568');
-            $this->client->zwsgr_fetch_gmb_data(false, false, 'zwsgr_gmb_reviews', '111552359828900887169', '17762185678414963374');
+            // Set up WP_Query arguments
+            $zwsgr_data_widgets_args = [
+                'post_type'      => 'zwsgr_data_widget',
+                'post_status'    => 'publish',
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+            ];
+
+            // Execute the query
+            $zwsgr_widget_query = new WP_Query($zwsgr_data_widgets_args);
+
+            // Check if posts were found
+            if (!$zwsgr_widget_query->have_posts()) {
+                return; // No posts to process
+            }
+
+            if ($zwsgr_widget_query->have_posts()) {
+                while ($zwsgr_widget_query->have_posts()) {
+                    $zwsgr_widget_query->the_post();
+
+                    $zwsgr_widget_id       = get_the_ID();
+                    $zwsgr_account_number  = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
+                    $zwsgr_location_number = get_post_meta($zwsgr_widget_id, 'zwsgr_location_number', true);
+
+                    // Validate account and location numbers
+                    if (!$zwsgr_account_number || empty($zwsgr_location_number)) {
+                        continue;
+                    }
+
+                    $is_data_sync = $this->client->zwsgr_fetch_gmb_data(false, false, 'zwsgr_gmb_reviews', $zwsgr_account_number, $zwsgr_location_number);
+
+                    if (!$is_data_sync) {
+                        error_log('Data sync for widget:' . $zwsgr_widget_id . 'has been successfully processed');
+                    } else {
+                        error_log('There was an error while Data sync for widget:' . $zwsgr_widget_id);
+                    }
+                    
+                }
+                wp_reset_postdata();
+            } else {
+                return;
+            }
 
         }
 
