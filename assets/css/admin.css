@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 .switch {
     position: relative;
     display: inline-block;
@@ -170,3 +172,180 @@ input:checked + .slider:before {
     border-color: red;
     margin: 10px 10px 0 0;
 }
+
+
+
+
+
+
+
+/* Final Design CSS */
+
+h1.zwsgr-page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1B1B1B;
+    font-family: 'Poppins', sans-serif;
+    border-bottom:1px solid rgba(16, 41, 50, 0.10);
+    padding-bottom: 20px;
+}
+.zwsgr-nav-tab-wrapper {
+    border-bottom: 1px solid rgba(221, 225, 231, 1);
+}
+
+.zwsgr-nav-tab-wrapper .nav-tab{
+    background: none;
+    box-shadow: none;
+    border: none;
+    color: #285064;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    padding-bottom: 15px;
+}
+
+.nav-tab.nav-tab-active {
+    background: none !important;
+    border: none;
+    border-bottom-width: 3px;
+    border-bottom-color: #11AAB4 !important;
+    border-bottom-style: solid;
+}
+
+
+input.zwsgr-input-text{
+    padding: 10px 16px;
+    border: 1px solid #C1CFDE;
+    background: #FCFCFC;
+    height: 48px;
+    box-shadow: none;
+    color: #4A494B;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+    width: 100%;
+    max-width: 400px;
+}
+
+select.zwsgr-input-text{
+    padding: 10px 16px;
+    border: 1px solid #C1CFDE;
+    height: 48px;
+    box-shadow: none;
+    color: #4A494B;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+    background: #FCFCFC url('../images/down-arrow.png') no-repeat right 7px top 55%;
+    background-size: 16px 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+select.zwsgr-input-text option {
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    padding: 10px;
+}
+
+select.zwsgr-input-text:focus,
+input.zwsgr-input-text:focus {
+   box-shadow: none;
+   border: 1px solid #C1CFDE;
+}
+
+input.zwsgr-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #9C9C9C;
+    background: #F6F6F6;
+
+}
+input.zwsgr-checkbox:checked {
+    background-color: #11AAB4;  
+    border: 1px solid #0074A2;
+    border-radius: 4px;
+}
+input.zwsgr-checkbox:checked:before {
+    content: url('../images/checked-icon.png') ;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: 14px;
+    width: 14px;
+    margin: 0;
+}
+.zwsgr-label {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+}
+.zwsgr-submit-btn.button {
+    padding: 20px 24px 20px 24px;
+    border-radius: 4px;
+    border: 1px solid #11AAB4;
+    background: #FFFFFF;
+    color: #0074A2;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+}
+
+.zwsgr-submit-btn.button:hover {
+    background-color: #0074A2;
+    color: #FFFFFF;
+}
+
+.zwsgr-section-wrap {
+    border-radius: 16px;
+    box-shadow: 0px 0.5px 2px 0px #252A3B1C;
+    background: #FFFFFF;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.zwsgr-section-wrap form h2 {
+    display: none;
+}
+
+
+.zwsgr-setting-form th,
+.zwsgr-th {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #285064;
+}
+
+.zwsgr-description {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    color: #285064;
+    margin-top: 5px;
+}
+
+.zwsgr-notification-field {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.zwsgr-notification-field .zwsgr-th-label {
+    width: 200px;
+}
+.zwsgr-notification-field .zwsgr-field {
+    width: 100%;
+    max-width: 400px;
+}
+

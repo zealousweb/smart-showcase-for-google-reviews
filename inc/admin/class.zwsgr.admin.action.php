@@ -309,7 +309,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
 			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
 
-			echo '<table class="form-table" id="gmb-review-data">
+			echo '<table class="form-table test" id="gmb-review-data">
 				<tr>
 					<th>
 						<label for="zwsgr_review_id">' . __('Account ID', 'zw-smart-google-reviews') . '</label>
@@ -614,17 +614,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		}
 
+	
+
 		// Google API Key callback
 		function zwsgr_google_api_key_callback()
 		{
 			$value = get_option('zwsgr_google_business_api_key', '');
-			echo '<input type="text" id="zwsgr_google_business_api_key" name="zwsgr_google_business_api_key" value="' . esc_attr($value) . '" />';
+			echo '<input type="text" id="zwsgr_google_business_api_key" name="zwsgr_google_business_api_key" class="zwsgr-input-text" value="' . esc_attr($value) . '" />';
 		}
 
 		function zwsgr_google_place_id_callback()
 		{
 			$value = get_option('zwsgr_google_business_place_id', '');
-			echo '<input type="text" id="zwsgr_google_business_place_id" name="zwsgr_google_business_place_id" value="' . esc_attr($value) . '" />';
+			echo '<input type="text" id="zwsgr_google_business_place_id" name="zwsgr_google_business_place_id" class="zwsgr-input-text" value="' . esc_attr($value) . '" />';
 		}
 
 		// Notifications callback
@@ -640,17 +642,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_admin_notification_emails_callback()
 		{
 			$value = get_option('zwsgr_admin_notification_emails', '');
-			echo '<label>Custom Email Addresses</label>';
-			echo '<input type="text" id="zwsgr_admin_notification_emails" name="zwsgr_admin_notification_emails" rows="5" cols="50" value="' . esc_attr($value) . '" />';
-			echo '<p class="description">' . __('Enter email addresses separated by commas.', 'zw-smart-google-reviews') . '</p>';
+			echo '<div class="zwsgr-notification-field">';
+			echo '<div class="zwsgr-th-label">';
+			echo '<label class="zwsgr-th">Custom Email Addresses</label>';
+			echo '</div>';
+			echo '<div class="zwsgr-field">';
+			echo '<input type="text" id="zwsgr_admin_notification_emails" name="zwsgr_admin_notification_emails" class="zwsgr-input-text" rows="5" cols="50" value="' . esc_attr($value) . '" />';
+			echo '<p class="zwsgr-description">' . __('Enter email addresses separated by commas.', 'zw-smart-google-reviews') . '</p>';
+			echo '</div>';
+			echo '</div>';
 		}
 
 		function zwsgr_admin_notification_emails_subject_callback()
 		{
 			$value = get_option('zwsgr_admin_notification_emails_subject', '');
-			echo '<label>Custom Email Subject</label>';
-			echo '<input type="text" id="zwsgr_admin_notification_emails_subject" name="zwsgr_admin_notification_emails_subject" rows="5" cols="50" value="' . esc_attr(
+			echo '<div class="zwsgr-notification-field">';
+			echo '<div class="zwsgr-th-label">';
+			echo '<label class="zwsgr-th">Custom Email Subject</label>';
+			echo '</div>';
+			echo '<div class="zwsgr-field">';
+			echo '<input type="text" id="zwsgr_admin_notification_emails_subject" class="zwsgr-input-text" name="zwsgr_admin_notification_emails_subject" rows="5" cols="50" value="' . esc_attr(
 				$value) . '" />';
+			echo '</div>';
+			echo '</div>';
 		}
 
 		function zwsgr_admin_notofication_email_body_callback() {
@@ -667,20 +681,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				),
 				'textarea_rows' => 10, // Set the number of rows for the editor
 			);
-
+			
 			echo '<div class="zwsgr-editor-wrapper">';
-				echo '<label for="zwsgr_admin_notification_email_body">' . __('Email Body', 'zw-smart-google-reviews') . '</label>';
+				echo '<div class="zwsgr-th-label">';
+				echo '<label for="zwsgr_admin_notification_email_body" class="zwsgr-th">' . __('Email Body', 'zw-smart-google-reviews') . '</label>';
+				echo '</div>';
+				echo '<div class="zwsgr-field">';
 				wp_editor($value, 'zwsgr_admin_notification_email_body', $settings);
-				echo '<p class="description">' . __('Enter your custom email body content here.', 'zw-smart-google-reviews') . '</p>';
+				echo '<p class="zwsgr-description">' . __('Enter your custom email body content here.', 'zw-smart-google-reviews') . '</p>';
+				echo '</div>';
 			echo '</div>';
 		}
-		
 
 		//Advance Section 
 		function zwsgr_sync_reviews_callback()
 		{
 			$value = get_option('zwsgr_sync_reviews', 'daily');
-			echo '<select id="zwsgr_sync_reviews" name="zwsgr_sync_reviews">
+			echo '<select id="zwsgr_sync_reviews" name="zwsgr_sync_reviews" class="zwsgr-input-text">
 					<option value="daily" ' . selected($value, 'daily', false) . '>Daily</option>
 					<option value="weekly" ' . selected($value, 'weekly', false) . '>Weekly</option>
 					<option value="monthly" ' . selected($value, 'monthly', false) . '>Monthly</option>
@@ -690,8 +707,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_google_analytics_tracking_id_callback()
 		{
 			$value = get_option('zwsgr_google_analytics_tracking_id', '');
-			echo '<input type="text" id="zwsgr_google_analytics_tracking_id" name="zwsgr_google_analytics_tracking_id" value="' . esc_attr($value) . '" />';
-			echo '<p class="description">' . __('Enter your Google Analytics Tracking ID (e.g., UA-XXXXXXXXX-Y).', 'zw-smart-google-reviews') . '</p>';
+			echo '<input type="text" id="zwsgr_google_analytics_tracking_id" class="zwsgr-input-text" name="zwsgr_google_analytics_tracking_id" value="' . esc_attr($value) . '" />';
+			echo '<p class="zwsgr-description">' . __('Enter your Google Analytics Tracking ID (e.g., UA-XXXXXXXXX-Y).', 'zw-smart-google-reviews') . '</p>';
 		}
 
 		/**
@@ -751,53 +768,59 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$current_tab = isset($_GET['tab']) ? $_GET['tab'] : 'google';
 			?>
 			<div class="wrap">
-				<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-				<h2 class="nav-tab-wrapper">
-					<a href="?page=zwsgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
-						<?php _e('Google', 'zw-smart-google-reviews'); ?>
-					</a>
-					<a href="?page=zwsgr_settings&tab=notifications" class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
-						<?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?>
-					</a>
-					<a href="?page=zwsgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
-						<?php _e('Advanced', 'zw-smart-google-reviews'); ?>
-					</a>
-				</h2>
+				<h1 class="zwsgr-page-title"><?php echo esc_html(get_admin_page_title()); ?></h1>
+				<div class="zwsgr-section-wrap">
+					<h2 class="nav-tab-wrapper zwsgr-nav-tab-wrapper">
+						<a href="?page=zwsgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
+							<?php _e('Google', 'zw-smart-google-reviews'); ?>
+						</a>
+						<a href="?page=zwsgr_settings&tab=notifications" class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
+							<?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?>
+						</a>
+						<a href="?page=zwsgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
+							<?php _e('Advanced', 'zw-smart-google-reviews'); ?>
+						</a>
+					</h2>
+					<?php if ($current_tab === 'google'): ?>
+						<form action="options.php" method="post" class="zwsgr-setting-form">
+							<?php
+							settings_fields('zwsgr_google_account_settings');
+							do_settings_sections('zwsgr_google_account_settings');
+							submit_button( 'Save Google Settings', 'zwsgr-submit-btn', 'submit_buttons' );
+							
+							?>
+						</form>
+					<?php elseif ($current_tab === 'notifications'): ?>
+						<form id="notification-form" action="" method="post" class="zwsgr-setting-form">
+							<?php
+							settings_fields('zwsgr_notification_settings');
+							do_settings_sections('zwsgr_notification_settings');
+							?>
+							<div class="zwsgr-notification-fields">
+								<?php $this->zwsgr_admin_notification_emails_callback(); ?>
+								<?php $this->zwsgr_admin_notification_emails_subject_callback(); ?>
+								<?php $this->zwsgr_admin_notofication_email_body_callback(); ?>
+							</div>
+							<!-- Error message container -->
+							<span id="email-error" style="color: red; display: none;"></span>
+							<!-- Success message container -->
+							<span id="email-success" style="color: green; display: none;"></span>
+							<?php 
+							submit_button( 'Send Notification Emails', 'zwsgr-submit-btn', 'submit_buttons' );
 
-				<?php if ($current_tab === 'google'): ?>
-					<form action="options.php" method="post">
-						<?php
-						settings_fields('zwsgr_google_account_settings');
-						do_settings_sections('zwsgr_google_account_settings');
-						submit_button('Save Google Settings');
-						?>
-					</form>
-				<?php elseif ($current_tab === 'notifications'): ?>
-					<form id="notification-form" action="" method="post">
-						<?php
-						settings_fields('zwsgr_notification_settings');
-						do_settings_sections('zwsgr_notification_settings');
-						?>
-						<div class="notification-fields">
-							<?php $this->zwsgr_admin_notification_emails_callback(); ?>
-							<?php $this->zwsgr_admin_notification_emails_subject_callback(); ?>
-							<?php $this->zwsgr_admin_notofication_email_body_callback(); ?>
-						</div>
-						<!-- Error message container -->
-						<span id="email-error" style="color: red; display: none;"></span>
-						<!-- Success message container -->
-						<span id="email-success" style="color: green; display: none;"></span>
-						<?php submit_button('Send Notification Emails'); ?>
-					</form>
-				<?php elseif ($current_tab === 'advanced'): ?>
-					<form action="options.php" method="post">
-						<?php
-						settings_fields('zwsgr_advanced_account_settings');
-						do_settings_sections('zwsgr_advanced_account_settings');
-						submit_button('Save Advanced Settings');
-						?>
-					</form>
-				<?php endif; ?>
+							?>
+						</form>
+					<?php elseif ($current_tab === 'advanced'): ?>
+						<form action="options.php" method="post" class="zwsgr-setting-form">
+							<?php
+							settings_fields('zwsgr_advanced_account_settings');
+							do_settings_sections('zwsgr_advanced_account_settings');
+							submit_button( 'Save Advanced Settings', 'zwsgr-submit-btn', 'submit_buttons' );
+
+							?>
+						</form>
+					<?php endif; ?>
+				</div>
 			</div>
 			<?php
 		}
@@ -998,29 +1021,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<h3>Hide Element</h3>
 							<ul>
 								<li>
-									<input type="checkbox" id="review-title" name="review-element" value="review-title" 
+									<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
 									<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
-									<label for="review-title">Title</label>
+									<label for="review-title" class="zwsgr-label">Title</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-rating" name="review-element" value="review-rating" 
+									<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
 									<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
-									<label for="review-rating">Rating</label>
+									<label for="review-rating" class="zwsgr-label">Rating</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-days-ago" name="review-element" value="review-days-ago" 
+									<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
 									<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
-									<label for="review-days-ago">Days Ago</label>
+									<label for="review-days-ago" class="zwsgr-label">Days Ago</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-content" name="review-element" value="review-content" 
+									<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
 									<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
-									<label for="review-content">Review Content</label>
+									<label for="review-content" class="zwsgr-label">Review Content</label>
 								</li>
 								<li>
-									<input type="checkbox" id="review-photo" name="review-element" value="review-photo" 
+									<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
 									<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
-									<label for="review-photo">Reviewer Photo</label>
+									<label for="review-photo" class="zwsgr-label">Reviewer Photo</label>
 								</li>
 								<!-- Add more elements as needed -->
 							</ul>
@@ -1059,7 +1082,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div>
 							<h3>Keywords</h3>
 							<label for="keywords-input">Enter Keywords (separate by commas):</label>
-							<input type="text" id="keywords-input" name="keywords-input" placeholder="e.g., keyword1, keyword2, keyword3">
+							<input type="text" id="keywords-input" name="keywords-input" class="zwsgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
 							<small>Type keywords separated by commas</small>
 
 							<!-- Hidden input field to store comma-separated keywords for submission -->
@@ -1086,7 +1109,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
   
 						<div>
 							<h3>Date Format</h3>
-							<select id="date-format-select" name="date-format">
+							<select id="date-format-select" name="date-format" class="zwsgr-input-text">
 								<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
 								<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
 								<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
@@ -1097,12 +1120,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 						<div>
 							<h3>Trim long reviews with a "read more" link</h3>
-							<input type="number" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
+							<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
 						</div>
 
 						<div>
 							<h3>Language</h3>
-							<select id="language-select" name="language">
+							<select id="language-select" name="language" class="zwsgr-input-text">
 								<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
 								<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
 								<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
@@ -1128,7 +1151,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 						<div>
 							<h3>Sort By</h3>
-							<select id="sort-by-select" name="sort_by">
+							<select id="sort-by-select" name="sort_by" class="zwsgr-input-text">
 								<option value="relevant" <?php echo ($sort_by === 'relevant') ? 'selected' : ''; ?>>Most Relevant</option>
 								<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
 								<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
@@ -1146,7 +1169,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 						<div id="load-more-settings" style="display: <?php echo ($enable_load_more) ? 'block' : 'none'; ?>">
 							<label for="posts-per-page">Posts per page:</label>
-							<select id="posts-per-page" name="posts_per_page">
+							<select id="posts-per-page" name="posts_per_page" class="zwsgr-input-text">
 								<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
 								<option value="2" <?php echo ($posts_per_page == 2) ? 'selected' : ''; ?>>2</option>
 								<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>

@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 
 	//SEO and Notification Email Toggle 
 	var toggle = $('#zwsgr_admin_notification_enabled');
-	var notificationFields = $('.notification-fields');
+	var notificationFields = $('.zwsgr-notification-fields');
 	if (toggle.is(':checked')) {
 		notificationFields.show();
 	} else {
