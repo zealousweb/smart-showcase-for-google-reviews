@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 .switch {
@@ -34,7 +35,8 @@
     border-radius: 50%;
 }
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #0074A2;
+
 }
 input:checked + .slider:before {
     transform: translateX(26px);
@@ -59,33 +61,11 @@ input:checked + .slider:before {
     font-size: 18px;
 }
 
-
-
-.tab-nav {
-    display: flex;
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: 1rem;
-}
-
-.tab-item {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    margin-right: 0.5rem;
-}
-
-.tab-item.active {
-    background-color: #0073aa;
-    color: white;
-}
-
 .tab-content {
     display: none;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    background-color: #fff;
+    padding-right: 1rem;
+    /*  border: 1px solid #ccc;
+    background-color: #fff; */
 }
 
 .tab-content.active {
@@ -181,7 +161,7 @@ input:checked + .slider:before {
 
 /* Final Design CSS */
 
-h1.zwsgr-page-title {
+.zwsgr-page-title {
     font-size: 18px;
     font-weight: 600;
     color: #1B1B1B;
@@ -226,9 +206,24 @@ input.zwsgr-input-text{
     font-family: 'Poppins', sans-serif;
     line-height: 1;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
 }
 
+.zwsgr-textarea {
+    padding: 10px 16px;
+    border: 1px solid #C1CFDE;
+    background: #FCFCFC;
+    height: 200px;
+    box-shadow: none;
+    color: #4A494B;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+    width: 100%;
+
+}
 select.zwsgr-input-text{
     padding: 10px 16px;
     border: 1px solid #C1CFDE;
@@ -243,7 +238,7 @@ select.zwsgr-input-text{
     background: #FCFCFC url('../images/down-arrow.png') no-repeat right 7px top 55%;
     background-size: 16px 10px;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
 }
 
 select.zwsgr-input-text option {
@@ -282,7 +277,7 @@ input.zwsgr-checkbox:checked:before {
     width: 14px;
     margin: 0;
 }
-.zwsgr-label {
+.zwsgr-chechbox-label {
     font-size: 16px;
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
@@ -292,7 +287,7 @@ input.zwsgr-checkbox:checked:before {
     padding: 20px 24px 20px 24px;
     border-radius: 4px;
     border: 1px solid #11AAB4;
-    background: #FFFFFF;
+    background-color: #FFFFFF;
     color: #0074A2;
     font-size: 16px;
     font-weight: 500;
@@ -302,6 +297,25 @@ input.zwsgr-checkbox:checked:before {
 
 .zwsgr-submit-btn.button:hover {
     background-color: #0074A2;
+    color: #FFFFFF;
+}
+
+.zwsgr-btn {
+    background-color: #F08C3C;
+    padding: 20px 24px 20px 24px;
+    border-radius: 4px;
+    color: #102932;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+    border: 1px solid #F5B976;
+    cursor: pointer;
+}
+
+.zwsgr-btn:hover {
+    background-color: #0074A2;
+    border: 1px solid #0074A2;
     color: #FFFFFF;
 }
 
@@ -319,7 +333,8 @@ input.zwsgr-checkbox:checked:before {
 
 
 .zwsgr-setting-form th,
-.zwsgr-th {
+.zwsgr-th,
+.zwsgr-label {
     font-size: 16px;
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
@@ -349,3 +364,134 @@ input.zwsgr-checkbox:checked:before {
     max-width: 400px;
 }
 
+.zwsgr-widget-settings {
+    box-shadow: 0px 0.5px 2px 0px #252A3B1C;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.zwsgr-widget-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.zwsgr-widget-wrap .zwsgr-widget-setting {
+    width: 45%;
+}
+
+.zwsgr-widget-wrap .zwsgr-widget-eleemt-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+.zwsgr-widget-wrap .zwsgr-widget-eleemt-list li {
+    padding: 0 0 20px 0;
+    margin: 0;
+    width: 33.33%;
+}
+
+.zwsgr-color-options {
+    display: flex;
+    margin-top: 10px;
+}
+
+.zwsgr-color-options .zwsgr-color-picker {
+    margin-right: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.zwsgr-color-options .zwsgr-color-picker label {
+    padding-right: 10px;
+}
+
+.zwsgr-custom-tab {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 30px 0;
+}
+
+.zwsgr-custom-tab .zwsgr-tab-item {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4A494B;
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: none;
+    text-transform: capitalize;
+    
+}
+.zwsgr-custom-tab .zwsgr-tab-item.done {
+    pointer-events: all;
+}
+
+.zwsgr-custom-tab .zwsgr-tab-item.active {
+    color: #285064;
+    font-weight: 600;
+    pointer-events: all;
+}
+
+.zwsgr-custom-tab .zwsgr-tab-item span.zwsgr-step {
+    font-weight: 600;
+    color: #1B1B1B;
+    margin-right: 10px;
+    position: relative;
+    width: 18px;
+    height: 19px;
+    background: #f0f0f1;
+    border-radius: 200%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+.zwsgr-custom-tab .zwsgr-tab-item.done span.zwsgr-step {
+    font-size: 0;
+}
+.zwsgr-custom-tab .zwsgr-tab-item.done span.zwsgr-step:before {
+    content: url('../images/step-done-icon.png') ;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    height: 18px;
+    width: 18px;
+    margin: 0;
+
+}
+.zwsgr-custom-tab .zwsgr-step-arrow {
+    position: relative;
+    margin: 0px 20px;
+}
+
+.zwsgr-custom-tab .zwsgr-step-arrow:before, .zwsgr-custom-tab .zwsgr-step-arrow:after {
+    content: "";
+    background: #4A494B;
+    position: relative;
+    width: 10px;
+    height: 2px;
+    display: block;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border-radius: 2px;
+    top: 6px;
+}
+
+.zwsgr-custom-tab .zwsgr-step-arrow:after {
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    top: 10px;
+}

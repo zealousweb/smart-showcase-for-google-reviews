@@ -162,6 +162,9 @@ jQuery(document).ready(function($) {
 	$('.tab-item').removeClass('active');
 	$('.tab-item[data-tab="' + activeTab + '"]').addClass('active');
 
+	// Update tab classes after initial load
+	updateTabClasses();
+
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
 		var selectedOptionElement = $('#' + selectedOption).clone();
@@ -174,6 +177,29 @@ jQuery(document).ready(function($) {
 		}, 100);
 	}
 
+	// Function to update tab classes dynamically
+	function updateTabClasses() {
+		const $tabs = $(".tab-item"); // Select all tab items
+		const $activeTab = $tabs.filter(".active"); // Find the active tab
+		const activeIndex = $tabs.index($activeTab); // Get the active tab index
+
+		$tabs.each(function (index) {
+			if (index < activeIndex) {
+				// Add 'done' class to left tabs
+				$(this).removeClass("disable").addClass("done");
+			} else if (index > activeIndex) {
+				// Add 'disable' class to right tabs
+				$(this).removeClass("done").addClass("disable");
+			} else {
+				// Remove both 'done' and 'disable' for the active tab
+				$(this).removeClass("done disable");
+			}
+		});
+	}
+
+	// Initial class update based on the active tab
+	updateTabClasses();
+
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
 		var tabId = $(this).data('tab');
@@ -185,6 +211,9 @@ jQuery(document).ready(function($) {
 
 		// Start building the new URL with page and tab parameters
 		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
+
+		// Update tab classes dynamically
+		updateTabClasses();
 
 		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
