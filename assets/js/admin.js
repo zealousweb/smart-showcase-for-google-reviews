@@ -626,7 +626,7 @@ jQuery(document).ready(function($) {
 		var selectedElements = $('input[name="review-element"]:checked').map(function() {
 			return $(this).val();
 		}).get();
-		var ratingFilter = $('.star-filter.selected').data('rating') || '';
+		// var ratingFilter = $('.star-filter.selected').data('rating') || '';
 		var keywords = $('#keywords-list .keyword-item').map(function() {
 			return $(this).text().trim().replace(' ✖', '');
 		}).get();
@@ -640,6 +640,9 @@ jQuery(document).ready(function($) {
 		var textColor = $('#text-color-picker').val();
 		var settings = $('.tab-item.active').attr('data-tab');
 		var postsPerPage = $('#posts-per-page').val();
+		// Fetch the selected star rating from the star filter
+		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
+		console.log(selectedRating);
 		
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -652,7 +655,7 @@ jQuery(document).ready(function($) {
 				post_id: postId,
 				display_option: displayOption,
 				selected_elements: selectedElements,
-				rating_filter: ratingFilter,
+				rating_filter: selectedRating,
 				keywords: keywords,
 				date_format: dateFormat,
 				char_limit: charLimit,
@@ -906,6 +909,92 @@ jQuery(document).ready(function($) {
 			}
 		});
 	
-	  });
+	});
 
+    // Handle the click event for selecting stars
+    $('.star-filter').on('click', function() {
+        var rating = $(this).data('rating');  // Get the rating of the clicked star
+        
+        // Toggle selected stars based on the clicked star's rating
+        if ($(this).hasClass('selected')) {
+            // If the star is already selected, unselect it and all the stars to the right
+            $('.star-filter').each(function() {
+                if ($(this).data('rating') >= rating) {
+                    $(this).removeClass('selected');
+                    $(this).find('.star').css('fill', '#ccc');
+                }
+            });
+        } else {
+            // If the star is not selected, select this star and all stars to the left (including this one)
+            $('.star-filter').each(function() {
+                if ($(this).data('rating') <= rating) {
+                    $(this).addClass('selected');
+                    $(this).find('.star').css('fill', '#FFD700');
+                } else {
+                    $(this).removeClass('selected');
+                    $(this).find('.star').css('fill', '#ccc');
+                }
+            });
+        }
+    });
+
+	// Event listener for clicking on a star filter
+	$('.filter-rating .star-filter').on('click', function() {
+		var selectedRating = $(this).data('rating'); // Get the selected rating
+		var nonce = filter_reviews.nonce;
+
+		// Prepare an array of selected ratings
+		var selectedRatings = [];
+		$('.filter-rating .star-filter.selected').each(function() {
+			selectedRatings.push($(this).data('rating')); // Push each selected rating into the array
+		});
+
+		// If nothing is selected, default to all ratings (1-5 stars)
+		if (selectedRatings.length === 0) {
+			selectedRatings = [1, 2, 3, 4, 5];
+		}
+
+		// Make the AJAX request to filter reviews based on selected ratings
+		$.ajax({
+			type: 'POST',
+			url: filter_reviews.ajax_url,
+			data: {
+				action: 'filter_reviews', // The action for the PHP handler
+				rating_filter: selectedRatings, // Pass the selected ratings array
+				nonce: nonce
+			},
+			success: function(response) {
+				// console.log(response);
+				// Insert the filtered reviews HTML into the selected option display
+				$('#selected-option-display').empty();
+				// $('#selected-option-display').append(response);
+				$('#selected-option-display').html(response);
+	
+
+				// Reinitialize Slick slider after the DOM has been updated
+				setTimeout(function() {
+					reinitializeSlickSlider1($('#selected-option-display'));
+				}, 100);
+			},
+			error: function(xhr, status, error) {
+				console.error("AJAX Error: ", status, error);
+			}
+		});
+	});
+
+	function reinitializeSlickSlider1(container) {
+		if (container.hasClass('slick-initialized')) {
+			container.slick('unslick'); // Uninitialize if already initialized
+		}
+		
+		// Reinitialize the Slick slider with custom settings
+		container.slick({
+			dots: false,       
+			arrows: false,     
+			infinite: true,   
+			slidesToShow: 3, 
+			slidesToScroll: 1 
+		});
+	}
+	
 });
