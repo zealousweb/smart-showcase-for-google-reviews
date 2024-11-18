@@ -113,8 +113,6 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
          * @since 1.0.0
          */
         public function zwsgr_sync_reviews_scheduler_callback($zwsgr_old_frequency, $zwsgr_new_frequency) {
-            
-            error_log('within function');
 
             // Ensure the new frequency is valid
             if ( !in_array( $zwsgr_new_frequency, ['daily', 'weekly', 'monthly'], true ) ) {
