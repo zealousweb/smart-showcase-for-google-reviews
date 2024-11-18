@@ -23,7 +23,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		private $zwsgr_gmbc;
 
-		function __construct()  {
+		function __construct()  
+		{
 
 			add_action( 'admin_init', array( $this, 'action__admin_init' ) );
 			add_action('admin_menu', array($this, 'zwsgr_admin_menu_registration'));
@@ -41,6 +42,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_save_widget_data',array($this, 'save_widget_data'));
 			add_action('wp_ajax_nopriv_save_widget_data', array($this, 'save_widget_data'));
+
+			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
+			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 		
 		}
 		
@@ -50,7 +54,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 * - Register admin min js and admin min css
 		 *
 		 */
-		function action__admin_init() {
+		function action__admin_init() 
+		{
 
 			// admin js
 			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
@@ -82,11 +87,22 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_wp_review_id' 		   => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
 			));
 
+
+			// Fetch the rating filter value from post meta
+			$post_id = $_GET['zwsgr_widget_id']; // Ensure the correct post ID is retrieved
+			$rating_filter = get_post_meta($post_id, 'rating_filter', true);
+
 			//Save Widget Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'my_widget', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('my_widget_nonce')
+                'nonce' => wp_create_nonce('my_widget_nonce'),
+				'rating_filter' => intval($rating_filter), // Rating filter from post meta
             ));
+
+			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'filter_reviews', array(
+				'ajax_url' => admin_url('admin-ajax.php'), // The AJAX handler URL
+				'nonce' => wp_create_nonce('filter_reviews_nonce') // Security nonce
+			));
 		
 		}
 
@@ -286,7 +302,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Register a single meta box to display all review details
-		function zwsgr_add_review_meta_box() {
+		function zwsgr_add_review_meta_box() 
+		{
 			add_meta_box(
 				'zwsgr_review_details_meta_box',
 				__('Review Details', 'zw-smart-google-reviews'),
@@ -298,7 +315,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Display all review details in one meta box
-		function zwsgr_display_review_details_meta_box($zwsgr_review) {
+		function zwsgr_display_review_details_meta_box($zwsgr_review) 
+		{
 			// Retrieve review fields
 			$zwsgr_account_number 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_account_number', true);
 			$zwsgr_location_code 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_location_code', true);
@@ -444,7 +462,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Register the meta box
-		function zwsgr_add_account_number_meta_box() {
+		function zwsgr_add_account_number_meta_box() 
+		{
 			add_meta_box(
 				'zwsgr_account_number_meta_box', // Meta box ID
 				__('Account Number', 'zw-smart-google-reviews'), // Title
@@ -470,9 +489,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			unset($columns['date']);
 			unset($columns['title']);
-			$columns['title'] = __('Review', 'zw-google-reviews');
-			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'zw-google-reviews');
-			$columns['date'] = __('Date', 'zw-google-reviews');
+			$columns['title'] = __('Review', 'zw-smart-google-reviews');
+			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'zw-smart-google-reviews');
+			$columns['date'] = __('Date', 'zw-smart-google-reviews');
 			return $columns;
 		}
 
@@ -482,7 +501,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 * @param string $column
 		 * @param int $post_id
 		 */
-		function render_hide_column_content( $column, $post_id ) {
+		function render_hide_column_content( $column, $post_id ) 
+		{
 			if ( $column === ZWSGR_META_PREFIX . 'user_login' ) {
 				$is_hidden = get_post_meta( $post_id, '_is_hidden', true );
 				$icon = $is_hidden ? 'hidden' : 'visibility';
@@ -497,7 +517,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		/**
 		 * Toggle visibility (AJAX callback)
 		 */
-		function zwsgr_toggle_visibility() {
+		function zwsgr_toggle_visibility() 
+		{
 			check_ajax_referer( 'toggle-visibility-nonce', 'nonce' );
 		
 			$post_id = intval( $_POST['post_id'] );
@@ -845,17 +866,20 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_widget_configurator_callback() 
 		{
 
-			$post_id = $_GET['post_id'];
+			$post_id = $_GET['zwsgr_widget_id'];
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
 				wp_die( 'Invalid post ID.' ) ;
 			}
 
+			// if ( isset($_GET['tab']) && $_GET['tab'] === 'tab-options' ) {
+			// 	delete_post_meta($_GET['zwsgr_widget_id'], 'rating_filter');
+			// }
+
 			// Get stored widget settings
 			$display_option = get_post_meta($post_id, 'display_option', true);
 			$layout_option = get_post_meta($post_id, 'layout_option', true);
 			$selected_elements = get_post_meta($post_id, 'selected_elements', true);
-			$rating_filter = get_post_meta($post_id, 'rating_filter', true);
 			$keywords = get_post_meta($post_id, 'keywords', true);
 			$date_format = get_post_meta($post_id, 'date_format', true);
 			$char_limit = get_post_meta($post_id, 'char_limit', true);
@@ -873,42 +897,91 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// $generated_shortcode = '[zwsgr_widget_configurator id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
 			// Generate the shortcode by calling the new function
 			$generated_shortcode = $this->generate_shortcode($post_id);
+			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+
+
+			// Define the mapping from numeric values to words.
+			$rating_mapping = array(
+				1 => 'ONE',
+				2 => 'TWO',
+				3 => 'THREE',
+				4 => 'FOUR',
+				5 => 'FIVE'
+			);
+
+			// Convert the rating filter to a word.
+			$rating_filter_word = isset($rating_mapping[$rating_filter]) ? $rating_mapping[$rating_filter] : '';
+			echo $rating_filter_word;
+
+			$ratings_to_include = array();
+			if ($rating_filter_word == 'TWO') {
+				$ratings_to_include = array('ONE', 'TWO');
+			} elseif ($rating_filter_word == 'THREE') {
+				$ratings_to_include = array('ONE', 'TWO', 'THREE');
+			} elseif ($rating_filter_word == 'FOUR') {
+				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR');
+			} elseif ($rating_filter_word == 'FIVE') {
+				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
+			} elseif ($rating_filter_word == 'ONE') {
+				$ratings_to_include = array('ONE');
+			}
+
+
+
+			$zwsgr_reviews_args = array(
+				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
+				'posts_per_page' => 20,
+				'orderby'         => 'date',
+				'order'           => 'DESC',
+				'meta_query'     => array(
+					array(
+						'key'     => 'zwsgr_review_star_rating',
+						'value'   => $ratings_to_include,  // Apply the word-based rating filter
+						'compare' => 'IN',
+						'type'    => 'CHAR'
+					)
+				),
+			);
+
+			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
+
+			if ($latest_zwsgr_reviews->have_posts()) {
+				while($latest_zwsgr_reviews->have_posts()) {
+					$latest_zwsgr_reviews->the_post();
+			
+					$zwsgr_reviewer_name   	  = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
+					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
+					$zwsgr_review_comment  	  = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+					$published_date  = get_the_date('F j, Y');
+			
+					$post_date = get_the_date('U');
+					$days_ago = floor((time() - $post_date) / (60 *60 * 24));
+
+					// Format the slider item for each review
+					$zwsgr_slider_item = '<div class="slider-item">
+						<div class="slide-item">
+							<h2 class="title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+							<h5 class="days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+							<h6 class="rating">' . esc_html($zwsgr_review_star_rating) . ' Star</h6>
+							<p class="content">' . esc_html($zwsgr_review_comment) . '</p>
+						</div>
+					</div>';
+
+					// Add the slider item to the slider content array
+					$zwsgr_slider_content[] = $zwsgr_slider_item;
+			
+				}
+				wp_reset_postdata();
+			}
+
+			$zwsgr_slider_content = implode('', (array) $zwsgr_slider_content);
 
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
 					'<div class="slider-item" id="slider1">
 						<div class="slider-1">
-							<div class="slide-item">
-								<h2 class="title">Title1</h2>
-								<h5 class="date" data-original-date="25/10/2024">25/10/2024</h5>
-								<h6 class="rating">5 Star</h6>
-								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
-							</div>
-							<div class="slide-item">
-								<h2 class="title">Title2</h2>
-								<h5 class="date" data-original-date="24/10/2024">24/10/2024</h5>
-								<h6 class="rating">4 Star</h6>
-								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
-							</div>
-							<div class="slide-item">
-								<h2 class="title">Title3</h2>
-								<h5 class="date" data-original-date="23/10/2024">23/10/2024</h5>
-								<h6 class="rating">3 Star</h6>
-								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
-							</div>
-							<div class="slide-item">
-								<h2 class="title">Title4</h2>
-								<h5 class="date" data-original-date="22/10/2024">22/10/2024</h5>
-								<h6 class="rating">2 Star</h6>
-								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
-							</div>
-							<div class="slide-item">
-								<h2 class="title">Title5</h2>
-								<h5 class="date" data-original-date="21/10/2024">21/10/2024</h5>
-								<h6 class="rating">1 Star</h6>
-								<p class="content"> Tech support was super helpful in getting a payment gateway set up for a client. They were professional, friendly, patient, responsive, and knowledgeable, and the client is thrilled with the result! </p>
-							</div>
+							' . $zwsgr_slider_content . '
 						</div>
 					</div>',
 					'<div class="slider-item" id="slider2">
@@ -1014,7 +1087,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<div class="tab-content" id="tab-selected" style="display:none;">
 					<h3>Selected Option</h3>
-					<div id="selected-option-display" class="selected-option-display"><?php //echo wp_kses_post($selected_html); ?></div>
+					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="widget-settings">
 						<h2>Widget Settings</h2>
 						<div>
@@ -1051,31 +1124,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div>
 							<h3>Filter Rating</h3>
 							<div class="filter-rating">
-								<span class="star-filter" data-rating="5" title="5 Stars">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
-									</svg>
-								</span>
-								<span class="star-filter" data-rating="4" title="4 Stars">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
-									</svg>
-								</span>
-								<span class="star-filter" data-rating="3" title="3 Stars">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
-									</svg>
-								</span>
-								<span class="star-filter" data-rating="2" title="2 Stars">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
-									</svg>
-								</span>
-								<span class="star-filter" data-rating="1" title="1 Star">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="#ccc" />
-									</svg>
-								</span>
+								<?php
+								for ($i = 1; $i <= 5; $i++) {
+									$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
+									$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
+									?>
+									<span class="star-filter" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star" style="fill: <?php echo $fillColor; ?>;">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" class="star" fill="<?php echo $fillColor; ?>" />
+										</svg>
+									</span>
+									<?php
+								}
+								?>
 							</div>
 						</div>
 
@@ -1209,14 +1270,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		// Handle AJAX Request to Save Dashboard Data
-		function save_widget_data() {
+		function save_widget_data() 
+		{
 			// Check security nonce
 			check_ajax_referer('my_widget_nonce', 'security');
 
 			// Check security nonce
 			if (!check_ajax_referer('my_widget_nonce', 'security', false)) {
 				error_log('Nonce verification failed.');
-				wp_send_json_error('Nonce verification failed.');
+				wp_send_json_error(esc_html__('Nonce verification failed.', 'zw-smart-google-reviews'));
 				return;
 			}
 			error_log('Nonce verified successfully.');
@@ -1225,37 +1287,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$post_id = intval($_POST['post_id']);
 			if (!$post_id) {
 				error_log('Invalid post ID');
-				wp_send_json_error('Invalid post ID.');
+				wp_send_json_error(esc_html__('Invalid post ID.', 'zw-smart-google-reviews'));
 				return;
 			}
 			error_log('Post ID: ' . $post_id);
 
-			// Check if post exists
+			// Check if the post exists
 			if (get_post_status($post_id) === false) {
 				error_log('Post does not exist: ' . $post_id);
-				wp_send_json_error('Post does not exist.');
+				wp_send_json_error(esc_html__('Post does not exist.', 'zw-smart-google-reviews'));
 				return;
 			}
 			error_log('Post exists, ID: ' . $post_id);
 
-			$post_id = intval($_POST['post_id']);
-			if (!$post_id) {
-				error_log('Invalid post ID');
-				wp_send_json_error('Invalid post ID.');
-				return;
-			}
-
-			// Check if the post exists
-			if (get_post_status($post_id) === false) {
-				error_log('Post does not exist: ' . $post_id);
-				wp_send_json_error('Post does not exist.');
-				return;
-			}
-
 			// Ensure user has permission to edit the post
 			if (!current_user_can('edit_post', $post_id)) {
 				error_log('User does not have permission to edit post: ' . $post_id);
-				wp_send_json_error('You do not have permission to edit this post.');
+				wp_send_json_error(esc_html__('You do not have permission to edit this post.', 'zw-smart-google-reviews'));
 				return;
 			}
 			
@@ -1271,7 +1319,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 
 			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : array();
-			$rating_filter = isset($_POST['rating_filter']) ? sanitize_text_field($_POST['rating_filter']) : '';
+			// $rating_filter = isset($_POST['rating_filter']) ? sanitize_text_field($_POST['rating_filter']) : '';
 			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
 			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : '';
 			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : 0;
@@ -1282,6 +1330,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
 			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
 			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
+			$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
 
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
@@ -1300,11 +1349,101 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
 		}
 
-		function generate_shortcode($post_id) {
+		function generate_shortcode($post_id) 
+		{
 			// Build the shortcode with attributes
-			$shortcode = '[zwsgr_widget_configurator post-id="' . esc_attr($post_id) . '"]';
+			$shortcode = '[zwsgr_widget post-id="' . esc_attr($post_id) . '"]';
 			update_post_meta($post_id, '_generated_shortcode_new', $shortcode);
-			return $shortcode;
-		}		
+			return $shortcode;	
+		}
+
+		function filter_reviews_ajax_handler() {
+			// Verify nonce for security
+			if( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'filter_reviews_nonce') ) {
+				die('Permission Denied');
+			}
+		
+			// Check if rating_filter is set and is an array
+			if (!isset($_POST['rating_filter']) || !is_array($_POST['rating_filter'])) {
+				die('Invalid filter value');
+			}
+		
+			$rating_filter = array_map('intval', $_POST['rating_filter']); // Ensure all values are integers
+		
+			// Mapping numeric values to string values
+			$rating_mapping = array(
+				1 => 'ONE',
+				2 => 'TWO',
+				3 => 'THREE',
+				4 => 'FOUR',
+				5 => 'FIVE'
+			);
+		
+			// Create an array of string values based on the selected numeric ratings
+			$rating_strings = array();
+			foreach ($rating_filter as $filter) {
+				if (isset($rating_mapping[$filter])) {
+					$rating_strings[] = $rating_mapping[$filter];
+				}
+			}
+		
+			if (empty($rating_strings)) {
+				echo 'Invalid rating';
+				die();
+			}
+		
+			// Query reviews with the selected string-based filters
+			$args = array(
+				'post_type' => 'zwsgr_reviews', // Replace with your custom post type
+				'posts_per_page' => -1,
+				'meta_query' => array(
+					array(
+						'key' => 'zwsgr_review_star_rating',
+						'value' => $rating_strings,
+						'compare' => 'IN',
+						'type' => 'CHAR'
+					)
+				)
+			);
+		
+			$reviews_query = new WP_Query($args);
+		
+			// Start output buffering
+			ob_start();
+		
+			if ($reviews_query->have_posts()) {
+				while ($reviews_query->have_posts()) {
+					$reviews_query->the_post();
+					$zwsgr_reviewer_name = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
+					$zwsgr_review_content = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
+					$published_date = get_the_date('F j, Y');
+					$post_date = get_the_date('U');
+					$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
+		
+					// Format the slider item for each review
+					echo '<div class="slider-item">
+						<div class="slide-item">
+							<h2 class="title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+							<h5 class="days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+							<h6 class="rating">' . esc_html($zwsgr_review_star_rating) . ' Star</h6>
+							<p class="content">' . esc_html($zwsgr_review_content) . '</p>
+						</div>
+					</div>';
+				}
+				wp_reset_postdata();
+			} else {
+				echo 'No reviews found for the selected ratings';
+			}
+		
+			// End output buffering and return the content
+			$reviews_html = ob_get_clean();
+		
+			// Return the filtered reviews HTML as the response
+			echo $reviews_html;
+			die();
+		}
+		
+		
 	}
 }
