@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
 	function saveSelectedOption(option) {
 		var postId = getQueryParam('zwsgr_widget_id');
 		var settings = $('.tab-item.active').attr('data-tab');
-		var selectedLayout = $('.option-item:visible .select-btn.selected').data('option'); // Get selected layout option
+		var selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
 		console.log(postId);
 		$.ajax({
@@ -136,7 +136,7 @@ jQuery(document).ready(function($) {
 
 	// Function to show/hide options based on the selected radio button
 	function updateOptions(value) {
-		$('.option-item').each(function () {
+		$('.zwsgr-option-item').each(function () {
 			if (value === 'all' || $(this).data('type') === value) {
 				$(this).show();
 			} else {
@@ -300,8 +300,11 @@ jQuery(document).ready(function($) {
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider(container) {
 		// Find and reinitialize Slick sliders
-		var slider1 = $(container).find('.slider-1');
-		var slider2 = $(container).find('.slider-2');
+		var slider1 = $(container).find('.zwsgr-slider-1');
+		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider4 = $(container).find('.zwsgr-slider-4');
+		var slider5 = $(container).find('.zwsgr-slider-5');
+		var slider6 = $(container).find('.zwsgr-slider-6');
 
 		// Unslick if it's already initialized
 		if (slider1.hasClass('slick-initialized')) {
@@ -312,43 +315,111 @@ jQuery(document).ready(function($) {
 			slider2.slick('unslick');
 		}
 
+		if (slider4.hasClass('slick-initialized')) {
+			slider4.slick('unslick');
+		}
+
+		if (slider5.hasClass('slick-initialized')) {
+			slider5.slick('unslick');
+		}
+
+		if (slider6.hasClass('slick-initialized')) {
+			slider6.slick('unslick');
+		}
+
+
 		// Reinitialize the selected slider
 		if (slider1.length) {
 			slider1.slick({
-				dots: false,
-				arrows: false,
 				infinite: true,
 				slidesToShow: 3,
-				slidesToScroll: 1
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
 			});
 		}
 
 		if (slider2.length) {
 			slider2.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
 				dots: false,
+			});
+		}
+
+		if (slider4.length) {
+			slider4.slick({
+				infinite: true,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider5.length) {
+			slider5.slick({
 				infinite: true,
 				slidesToShow: 2,
-				slidesToScroll: 1
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider6.length) {
+			slider6.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
 			});
 		}
 	}
 
 	// Slick sliders
-	$('.slider-1').slick({
+	$('.zwsgr-slider-1').slick({
 		infinite: true,
 		slidesToShow: 3,
 		slidesToScroll: 3,
-		arrows: false,
+		arrows: true,
 		dots: false,
 	});
 	
-	$('.slider-2').slick({
+	$('.zwsgr-slider-2').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});	 
+
+	$('.zwsgr-slider-4').slick({
+		infinite: true,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: true,
+		dots: false,
+	});	
+
+	$('.zwsgr-slider-5').slick({
 		infinite: true,
 		slidesToShow: 2,
 		slidesToScroll: 2,
-		arrows: false,
+		arrows: true,
 		dots: false,
-	});	 
+	});	
+
+	$('.zwsgr-slider-6').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});
 
 	// Handle click on visibility toggle icon of REview CPT
 	$('.zwsgr-toggle-visibility').on('click', function(e) {
@@ -382,11 +453,11 @@ jQuery(document).ready(function($) {
 
 	// Function to hide or show elements with a smooth effect
     function toggleElements() {
-        $('#review-title').is(':checked') ? $('.selected-option-display .title').fadeOut(600) : $('.selected-option-display .title').fadeIn(600);
-        $('#review-rating').is(':checked') ? $('.selected-option-display .rating').fadeOut(600) : $('.selected-option-display .rating').fadeIn(600);
-        $('#review-days-ago').is(':checked') ? $('.selected-option-display .days-ago').fadeOut(600) : $('.selected-option-display .days-ago').fadeIn(600);
-        $('#review-content').is(':checked') ? $('.selected-option-display .content').fadeOut(600) : $('.selected-option-display .content').fadeIn(600);
-        $('#reviewiew-photo').is(':checked') ? $('.selected-option-display .reviewer-photo').fadeOut(600) : $('.selected-option-display .reviewer-photo').fadeIn(600);
+        $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').fadeOut(600) : $('.selected-option-display .zwsgr-title').fadeIn(600);
+        $('#review-rating').is(':checked') ? $('.selected-option-display .zwsgr-rating').fadeOut(600) : $('.selected-option-display .zwsgr-rating').fadeIn(600);
+        $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').fadeIn(600);
+        $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').fadeOut(600) : $('.selected-option-display .zwsgr-content').fadeIn(600);
+        $('#reviewiew-photo').is(':checked') ? $('.selected-option-display .zwsgr-reviewer-photo').fadeOut(600) : $('.selected-option-display .zwsgr-reviewer-photo').fadeIn(600);
     }
 
     // Attach change event listeners to checkboxes
