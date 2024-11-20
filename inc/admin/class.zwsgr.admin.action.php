@@ -1196,7 +1196,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-widget-settings">
 						<h2 class="zwsgr-page-title">Widget Settings</h2>
 						<div class="zwsgr-widget-wrap">
-							<div class="zwsgr-widget-setting">
+						<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Filter Rating</h3>
 								<div class="filter-rating">
 									<?php
@@ -1210,12 +1210,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 											</svg>
 										</span>
 										<?php
-									}
+										}
 									?>
 								</div>
 							</div>
 
-
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Hide Element</h3>
 								<ul class="zwsgr-widget-eleemt-list">
@@ -1282,124 +1281,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<span class="slider"></span>
 								</label>
 
-								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'block' : 'none'; ?>" class="zwsgr-color-options">
-									<div class="zwsgr-color-picker">
-										<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
-										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
-									</div>
-									<div class="zwsgr-color-picker">
-										<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>
-										<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color); ?>">
-									</div>
-								</div>
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
-								<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Language</h3>
-								<select id="language-select" name="language" class="zwsgr-input-text">
-									<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
-									<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
-									<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
-									<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
-									<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
-									<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
-									<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
-									<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
-									<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
-									<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
-									<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
-									<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
-									<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
-									<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
-									<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
-									<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
-									<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
-									<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
-									<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
-									<!-- Add more languages as needed -->
-								</select>
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Sort By</h3>
-								<select id="sort-by-select" name="sort_by" class="zwsgr-input-text">
-									<option value="relevant" <?php echo ($sort_by === 'relevant') ? 'selected' : ''; ?>>Most Relevant</option>
-									<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-									<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-									<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Hide Element</h3>
-								<ul class="zwsgr-widget-eleemt-list">
-									<li>
-										<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
-										<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-title" class="zwsgr-chechbox-label">Title</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
-										<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-rating" class="zwsgr-chechbox-label">Rating</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
-										<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-days-ago" class="zwsgr-chechbox-label">Days Ago</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
-										<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-content" class="zwsgr-chechbox-label">Review Content</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
-										<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
-									</li>
-									<!-- Add more elements as needed -->
-								</ul>
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Keywords</h3>
-								<input type="text" id="keywords-input" name="keywords-input" class="zwsgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
-								<p class="zwsgr-description">Type keywords separated by commas</p>
-
-								<!-- Hidden input field to store comma-separated keywords for submission -->
-								<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
-
-								<!-- Display the list of saved keywords -->
-								<?php
-								$keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
-								if (is_array($keywords) && !empty($keywords)) {
-									echo '<div id="keywords-list" class="keywords-list">';
-									foreach ($keywords as $keyword) {
-										echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
-									}
-									echo '</div>';
-								} else {
-									echo '<div id="keywords-list" class="keywords-list"></div>';
-								}
-								?>
-
-								<div id="error-message" class="error-message" style="display: none; color: red;">
-									You can only enter a maximum of 5 keywords.
-								</div> 
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Review us on Google</h3>
-								<label class="switch">
-									<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
-									<span class="slider"></span>
-								</label>
-
-								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'block' : 'none'; ?>" class="zwsgr-color-options">
+								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwsgr-color-options">
 									<div class="zwsgr-color-picker">
 										<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
 										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
@@ -1487,13 +1369,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
 					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
 				</div>
-							</div>
-						</div>
-					</div>
-					<div class="zwsgr-widget-settings">
-						<h2 class="zwsgr-page-title">Custom CSS Support</h2>
-						<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
-					</div>
 					<button id="save-get-code-btn" class="zwsgr-btn">Save & Get Code</button>
 				</div>
 
@@ -1702,7 +1577,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-rating">' . $stars_html . '</div>
-							<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+							<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>
 						</div>';
 
 						$zwsgr_slider_item2 = '
@@ -1711,7 +1586,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-rating">' . $stars_html . '</div>
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
-								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+								<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
 										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
@@ -1727,7 +1602,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 							$zwsgr_slider_item4 = '
 							<div class="zwsgr-slide-item">
-								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
+								<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
 										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
@@ -1750,7 +1625,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<div class="zwsgr-contnt-wrap">
-									<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
+									<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>	
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
 							</div>';
@@ -1770,7 +1645,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
-								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+								<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>
 							</div>';
 				}
 				wp_reset_postdata();
