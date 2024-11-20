@@ -694,36 +694,63 @@ jQuery(document).ready(function($) {
 		processBatch(zwsgr_gmb_data_type);
 	  });
 	
-	  $(".fetch-gmb-auth-url").on("click", function (e) {
+	  $("#fetch-gmb-auth-url").on("submit", function (e) {
+		
 		e.preventDefault();
-	
-		// Get the current URL
-		var zwsgr_site_url = window.location.href;
-	
-		// AJAX call
+
+		// Get the email address from the input field
+		var zwsgr_user_email = $("#fetch-gmb-auth-url #zwsgr_gmb_google_account").val().trim();
+
+		// Validate email before proceeding
+		if (!zwsgr_user_email || !zwsgr_validate_email(zwsgr_user_email)) {
+			$("#fetch-gmb-auth-url-response").html("<p class='error validation'>Please enter a valid email address.</p>");
+			return;
+		}
+
+		$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', true);
+		$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Connecting...");
+
 		$.ajax({
-		  url: zwsgr_admin.ajax_url,
+			url: zwsgr_admin.ajax_url, // WordPress AJAX URL
 			type: "POST",
 			dataType: "json",
 			data: {
-			  action: "zwsgr_fetch_oauth_url",
-			  zwsgr_site_url: zwsgr_site_url
+				action: "zwsgr_fetch_oauth_url",
+				zwsgr_user_email:  zwsgr_user_email
 			},
 			success: function (response) {
-			  if (response.success) {
-				// Redirect the user to the OAuth URL
-				  window.location.href = response.data.zwsgr_oauth_url;
-			  } else {
-				  alert('Error generating OAuth URL');
-			  }
+
+				if (response.success) {
+					
+					$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', false);
+					$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Redirecting...");
+
+					// Redirect to the OAuth URL
+					window.location.href = response.data.zwsgr_oauth_url;
+
+				} else {
+
+					$("#fetch-gmb-auth-url-response").html("<p class='error response''>Error generating OAuth URL: " + (response.data?.message || "Unknown error") + "</p>");
+
+				}
 			},
 			error: function (xhr, status, error) {
-				// Handle any errors here
-				console.error('AJAX request failed:', status, error);
+
+				$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', false);
+				$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Connect with Google");
+
+				// Log and alert errors
+				$("#fetch-gmb-auth-url-response").html("<p class='error response''>An unexpected error occurred: " + error + "</p>");
+				
 			}
 		});
-	
-	  });
+		
+	});
+
+	function zwsgr_validate_email(email) {
+		var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailPattern.test(email);
+	}
 	
 	  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
 		e.preventDefault();
