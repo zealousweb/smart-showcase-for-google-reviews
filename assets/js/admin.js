@@ -112,7 +112,6 @@ jQuery(document).ready(function($) {
 		var settings = $('.tab-item.active').attr('data-tab');
 		var selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
-		console.log(postId);
 		$.ajax({
 			url: ajaxurl,
 			type: 'POST',
@@ -162,9 +161,6 @@ jQuery(document).ready(function($) {
 	$('.tab-item').removeClass('active');
 	$('.tab-item[data-tab="' + activeTab + '"]').addClass('active');
 
-	// Update tab classes after initial load
-	updateTabClasses();
-
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
 		var selectedOptionElement = $('#' + selectedOption).clone();
@@ -177,29 +173,6 @@ jQuery(document).ready(function($) {
 		}, 100);
 	}
 
-	// Function to update tab classes dynamically
-	function updateTabClasses() {
-		const $tabs = $(".tab-item"); // Select all tab items
-		const $activeTab = $tabs.filter(".active"); // Find the active tab
-		const activeIndex = $tabs.index($activeTab); // Get the active tab index
-
-		$tabs.each(function (index) {
-			if (index < activeIndex) {
-				// Add 'done' class to left tabs
-				$(this).removeClass("disable").addClass("done");
-			} else if (index > activeIndex) {
-				// Add 'disable' class to right tabs
-				$(this).removeClass("done").addClass("disable");
-			} else {
-				// Remove both 'done' and 'disable' for the active tab
-				$(this).removeClass("done disable");
-			}
-		});
-	}
-
-	// Initial class update based on the active tab
-	updateTabClasses();
-
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
 		var tabId = $(this).data('tab');
@@ -211,9 +184,6 @@ jQuery(document).ready(function($) {
 
 		// Start building the new URL with page and tab parameters
 		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
-
-		// Update tab classes dynamically
-		updateTabClasses();
 
 		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
@@ -247,11 +217,11 @@ jQuery(document).ready(function($) {
 	
 		// Get the outer HTML of the selected element
 		var selectedHtml = selectedOptionElement.prop('outerHTML');
-		console.log(selectedHtml); // Check if the HTML is correct
 
 		// Get the current display option (assuming you have a variable for this)
 		var displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
 		var settings = $('.tab-item.active').attr('data-tab');
+		var currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
 
 		$.ajax({
 			url: ajaxurl,  // This is the WordPress AJAX URL
@@ -264,11 +234,11 @@ jQuery(document).ready(function($) {
 				display_option: displayOption, // The selected display option
 				post_id: postId   ,// The post ID
 				settings: settings,
+				current_tab: currentTab // Include current tab status
 			},
 			success: function(response) {
 				if (response.success) {
 					alert('Layout option saved successfully!');
-					console.log('Layout option saved successfully!');
 				} else {
 					alert('Failed to save layout option.');
 				}
@@ -574,7 +544,7 @@ jQuery(document).ready(function($) {
 		var lang = $('#language-select').val(); // Get selected language
 
 		// Loop through each content block and apply the limit and language
-		$('.content').each(function () {
+		$('.zwsgr-content').each(function () {
 			var $this = $(this);
 			var fullText = $this.data('full-text') || $this.text(); // Store the original full text
 
@@ -610,7 +580,7 @@ jQuery(document).ready(function($) {
 		updateDisplayedDates(); // Re-render dates when language changes
 
 		// Loop through each content block and update the Read more link with the new language
-		$('.content').each(function () {
+		$('.zwsgr-content').each(function () {
 			var $this = $(this);
 			updateReadMoreLink($this, lang);
 		});
@@ -742,8 +712,8 @@ jQuery(document).ready(function($) {
 		var postsPerPage = $('#posts-per-page').val();
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
-		console.log(selectedRating);
-		
+		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
 			url: ajaxurl,
@@ -766,11 +736,11 @@ jQuery(document).ready(function($) {
 				bg_color: bgColor,
 				text_color: textColor,
 				settings: settings,
-				posts_per_page: postsPerPage
+				posts_per_page: postsPerPage,
+				current_tab2: currentTab2 
 			},
 			success: function(response) {
 				if (response.success) {
-					console.log('Settings and shortcode saved successfully.');
 					alert('Settings and shortcode saved successfully.');
 				} else {
 					alert('Error: ' + response.data);
@@ -1089,17 +1059,16 @@ jQuery(document).ready(function($) {
 	
 	});
 
-    // Handle the click event for selecting stars
-    $('.star-filter').on('click', function() {
+ 	$('.star-filter').on('click', function() {
         var rating = $(this).data('rating');  // Get the rating of the clicked star
         
-        // Toggle selected stars based on the clicked star's rating
+        // If the star is already selected, unselect it and all the stars to the right
         if ($(this).hasClass('selected')) {
-            // If the star is already selected, unselect it and all the stars to the right
+            // Unselect this star and all stars to the right
             $('.star-filter').each(function() {
                 if ($(this).data('rating') >= rating) {
                     $(this).removeClass('selected');
-                    $(this).find('.star').css('fill', '#ccc');
+                    $(this).find('.star').css('fill', '#ccc'); // Reset color to unselected
                 }
             });
         } else {
@@ -1107,13 +1076,16 @@ jQuery(document).ready(function($) {
             $('.star-filter').each(function() {
                 if ($(this).data('rating') <= rating) {
                     $(this).addClass('selected');
-                    $(this).find('.star').css('fill', '#FFD700');
+                    $(this).find('.star').css('fill', '#FFD700'); // Set color to gold
                 } else {
                     $(this).removeClass('selected');
-                    $(this).find('.star').css('fill', '#ccc');
+                    $(this).find('.star').css('fill', '#ccc'); // Reset color for unselected
                 }
             });
         }
+
+        // Get the new rating value after the click
+        var ratingFilterValue = rating;
     });
 
 	// Event listener for clicking on a star filter
@@ -1142,12 +1114,25 @@ jQuery(document).ready(function($) {
 				nonce: nonce
 			},
 			success: function(response) {
-				// console.log(response);
-				// Insert the filtered reviews HTML into the selected option display
-				$('#selected-option-display').empty();
-				// $('#selected-option-display').append(response);
-				$('#selected-option-display').html(response);
-	
+				// console.log("Response Type:", typeof response);  // Log response type to see if it's an object or string
+				// console.log("Response Content:", response);     
+
+				//  $('#selected-option-display').empty(); // Clear previous content and insert the new content
+				//  $('#selected-option-display').html(response);
+			 
+				// Ensure the previous Slick instance is destroyed before reinitializing
+				if ($('#selected-option-display').hasClass('slick-initialized')) {
+					$('#selected-option-display').slick('unslick');
+				}
+
+				// Ensure the response is HTML or clean content
+				if (typeof response === "string" || response instanceof String) {
+					// Insert response as HTML into the display
+					$('#selected-option-display').empty();
+					$('#selected-option-display').html(response);
+				} else {
+					console.error("Expected HTML content, but received:", response);
+				}
 
 				// Reinitialize Slick slider after the DOM has been updated
 				setTimeout(function() {
