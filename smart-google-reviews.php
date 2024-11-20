@@ -81,6 +81,7 @@ if ( !function_exists( 'ZWSGR' ) ) {
 	}
 
 	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.cs.php' );
+	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.dashboard.php' );
 	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.lib.php' );
 
 	//Initialize all the things.

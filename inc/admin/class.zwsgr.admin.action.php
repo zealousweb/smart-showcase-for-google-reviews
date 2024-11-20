@@ -23,6 +23,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		private $zwsgr_gmbc;
 
+		private $zwsgr_dashboard;
+
 		function __construct()  
 		{
 
@@ -45,6 +47,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
+
+			// Initialize dashboard class
+			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
 		
 		}
 		
@@ -857,8 +862,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 */
 		function zwsgr_dashboard_callback()
 		{	
-			echo '<h1>Dashboard</h1>';
-			// Dashboard content can be added here
+			echo '<div class="zwgr-dashboard">
+				<div class="zwgr-dashboard-header">'
+					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
+				'</div>
+				<div class="zwgr-dashboard-body">'
+					. $this->zwsgr_dashboard->zwsgr_total_reviews() .
+					$this->zwsgr_dashboard->zwsgr_average_ratings() .
+				'</div>
+				<div class="zwgr-dashboard-footer">'
+					. $this->zwsgr_dashboard->zwsgr_reviews_statics_chart() .
+					$this->zwsgr_dashboard->zwsgr_top_reviews() .
+				'</div>
+			</div>';
 		}
 
 		/**
