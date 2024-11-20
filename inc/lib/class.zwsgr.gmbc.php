@@ -1,7 +1,15 @@
 <?php
-
-
-
+/**
+ * Zwsgr_Google_My_Business_Connector Class
+ *
+ * Handles integration with Google My Business for the Smart Google Reviews plugin. 
+ * Manages OAuth authentication, data synchronization, and admin interface for connecting 
+ * Google accounts, fetching GMB data, and managing reviews.
+ *
+ * @package WordPress
+ * @subpackage Smart Google Reviews
+ * @since 1.0.0
+ */
 if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
     class Zwsgr_Google_My_Business_Connector {
@@ -15,11 +23,17 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
             // Hook to add admin menu items
             add_action('admin_menu', [$this, 'zwsgr_gmbc_add_menu_items'], 20);
 
+            // Hook to handle auth_code during connect google redirection
+            add_action('admin_init', [$this, 'zwsgr_handle_auth_code']);
+
+            add_action('admin_notices', [$this, 'zwsgr_connect_google_popup_callback']);
+
+
             $this->client = new ZWSGR_GMB_API('');
 
         }
 
-         // Method to get the single instance of the class
+        // Method to get the single instance of the class
         public static function get_instance() {
             if ( self::$instance === null ) {
                 self::$instance = new self();
@@ -41,65 +55,146 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         
             add_submenu_page(
                 null,
-                'Google OAuth Callback',
-                'Google OAuth Callback',
+                'Fetch GMB Data',
+                'Fetch GMB Data Callback',
                 'manage_options',
-                'zwsgr_handle_oauth_flow',
-                [$this, 'zwsgr_handle_oauth_flow_callback']
+                'zwsgr_fetch_gmb_data',
+                [$this, 'zwsgr_fetch_gmb_data_callback']
             );
             
         }
         
-
-        // Display the "Connect with Google" button and process connection request
+        // Display the "Connect with Google" button and process oAuth connection request
         public function zwsgr_connect_google_callback() {
 
-            // Check if the 'auth_code' is present in the URL
-            if (isset($_GET['auth_code']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
+            // Check if the JWT token is present in the database
+            $zwsgr_jwt_token = get_option('zwsgr_jwt_token');
 
-                $zwsgr_auth_code = $_GET['auth_code'];
-
-                $zwsgr_fetch_jwt_token_response = $this->client->zwsgr_fetch_jwt_token($zwsgr_auth_code);
-
-                // Check if the response was successful and contains the JWT token
-                if (isset($zwsgr_fetch_jwt_token_response['success']) && $zwsgr_fetch_jwt_token_response['success'] == true && isset($zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'])) {
-                    
-                    // Extract the JWT token
-                    $zwsgr_jwt_token = $zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'];
-
-                    // Save the JWT token in the wp_options table
-                    update_option('zwsgr_jwt_token', $zwsgr_jwt_token);
-
-                    echo '<div class="gmbc-outer-wrapper">
-                        <div class="gmbc-inner-wrapper">
-                            <span style="margin-right: 10px;">Congratulations! Connected to google</span>
+            if (!empty($zwsgr_jwt_token)) {
+                // Display connected to  message and disconnect button if JWT token exists
+                echo '<div class="zwsgr-gmbc-outer-wrapper">
+                    <div class="zwsgr-gmbc-container">
+                        <div class="zwsgr-gmbc-inner-wrapper">
+                            <span style="margin-right: 10px;">Congratulations! Connected to Google</span>
+                            <a href="" class="button button-danger zwsgr-submit-btn disconnect-google" style="margin-left: 10px;">Disconnect</a>
                         </div>
-                    </div>';
-
-
-                } else {
-                    echo 'there was an error while trying to fetch jwt token';
-                }
-
+                    </div>
+                </div>';
             } else {
-                echo '<div class="gmbc-outer-wrapper">
-                    <div class="gmbc-inner-wrapper">
-                        <span style="margin-right: 10px;">Connect With Google:</span>
-                        <a href="#" class="button button-primary fetch-gmb-auth-url">Connect with Google</a>
+                // Display the "Connect with Google" button if no JWT token exists
+                echo '<div class="zwsgr-gmbc-outer-wrapper">
+                    <div class="zwsgr-gmbc-container">
+                        <form id="fetch-gmb-auth-url" class="zwsgr-gmbc-inner-wrapper">
+                            <span style="margin-right: 10px;"> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
+                            <div id="fetch-gmb-auth-url-response"></div>
+                            <input type="email" id="zwsgr_gmb_google_account" class="zwsgr-input-text" name="zwsgr_gmb_google_account" value="" placeholder="Enter your gmail address">
+                            <button type="submit" class="button button-primary zwsgr-submit-btn">Connect with Google</button>
+                        </form>
                     </div>
                 </div>';
             }
+
+        }
+
+        // If applicable display the "Connect with Google" button on each page of sgr plugin
+        public function zwsgr_connect_google_popup_callback() {
+
+            // Check if we're in the admin panel
+            if (is_admin()) {
+
+                // Get the current page or post type
+                $zwsgr_current_page      = isset($_GET['page']) ? $_GET['page'] : '';
+                $zwsgr_current_post_type = isset($_GET['post_type']) ? $_GET['post_type'] : '';
+
+                // Define the valid pages and post types
+                $zwsgr_valid_pages = array(
+                    'zwsgr_dashboard',
+                    'zwsgr_settings'
+                );
+                
+                $zwsgr_valid_post_types = array(
+                    'zwsgr_reviews',
+                    'zwsgr_data_widget'
+                );
+
+                // Check if the current page is a valid page or if it's a valid post type edit page
+                if (in_array($zwsgr_current_page, $zwsgr_valid_pages) || in_array($zwsgr_current_post_type, $zwsgr_valid_post_types)) {
+                    
+                    // Check if the JWT token is present in the database
+                    $zwsgr_jwt_token = get_option('zwsgr_jwt_token');
+
+                    if (empty($zwsgr_jwt_token)) {
+                        $this->zwsgr_connect_google_callback();
+                    }
+
+                }
+            }
+
+        }       
+
+        // Handle the 'auth_code' flow during admin_init
+        public function zwsgr_handle_auth_code() {
+
+            if (isset($_GET['auth_code']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
+
+                $zwsgr_auth_code = sanitize_text_field($_GET['auth_code']);
+
+                // Fetch the JWT token
+                $zwsgr_fetch_jwt_token_response = $this->client->zwsgr_fetch_jwt_token($zwsgr_auth_code);
+
+                if (
+                    isset($zwsgr_fetch_jwt_token_response['success']) &&
+                    $zwsgr_fetch_jwt_token_response['success'] === true &&
+                    isset($zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'])
+                ) {
+
+                    $zwsgr_jwt_token = $zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'];
+                    
+                    // Save the JWT token in the database
+                    update_option('zwsgr_jwt_token', $zwsgr_jwt_token);
+                    
+                    // Temporarily store the authentication status in the database
+                    set_transient('zwsgr_auth_status', true, 600);
+
+                    // Create a new widget after successful auth initialization
+                    $zwsgr_new_widget_id = wp_insert_post(array(
+                        'post_type'   => 'zwsgr_data_widget',
+                        'post_status' => 'publish',
+                        'post_title'  => 'New GMB Widget ' . wp_generate_uuid4(),
+                    ));
+
+                    if ($zwsgr_new_widget_id) {
+                        // Redirect back to fetch gmb data page with the widget ID as a parameter
+                        wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
+                        exit;
+                    } else {
+                        wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data'));
+                        exit;
+                    }
+
+                } else {
+
+                    set_transient('zwsgr_auth_status', false, 600);
+
+                    // Redirect back to the submenu page with error notice
+                    wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data'));
+                    exit;
+
+                }
+
+            }
+
         }
         
-        public function zwsgr_initiate_data_fetch_process() {
-           
+        public function zwsgr_fetch_gmb_data_callback() {
+        
             echo '<div id="fetch-gmb-data">';
-                $this->show_success_notice('Successfully connected to Google. You are now authorized to access and manage your reviews.');
 
-                $zwsgr_widget_id = isset($_GET['post_id']) ? sanitize_text_field($_GET['post_id']) : '';
+                $zwsgr_widget_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
 
                 // Check if the widget ID is not empty
                 if (!empty($zwsgr_widget_id)) {
+
                     // Get the post meta for the widget ID
                     $zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
 
@@ -182,16 +277,6 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
             wp_reset_postdata();
         
             echo '</div>';
-        }
-        
-        // Show error notices in the admin dashboard
-        public function show_error_notice($message) {
-            echo '<div class="notice notice-error is-dismissible"><p>' . esc_html($message) . '</p></div>';
-        }
-
-        // Show success notices in the admin dashboard
-        public function show_success_notice($message) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($message) . '</p></div>';
         }
 
     }

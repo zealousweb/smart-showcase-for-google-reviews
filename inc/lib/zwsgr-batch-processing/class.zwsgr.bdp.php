@@ -239,6 +239,8 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                 $zwsgr_queue_manager->zwsgr_reset_current_batch_index();
 
+                return;
+
             }
 
         }
@@ -271,8 +273,6 @@ function zwsgr_get_batch_processing_status() {
         'zwsgr_batch_status'         => $zwsgr_batch_status,
         'zwsgr_batch_process_status' => $zwsgr_batch_process_status
     ];  
-
-    error_log(print_r($response, true));
 
     // Send a successful JSON response with the batch processing status
     wp_send_json_success($response);

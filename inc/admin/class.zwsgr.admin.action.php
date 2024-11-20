@@ -87,7 +87,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_wp_review_id' 		   => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
 			));
 
-
 			//Save Widget Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'my_widget', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
@@ -894,7 +893,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$generated_shortcode = $this->generate_shortcode($post_id);
 			$current_tab = get_post_meta($post_id, 'tab-options', true); 
 			$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
-
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
 
 
@@ -1142,7 +1140,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			?>
 			
 			<div class="zwsgr-dashboard">
+
 			<h1 class="zwsgr-page-title">Widget Configuration</h1>
+
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
@@ -1201,19 +1201,137 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="filter-rating">
 									<?php
 									for ($i = 1; $i <= 5; $i++) {
-									$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
-									$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
-									?>
-									<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
-										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
-										</svg>
-									</span>
-									<?php
+										$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
+										$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
+										?>
+										<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
+											</svg>
+										</span>
+										<?php
 									}
 									?>
 								</div>
 							</div>
+
+
+							<div class="zwsgr-widget-setting">
+								<h3 class="zwsgr-label">Hide Element</h3>
+								<ul class="zwsgr-widget-eleemt-list">
+									<li>
+										<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
+										<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
+										<label for="review-title" class="zwsgr-chechbox-label">Title</label>
+									</li>
+									<li>
+										<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
+										<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
+										<label for="review-rating" class="zwsgr-chechbox-label">Rating</label>
+									</li>
+									<li>
+										<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
+										<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
+										<label for="review-days-ago" class="zwsgr-chechbox-label">Days Ago</label>
+									</li>
+									<li>
+										<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
+										<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
+										<label for="review-content" class="zwsgr-chechbox-label">Review Content</label>
+									</li>
+									<li>
+										<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
+										<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
+										<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
+									</li>
+									<!-- Add more elements as needed -->
+								</ul>
+							</div>
+
+							<div class="zwsgr-widget-setting">
+								<h3 class="zwsgr-label">Keywords</h3>
+								<input type="text" id="keywords-input" name="keywords-input" class="zwsgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
+								<p class="zwsgr-description">Type keywords separated by commas</p>
+
+								<!-- Hidden input field to store comma-separated keywords for submission -->
+								<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
+
+								<!-- Display the list of saved keywords -->
+								<?php
+								$keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
+								if (is_array($keywords) && !empty($keywords)) {
+									echo '<div id="keywords-list" class="keywords-list">';
+									foreach ($keywords as $keyword) {
+										echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
+									}
+									echo '</div>';
+								} else {
+									echo '<div id="keywords-list" class="keywords-list"></div>';
+								}
+								?>
+
+								<div id="error-message" class="error-message" style="display: none; color: red;">
+									You can only enter a maximum of 5 keywords.
+								</div> 
+							</div>
+
+							<div class="zwsgr-widget-setting">
+								<h3 class="zwsgr-label">Review us on Google</h3>
+								<label class="switch">
+									<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
+									<span class="slider"></span>
+								</label>
+
+								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'block' : 'none'; ?>" class="zwsgr-color-options">
+									<div class="zwsgr-color-picker">
+										<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
+										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
+									</div>
+									<div class="zwsgr-color-picker">
+										<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>
+										<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color); ?>">
+									</div>
+								</div>
+							</div>
+
+							<div class="zwsgr-widget-setting">
+								<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
+								<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
+							</div>
+
+							<div class="zwsgr-widget-setting">
+								<h3 class="zwsgr-label">Language</h3>
+								<select id="language-select" name="language" class="zwsgr-input-text">
+									<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
+									<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
+									<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
+									<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
+									<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
+									<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
+									<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
+									<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
+									<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
+									<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
+									<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
+									<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
+									<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
+									<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
+									<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
+									<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
+									<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
+									<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
+									<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
+									<!-- Add more languages as needed -->
+								</select>
+							</div>
+
+							<div class="zwsgr-widget-setting">
+								<h3 class="zwsgr-label">Sort By</h3>
+								<select id="sort-by-select" name="sort_by" class="zwsgr-input-text">
+									<option value="relevant" <?php echo ($sort_by === 'relevant') ? 'selected' : ''; ?>>Most Relevant</option>
+									<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
+									<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
+									<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
 
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Hide Element</h3>
@@ -1333,7 +1451,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
 								</select>
 							</div>
-
+	
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Date Format</h3>
 								<select id="date-format-select" name="date-format" class="zwsgr-input-text">
@@ -1369,6 +1487,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
 					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
 				</div>
+							</div>
+						</div>
+					</div>
+					<div class="zwsgr-widget-settings">
+						<h2 class="zwsgr-page-title">Custom CSS Support</h2>
+						<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
+					</div>
 					<button id="save-get-code-btn" class="zwsgr-btn">Save & Get Code</button>
 				</div>
 
@@ -1451,7 +1576,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
 			update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
-			
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);

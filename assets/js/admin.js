@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
 	function saveSelectedOption(option) {
 		var postId = getQueryParam('zwsgr_widget_id');
 		var settings = $('.tab-item.active').attr('data-tab');
-		var selectedLayout = $('.option-item:visible .select-btn.selected').data('option'); // Get selected layout option
+		var selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
 		$.ajax({
 			url: ajaxurl,
@@ -135,7 +135,7 @@ jQuery(document).ready(function($) {
 
 	// Function to show/hide options based on the selected radio button
 	function updateOptions(value) {
-		$('.option-item').each(function () {
+		$('.zwsgr-option-item').each(function () {
 			if (value === 'all' || $(this).data('type') === value) {
 				$(this).show();
 			} else {
@@ -161,6 +161,9 @@ jQuery(document).ready(function($) {
 	$('.tab-item').removeClass('active');
 	$('.tab-item[data-tab="' + activeTab + '"]').addClass('active');
 
+	// Update tab classes after initial load
+	updateTabClasses();
+
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
 		var selectedOptionElement = $('#' + selectedOption).clone();
@@ -173,6 +176,29 @@ jQuery(document).ready(function($) {
 		}, 100);
 	}
 
+	// Function to update tab classes dynamically
+	function updateTabClasses() {
+		const $tabs = $(".tab-item"); // Select all tab items
+		const $activeTab = $tabs.filter(".active"); // Find the active tab
+		const activeIndex = $tabs.index($activeTab); // Get the active tab index
+
+		$tabs.each(function (index) {
+			if (index < activeIndex) {
+				// Add 'done' class to left tabs
+				$(this).removeClass("disable").addClass("done");
+			} else if (index > activeIndex) {
+				// Add 'disable' class to right tabs
+				$(this).removeClass("done").addClass("disable");
+			} else {
+				// Remove both 'done' and 'disable' for the active tab
+				$(this).removeClass("done disable");
+			}
+		});
+	}
+
+	// Initial class update based on the active tab
+	updateTabClasses();
+
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
 		var tabId = $(this).data('tab');
@@ -184,6 +210,9 @@ jQuery(document).ready(function($) {
 
 		// Start building the new URL with page and tab parameters
 		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
+
+		// Update tab classes dynamically
+		updateTabClasses();
 
 		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
@@ -270,8 +299,11 @@ jQuery(document).ready(function($) {
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider(container) {
 		// Find and reinitialize Slick sliders
-		var slider1 = $(container).find('.slider-1');
-		var slider2 = $(container).find('.slider-2');
+		var slider1 = $(container).find('.zwsgr-slider-1');
+		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider4 = $(container).find('.zwsgr-slider-4');
+		var slider5 = $(container).find('.zwsgr-slider-5');
+		var slider6 = $(container).find('.zwsgr-slider-6');
 
 		// Unslick if it's already initialized
 		if (slider1.hasClass('slick-initialized')) {
@@ -282,43 +314,111 @@ jQuery(document).ready(function($) {
 			slider2.slick('unslick');
 		}
 
+		if (slider4.hasClass('slick-initialized')) {
+			slider4.slick('unslick');
+		}
+
+		if (slider5.hasClass('slick-initialized')) {
+			slider5.slick('unslick');
+		}
+
+		if (slider6.hasClass('slick-initialized')) {
+			slider6.slick('unslick');
+		}
+
+
 		// Reinitialize the selected slider
 		if (slider1.length) {
 			slider1.slick({
-				dots: false,
-				arrows: false,
 				infinite: true,
 				slidesToShow: 3,
-				slidesToScroll: 1
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
 			});
 		}
 
 		if (slider2.length) {
 			slider2.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
 				dots: false,
+			});
+		}
+
+		if (slider4.length) {
+			slider4.slick({
+				infinite: true,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider5.length) {
+			slider5.slick({
 				infinite: true,
 				slidesToShow: 2,
-				slidesToScroll: 1
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider6.length) {
+			slider6.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
 			});
 		}
 	}
 
 	// Slick sliders
-	$('.slider-1').slick({
+	$('.zwsgr-slider-1').slick({
 		infinite: true,
 		slidesToShow: 3,
 		slidesToScroll: 3,
-		arrows: false,
+		arrows: true,
 		dots: false,
 	});
 	
-	$('.slider-2').slick({
+	$('.zwsgr-slider-2').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});	 
+
+	$('.zwsgr-slider-4').slick({
+		infinite: true,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: true,
+		dots: false,
+	});	
+
+	$('.zwsgr-slider-5').slick({
 		infinite: true,
 		slidesToShow: 2,
 		slidesToScroll: 2,
-		arrows: false,
+		arrows: true,
 		dots: false,
-	});	 
+	});	
+
+	$('.zwsgr-slider-6').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});
 
 	// Handle click on visibility toggle icon of REview CPT
 	$('.zwsgr-toggle-visibility').on('click', function(e) {
@@ -352,11 +452,11 @@ jQuery(document).ready(function($) {
 
 	// Function to hide or show elements with a smooth effect
     function toggleElements() {
-        $('#review-title').is(':checked') ? $('.selected-option-display .title').fadeOut(600) : $('.selected-option-display .title').fadeIn(600);
-        $('#review-rating').is(':checked') ? $('.selected-option-display .rating').fadeOut(600) : $('.selected-option-display .rating').fadeIn(600);
-        $('#review-days-ago').is(':checked') ? $('.selected-option-display .days-ago').fadeOut(600) : $('.selected-option-display .days-ago').fadeIn(600);
-        $('#review-content').is(':checked') ? $('.selected-option-display .content').fadeOut(600) : $('.selected-option-display .content').fadeIn(600);
-        $('#reviewiew-photo').is(':checked') ? $('.selected-option-display .reviewer-photo').fadeOut(600) : $('.selected-option-display .reviewer-photo').fadeIn(600);
+        $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').fadeOut(600) : $('.selected-option-display .zwsgr-title').fadeIn(600);
+        $('#review-rating').is(':checked') ? $('.selected-option-display .zwsgr-rating').fadeOut(600) : $('.selected-option-display .zwsgr-rating').fadeIn(600);
+        $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').fadeIn(600);
+        $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').fadeOut(600) : $('.selected-option-display .zwsgr-content').fadeIn(600);
+        $('#reviewiew-photo').is(':checked') ? $('.selected-option-display .zwsgr-reviewer-photo').fadeOut(600) : $('.selected-option-display .zwsgr-reviewer-photo').fadeIn(600);
     }
 
     // Attach change event listeners to checkboxes
@@ -693,36 +793,63 @@ jQuery(document).ready(function($) {
 		processBatch(zwsgr_gmb_data_type);
 	  });
 	
-	  $(".fetch-gmb-auth-url").on("click", function (e) {
+	  $("#fetch-gmb-auth-url").on("submit", function (e) {
+		
 		e.preventDefault();
-	
-		// Get the current URL
-		var zwsgr_site_url = window.location.href;
-	
-		// AJAX call
+
+		// Get the email address from the input field
+		var zwsgr_user_email = $("#fetch-gmb-auth-url #zwsgr_gmb_google_account").val().trim();
+
+		// Validate email before proceeding
+		if (!zwsgr_user_email || !zwsgr_validate_email(zwsgr_user_email)) {
+			$("#fetch-gmb-auth-url-response").html("<p class='error validation'>Please enter a valid email address.</p>");
+			return;
+		}
+
+		$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', true);
+		$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Connecting...");
+
 		$.ajax({
-		  url: zwsgr_admin.ajax_url,
+			url: zwsgr_admin.ajax_url, // WordPress AJAX URL
 			type: "POST",
 			dataType: "json",
 			data: {
-			  action: "zwsgr_fetch_oauth_url",
-			  zwsgr_site_url: zwsgr_site_url
+				action: "zwsgr_fetch_oauth_url",
+				zwsgr_user_email:  zwsgr_user_email
 			},
 			success: function (response) {
-			  if (response.success) {
-				// Redirect the user to the OAuth URL
-				  window.location.href = response.data.zwsgr_oauth_url;
-			  } else {
-				  alert('Error generating OAuth URL');
-			  }
+
+				if (response.success) {
+					
+					$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', false);
+					$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Redirecting...");
+
+					// Redirect to the OAuth URL
+					window.location.href = response.data.zwsgr_oauth_url;
+
+				} else {
+
+					$("#fetch-gmb-auth-url-response").html("<p class='error response''>Error generating OAuth URL: " + (response.data?.message || "Unknown error") + "</p>");
+
+				}
 			},
 			error: function (xhr, status, error) {
-				// Handle any errors here
-				console.error('AJAX request failed:', status, error);
+
+				$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', false);
+				$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Connect with Google");
+
+				// Log and alert errors
+				$("#fetch-gmb-auth-url-response").html("<p class='error response''>An unexpected error occurred: " + error + "</p>");
+				
 			}
 		});
-	
-	  });
+		
+	});
+
+	function zwsgr_validate_email(email) {
+		var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailPattern.test(email);
+	}
 	
 	  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
 		e.preventDefault();
