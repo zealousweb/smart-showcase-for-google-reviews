@@ -1577,7 +1577,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-rating">' . $stars_html . '</div>
-							<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>
+							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
 						</div>';
 
 						$zwsgr_slider_item2 = '
@@ -1586,7 +1586,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-rating">' . $stars_html . '</div>
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
-								<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
 										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
@@ -1602,7 +1602,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 							$zwsgr_slider_item4 = '
 							<div class="zwsgr-slide-item">
-								<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>	
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
 										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
@@ -1625,7 +1625,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<div class="zwsgr-contnt-wrap">
-									<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>	
+									<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
 							</div>';
@@ -1645,8 +1645,22 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
-								<p class="zwsgr-content">' . esc_html(zwsgr_review_content) . '</p>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
 							</div>';
+
+							
+						// Dynamically choose the variable based on layout_option and number
+						$variable_name = 'zwsgr_slider_item';
+
+						// Check if the dynamically resolved variable exists
+						if (isset($$variable_name)) {
+							// Append the dynamically resolved variable's content to $reviews_html
+							$reviews_html .= $$variable_name;
+							
+						} else {
+							// Handle the case where the variable does not exist
+							$reviews_html .= '<div>Invalid layout option or number</div>';
+						}
 				}
 				wp_reset_postdata();
 			} else {
@@ -1654,7 +1668,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 		
 			// End output buffering and return the content
-			$reviews_html = ob_get_clean();
+			// $reviews_html = ob_get_clean();
 		
 			// Return the filtered reviews HTML as the response
 			echo $reviews_html;
