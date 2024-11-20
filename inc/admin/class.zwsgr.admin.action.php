@@ -88,9 +88,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			));
 
 
-			// Fetch the rating filter value from post meta
-			$post_id = $_GET['zwsgr_widget_id']; // Ensure the correct post ID is retrieved
-			$rating_filter = get_post_meta($post_id, 'rating_filter', true);
+			if (isset($_GET['zwsgr_widget_id'])) {
+				$post_id = $_GET['zwsgr_widget_id'];
+				$rating_filter = get_post_meta($post_id, 'rating_filter', true);
+			} else {
+				$post_id = 0; // Or a default value
+				$rating_filter = null; // Handle the case where the parameter is missing
+			}
 
 			//Save Widget Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'my_widget', array(
