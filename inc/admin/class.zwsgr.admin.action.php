@@ -88,15 +88,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			));
 
 
-			// Fetch the rating filter value from post meta
-			$post_id = $_GET['zwsgr_widget_id']; // Ensure the correct post ID is retrieved
-			$rating_filter = get_post_meta($post_id, 'rating_filter', true);
-
 			//Save Widget Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'my_widget', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('my_widget_nonce'),
-				'rating_filter' => intval($rating_filter), // Rating filter from post meta
             ));
 
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'filter_reviews', array(
@@ -897,6 +892,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// $generated_shortcode = '[zwsgr_widget_configurator id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
 			// Generate the shortcode by calling the new function
 			$generated_shortcode = $this->generate_shortcode($post_id);
+			$current_tab = get_post_meta($post_id, 'tab-options', true); 
+			$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
+
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
 
 
@@ -911,7 +909,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// Convert the rating filter to a word.
 			$rating_filter_word = isset($rating_mapping[$rating_filter]) ? $rating_mapping[$rating_filter] : '';
-			echo $rating_filter_word;
 
 			$ratings_to_include = array();
 			if ($rating_filter_word == 'TWO') {
@@ -1048,9 +1045,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav">
-					<li class="tab-item active" data-tab="tab-options">Select Display Options</li>
-					<li class="tab-item" data-tab="tab-selected">Selected Option</li>
-					<li class="tab-item" data-tab="tab-shortcode">Generated Shortcode</li>
+					<li class="tab-item active <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options">Select Display Options</li>
+					<li class="tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected">Selected Option</li>
+					<li class="tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode">Generated Shortcode</li>
 				</ul>
 
 				<!-- Tab Content Areas -->
@@ -1126,15 +1123,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="filter-rating">
 								<?php
 								for ($i = 1; $i <= 5; $i++) {
-									$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
-									$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
-									?>
-									<span class="star-filter" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star" style="fill: <?php echo $fillColor; ?>;">
-										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" class="star" fill="<?php echo $fillColor; ?>" />
-										</svg>
-									</span>
-									<?php
+								$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
+								$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
+								?>
+								<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
+									</svg>
+								</span>
+								<?php
 								}
 								?>
 							</div>
@@ -1316,6 +1313,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$layout_option =  isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : '';
 				update_post_meta($post_id, 'layout_option', $layout_option);
 
+				$current_tab = sanitize_text_field($_POST['current_tab']); // The active tab
+				update_post_meta($post_id, 'tab-options', $current_tab); // Save the active tab state
+
 			}
 
 			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : array();
@@ -1332,6 +1332,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
 			$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
 
+			$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
+			update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
+			
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);

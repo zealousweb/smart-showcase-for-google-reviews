@@ -349,3 +349,17 @@ input.zwsgr-checkbox:checked:before {
     max-width: 400px;
 }
 
+
+/* star filter */
+.star-filter {
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .star-filter.selected .star {
+    fill: #FFD700; /* Gold color for selected stars */
+  }
+  
+  .star-filter .star {
+    fill: #ccc; /* Gray color for unselected stars */
+  }
