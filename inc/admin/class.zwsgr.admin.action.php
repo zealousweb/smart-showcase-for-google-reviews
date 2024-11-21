@@ -974,7 +974,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					
 
 					// Format the slider item for each review
-					$zwsgr_slider_item = '
+					$zwsgr_slider_item1 = '
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-slide-wrap">
 								<div class="zwsgr-profile">
@@ -1161,7 +1161,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 
 					// Add the slider item to the slider content array
-					$zwsgr_slider_content[] = $zwsgr_slider_item;
+					$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 					$zwsgr_slider_content2[] = $zwsgr_slider_item2;
 					$zwsgr_slider_content4[] = $zwsgr_slider_item4;
 					$zwsgr_slider_content5[] = $zwsgr_slider_item5;
@@ -1177,7 +1177,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				wp_reset_postdata();
 			}
 
-			$zwsgr_slider_content = implode('', (array) $zwsgr_slider_content);
+			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
 			$zwsgr_slider_content4 = implode('', (array) $zwsgr_slider_content4);
 			$zwsgr_slider_content5 = implode('', (array) $zwsgr_slider_content5);
@@ -1197,7 +1197,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'slider' => [
 					'<div class="zwsgr-slider" id="zwsgr-slider1">
 						<div class="zwsgr-slider-1">
-							' . $zwsgr_slider_content . '
+							' . $zwsgr_slider_content1 . '
 						</div>
 					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider2">
@@ -1272,11 +1272,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
-					<li class="tab-item zwsgr-tab-item active <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">1. </span>Select Display Options</li>
+					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-options"><span class="zwsgr-step">1. </span>Connect</li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step">2. </span>Selected Option</li>
+					<li class="tab-item zwsgr-tab-item  <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">3. </span>Generated Shortcode</li>
+					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step">3. </span>Selected Option</li>
+					<span class="zwsgr-step-arrow"></span>
+					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">4. </span>Generated Shortcode</li>
 				</ul>
 
 				<!-- Tab Content Areas -->
@@ -1688,25 +1690,31 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					
 
 					// Format the slider item for each review
-					$zwsgr_slider_item = '
-						<div class="zwsgr-slide-item">
-							<div class="zwsgr-slide-wrap">
-								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+					$zwsgr_slider_item1 = '
+					<div class="zwsgr-slider" id="zwsgr-slider1">
+						<div class="zwsgr-slider-1">
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-google-icon">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									</div>
 								</div>
-								<div class="zwsgr-review-info">
-									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
-								</div>
-								<div class="zwsgr-google-icon">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
-								</div>
+								<div class="zwsgr-rating">' . $stars_html . '</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
 							</div>
-							<div class="zwsgr-rating">' . $stars_html . '</div>
-							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
-						</div>';
+						</div>
+					</div>';
 
-						$zwsgr_slider_item2 = '
+					$zwsgr_slider_item2 = '
+					<div class="zwsgr-slider" id="zwsgr-slider2">
+						<div class="zwsgr-slider-2">
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-rating-wrap">
 									<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1724,7 +1732,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
 									</div>
 								</div>
-							</div>';
+							</div>
+						</div>
+					</div>';
 
 							$zwsgr_slider_item4 = '
 							<div class="zwsgr-slide-item">
@@ -1784,7 +1794,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						}
 
 
-						$layout_option = get_post_meta(246, 'layout_option', true);
+						$layout_option = get_post_meta($post_id, 'layout_option', true);
 						$layout_option =substr($layout_option, -1);
 						$variable_name = 'zwsgr_slider_item' . $layout_option;
 

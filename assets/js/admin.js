@@ -1122,9 +1122,9 @@ jQuery(document).ready(function($) {
 				//  $('#selected-option-display').html(response);
 			 
 				// Ensure the previous Slick instance is destroyed before reinitializing
-				if ($('#selected-option-display').hasClass('slick-initialized')) {
-					$('#selected-option-display').slick('unslick');
-				}
+				// if ($('#selected-option-display').hasClass('slick-initialized')) {
+				// 	$('#selected-option-display').slick('unslick');
+				// }
 
 				// Ensure the response is HTML or clean content
 				if (typeof response === "string" || response instanceof String) {
@@ -1154,7 +1154,7 @@ jQuery(document).ready(function($) {
 		// Reinitialize the Slick slider with custom settings
 		container.slick({
 			dots: false,       
-			arrows: false,     
+			arrows: true,     
 			infinite: true,   
 			slidesToShow: 3, 
 			slidesToScroll: 1 
