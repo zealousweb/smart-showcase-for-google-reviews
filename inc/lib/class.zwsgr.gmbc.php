@@ -84,12 +84,11 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 // Display the "Connect with Google" button if no JWT token exists
                 echo '<div class="zwsgr-gmbc-outer-wrapper">
                     <div class="zwsgr-gmbc-container">
-                        <form id="fetch-gmb-auth-url" class="zwsgr-gmbc-inner-wrapper">
+                        <div id="fetch-gmb-auth-url-wrapper" class="zwsgr-gmbc-inner-wrapper">
                             <span style="margin-right: 10px;"> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
                             <div id="fetch-gmb-auth-url-response"></div>
-                            <input type="email" id="zwsgr_gmb_google_account" class="zwsgr-input-text" name="zwsgr_gmb_google_account" value="" placeholder="Enter your gmail address">
-                            <button type="submit" class="button button-primary zwsgr-submit-btn">Connect with Google</button>
-                        </form>
+                            <button type="submit" class="button button-primary zwsgr-submit-btn" id="fetch-gmb-auth-url">Connect with Google</button>
+                        </div>
                     </div>
                 </div>';
             }

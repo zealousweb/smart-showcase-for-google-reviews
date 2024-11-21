@@ -414,26 +414,9 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_user_name     = $zwsgr_current_user->user_login;
             $zwsgr_user_site_url = admin_url('admin.php?page=zwsgr_connect_google');
 
-            // Get user email from $_POST data
-            if (isset($_POST['zwsgr_user_email'])) {
-                $zwsgr_user_email = sanitize_email($_POST['zwsgr_user_email']);
-            }
-
-            // Validate user email address
-            if (empty($zwsgr_user_email) || !is_email($zwsgr_user_email)) {
-                wp_send_json_error(
-                    [
-                        'message' => 'Invalid email address provided',
-                        'code' => 'invalid_email_address'
-                    ]
-                );
-                wp_die();
-            }
-
             // Prepare the payload for the request
             $zwsgr_payload_data = [
                 'zwsgr_user_name'     => $zwsgr_user_name,
-                'zwsgr_user_email'    => $zwsgr_user_email,
                 'zwsgr_user_site_url' => $zwsgr_user_site_url
             ];
 

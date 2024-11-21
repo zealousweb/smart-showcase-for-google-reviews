@@ -764,36 +764,26 @@ jQuery(document).ready(function($) {
 		processBatch(zwsgr_gmb_data_type);
 	  });
 	
-	  $("#fetch-gmb-auth-url").on("submit", function (e) {
+	$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").on("click", function (e) {
 		
 		e.preventDefault();
 
-		// Get the email address from the input field
-		var zwsgr_user_email = $("#fetch-gmb-auth-url #zwsgr_gmb_google_account").val().trim();
-
-		// Validate email before proceeding
-		if (!zwsgr_user_email || !zwsgr_validate_email(zwsgr_user_email)) {
-			$("#fetch-gmb-auth-url-response").html("<p class='error validation'>Please enter a valid email address.</p>");
-			return;
-		}
-
-		$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', true);
-		$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Connecting...");
+		$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', true);
+		$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Connecting...");
 
 		$.ajax({
-			url: zwsgr_admin.ajax_url, // WordPress AJAX URL
+			url: zwsgr_admin.ajax_url,
 			type: "POST",
 			dataType: "json",
 			data: {
-				action: "zwsgr_fetch_oauth_url",
-				zwsgr_user_email:  zwsgr_user_email
+				action: "zwsgr_fetch_oauth_url"
 			},
 			success: function (response) {
 
 				if (response.success) {
 					
-					$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', false);
-					$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Redirecting...");
+					$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', false);
+					$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Redirecting...");
 
 					// Redirect to the OAuth URL
 					window.location.href = response.data.zwsgr_oauth_url;
@@ -806,11 +796,11 @@ jQuery(document).ready(function($) {
 			},
 			error: function (xhr, status, error) {
 
-				$("#fetch-gmb-auth-url .zwsgr-submit-btn").prop('disabled', false);
-				$("#fetch-gmb-auth-url .zwsgr-submit-btn").html("Connect with Google");
+				$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', false);
+				$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Connect with Google");
 
 				// Log and alert errors
-				$("#fetch-gmb-auth-url-response").html("<p class='error response''>An unexpected error occurred: " + error + "</p>");
+				$("#fetch-gmb-auth-url-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
 				
 			}
 		});
