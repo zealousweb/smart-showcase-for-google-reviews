@@ -41,6 +41,8 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             if (isset($zwsgr_gmb_data['accounts'])) {
                 foreach ($zwsgr_gmb_data['accounts'] as $zwsgr_account) {
 
+                    $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+
                     // Prepare post data
                     $zwsgr_request_data = array(
                         'post_title'   => sanitize_text_field($zwsgr_account['accountName']),
@@ -48,6 +50,9 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         'post_status'  => 'publish',
                         'post_type'    => 'zwsgr_request_data',
                         'post_name'    => sanitize_title($zwsgr_account['name']),
+                        'meta_input'   => array(
+                            'zwsgr_gmb_email'   => $zwsgr_gmb_email
+                        ),
                     );
             
                     // Check if a post with this title already exists

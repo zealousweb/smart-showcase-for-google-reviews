@@ -807,6 +807,64 @@ jQuery(document).ready(function($) {
 		
 	});
 
+	$("#disconnect-gmb-auth #disconnect-auth").on("click", function (e) {
+		
+		e.preventDefault();
+
+		$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', true);
+		$("#disconnect-gmb-auth #disconnect-auth").html("Disconnecting...");
+
+		// Get the checkbox value
+		var zwsgr_delete_plugin_data = $('#disconnect-gmb-auth #delete-all-data').prop('checked') ? '1' : '0';
+
+		$.ajax({
+			url: zwsgr_admin.ajax_url,
+			type: "POST",
+			dataType: "json",
+			data: {
+				action: "zwsgr_delete_oauth_connection",
+				zwsgr_delete_plugin_data: zwsgr_delete_plugin_data,
+				security: zwsgr_admin.zwsgr_delete_oauth_connection,
+			},
+			success: function (response) {
+
+				console.log(response, 'response');
+
+				if (response.success) {
+					
+					$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
+					$("#disconnect-gmb-auth #disconnect-auth").html("Disconnected");
+
+					$("#disconnect-gmb-auth-response").html("<p class='success response''> OAuth Disconnected: " + (response.data?.message || "Unknown error") + "</p>");
+
+					$("#disconnect-gmb-auth .zwsgr-caution-div").fadeOut();
+					$("#disconnect-gmb-auth .danger-note").fadeOut();
+
+					// Reload the page after a 1-second delay
+					setTimeout(function() {
+						location.reload();
+					}, 1500);
+
+				} else {
+
+					$("#disconnect-gmb-auth-response").html("<p class='error response''>Error disconnecting OAuth connection: " + (response.data?.message || "Unknown error") + "</p>");
+
+				}
+
+			},
+			error: function (xhr, status, error) {
+
+				$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
+				$("#disconnect-gmb-auth #disconnect-auth").html("Disconnect");
+
+				// Log and alert errors
+				$("#disconnect-gmb-auth-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
+				
+			}
+		});
+		
+	});
+
 	function zwsgr_validate_email(email) {
 		var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return emailPattern.test(email);
