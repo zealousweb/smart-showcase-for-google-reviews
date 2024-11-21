@@ -79,12 +79,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			//Toggle Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
-				'ajax_url' 					   => admin_url('admin-ajax.php'),
-				'nonce' 					   => wp_create_nonce('toggle-visibility-nonce'),
-				'zwsgr_queue_manager_nounce'   => wp_create_nonce('zwsgr_queue_manager_nounce'),
-				'zwsgr_add_update_reply_nonce' => wp_create_nonce('zwsgr_add_update_reply_nonce'),
-				'zwsgr_delete_review_reply'	   => wp_create_nonce('zwsgr_delete_review_reply'),
-				'zwsgr_wp_review_id' 		   => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
+				'ajax_url' 					    => admin_url('admin-ajax.php'),
+				'nonce' 					    => wp_create_nonce('toggle-visibility-nonce'),
+				'zwsgr_queue_manager_nounce'    => wp_create_nonce('zwsgr_queue_manager_nounce'),
+				'zwsgr_delete_oauth_connection' => wp_create_nonce('zwsgr_delete_oauth_connection'),
+				'zwsgr_add_update_reply_nonce'  => wp_create_nonce('zwsgr_add_update_reply_nonce'),
+				'zwsgr_delete_review_reply'	    => wp_create_nonce('zwsgr_delete_review_reply'),
+				'zwsgr_wp_review_id' 		    => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
 			));
 
 			//Save Widget Ajax
