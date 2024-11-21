@@ -1092,7 +1092,7 @@ jQuery(document).ready(function($) {
 	$('.filter-rating .star-filter').on('click', function() {
 		var selectedRating = $(this).data('rating'); // Get the selected rating
 		var nonce = filter_reviews.nonce;
-
+		var postId = getQueryParam('zwsgr_widget_id');
 		// Prepare an array of selected ratings
 		var selectedRatings = [];
 		$('.filter-rating .star-filter.selected').each(function() {
@@ -1110,6 +1110,7 @@ jQuery(document).ready(function($) {
 			url: filter_reviews.ajax_url,
 			data: {
 				action: 'filter_reviews', // The action for the PHP handler
+				zwsgr_widget_id: postId,
 				rating_filter: selectedRatings, // Pass the selected ratings array
 				nonce: nonce
 			},
