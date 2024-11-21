@@ -1272,11 +1272,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
-					<li class="tab-item zwsgr-tab-item active <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">1. </span>Select Display Options</li>
+					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-options"><span class="zwsgr-step">1. </span>Connect</li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step">2. </span>Selected Option</li>
+					<li class="tab-item zwsgr-tab-item  <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">3. </span>Generated Shortcode</li>
+					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step">3. </span>Selected Option</li>
+					<span class="zwsgr-step-arrow"></span>
+					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">4. </span>Generated Shortcode</li>
 				</ul>
 
 				<!-- Tab Content Areas -->
