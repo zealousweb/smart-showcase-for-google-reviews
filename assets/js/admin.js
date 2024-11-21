@@ -1154,7 +1154,7 @@ jQuery(document).ready(function($) {
 		// Reinitialize the Slick slider with custom settings
 		container.slick({
 			dots: false,       
-			arrows: false,     
+			arrows: true,     
 			infinite: true,   
 			slidesToShow: 3, 
 			slidesToScroll: 1 

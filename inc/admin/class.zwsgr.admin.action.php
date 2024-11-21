@@ -1792,7 +1792,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						}
 
 
-						$layout_option = get_post_meta(246, 'layout_option', true);
+						$layout_option = get_post_meta($post_id, 'layout_option', true);
 						$layout_option =substr($layout_option, -1);
 						$variable_name = 'zwsgr_slider_item' . $layout_option;
 
