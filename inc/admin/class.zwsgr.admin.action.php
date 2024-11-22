@@ -973,20 +973,21 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							: '<span class="zwsgr-star">☆</span>';
 					}
 					
+					$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
 					// Format the slider item for each review
 					$zwsgr_slider_item1 = '
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-slide-wrap">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png"/>
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
 								<div class="zwsgr-google-icon">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 								</div>
 							</div>
 							<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1002,13 +1003,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 									</div>
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 							</div>';
@@ -1018,9 +1019,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										<div class="zwsgr-google-icon">
-											<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
 									</div>
 									<div class="zwsgr-review-info">
@@ -1033,7 +1034,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 						$zwsgr_slider_item5 = '
 							<div class="zwsgr-slide-item">
-								<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">	
+								<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<div class="zwsgr-contnt-wrap">
@@ -1046,14 +1047,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 									</div>
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1064,14 +1065,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 									</div>
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1082,14 +1083,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 									</div>
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<div class="zwsgr-list-content-wrap">
@@ -1104,9 +1105,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
 								<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										<div class="zwsgr-google-icon">
-											<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
 									</div>
 									<div class="zwsgr-review-info">
@@ -1120,9 +1121,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap4 zwsgr-list-wrap4">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										<div class="zwsgr-google-icon">
-											<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
 									</div>
 									<div class="zwsgr-review-info">
@@ -1139,7 +1140,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-wrap5">
 									<div class="zwsgr-prifile-wrap">
 										<div class="zwsgr-profile">
-											<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+											<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										</div>
 										<div class="zwsgr-data">
 											<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
@@ -1150,7 +1151,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<div class="zwsgr-review-info">
 											<div class="zwsgr-rating">' . $stars_html . '</div>
 											<div class="zwsgr-google-icon">
-												<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 											</div>
 										</div>
 										<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
@@ -1164,14 +1165,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 									</div>
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1182,7 +1183,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
@@ -1192,7 +1193,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										</div>
 									</div>
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
@@ -1202,12 +1203,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-review-detail">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 										<div class="zwsgr-rating-wrap">
 											<div class="zwsgr-google-icon">
-												<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 											</div>
 											<div class="zwsgr-rating">' . $stars_html . '</div>
 										</div>
@@ -1221,9 +1222,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						$zwsgr_grid_item4 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
@@ -1235,7 +1236,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
@@ -1289,7 +1290,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_grid_content5 = implode('', (array) $zwsgr_grid_content5);
 
 
-			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+			
 
 			// Define your options and layouts with corresponding HTML content
 			$options = [
@@ -1881,14 +1882,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-slide-wrap">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
 								<div class="zwsgr-google-icon">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 								</div>
 							</div>
 							<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1904,13 +1905,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
 							<div class="zwsgr-slide-wrap">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								</div>
 								<div class="zwsgr-google-icon">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 								</div>
 							</div>
 						</div>';
@@ -1920,9 +1921,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
 						<div class="zwsgr-slide-wrap4">
 							<div class="zwsgr-profile">
-								<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+								<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 								<div class="zwsgr-google-icon">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 								</div>
 							</div>
 							<div class="zwsgr-review-info">
@@ -1936,7 +1937,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_slider_item5 = '
 					<div class="zwsgr-slide-item">
 
-						<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">	
+						<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
 						<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 						<div class="zwsgr-rating">' . $stars_html . '</div>
 						<div class="zwsgr-contnt-wrap">
@@ -1949,14 +1950,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-slide-item">
 						<div class="zwsgr-slide-wrap">
 							<div class="zwsgr-profile">
-								<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+								<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 							</div>
 							<div class="zwsgr-review-info">
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 							</div>
 							<div class="zwsgr-google-icon">
-								<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+								<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 							</div>
 						</div>
 						<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1968,14 +1969,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-slide-item">
 						<div class="zwsgr-slide-wrap">
 							<div class="zwsgr-profile">
-								<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+								<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 							</div>
 							<div class="zwsgr-review-info">
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 							</div>
 							<div class="zwsgr-google-icon">
-								<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+								<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 							</div>
 						</div>
 						<div class="zwsgr-rating">' . $stars_html . '</div>
@@ -1986,14 +1987,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-slide-wrap">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								</div>
 								<div class="zwsgr-google-icon">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 								</div>
 							</div>
 							<div class="zwsgr-list-content-wrap">
@@ -2008,9 +2009,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
 							<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<div class="zwsgr-review-info">
@@ -2024,9 +2025,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-slide-wrap4 zwsgr-list-wrap4">
 								<div class="zwsgr-profile">
-									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									<div class="zwsgr-google-icon">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>
 								<div class="zwsgr-review-info">
@@ -2043,7 +2044,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-list-wrap5">
 								<div class="zwsgr-prifile-wrap">
 									<div class="zwsgr-profile">
-										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									</div>
 									<div class="zwsgr-data">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
@@ -2054,7 +2055,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-review-info">
 										<div class="zwsgr-rating">' . $stars_html . '</div>
 										<div class="zwsgr-google-icon">
-											<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
 									</div>
 									<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
