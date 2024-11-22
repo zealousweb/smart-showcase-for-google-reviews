@@ -787,6 +787,305 @@ input.zwsgr-radio:checked::before {
     padding: 30px 20px;
 }
 
+.zwsgr-grid-item {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+.zwsgr-grid-item .zwsgr-slide-item {
+    width: 31%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 10px;
+}
+
+.zwsgr-grid-item#zwsgr-grid2 .zwsgr-slide-item {
+    background-color: #FFFFFF;
+    border: 1px solid #E8EBEF;
+}
+
+.zwsgr-grid-item#zwsgr-grid2 .zwsgr-date-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-slide-item {
+    width: 48%;
+    background-color: #FFFFFF;
+    border: 1px solid #E8EBEF;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.zwsgr-slider .zwsgr-slide-wrap .zwsgr-review-detail {
+    width: 30%;
+    text-align: center;
+}
+
+.zwsgr-slider .zwsgr-slide-wrap .zwsgr-content-wrap {
+    width: 60%;
+    background-color: #FAFAFA;
+    border-radius: 8px;
+    padding: 20px;
+
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-rating-wrap {
+    width: 65%;
+    margin: 10px auto 0 ;
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-rating-wrap .zwsgr-rating {
+    margin-right: 0;
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-title {
+    margin: 20px 0 5px 0;
+}
+
+.zwsgr-grid-item#zwsgr-grid4 .zwsgr-slide-item {
+    text-align: center;
+    width: 23%;
+}
+.zwsgr-grid-item#zwsgr-grid4 .zwsgr-profile {
+    width: 62px;
+    position: relative;
+    margin: 0 auto 20px;
+}
+
+.zwsgr-grid-item#zwsgr-grid4  .zwsgr-google-icon {
+    position: absolute;
+    width: 20px;
+    bottom: 0;
+    right: 0;
+}
+
+.zwsgr-grid-item#zwsgr-grid4 .zwsgr-rating {
+    margin: 10px auto;
+}
+
+
+.zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-item {
+    width: 48%;
+}
+
+.zwsgr-grid-item#zwsgr-grid5 .zwsgr-rating { 
+    width: 90px;
+}
+
+.zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-wrap .zwsgr-review-info {
+    width: calc(100% - 180px);
+    padding-left: 20px;
+}
+
+
+
+.zwsgr-badge-item .zwsgr-average{
+    color: #1B1B1B;
+    font-weight: 700;
+    font-size: 24px;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+}
+
+.zwsgr-badge-item .zwsgr-based-on {
+    color: #1B1B1B;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    margin: 15px 0;
+}
+
+.zwsgr-badge-wrap {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.zwsgr-badge-wrap .zwsgr-option-item {
+    width: 33.33%;
+    padding: 20px;
+    box-shadow: none;
+    background: transparent;
+    box-sizing: border-box;
+}
+
+.zwsgr-badge-wrap .zwsgr-layout-title-wrap {
+    margin-bottom: 20px;
+}
+
+.zwsgr-badge-item#zwsgr-badge1{
+    box-shadow: 10px 10px 30px 0px #00000005;
+    text-align: center;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 16px;
+}
+
+.zwsgr-badge-item#zwsgr-badge2{
+    box-shadow: 10px 10px 30px 0px #00000005;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.zwsgr-badge-item#zwsgr-badge2 .zwsgr-badge-image {
+    width: 90px;
+    
+}
+
+.zwsgr-badge-item#zwsgr-badge2 .zwsgr-badge-info {
+    width: calc(100% - 110px);
+    padding-left: 20px;
+}
+
+.zwsgr-badge-item#zwsgr-badge2 .zwsgr-badge-info p {
+    margin-bottom: 0;
+}
+
+.zwsgr-badge-item#zwsgr-badge3{ 
+    box-shadow: 10px 10px 30px 0px #00000005;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+}
+
+.zwsgr-badge-item#zwsgr-badge3 .zwsgr-rating-wrap {
+    justify-content: center;
+    align-items: center;
+}
+
+.zwsgr-badge-item#zwsgr-badge3 .final-rating {
+    font-weight: 900;
+    font-size: 20px;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+}
+
+.zwsgr-badge-item#zwsgr-badge3 .zwsgr-rating {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.zwsgr-badge-item#zwsgr-badge4{ 
+    box-shadow: 10px 10px 30px 0px #00000005;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.zwsgr-badge-item#zwsgr-badge4 .final-rating {
+    color: #4285F4;
+    font-size: 72px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+}
+
+.zwsgr-badge4-rating, .zwsgr-badge4-info {
+    width: 50%;
+    text-align: center;
+}
+
+.zwsgr-badge-item#zwsgr-badge5{ 
+    box-shadow: 10px 10px 30px 0px #00000005;
+    background-color: #fff;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.zwsgr-badge-item#zwsgr-badge5 .zwsgr-badge5-rating {
+    background-color: #4285F4;
+    padding: 20px;
+    border-radius: 16px 0 0 16px;
+    width: 40%;
+    box-sizing: border-box;
+}
+
+.zwsgr-badge-item#zwsgr-badge5 .zwsgr-badge5-info {
+    width: 60%;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
+.zwsgr-badge-item#zwsgr-badge5 .zwsgr-badge5-rating .final-rating {
+    color: #FFFFFF;
+    font-size: 62px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+}
+
+.zwsgr-badge-item .zwsgr-google {
+    color: #6A6A6A;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.zwsgr-badge-item .zwsgr-avg-note {
+    color: #6A6A6A;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+
+.zwsgr-badge-item#zwsgr-badge6{
+    box-shadow: 10px 10px 30px 0px #00000005;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 16px;
+}
+
+.zwsgr-badge-item#zwsgr-badge6 .final-rating {
+    color: #F6BB06;
+    font-weight: 700;
+    font-size: 40px;
+    font-family: 'Poppins', sans-serif;
+    padding-right: 20px;
+}
+
+.zwsgr-badge-item#zwsgr-badge6 .zwsgr-badge6-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.zwsgr-badge-item#zwsgr-badge7{
+    box-shadow: 10px 10px 30px 0px #00000005;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.zwsgr-badge-item#zwsgr-badge7 .zwsgr-badge7-rating {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.zwsgr-badge-item#zwsgr-badge7 .zwsgr-badge7-rating .final-rating {
+    font-weight: 900;
+    font-size: 20px;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+}
+
 .zwsgr-gmbc-outer-wrapper {
     position: absolute;
     height: 100%;
