@@ -1060,7 +1060,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
 							</div>';
 
-						$zwsgr_list_item = '
+						$zwsgr_list_item1 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
@@ -1160,6 +1160,92 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								
 							</div>';
 
+						$zwsgr_grid_item1 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-google-icon">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									</div>
+								</div>
+								<div class="zwsgr-rating">' . $stars_html . '</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+							</div>';
+
+						$zwsgr_grid_item2 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<div class="zwsgr-date-wrap">
+											<div class="zwsgr-rating">' . $stars_html . '</div>
+											<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										</div>
+									</div>
+									<div class="zwsgr-google-icon">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									</div>
+								</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+							</div>';
+
+						$zwsgr_grid_item3 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-review-detail">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<div class="zwsgr-rating-wrap">
+											<div class="zwsgr-google-icon">
+												<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+											</div>
+											<div class="zwsgr-rating">' . $stars_html . '</div>
+										</div>
+									</div>
+									<div class="zwsgr-content-wrap">
+										<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+									</div>
+								</div>
+							</div>';
+
+						$zwsgr_grid_item4 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-profile">
+									<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									<div class="zwsgr-google-icon">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/google-icon.png">
+									</div>
+								</div>									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<div class="zwsgr-rating">' . $stars_html . '</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
+							</div>';
+						
+						$zwsgr_grid_item5 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="http://localhost/smartgooglereview/wp-content/plugins/smart-google-reviews/assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-rating">' . $stars_html . '</div>
+								</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+							</div>';
+
 
 					// Add the slider item to the slider content array
 					$zwsgr_slider_content1[] = $zwsgr_slider_item1;
@@ -1168,11 +1254,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_slider_content5[] = $zwsgr_slider_item5;
 					$zwsgr_slider_content6[] = $zwsgr_slider_item6;
 
-					$zwsgr_list_content[] = $zwsgr_list_item;
+					$zwsgr_list_content1[] = $zwsgr_list_item1;
 					$zwsgr_list_content2[] = $zwsgr_list_item2;
 					$zwsgr_list_content3[] = $zwsgr_list_item3;
 					$zwsgr_list_content4[] = $zwsgr_list_item4;
 					$zwsgr_list_content5[] = $zwsgr_list_item5;
+
+					$zwsgr_grid_content1[] = $zwsgr_grid_item1;
+					$zwsgr_grid_content2[] = $zwsgr_grid_item2;
+					$zwsgr_grid_content3[] = $zwsgr_grid_item3;
+					$zwsgr_grid_content4[] = $zwsgr_grid_item4;
+					$zwsgr_grid_content5[] = $zwsgr_grid_item5;
 			
 				}
 				wp_reset_postdata();
@@ -1184,11 +1276,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_slider_content5 = implode('', (array) $zwsgr_slider_content5);
 			$zwsgr_slider_content6 = implode('', (array) $zwsgr_slider_content6);
 
-			$zwsgr_list_content = implode('', (array) $zwsgr_list_content);
+			$zwsgr_list_content1 = implode('', (array) $zwsgr_list_content1);
 			$zwsgr_list_content2 = implode('', (array) $zwsgr_list_content2);
 			$zwsgr_list_content3 = implode('', (array) $zwsgr_list_content3);
 			$zwsgr_list_content4 = implode('', (array) $zwsgr_list_content4);
 			$zwsgr_list_content5 = implode('', (array) $zwsgr_list_content5);
+
+			$zwsgr_grid_content1 = implode('', (array) $zwsgr_grid_content1);
+			$zwsgr_grid_content2 = implode('', (array) $zwsgr_grid_content2);
+			$zwsgr_grid_content3 = implode('', (array) $zwsgr_grid_content3);
+			$zwsgr_grid_content4 = implode('', (array) $zwsgr_grid_content4);
+			$zwsgr_grid_content5 = implode('', (array) $zwsgr_grid_content5);
 
 
 
@@ -1224,17 +1322,25 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>'
 				],
 				'grid' => [
-					'<div class="grid-item" id="grid1">
-						' . $zwsgr_list_content . '
-					t</div>',
-					'<div class="grid-item" id="grid2">Grid 2 Content</div>',
-					'<div class="grid-item" id="grid3">Grid 3 Content</div>',
-					'<div class="grid-item" id="grid4">Grid 4 Content</div>',
-					'<div class="grid-item" id="grid5">Grid 5 Content</div>'
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid1">
+						' . $zwsgr_grid_content1 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid2">
+						' . $zwsgr_grid_content2 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid3">
+						' . $zwsgr_grid_content3 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid4">
+						' . $zwsgr_grid_content4 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid5">
+						' . $zwsgr_grid_content5 . '
+					</div>'
 				],
 				'list' => [
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list1">
-						' . $zwsgr_list_content . '
+						' . $zwsgr_list_content1 . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list2">
 						' . $zwsgr_list_content2 . '
