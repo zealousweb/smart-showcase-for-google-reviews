@@ -1163,16 +1163,6 @@ jQuery(document).ready(function($) {
 				nonce: nonce
 			},
 			success: function(response) {
-				// console.log("Response Type:", typeof response);  // Log response type to see if it's an object or string
-				// console.log("Response Content:", response);     
-
-				//  $('#selected-option-display').empty(); // Clear previous content and insert the new content
-				//  $('#selected-option-display').html(response);
-			 
-				// Ensure the previous Slick instance is destroyed before reinitializing
-				// if ($('#selected-option-display').hasClass('slick-initialized')) {
-				// 	$('#selected-option-display').slick('unslick');
-				// }
 
 				// Ensure the response is HTML or clean content
 				if (typeof response === "string" || response instanceof String) {
@@ -1183,10 +1173,21 @@ jQuery(document).ready(function($) {
 					console.error("Expected HTML content, but received:", response);
 				}
 
-				// Reinitialize Slick slider after the DOM has been updated
-				setTimeout(function() {
-					reinitializeSlickSlider1($('#selected-option-display'));
-				}, 100);
+				 // Use getQueryParam to extract the 'selectedOption' parameter from the URL
+				 var selectedOption = getQueryParam('selectedOption');
+
+				 // Only reinitialize Slick slider if selectedOption is one of the slider options
+				 if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
+					 setTimeout(function() {
+						 reinitializeSlickSlider1($('#selected-option-display'));
+					 }, 100);
+				 }
+	 
+				 // Handle list layout reinitialization (if needed)
+				 if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
+					 // Optionally, you can apply list-specific reinitialization logic here
+					//  alert('List layout filtered');
+				 }
 			},
 			error: function(xhr, status, error) {
 				console.error("AJAX Error: ", status, error);
@@ -1194,19 +1195,128 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider1(container) {
-		if (container.hasClass('slick-initialized')) {
-			container.slick('unslick'); // Uninitialize if already initialized
+		// Find and reinitialize Slick sliders
+		var slider1 = $(container).find('.zwsgr-slider-1');
+		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider4 = $(container).find('.zwsgr-slider-4');
+		var slider5 = $(container).find('.zwsgr-slider-5');
+		var slider6 = $(container).find('.zwsgr-slider-6');
+
+		// Unslick if it's already initialized
+		if (slider1.hasClass('slick-initialized')) {
+			slider1.slick('unslick');
 		}
-		
-		// Reinitialize the Slick slider with custom settings
-		container.slick({
-			dots: false,       
-			arrows: true,     
-			infinite: true,   
-			slidesToShow: 3, 
-			slidesToScroll: 1 
-		});
+
+		if (slider2.hasClass('slick-initialized')) {
+			slider2.slick('unslick');
+		}
+
+		if (slider4.hasClass('slick-initialized')) {
+			slider4.slick('unslick');
+		}
+
+		if (slider5.hasClass('slick-initialized')) {
+			slider5.slick('unslick');
+		}
+
+		if (slider6.hasClass('slick-initialized')) {
+			slider6.slick('unslick');
+		}
+
+
+		// Reinitialize the selected slider
+		if (slider1.length) {
+			slider1.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider2.length) {
+			slider2.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider4.length) {
+			slider4.slick({
+				infinite: true,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider5.length) {
+			slider5.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+			});
+		}
+
+		if (slider6.length) {
+			slider6.slick({
+				infinite: true,
+				slidesToShow: 3,
+				slidesToScroll: 3,
+				arrows: true,
+				dots: false,
+			});
+		}
 	}
+
+	// Slick sliders
+	$('.zwsgr-slider-1').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});
+	
+	$('.zwsgr-slider-2').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});	 
+
+	$('.zwsgr-slider-4').slick({
+		infinite: true,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: true,
+		dots: false,
+	});	
+
+	$('.zwsgr-slider-5').slick({
+		infinite: true,
+		slidesToShow: 2,
+		slidesToScroll: 2,
+		arrows: true,
+		dots: false,
+	});	
+
+	$('.zwsgr-slider-6').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+	});
 	
 });
