@@ -787,6 +787,96 @@ input.zwsgr-radio:checked::before {
     padding: 30px 20px;
 }
 
+.zwsgr-grid-item {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+.zwsgr-grid-item .zwsgr-slide-item {
+    width: 28.33%;
+    margin: 10px;
+}
+
+.zwsgr-grid-item#zwsgr-grid2 .zwsgr-slide-item {
+    background-color: #FFFFFF;
+    border: 1px solid #E8EBEF;
+}
+
+.zwsgr-grid-item#zwsgr-grid2 .zwsgr-date-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-slide-item {
+    width: 45%;
+    background-color: #FFFFFF;
+    border: 1px solid #E8EBEF;
+    padding: 10px;
+}
+
+.zwsgr-slider .zwsgr-slide-wrap .zwsgr-review-detail {
+    width: 30%;
+    text-align: center;
+}
+
+.zwsgr-slider .zwsgr-slide-wrap .zwsgr-content-wrap {
+    width: 60%;
+    background-color: #FAFAFA;
+    border-radius: 8px;
+    padding: 20px;
+
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-rating-wrap {
+    width: 65%;
+    margin: 10px auto 0 ;
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-rating-wrap .zwsgr-rating {
+    margin-right: 0;
+}
+
+.zwsgr-grid-item#zwsgr-grid3 .zwsgr-title {
+    margin: 20px 0 5px 0;
+}
+
+.zwsgr-grid-item#zwsgr-grid4 .zwsgr-slide-item {
+    text-align: center;
+    width: 19.33%;
+}
+.zwsgr-grid-item#zwsgr-grid4 .zwsgr-profile {
+    width: 62px;
+    position: relative;
+    margin: 0 auto 20px;
+}
+
+.zwsgr-grid-item#zwsgr-grid4  .zwsgr-google-icon {
+    position: absolute;
+    width: 20px;
+    bottom: 0;
+    right: 0;
+}
+
+.zwsgr-grid-item#zwsgr-grid4 .zwsgr-rating {
+    margin: 10px auto;
+}
+
+
+.zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-item {
+    width: 45%;
+}
+
+.zwsgr-grid-item#zwsgr-grid5 .zwsgr-rating { 
+    width: 90px;
+}
+
+.zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-wrap .zwsgr-review-info {
+    width: calc(100% - 180px);
+    padding-left: 20px;
+}
 .zwsgr-gmbc-outer-wrapper {
     position: absolute;
     height: 100%;
