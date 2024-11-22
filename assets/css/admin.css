@@ -789,6 +789,7 @@ input.zwsgr-radio:checked::before {
 
 .zwsgr-gmbc-outer-wrapper {
     position: absolute;
+    height: 100%;
     min-height: 100vh;
     width: calc(100% + 20px);
     left: -20px;
@@ -845,8 +846,10 @@ input.zwsgr-radio:checked::before {
     text-align: left;
 }
 
-#fetch-gmb-auth-url #fetch-gmb-auth-url-response .error, #fetch-gmb-auth-url #fetch-gmb-auth-url-response .success {
-    font-size: 13px;
+#fetch-gmb-auth-url #fetch-gmb-auth-url-response .error, #fetch-gmb-auth-url #fetch-gmb-auth-url-response .success,
+#disconnect-gmb-auth #disconnect-gmb-auth-response .error, #disconnect-gmb-auth #disconnect-gmb-auth-response .success,
+.zwsgr-caution-div .zwsgr-chechbox-label {
+    font-size: 15px;
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
@@ -855,8 +858,17 @@ input.zwsgr-radio:checked::before {
     margin: 0 0 10px 0 !important;
 }
 
-#fetch-gmb-auth-url #fetch-gmb-auth-url-response .success {
+#fetch-gmb-auth-url #fetch-gmb-auth-url-response .success, 
+#disconnect-gmb-auth #disconnect-gmb-auth-response .success {
     color: green;
+}
+
+#disconnect-gmb-auth input#delete-all-data {
+    margin: 0 5px 0 0 !important;
+}
+
+#disconnect-gmb-auth .danger-note {
+    margin: 0 0px 15px 0;
 }
 
 #fetch-gmb-data .notice {

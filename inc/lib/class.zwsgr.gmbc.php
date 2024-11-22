@@ -74,9 +74,17 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 // Display connected to  message and disconnect button if JWT token exists
                 echo '<div class="zwsgr-gmbc-outer-wrapper">
                     <div class="zwsgr-gmbc-container">
-                        <div class="zwsgr-gmbc-inner-wrapper">
+                        <div id="disconnect-gmb-auth" class="zwsgr-gmbc-inner-wrapper">
                             <span style="margin-right: 10px;">Congratulations! Connected to Google</span>
-                            <a href="" class="button button-danger zwsgr-submit-btn disconnect-google" style="margin-left: 10px;">Disconnect</a>
+                            <div id="disconnect-gmb-auth-response"></div>
+                            <div class="zwsgr-caution-div">
+                                <input type="checkbox" id="delete-all-data" name="delete_all_data" style="margin-right: 7.5px;">
+                                <label for="delete-all-data" style="color: red;" class="zwsgr-chechbox-label">
+                                    Caution: Check this box to permanently delete all data.
+                                </label>
+                            </div>
+                            <div class="danger-note">This action cannot be undone. Ensure you want to proceed.</div>
+                            <a href="" class="button button-danger zwsgr-submit-btn" id="disconnect-auth">Disconnect</a>
                         </div>
                     </div>
                 </div>';
@@ -84,12 +92,11 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 // Display the "Connect with Google" button if no JWT token exists
                 echo '<div class="zwsgr-gmbc-outer-wrapper">
                     <div class="zwsgr-gmbc-container">
-                        <form id="fetch-gmb-auth-url" class="zwsgr-gmbc-inner-wrapper">
+                        <div id="fetch-gmb-auth-url-wrapper" class="zwsgr-gmbc-inner-wrapper">
                             <span style="margin-right: 10px;"> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
-                            <div id="fetch-gmb-auth-url-response"></div>
-                            <input type="email" id="zwsgr_gmb_google_account" class="zwsgr-input-text" name="zwsgr_gmb_google_account" value="" placeholder="Enter your gmail address">
-                            <button type="submit" class="button button-primary zwsgr-submit-btn">Connect with Google</button>
-                        </form>
+                            <div id="fetch-gmb-auth-url-response"></div>   
+                            <a href="" class="button button-primary zwsgr-submit-btn" id="fetch-gmb-auth-url">Connect with Google</a>
+                        </div>
                     </div>
                 </div>';
             }
@@ -135,9 +142,12 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         // Handle the 'auth_code' flow during admin_init
         public function zwsgr_handle_auth_code() {
 
-            if (isset($_GET['auth_code']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
+            if (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
 
                 $zwsgr_auth_code = sanitize_text_field($_GET['auth_code']);
+                $zwsgr_gmb_email = sanitize_text_field($_GET['user_email']);
+                
+                update_option('zwsgr_gmb_email', $zwsgr_gmb_email);
 
                 // Fetch the JWT token
                 $zwsgr_fetch_jwt_token_response = $this->client->zwsgr_fetch_jwt_token($zwsgr_auth_code);
@@ -198,13 +208,21 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     // Get the post meta for the widget ID
                     $zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
 
-                    // Get all posts where the zwsgr_account_number matches
+                    // Fetch the GMB email from the options table
+                    $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+
+                    // Get posts where the zwsgr_gmb_email meta key matches the value from options
                     $zwsgr_request_data = get_posts(array(
                         'post_type'      => 'zwsgr_request_data',
                         'posts_per_page' => -1,
                         'post_status'    => 'publish',
-                        'meta_key'       => 'zwsgr_account_number',
-                        'meta_value'     => '', // Empty value to get all posts for the custom field
+                        'meta_query'     => array(
+                            array(
+                                'key'     => 'zwsgr_gmb_email', // The meta key to query
+                                'value'   => $zwsgr_gmb_email,  // The value to match
+                                'compare' => '=',                // Exact match
+                            ),
+                        ),
                         'fields'         => 'ids', // Only return post IDs
                     ));
 
