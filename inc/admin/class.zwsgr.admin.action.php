@@ -1289,7 +1289,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_grid_content5 = implode('', (array) $zwsgr_grid_content5);
 
 
-
+			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
 			// Define your options and layouts with corresponding HTML content
 			$options = [
@@ -1356,11 +1356,79 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>'
 				],
 				'badge' => [
-					'<div class="badge-item" id="badge1">Badge 1 Content</div>',
-					'<div class="badge-item" id="badge2">Badge 2 Content</div>',
-					'<div class="badge-item" id="badge3">Badge 3 Content</div>',
-					'<div class="badge-item" id="badge4">Badge 4 Content</div>',
-					'<div class="badge-item" id="badge5">Badge 5 Content</div>'
+					'<div class="zwsgr-badge-item" id="zwsgr-badge1">
+						<h3 class="zwsgr-average">Good</h3>
+						<div class="zwsgr-rating">' . $stars_html . '</div>
+						<p class="zwsgr-based-on">Based on <b> 122 reviews </b></p>
+						<img src="' . $plugin_dir_path . 'assets/images/google.png">
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge2">
+						<div class="zwsgr-badge-image">
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+						</div>
+						<div class="zwsgr-badge-info">
+							<h3 class="zwsgr-average">Good</h3>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+							<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge3">
+						<div class="zwsgr-rating-wrap">
+							<span class="final-rating">4.8</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+						<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge4">
+						<div class="zwsgr-badge4-rating">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+						<div class="zwsgr-badge4-info">
+							<h3 class="zwsgr-google">Google</h3>
+							<p class="zwsgr-avg-note">Average Rating</p>
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge5">
+						<div class="zwsgr-badge5-rating">
+							<span class="final-rating">4.7</span>
+						</div>
+						<div class="zwsgr-badge5-info">
+							<h3 class="zwsgr-google">Google</h3>
+							<p class="zwsgr-avg-note">Average Rating</p>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge6">
+						<div class="zwsgr-badge6-rating">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+						<div class="zwsgr-badge6-info">
+							<h3 class="zwsgr-google">Google</h3>
+							<p class="zwsgr-avg-note">Average Rating</p>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge7">
+						<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
+						<div class="zwsgr-badge7-rating">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge8">
+						<span class="final-rating">4.7</span>
+						<div class="zwsgr-rating">' . $stars_html . '</div>
+						<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
+					</div>'
 				],
 				'popup' => [
 					'<div class="popup-item" id="popup1">Popup 1 Content</div>',
@@ -1403,22 +1471,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<?php
 						foreach ($options as $option_type => $layouts) {
 							$layout_count = 1;
+							if( $option_type == "badge") {
+								echo '<div class="zwsgr-badge-wrap">';
+							}
 							foreach ($layouts as $layout_content) {
 								$element_id = $option_type . '-' . $layout_count;
 
 								// Only show layouts for the selected display option
 								$display_style = ($selected_display_option === $option_type || $selected_display_option === 'all') ? 'block' : 'none';
 								$selected_class = ($element_id === $layout_option) ? ' selected' : ''; // Check if this layout is selected
-
+								
 								echo '<div id="' . esc_attr($element_id) . '" class="zwsgr-option-item' . $selected_class . '" data-type="' . esc_attr($option_type) . '" style="display: ' . $display_style . ';">';
-								echo '<div class="zwsgr-layout-title-wrap">';
-									echo '<h3 class="zwsgr-layout-title">Layout: '. $option_type .' '.$layout_count.'</h3>';
-									echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
+									echo '<div class="zwsgr-layout-title-wrap">';
+										echo '<h3 class="zwsgr-layout-title">Layout: '. $option_type .' '.$layout_count.'</h3>';
+										echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
+									echo '</div>';
+									echo $layout_content;
 								echo '</div>';
-								echo $layout_content;
-								echo '</div>';
+								
 
 								$layout_count++;
+							}
+							if( $option_type == "badge") {
+								echo '</div>';
 							}
 						}
 						?>
