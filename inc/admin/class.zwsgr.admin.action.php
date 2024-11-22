@@ -1511,24 +1511,27 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-widget-settings">
 						<h2 class="zwsgr-page-title">Widget Settings</h2>
 						<div class="zwsgr-widget-wrap">
-						<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Filter Rating</h3>
-								<div class="filter-rating">
-									<?php
-									for ($i = 1; $i <= 5; $i++) {
-										$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
-										$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
-										?>
-										<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
-											</svg>
-										</span>
+							<div class="zwsgr-widget-setting">
+								<?php if ($display_option !== 'badge') : // Check if the selected option is not 'badge' ?>
+									<h3 class="zwsgr-label">Filter Rating</h3>
+									<div class="filter-rating">
 										<?php
+										for ($i = 1; $i <= 5; $i++) {
+											$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
+											$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
+											?>
+											<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
+												</svg>
+											</span>
+											<?php
 										}
-									?>
-								</div>
+										?>
+									</div>
+								<?php endif; // End of condition for 'badge' option ?>
 							</div>
+
 
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Hide Element</h3>
@@ -1845,7 +1848,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Start output buffering
 			//ob_start();
 			$reviews_html ='';    
-		
+			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			if ($reviews_query->have_posts()) {
 				while ($reviews_query->have_posts()) {
 					$reviews_query->the_post();
@@ -2063,6 +2066,92 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</div>
 						</div>';
 
+						$zwsgr_grid_item1 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-google-icon">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+									</div>
+								</div>
+								<div class="zwsgr-rating">' . $stars_html . '</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
+							</div>';
+
+						$zwsgr_grid_item2 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<div class="zwsgr-date-wrap">
+											<div class="zwsgr-rating">' . $stars_html . '</div>
+											<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										</div>
+									</div>
+									<div class="zwsgr-google-icon">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+									</div>
+								</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
+							</div>';
+
+						$zwsgr_grid_item3 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-review-detail">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<div class="zwsgr-rating-wrap">
+											<div class="zwsgr-google-icon">
+												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+											</div>
+											<div class="zwsgr-rating">' . $stars_html . '</div>
+										</div>
+									</div>
+									<div class="zwsgr-content-wrap">
+										<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
+									</div>
+								</div>
+							</div>';
+
+						$zwsgr_grid_item4 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-profile">
+									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									<div class="zwsgr-google-icon">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+									</div>
+								</div>									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<div class="zwsgr-rating">' . $stars_html . '</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
+							</div>';
+						
+						$zwsgr_grid_item5 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-rating">' . $stars_html . '</div>
+								</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
+							</div>';
+
 					// Add the slider item to the slider content array
 					$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 					$zwsgr_slider_content2[] = $zwsgr_slider_item2;
@@ -2075,6 +2164,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_list_content3[] = $zwsgr_list_item3;
 					$zwsgr_list_content4[] = $zwsgr_list_item4;
 					$zwsgr_list_content5[] = $zwsgr_list_item5;
+
+					$zwsgr_grid_content1[] = $zwsgr_grid_item1;
+					$zwsgr_grid_content2[] = $zwsgr_grid_item2;
+					$zwsgr_grid_content3[] = $zwsgr_grid_item3;
+					$zwsgr_grid_content4[] = $zwsgr_grid_item4;
+					$zwsgr_grid_content5[] = $zwsgr_grid_item5;
 
 				}
 				wp_reset_postdata();
@@ -2093,6 +2188,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_list_content3 = implode('', (array) $zwsgr_list_content3);
 			$zwsgr_list_content4 = implode('', (array) $zwsgr_list_content4);
 			$zwsgr_list_content5 = implode('', (array) $zwsgr_list_content5);
+
+			$zwsgr_grid_content1 = implode('', (array) $zwsgr_grid_content1);
+			$zwsgr_grid_content2 = implode('', (array) $zwsgr_grid_content2);
+			$zwsgr_grid_content3 = implode('', (array) $zwsgr_grid_content3);
+			$zwsgr_grid_content4 = implode('', (array) $zwsgr_grid_content4);
+			$zwsgr_grid_content5 = implode('', (array) $zwsgr_grid_content5);
 
 
 			$filter_layout = [
@@ -2124,6 +2225,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</div>
 					</div>'
 				],
+				'grid' => [
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid1">
+						' . $zwsgr_grid_content1 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid2">
+						' . $zwsgr_grid_content2 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid3">
+						' . $zwsgr_grid_content3 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid4">
+						' . $zwsgr_grid_content4 . '
+					</div>',
+					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid5">
+						' . $zwsgr_grid_content5 . '
+					</div>'
+				],
 				'list' => [
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list1">
 						' . $zwsgr_list_content1 . '
@@ -2140,6 +2258,92 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list5">
 						' . $zwsgr_list_content5 . '
 					</div>'
+				],
+				'badge' => [
+					'<div class="zwsgr-badge-item" id="zwsgr-badge1">
+						<h3 class="zwsgr-average">Good</h3>
+						<div class="zwsgr-rating">' . $stars_html . '</div>
+						<p class="zwsgr-based-on">Based on <b> 122 reviews </b></p>
+						<img src="' . $plugin_dir_path . 'assets/images/google.png">
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge2">
+						<div class="zwsgr-badge-image">
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+						</div>
+						<div class="zwsgr-badge-info">
+							<h3 class="zwsgr-average">Good</h3>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+							<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge3">
+						<div class="zwsgr-rating-wrap">
+							<span class="final-rating">4.8</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+						<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge4">
+						<div class="zwsgr-badge4-rating">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+						<div class="zwsgr-badge4-info">
+							<h3 class="zwsgr-google">Google</h3>
+							<p class="zwsgr-avg-note">Average Rating</p>
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge5">
+						<div class="zwsgr-badge5-rating">
+							<span class="final-rating">4.7</span>
+						</div>
+						<div class="zwsgr-badge5-info">
+							<h3 class="zwsgr-google">Google</h3>
+							<p class="zwsgr-avg-note">Average Rating</p>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge6">
+						<div class="zwsgr-badge6-rating">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+						<div class="zwsgr-badge6-info">
+							<h3 class="zwsgr-google">Google</h3>
+							<p class="zwsgr-avg-note">Average Rating</p>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge7">
+						<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
+						<div class="zwsgr-badge7-rating">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+						</div>
+					</div>',
+
+					'<div class="zwsgr-badge-item" id="zwsgr-badge8">
+						<div class="zwsgr-logo-wrap">
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+							<p class="zwsgr-avg-note">Google Reviews</p>
+						</div>
+						<span class="final-rating">4.7</span>
+						<div class="zwsgr-rating">' . $stars_html . '</div>
+						<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
+					</div>'
+				],
+				'popup' => [
+					'<div class="popup-item" id="popup1">Popup 1 Content</div>',
+					'<div class="popup-item" id="popup2">Popup 2 Content</div>',
+					'<div class="popup-item" id="popup3">Popup 3 Content</div>',
+					'<div class="popup-item" id="popup4">Popup 4 Content</div>',
+					'<div class="popup-item" id="popup5">Popup 5 Content</div>'
 				]
 			];
 			
