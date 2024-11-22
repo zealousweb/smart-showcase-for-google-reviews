@@ -1086,6 +1086,32 @@ input.zwsgr-radio:checked::before {
     font-family: 'Poppins', sans-serif;
 }
 
+.zwsgr-badge-item#zwsgr-badge8{
+    box-shadow: 10px 10px 30px 0px #00000005;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.zwsgr-badge-item#zwsgr-badge8 .final-rating {
+    color: #6A6A6A;
+    font-size: 56px;
+    font-weight: 400;
+}
+.zwsgr-logo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.zwsgr-logo-wrap img {
+    width: 25px;
+    height: 25px;
+    padding-right: 10px;
+}
+
 .zwsgr-gmbc-outer-wrapper {
     position: absolute;
     height: 100%;

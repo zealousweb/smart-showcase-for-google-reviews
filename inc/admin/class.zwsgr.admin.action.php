@@ -1425,6 +1425,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>',
 
 					'<div class="zwsgr-badge-item" id="zwsgr-badge8">
+						<div class="zwsgr-logo-wrap">
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+							<p class="zwsgr-avg-note">Google Reviews</p>
+						</div>
 						<span class="final-rating">4.7</span>
 						<div class="zwsgr-rating">' . $stars_html . '</div>
 						<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
