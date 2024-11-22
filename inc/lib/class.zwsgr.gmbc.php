@@ -171,6 +171,9 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                         'post_type'   => 'zwsgr_data_widget',
                         'post_status' => 'publish',
                         'post_title'  => 'New GMB Widget ' . wp_generate_uuid4(),
+                        'meta_input'   => array(
+                            'zwsgr_gmb_email'   => $zwsgr_gmb_email
+                        ),
                     ));
 
                     if ($zwsgr_new_widget_id) {

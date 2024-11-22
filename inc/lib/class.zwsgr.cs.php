@@ -153,12 +153,22 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
          */
         public function zwsgr_data_sync_callback() {
 
+            // Get the email value from the WordPress options
+            $zwsgr_gmb_email = get_option('zwsgr_gmb_email'); 
+
             // Set up WP_Query arguments
             $zwsgr_data_widgets_args = [
                 'post_type'      => 'zwsgr_data_widget',
                 'post_status'    => 'publish',
                 'posts_per_page' => -1,
                 'fields'         => 'ids',
+                'meta_query'     => [
+                    [
+                        'key'     => 'zwsgr_gmb_email',
+                        'value'   => $zwsgr_gmb_email,
+                        'compare' => '=',
+                    ],
+                ],
             ];
 
             // Execute the query
