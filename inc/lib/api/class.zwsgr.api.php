@@ -27,8 +27,10 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $this->zwsgr_base_url = "https://mybusiness.googleapis.com/{$this->zwsgr_api_version}/";
 
             add_action('wp_ajax_zwsgr_fetch_oauth_url', array($this, 'zwsgr_fetch_oauth_url'));
+            add_action('wp_ajax_zwsgr_delete_oauth_connection', array($this, 'zwsgr_delete_oauth_connection'));
             add_action('wp_ajax_zwsgr_add_update_review_reply', array($this, 'zwsgr_add_update_review_reply'));
             add_action('wp_ajax_zwsgr_delete_review_reply', array($this, 'zwsgr_delete_review_reply'));
+
         }
 
         /**
@@ -414,26 +416,9 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_user_name     = $zwsgr_current_user->user_login;
             $zwsgr_user_site_url = admin_url('admin.php?page=zwsgr_connect_google');
 
-            // Get user email from $_POST data
-            if (isset($_POST['zwsgr_user_email'])) {
-                $zwsgr_user_email = sanitize_email($_POST['zwsgr_user_email']);
-            }
-
-            // Validate user email address
-            if (empty($zwsgr_user_email) || !is_email($zwsgr_user_email)) {
-                wp_send_json_error(
-                    [
-                        'message' => 'Invalid email address provided',
-                        'code' => 'invalid_email_address'
-                    ]
-                );
-                wp_die();
-            }
-
             // Prepare the payload for the request
             $zwsgr_payload_data = [
                 'zwsgr_user_name'     => $zwsgr_user_name,
-                'zwsgr_user_email'    => $zwsgr_user_email,
                 'zwsgr_user_site_url' => $zwsgr_user_site_url
             ];
 
@@ -481,6 +466,127 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             return $zwsgr_response;
 
         }
+
+        /**
+         * Handles the deletion of plugin-related data for the ZW Smart Google Reviews plugin.
+         *
+         * This function:
+         * 1. Deletes OAuth-related tokens (JWT token and access token) from the WordPress options and transients.
+         * 2. Deletes custom post types (`zwsgr_request_data`, `zwsgr_reviews`, `zwsgr_data_widget`) 
+         *    and their associated metadata from the database if requested via a POST parameter.
+         * 3. Sends JSON responses to indicate success or failure of the operations.
+         *
+         * @return void
+         */
+        public function zwsgr_delete_oauth_connection() {
+
+            // Check nonce and AJAX referer for security
+            check_ajax_referer('zwsgr_delete_oauth_connection', 'security');
+
+            global $wpdb;
+
+            // Attempt to delete 'zwsgr_jwt_token' if it exists
+            if (
+                (get_option('zwsgr_jwt_token') && !delete_option('zwsgr_jwt_token')) || (get_option('zwsgr_gmb_email') && !delete_option('zwsgr_gmb_email')) || (get_transient('zwsgr_access_token') && !delete_transient('zwsgr_access_token'))
+            ) {
+                wp_send_json_error(
+                    array(
+                        'message' => __('Failed to delete JWT token.', 'zw-smart-google-reviews'),
+                        'code'    => 'delete_jwt_error'
+                    )
+                );
+            }
+
+            // Check if plugin data deletion is requested
+            if (isset($_POST['zwsgr_delete_plugin_data']) && $_POST['zwsgr_delete_plugin_data'] === '1') {
+
+                $zwsgr_post_types = array('zwsgr_request_data', 'zwsgr_reviews', 'zwsgr_data_widget');
+
+                foreach ($zwsgr_post_types as $zwsgr_post_type) {
+                    // Attempt to delete posts and metadata for each custom post type
+                    $result = $wpdb->query(
+                        $wpdb->prepare(
+                            "DELETE p, pm 
+                            FROM {$wpdb->posts} p 
+                            LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID 
+                            WHERE p.post_type = %s",
+                            $zwsgr_post_type
+                        )
+                    );
+
+                    if ($result === false) {
+                        wp_send_json_error(
+                            array(
+                                'message' => sprintf(
+                                    __('Failed to delete data for custom post type: %s.', 'zw-smart-google-reviews'),
+                                    $zwsgr_post_type
+                                ),
+                                'code'    => 'delete_request_error'
+                            )
+                        );
+                    }
+                }
+                
+            }
+
+            if (isset($_POST['zwsgr_delete_plugin_data']) && $_POST['zwsgr_delete_plugin_data'] === '1') {
+
+                // Delete posts and their postmeta for the custom post type 'zwsgr_request_data'
+                $zwsgr_delete_request_data = $wpdb->query(
+                    $wpdb->prepare(
+                        "DELETE p, pm 
+                        FROM {$wpdb->posts} p 
+                        LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID 
+                        WHERE p.post_type = %s",
+                        'zwsgr_request_data'
+                    )
+                );
+            
+                // Delete posts and their postmeta for the custom post type 'zwsgr_reviews'
+                $zwsgr_delete_reviews = $wpdb->query(
+                    $wpdb->prepare(
+                        "DELETE p, pm 
+                        FROM {$wpdb->posts} p 
+                        LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID 
+                        WHERE p.post_type = %s",
+                        'zwsgr_reviews'
+                    )
+                );
+            
+                // Delete posts and their postmeta for the custom post type 'zwsgr_data_widget'
+                $zwsgr_data_widget = $wpdb->query(
+                    $wpdb->prepare(
+                        "DELETE p, pm 
+                        FROM {$wpdb->posts} p 
+                        LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID 
+                        WHERE p.post_type = %s",
+                        'zwsgr_data_widget'
+                    )
+                );
+
+                // Check if any query failed
+                if ($zwsgr_delete_request_data === false || $zwsgr_delete_reviews === false || $zwsgr_data_widget === false) {
+                    wp_send_json_error(
+                        array(
+                            'message' => __('Failed to delete plugin data.', 'zw-smart-google-reviews'),
+                            'code' => 'delete_request_error'
+                        )
+                    );
+                }
+
+            }
+        
+            // If all operations succeeded, send success message
+            wp_send_json_success(
+                array(
+                    'message' => __('Plugin data successfully deleted.', 'zw-smart-google-reviews'),
+                    'code' => 'delete_request_success'
+                )
+            );
+        
+            wp_die();
+        }
+        
         
     }
 }
