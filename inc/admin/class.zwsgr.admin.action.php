@@ -1462,7 +1462,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>'
 				],
 				'popup' => [
-					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="popup1">
+					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 						<div class="zwsgr-profile-logo">
 							<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 						</div>
@@ -1472,14 +1472,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
 						</div>
 					</div>
-					<div id="popup1" class="popup-overlay">
-						<div class="popup-content">
-							<span class="close-popup">&times;</span>
+					<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
+						<div class="zwsgr-popup-content">
+							<span class="zwsgr-close-popup">&times;</span>
 							<h2>Zealousweb Technologies Pvt. Ltd.</h2>
 							<p>This is the popup content for further details.</p>
 						</div>
 					</div>',
-					'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="popup2">
+					'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 						<div class="zwsgr-title-wrap">
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 							<h3>Reviews</h3>
@@ -1490,9 +1490,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<a href="#" target="_blank" 	class="zwsgr-total-review">( 122 reviews )</a>
 						</div>
 					</div>
-					<div id="popup2" class="popup-overlay">
-						<div class="popup-content">
-							<span class="close-popup">&times;</span>
+					<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
+						<div class="zwsgr-popup-content">
+							<span class="zwsgr-close-popup">&times;</span>
 							<h2>Zealouswebbbbbbb Technologies Pvt. Ltd.</h2>
 							<p>This is the popup content for further details.</p>
 						</div>
