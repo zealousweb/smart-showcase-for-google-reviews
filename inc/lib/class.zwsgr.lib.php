@@ -98,6 +98,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
+			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			
 			// Query for posts
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Your custom post type slug
@@ -112,6 +114,38 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					)
 				),
 			);
+			// Adjust sorting based on the 'sort_by' value
+			switch ($sort_by) {
+				case 'newest':
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
+					break;
+
+				case 'highest':
+					// Adjust the "highest" sort based on the selected rating filter
+					if (!empty($rating_filter_word)) {
+						// Sort by the highest rating within the selected filter group
+						$args['meta_query'][0]['value'] = $rating_filter_word; // Limit to the selected rating
+						$args['orderby'] = 'meta_value_num';
+						$args['order'] = 'DESC';
+					} else {
+						// Default behavior if no filter is set
+						$args['meta_query'][0]['value'] = 'FIVE';
+						$args['orderby'] = 'meta_value_num';
+						$args['order'] = 'DESC';
+					}
+					break;
+
+				case 'lowest':
+					$args['meta_query'][0]['value'] = 'ONE';
+					$args['orderby'] = 'meta_value_num';
+					$args['order'] = 'ASC';    
+					break;
+
+				default:
+					$args['orderby'] = 'relevance';
+			}
+			
 			$query = new WP_Query($args);
 
 			ob_start();  // Start output buffering
@@ -227,12 +261,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
+			$sort_by = get_post_meta($post_id, 'sort_by', true);
+
 			// Query for posts based on the current page
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Replace with your custom post type slug
 				'posts_per_page' => $posts_per_page,  // Use dynamic posts per page value
 				'paged'          => $page,
-				'orderby'        => 'date',
 				'meta_query'     => array(
 					array(
 						'key'     => 'zwsgr_review_star_rating',
@@ -242,7 +277,32 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					)
 				),
 			);
+ 
+			// Adjust sorting based on the 'sort_by' value
+			switch ($sort_by) {
+				case 'newest':
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
+					break;
 
+				case 'highest':
+					// Adjust the "highest" sort based on the selected rating filter
+					if (!empty($rating_filter_word)) {
+						// Sort by the highest rating within the selected filter group
+						$args['meta_query'][0]['value'] = $rating_filter_word; // Limit to the selected rating
+					} else {
+						// Default behavior if no filter is set
+						$args['meta_query'][0]['value'] = 'FIVE';
+					}
+					break;
+
+				case 'lowest':
+					$args['meta_query'][0]['value'] = 'ONE'; 
+					break;
+
+				default:
+					$args['orderby'] = 'relevance';
+			}
 			$query = new WP_Query($args);
 
 			if ($query->have_posts()) {
