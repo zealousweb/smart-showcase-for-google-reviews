@@ -867,10 +867,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				wp_die( 'Invalid post ID.' ) ;
 			}
 
-			// if ( isset($_GET['tab']) && $_GET['tab'] === 'tab-options' ) {
-			// 	delete_post_meta($_GET['zwsgr_widget_id'], 'rating_filter');
-			// }
-
 			// Get stored widget settings
 			$display_option = get_post_meta($post_id, 'display_option', true);
 			$layout_option = get_post_meta($post_id, 'layout_option', true);
@@ -889,7 +885,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
 			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
 			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
-			// $generated_shortcode = '[zwsgr_widget_configurator id="' . esc_attr($display_option) . '" layout_option="' . esc_attr($layout_option) . '"]';
+	
 			// Generate the shortcode by calling the new function
 			$generated_shortcode = $this->generate_shortcode($post_id);
 			$current_tab = get_post_meta($post_id, 'tab-options', true); 
@@ -927,8 +923,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_reviews_args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
 				'posts_per_page' => 5,
-				'orderby'         => 'date',
-				'order'           => 'DESC',
 				'meta_query'     => array(
 					array(
 						'key'     => 'zwsgr_review_star_rating',
@@ -938,6 +932,38 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					)
 				),
 			);
+
+			// Add sort_by filters
+			switch ($sort_by) {
+				case 'newest':
+					$zwsgr_reviews_args['orderby'] = 'date';
+					$zwsgr_reviews_args['order'] = 'DESC';
+					break;
+
+				case 'highest':
+					// Adjust the "highest" sort based on the selected rating filter
+					if (!empty($rating_filter_word)) {
+						// Sort by the highest rating within the selected filter group
+						$zwsgr_reviews_args['meta_query'][0]['value'] = $rating_filter_word; // Limit to the selected rating
+						$zwsgr_reviews_args['orderby'] = 'meta_value_num';
+						$zwsgr_reviews_args['order'] = 'DESC';
+					} else {
+						// Default behavior if no filter is set
+						$zwsgr_reviews_args['meta_query'][0]['value'] = 'FIVE';
+						$zwsgr_reviews_args['orderby'] = 'meta_value_num';
+						$zwsgr_reviews_args['order'] = 'DESC';
+					}
+					break;
+
+				case 'lowest':
+					$zwsgr_reviews_args['meta_query'][0]['value'] = 'ONE';
+					$zwsgr_reviews_args['orderby'] = 'meta_value_num';
+					$zwsgr_reviews_args['order'] = 'ASC';    
+					break;
+
+				default:
+					$zwsgr_reviews_args['orderby'] = 'relevance';
+			}
 
 			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
 
@@ -1806,6 +1832,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 		
 			$rating_filter = array_map('intval', $_POST['rating_filter']); // Ensure all values are integers
+			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : 'newest';
 		
 			// Mapping numeric values to string values
 			$rating_mapping = array(
@@ -1831,7 +1858,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		
 			// Query reviews with the selected string-based filters
 			$args = array(
-				'post_type' => 'zwsgr_reviews', // Replace with your custom post type
+				'post_type' => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
 				'posts_per_page' => -1,
 				'meta_query' => array(
 					array(
@@ -1842,11 +1869,34 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					)
 				)
 			);
+			// Add sorting logic
+			switch ($sort_by) {
+				case 'newest':
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
+					break;
+				 case 'highest':
+					// If 'highest' is selected, only show reviews of the highest selected rating
+					$highest_rating = max($rating_filter); // Get the highest rating selected
+					$rating_str = $rating_mapping[$highest_rating]; // Get the corresponding string
+					$args['meta_query'][0]['value'] = $rating_str;
+					$args['orderby'] = 'meta_value_num';
+					$args['order'] = 'DESC';
+					break;
+				case 'lowest':
+					// If 'lowest' is selected, show only the lowest selected rating
+					$lowest_rating = min($rating_filter); // Get the lowest rating selected
+					$rating_str = $rating_mapping[$lowest_rating]; // Get the corresponding string
+					$args['meta_query'][0]['value'] = $rating_str;
+					$args['orderby'] = 'meta_value_num';
+					$args['order'] = 'ASC';
+					break;
+				default: // Default sorting (e.g., relevance)
+					$args['orderby'] = 'relevance';
+    }
 		
 			$reviews_query = new WP_Query($args);
-		
-			// Start output buffering
-			//ob_start();
+
 			$reviews_html ='';    
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			if ($reviews_query->have_posts()) {
