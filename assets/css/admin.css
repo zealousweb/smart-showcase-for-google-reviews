@@ -1202,7 +1202,7 @@ input.zwsgr-radio:checked::before {
     flex-wrap: wrap;
 }
 
-.popup-overlay {
+.zwsgr-popup-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -1213,7 +1213,7 @@ input.zwsgr-radio:checked::before {
     z-index: 1000;
 }
 
-.popup-content {
+.zwsgr-popup-content {
     position: relative;
     margin: 10% auto;
     padding: 20px;
@@ -1224,7 +1224,7 @@ input.zwsgr-radio:checked::before {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.close-popup {
+.zwsgr-close-popup {
     position: absolute;
     top: 10px;
     right: 20px;
