@@ -1462,11 +1462,41 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>'
 				],
 				'popup' => [
-					'<div class="popup-item" id="popup1">Popup 1 Content</div>',
-					'<div class="popup-item" id="popup2">Popup 2 Content</div>',
-					'<div class="popup-item" id="popup3">Popup 3 Content</div>',
-					'<div class="popup-item" id="popup4">Popup 4 Content</div>',
-					'<div class="popup-item" id="popup5">Popup 5 Content</div>'
+					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="popup1">
+						<div class="zwsgr-profile-logo">
+							<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+						</div>
+						<div class="zwsgr-profile-info">
+							<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+							<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
+						</div>
+					</div>
+					<div id="popup1" class="popup-overlay">
+						<div class="popup-content">
+							<span class="close-popup">&times;</span>
+							<h2>Zealousweb Technologies Pvt. Ltd.</h2>
+							<p>This is the popup content for further details.</p>
+						</div>
+					</div>',
+					'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="popup2">
+						<div class="zwsgr-title-wrap">
+							<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							<h3>Reviews</h3>
+						</div>
+						<div class="zwsgr-info-wrap">
+							<span class="final-rating">4.7</span>
+							<div class="zwsgr-rating">' . $stars_html . '</div>
+							<a href="#" target="_blank" 	class="zwsgr-total-review">( 122 reviews )</a>
+						</div>
+					</div>
+					<div id="popup2" class="popup-overlay">
+						<div class="popup-content">
+							<span class="close-popup">&times;</span>
+							<h2>Zealouswebbbbbbb Technologies Pvt. Ltd.</h2>
+							<p>This is the popup content for further details.</p>
+						</div>
+					</div>'
 				]
 			];
 			?>
@@ -1505,6 +1535,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							if( $option_type == "badge") {
 								echo '<div class="zwsgr-badge-wrap">';
 							}
+							if( $option_type == "popup") {
+								echo '<div class="zwsgr-popup-wrap">';
+							}
 							foreach ($layouts as $layout_content) {
 								$element_id = $option_type . '-' . $layout_count;
 
@@ -1522,6 +1555,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								
 
 								$layout_count++;
+							}
+							if( $option_type == "popup") {
+								echo '</div>';
 							}
 							if( $option_type == "badge") {
 								echo '</div>';
@@ -2389,11 +2425,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>'
 				],
 				'popup' => [
-					'<div class="popup-item" id="popup1">Popup 1 Content</div>',
-					'<div class="popup-item" id="popup2">Popup 2 Content</div>',
-					'<div class="popup-item" id="popup3">Popup 3 Content</div>',
-					'<div class="popup-item" id="popup4">Popup 4 Content</div>',
-					'<div class="popup-item" id="popup5">Popup 5 Content</div>'
+					'<div class="zwsgr-popup-item" id="zwsgr-popup1">Popup 1 Content</div>',
+					'<div class="zwsgr-popup-item" id="zwsgr-popup2">Popup 2 Content</div>'
 				]
 			];
 			

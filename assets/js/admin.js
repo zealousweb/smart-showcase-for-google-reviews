@@ -1,5 +1,23 @@
 jQuery(document).ready(function($) {
 
+
+	$('.zwsgr-popup-item').on('click', function () {
+        var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+        $('#' + popupId).fadeIn(); // Show the popup
+    });
+
+    // Close popup when the close button is clicked
+    $('.close-popup').on('click', function () {
+        $(this).closest('.popup-overlay').fadeOut(); // Hide the popup
+    });
+
+    // Close popup when clicking outside the popup content
+    $('.popup-overlay').on('click', function (e) {
+        if ($(e.target).is('.popup-overlay')) {
+            $(this).fadeOut(); // Hide the popup
+        }
+    });
+	
 	var widget_post_type = 'zwsgr_data_widget';
 
     // Check if we're on the edit, new post, or the custom layout page for the widget post type
