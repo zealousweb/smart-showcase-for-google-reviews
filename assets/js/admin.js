@@ -1155,10 +1155,11 @@ jQuery(document).ready(function($) {
     });
 
 	// Event listener for clicking on a star filter
-	$('.filter-rating .star-filter').on('click', function() {
+	$('#sort-by-select,.filter-rating .star-filter').on('click', function() {
 		var selectedRating = $(this).data('rating'); // Get the selected rating
 		var nonce = filter_reviews.nonce;
 		var postId = getQueryParam('zwsgr_widget_id');
+		var sortBy = $('#sort-by-select').val(); // Get the selected sort by value
 		// Prepare an array of selected ratings
 		var selectedRatings = [];
 		$('.filter-rating .star-filter.selected').each(function() {
@@ -1178,6 +1179,7 @@ jQuery(document).ready(function($) {
 				action: 'filter_reviews', // The action for the PHP handler
 				zwsgr_widget_id: postId,
 				rating_filter: selectedRatings, // Pass the selected ratings array
+				sort_by: sortBy, // Pass sort by parameter
 				nonce: nonce
 			},
 			success: function(response) {
