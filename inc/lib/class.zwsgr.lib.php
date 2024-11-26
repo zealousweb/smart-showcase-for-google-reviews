@@ -151,44 +151,75 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			ob_start();  // Start output buffering
 
 			if ($query->have_posts()) {
+
+				// Fetch selected elements from post meta
+				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
+				$selected_elements = maybe_unserialize($selected_elements);
+
 				echo '<div id="div-container">';
 
-				// Loop through the posts and display them
-				while ($query->have_posts()) {
-					$query->the_post();
-					
-					// Retrieve the meta values
-					$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
-					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
-					$zwsgr_review_comment   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
-					$published_date  = get_the_date('F j, Y');
-					$post_date = get_the_date('U');
-					$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
-					$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
-					$char_limit = (int) $char_limit ; 
+					// Loop through the posts and display them
+					while ($query->have_posts()) {
+						$query->the_post();
+						
+						// Retrieve the meta values
+						$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
+						$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
+						$zwsgr_review_content   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+						$published_date  = get_the_date('F j, Y');
+						$post_date = get_the_date('U');
+						$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
+						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$char_limit = (int) $char_limit ; 
+						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
-					// Check if the comment length exceeds the character limit
-					$is_trimmed = mb_strlen($zwsgr_review_comment) > $char_limit;
+						// Determine if content is trimmed based on character limit
+						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
+						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
-					// Trim the comment if necessary
-					$trimmed_comment = $is_trimmed ? mb_substr($zwsgr_review_comment, 0, $char_limit) . '...' : $zwsgr_review_comment;
-
-					echo '<div class="zwsgr-review-post-item">';
-					echo '<h2>' . esc_html(get_the_title()) . '</h2>';
-
-					// Render reviewer name, rating, and comment
-					echo '<p><strong>Reviewer:</strong> ' . esc_html($zwsgr_reviewer_name) . '</p>';
-					echo '<p><strong>Rating:</strong> ' . esc_html($zwsgr_review_star_rating) . ' Stars</p>';
-					echo '<p><strong>Comment:</strong> ' . esc_html($trimmed_comment) ;
-					if ($is_trimmed) {
-						// Add a "Read more" link
-						echo '<a href="javascript:void(0);" class="toggle-comment" data-full-text="' . esc_attr($zwsgr_review_comment) . '">Read more</a>';
+						echo '<div class="zwsgr-slide-item">';
+							echo '<div class="zwsgr-slide-wrap">';
+						
+								// Profile image
+								if (!in_array('review-photo', $selected_elements)) {
+									echo '<div class="zwsgr-profile">';
+									echo '<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '">';
+									echo '</div>';
+								}
+							
+								// Reviewer info
+								echo '<div class="zwsgr-review-info">';
+									if (!in_array('review-title', $selected_elements)) {
+										echo '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+									}
+									if (!in_array('review-days-ago', $selected_elements)) {
+										echo '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
+									}
+								echo '</div>';
+							
+								// Google icon
+								if (!in_array('review-photo', $selected_elements)) {
+									echo '<div class="zwsgr-google-icon">';
+									echo '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">';
+									echo '</div>';
+								}	
+							echo '</div>'; // End of zwsgr-slide-wrap
+						
+							// Rating
+							if (!in_array('review-rating', $selected_elements)) {
+								echo '<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' Stars</div>';
+							}
+						
+							// // Review content
+							if (!in_array('review-content', $selected_elements)) {
+								echo '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
+								if ($is_trimmed) {
+									echo ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">Read more</a>';
+								}
+								echo '</p>';
+							}
+						echo '</div>'; // End of zwsgr-slide-item
 					}
-					'</p>';
-					echo '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
-					echo '</div>';
-				}
-
 				echo '</div>';
 
 				// Add the Load More button only if 'enable_load_more' is true
@@ -308,41 +339,76 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			if ($query->have_posts()) {
 				$output = '';
 
-				// Loop through the posts and append the HTML content
-				while ($query->have_posts()) {
-					$query->the_post();
+				// Fetch selected elements from post meta
+				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
+				$selected_elements = maybe_unserialize($selected_elements);
 
-					// Retrieve meta values
-					$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
-					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
-					$zwsgr_review_comment   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
-					$published_date  = get_the_date('F j, Y');
-					$post_date = get_the_date('U');
-					$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
-					$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
-					$char_limit = (int) $char_limit ;
+				$output .= '<div id="div-container">';
+					// Loop through the posts and append the HTML content
+					while ($query->have_posts()) {
+						$query->the_post();
 
-					// Check if the comment length exceeds the character limit
-					$is_trimmed = mb_strlen($zwsgr_review_comment) > $char_limit;
+						// Retrieve meta values
+						$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
+						$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
+						$zwsgr_review_content   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+						$published_date  = get_the_date('F j, Y');
+						$post_date = get_the_date('U');
+						$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
+						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$char_limit = (int) $char_limit ;
+						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
-					// Trim the comment if necessary
-					$trimmed_comment = $is_trimmed ? mb_substr($zwsgr_review_comment, 0, $char_limit) . '...' : $zwsgr_review_comment;
+						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
+						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
-					// Output the content, including the meta values
-					$output .= '<div class="zwsgr-review-post-item">';
-					$output .= '<h2>' . esc_html(get_the_title()) . '</h2>';  // Post title
+						$output .= '<div class="zwsgr-review-post-item">';
 
-					// Display the reviewer name, rating, comment, and days ago
-					$output .= '<p><strong>Reviewer Name:</strong> ' . esc_html($zwsgr_reviewer_name) . '</p>';
-					$output .= '<p><strong>Rating:</strong> ' . esc_html($zwsgr_review_star_rating) . ' stars</p>';
-					$output .= '<p><strong>Comment:</strong> ' . esc_html($trimmed_comment);
-					if ($is_trimmed) {
-						// Add a "Read more" link
-						$output .= '<a href="javascript:void(0);" class="toggle-comment" data-full-text="' . esc_attr($zwsgr_review_comment) . '">Read more</a>';
+							// Post title
+							// $output .= '<h2>' . esc_html(get_the_title()) . '</h2>';  
+
+							// Profile image
+							if (!in_array('review-photo', $selected_elements)) {
+								$output .= '<div class="zwsgr-profile">';
+								$output .= '<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">';
+								$output .= '</div>';
+							}
+
+							// Reviewer info container
+							$output .= '<div class="zwsgr-review-info">';
+								if (!in_array('review-title', $selected_elements)) {
+									$output .= '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+								}
+								if (!in_array('review-days-ago', $selected_elements)) {
+									$output .= '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
+								}
+							$output .= '</div>'; // End of reviewer info
+
+							// Google icon
+							if (!in_array('review-photo', $selected_elements)) {
+								$output .= '<div class="zwsgr-google-icon">';
+								$output .= '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">';
+								$output .= '</div>';
+							}
+
+							// Rating
+							if (!in_array('review-rating', $selected_elements)) {
+								$output .= '<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+							}
+
+							// Review content
+							if (!in_array('review-content', $selected_elements)) {
+								$output .= '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
+								if ($is_trimmed) {
+									$output .= '<a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">Read more</a>';
+								}
+								$output .= '</p>';
+							}
+
+						// End of review post item container
+						$output .= '</div>';
 					}
-					$output .= '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
-					$output .= '</div>';
-				}
+				$output .= '</div>';
 
 				// Prepare the response with the loaded content and the new page number
 				$response = array(

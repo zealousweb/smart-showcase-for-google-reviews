@@ -42,12 +42,12 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $(document).on('click', '.toggle-comment', function() {
+    $(document).on('click', '.toggle-content', function () {
         var $link = $(this);
         var fullText = $link.data('full-text');
         var $parentParagraph = $link.closest('p');
     
-        // Replace the trimmed comment with the full comment
-        $parentParagraph.html('<strong>Comment:</strong> ' + fullText);
+        // Replace the trimmed content with the full content
+        $parentParagraph.html('<strong>Content:</strong> ' + fullText);
     });
 });
