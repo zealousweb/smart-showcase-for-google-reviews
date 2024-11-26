@@ -580,7 +580,7 @@ jQuery(document).ready(function($) {
 		const lang = $('#language-select').val(); // Get selected language
 		const format = $('#date-format-select').val(); // Get selected date format
 	
-		$('.date').each(function () {
+		$('.zwsgr-date').each(function () {
 			const originalDate = $(this).data('original-date'); // Get the original date
 			if (format === 'hide') {
 				$(this).text(''); // Hide the date

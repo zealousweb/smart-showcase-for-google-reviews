@@ -38,7 +38,58 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				'nonce'    => wp_create_nonce('zwsgr_load_more_nonce')
 			));
 		}
+		function translate_read_more($language) 
+		{
+			$translations = [
+				'en' => 'Read more',
+				'es' => 'Leer más',
+				'fr' => 'Lire la suite',
+				'de' => 'Mehr lesen',
+				'it' => 'Leggi di più',
+				'pt' => 'Leia mais',
+				'ru' => 'Читать дальше',
+				'zh' => '阅读更多',
+				'ja' => '続きを読む',
+				'hi' => 'और पढ़ें',
+				'ar' => 'اقرأ أكثر',
+				'ko' => '더 읽기',
+				'tr' => 'Daha fazla oku',
+				'bn' => 'আরও পড়ুন',
+				'ms' => 'Baca lagi',
+				'nl' => 'Lees verder',
+				'pl' => 'Czytaj więcej',
+				'sv' => 'Läs mer',
+				'th' => 'อ่านเพิ่มเติม',
+			];
+			return $translations[$language] ?? 'Read more'; // Fallback to English
+		}
+		function translate_months($language) {
+			$month_translations = [
+				'en' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+				'es' => ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+				'fr' => ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+				'de' => ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+				'it' => ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+				'pt' => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+				'ru' => ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'],
+				'zh' => ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+				'ja' => ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+				'hi' => ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
+				'ar' => ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+				'ko' => ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				'tr' => ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+				'bn' => ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'],
+				'ms' => ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'],
+				'nl' => ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+				'pl' => ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'],
+				'sv' => ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'],
+				'th' => ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+			];
 		
+			return $month_translations[$language] ?? $month_translations['en']; // Fallback to English
+		}
+
+
 		// Shortcode to render initial posts and Load More button
 		function shortcode_load_more($atts) 
 		{
@@ -99,6 +150,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			}
 
 			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
+			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$months = $this->translate_months($language);
 			
 			// Query for posts
 			$args = array(
@@ -177,6 +231,25 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
 						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
+						// Format the published date based on the selected format
+						$formatted_date = '';
+						if ($date_format === 'DD/MM/YYYY') {
+							$formatted_date = date('d/m/Y', strtotime($published_date));
+						} elseif ($date_format === 'MM-DD-YYYY') {
+							$formatted_date = date('m-d-Y', strtotime($published_date));
+						} elseif ($date_format === 'YYYY/MM/DD') {
+							$formatted_date = date('Y/m/d', strtotime($published_date));
+						} elseif ($date_format === 'full') {
+							$day = date('j', strtotime($published_date));
+							$month = $months[(int)date('n', strtotime($published_date)) - 1];
+							$year = date('Y', strtotime($published_date));
+						
+							// Construct the full date
+							$formatted_date = "$month $day, $year";
+						} elseif ($date_format === 'hide') {
+							$formatted_date = ''; // No display for "hide"
+						}
+
 						echo '<div class="zwsgr-slide-item">';
 							echo '<div class="zwsgr-slide-wrap">';
 						
@@ -193,7 +266,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										echo '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
 									}
 									if (!in_array('review-days-ago', $selected_elements)) {
-										echo '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
+										echo '<p class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '"><strong>Published:</strong> ' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
 									}
 								echo '</div>';
 							
@@ -210,11 +283,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								echo '<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' Stars</div>';
 							}
 						
-							// // Review content
+							// Review content
 							if (!in_array('review-content', $selected_elements)) {
 								echo '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
 								if ($is_trimmed) {
-									echo ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">Read more</a>';
+									echo ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">'.esc_html($this->translate_read_more($language)).'</a>';
+			
 								}
 								echo '</p>';
 							}
@@ -293,6 +367,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			}
 
 			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
+			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$months = $this->translate_months($language);
 
 			// Query for posts based on the current page
 			$args = array(
@@ -362,10 +439,26 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
 						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
-						$output .= '<div class="zwsgr-review-post-item">';
+						$formatted_date = '';
+						if ($date_format === 'DD/MM/YYYY') {
+							$formatted_date = date('d/m/Y', strtotime($published_date));
+						} elseif ($date_format === 'MM-DD-YYYY') {
+							$formatted_date = date('m-d-Y', strtotime($published_date));
+						} elseif ($date_format === 'YYYY/MM/DD') {
+							$formatted_date = date('Y/m/d', strtotime($published_date));
+						} elseif ($date_format === 'full') {
+							$day = date('j', strtotime($published_date));
+							$month = $months[(int)date('n', strtotime($published_date)) - 1];
+							$year = date('Y', strtotime($published_date));
+						
+							// Construct the full date
+							$formatted_date = "$month $day, $year";
+						} elseif ($date_format === 'hide') {
+							$formatted_date = ''; // No display for "hide"
+						}
 
-							// Post title
-							// $output .= '<h2>' . esc_html(get_the_title()) . '</h2>';  
+
+						$output .= '<div class="zwsgr-review-post-item">';
 
 							// Profile image
 							if (!in_array('review-photo', $selected_elements)) {
@@ -380,7 +473,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									$output .= '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
 								}
 								if (!in_array('review-days-ago', $selected_elements)) {
-									$output .= '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
+									$output .= '<p class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '"><strong>Published:</strong> ' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
 								}
 							$output .= '</div>'; // End of reviewer info
 
@@ -400,7 +493,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							if (!in_array('review-content', $selected_elements)) {
 								$output .= '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
 								if ($is_trimmed) {
-									$output .= '<a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">Read more</a>';
+									$output .= '<a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">'.esc_html($this->translate_read_more($language)).'</a>';
 								}
 								$output .= '</p>';
 							}
