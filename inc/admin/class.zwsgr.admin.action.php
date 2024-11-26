@@ -1252,7 +1252,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
-								</div>									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+								</div>
+								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
@@ -1273,6 +1274,42 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
 							</div>';
 
+						$zwsgr_popup_item1 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-rating">' . $stars_html . '</div>
+								</div>
+								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+							</div>';
+
+						$zwsgr_popup_item2 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-slide-wrap">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									</div>
+									<div class="zwsgr-review-info">
+										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									</div>
+									<div class="zwsgr-google-icon">
+										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+									</div>
+								</div>
+								<div class="zwsgr-list-content-wrap">
+									<div class="zwsgr-rating">' . $stars_html . '</div>
+									<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
+								</div>
+							</div>';
+
+
 
 					// Add the slider item to the slider content array
 					$zwsgr_slider_content1[] = $zwsgr_slider_item1;
@@ -1292,6 +1329,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_grid_content3[] = $zwsgr_grid_item3;
 					$zwsgr_grid_content4[] = $zwsgr_grid_item4;
 					$zwsgr_grid_content5[] = $zwsgr_grid_item5;
+
+					$zwsgr_popup_content1[] = $zwsgr_popup_item1;
+					$zwsgr_popup_content2[] = $zwsgr_popup_item2;
+
 			
 				}
 				wp_reset_postdata();
@@ -1314,6 +1355,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_grid_content3 = implode('', (array) $zwsgr_grid_content3);
 			$zwsgr_grid_content4 = implode('', (array) $zwsgr_grid_content4);
 			$zwsgr_grid_content5 = implode('', (array) $zwsgr_grid_content5);
+
+			$zwsgr_popup_content1 = implode('', (array) $zwsgr_popup_content1);
+			$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
+
 
 
 			
@@ -1474,9 +1519,22 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>
 					<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
 						<div class="zwsgr-popup-content">
-							<span class="zwsgr-close-popup">&times;</span>
-							<h2>Zealousweb Technologies Pvt. Ltd.</h2>
-							<p>This is the popup content for further details.</p>
+							<div class="scrollable-content">
+								<span class="zwsgr-close-popup">&times;</span>
+								<div class="zwsgr-popup-wrap">
+									<div class="zwsgr-profile-logo">
+										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+									</div>
+									<div class="zwsgr-profile-info">
+										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+										<div class="zwsgr-rating">' . $stars_html . '</div>
+										<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
+									</div>
+								</div>
+								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
+									' . $zwsgr_popup_content1 . '
+								</div>
+							</div>
 						</div>
 					</div>',
 					'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
@@ -1492,9 +1550,22 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>
 					<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
 						<div class="zwsgr-popup-content">
-							<span class="zwsgr-close-popup">&times;</span>
-							<h2>Zealouswebbbbbbb Technologies Pvt. Ltd.</h2>
-							<p>This is the popup content for further details.</p>
+							<div class="scrollable-content">
+								<span class="zwsgr-close-popup">&times;</span>
+								<div class="zwsgr-popup-wrap">
+									<div class="zwsgr-profile-logo">
+										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+									</div>
+									<div class="zwsgr-profile-info">
+										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+										<div class="zwsgr-rating">' . $stars_html . '</div>
+										<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
+									</div>
+								</div>
+								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
+									' . $zwsgr_popup_content2 . '
+								</div>
+							</div>
 						</div>
 					</div>'
 				]
