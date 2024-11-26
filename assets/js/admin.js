@@ -445,7 +445,7 @@ jQuery(document).ready(function($) {
         $('#review-rating').is(':checked') ? $('.selected-option-display .zwsgr-rating').fadeOut(600) : $('.selected-option-display .zwsgr-rating').fadeIn(600);
         $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').fadeIn(600);
         $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').fadeOut(600) : $('.selected-option-display .zwsgr-content').fadeIn(600);
-        $('#reviewiew-photo').is(':checked') ? $('.selected-option-display .zwsgr-reviewer-photo').fadeOut(600) : $('.selected-option-display .zwsgr-reviewer-photo').fadeIn(600);
+		$('#review-photo').is(':checked') ? $('.selected-option-display .zwsgr-profile').fadeOut(600) : $('.selected-option-display .zwsgr-profile').fadeIn(600);
     }
 
     // Attach change event listeners to checkboxes
