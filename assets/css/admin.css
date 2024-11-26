@@ -384,6 +384,7 @@ input.zwsgr-checkbox:checked:before {
     cursor: pointer;
     pointer-events: none;
     text-transform: capitalize;
+    margin-bottom: 20px;
     
 }
 .zwsgr-custom-tab .zwsgr-tab-item.done {
@@ -682,6 +683,7 @@ input.zwsgr-checkbox:checked:before {
     background-color: #fff;
     box-shadow: 0px 0.5px 2px 0px #252A3B1C;
     border-radius: 16px;
+    flex-wrap: wrap;
 }
 
 .zwsgr-layout-radio label { 
@@ -1442,3 +1444,19 @@ input.zwsgr-radio:checked::before {
     margin: 10px 10px 0 0;
 }
 
+
+
+
+
+@media only screen and (max-width: 767px) {
+    .zwsgr-section-wrap {
+        padding: 10px;
+    }
+    .zwsgr-nav-tab-wrapper .nav-tab {
+        margin: 0;
+        padding: 9px;
+    }
+    .zwsgr-layout-radio label {
+        margin-bottom: 20px;
+    }
+}
