@@ -1,22 +1,28 @@
 jQuery(document).ready(function($) {
 
-
-	$('.zwsgr-popup-item').on('click', function () {
-        var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-        $('#' + popupId).fadeIn(); // Show the popup
-    });
-
-    // Close popup when the close button is clicked
-    $('.zwsgr-close-popup').on('click', function () {
-        $(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
-    });
-
-    // Close popup when clicking outside the popup content
-    $('.zwsgr-popup-overlay').on('click', function (e) {
-        if ($(e.target).is('.zwsgr-popup-overlay')) {
-            $(this).fadeOut(); // Hide the popup
-        }
-    });
+	function bindPopupEvents() {
+		// Bind click event to open popup
+		$('.zwsgr-popup-item').off('click').on('click', function () {
+			var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+        	$('#' + popupId).fadeIn(); // Show the popup
+			console.log($('#' + popupId).fadeIn());
+			alert(1);
+		});
+	
+		// Bind click event to close popup when the close button is clicked
+		$('.zwsgr-close-popup').off('click').on('click', function () {
+			$(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+			alert(2);
+		});
+	
+		// Bind click event to close popup when clicking outside the popup content
+		$('.zwsgr-popup-overlay').off('click').on('click', function (e) {
+			if ($(e.target).is('.zwsgr-popup-overlay')) {
+				$(this).fadeOut(); // Hide the popup
+				alert(3);
+			}
+		});
+	}
 
 	var widget_post_type = 'zwsgr_data_widget';
 
@@ -188,9 +194,13 @@ jQuery(document).ready(function($) {
 		// Reinitialize Slick slider after the DOM has been updated
 		setTimeout(function() {
 			reinitializeSlickSlider($('#selected-option-display'));
+
+			bindPopupEvents();
 		}, 100);
 	}
 
+	bindPopupEvents();
+	
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
 		var tabId = $(this).data('tab');
