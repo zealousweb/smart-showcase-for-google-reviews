@@ -1214,15 +1214,71 @@ input.zwsgr-radio:checked::before {
 }
 
 .zwsgr-popup-content {
-    position: relative;
-    margin: 10% auto;
-    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0; /* No padding here; apply padding to inner content */
     background: #fff;
-    width: 60%;
-    text-align: center;
+    width: 40%;
+    max-height: 500px; /* Set the maximum height */
+    overflow: hidden; /* Ensures border-radius is respected */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
+
+.scrollable-content {
+    padding: 30px; /* Add padding to the scrollable content */
+    max-height: 500px; /* Match the parent height */
+    overflow-y: auto; /* Enable scrolling */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+#zwsgrpopup2 .zwsgr-popup-content {
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: none;
+    left: auto;
+    width: 40%; /* Adjust width as needed */
+    max-height: 100vh; /* Allow the content to fill the height */
+    background: #fff;
+    border-radius: 0; /* No rounded corners */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Shadow on the left side */
+    overflow: hidden; 
+}
+
+#zwsgrpopup2 .scrollable-content {
+    padding: 50px 
+    30px; /* Add padding to the content */
+    max-height: 100vh; /* Adjust height to allow some margin for styling */
+    overflow-y: auto; /* Enable scrolling */
+    scrollbar-width: thin; /* Firefox: Make scrollbar thin */
+    scrollbar-color: #888 #f1f1f1; /* Firefox: Custom scrollbar color */
+}
+
+
+
+/* Webkit browsers (Chrome, Edge, Safari) */
+.zwsgr-popup-content::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+}
+
+.zwsgr-popup-content::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background color of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.zwsgr-popup-content::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.zwsgr-popup-content::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker color on hover */
+}
+
 
 .zwsgr-close-popup {
     position: absolute;
@@ -1231,6 +1287,29 @@ input.zwsgr-radio:checked::before {
     font-size: 24px;
     cursor: pointer;
 }
+
+.zwsgr-popup-list.zwsgr-popup-list {
+    display: block;
+}
+
+.zwsgr-grid-item.zwsgr-popup-list .zwsgr-slide-item {
+    width: 100%;
+}
+
+.zwsgr-grid-item.zwsgr-popup-list .zwsgr-review-info {
+    flex: 1 0 0%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.zwsgr-grid-item.zwsgr-popup-list .zwsgr-content {
+    text-align: left;
+}
+
+#zwsgrpopup2 .zwsgr-list-content-wrap {
+    padding-left: 80px;
+}
+
 
 
 .zwsgr-gmbc-outer-wrapper {
