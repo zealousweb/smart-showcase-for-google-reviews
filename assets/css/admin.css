@@ -1160,11 +1160,10 @@ input.zwsgr-radio:checked::before {
 .zwsgr-popup-wrap {
     display: flex;
     justify-content: flex-start;
-    flex-wrap: wrap;
 }
 
 .zwsgr-popup-wrap .zwsgr-option-item {
-    width: 48%;
+    width: 50%;
     padding: 20px;
     box-shadow: none;
     background: transparent;
@@ -1244,7 +1243,6 @@ input.zwsgr-radio:checked::before {
 .zwsgr-popup-item#zwsgr-popup1 {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .zwsgr-popup-overlay {
@@ -1338,6 +1336,10 @@ input.zwsgr-radio:checked::before {
 }
 
 .zwsgr-grid-item.zwsgr-popup-list .zwsgr-slide-item {
+    width: 100%;
+}
+
+.zwsgr-popup-list .zwsgr-slide-item .zwsgr-list-inner {
     width: 100%;
 }
 
@@ -1489,12 +1491,44 @@ input.zwsgr-radio:checked::before {
 
 
 
+@media only screen and (max-width: 1200px) {
+    .zwsgr-popup-content {
+        width: 60%;
+        max-height: 700px;
+    }
+    .scrollable-content {
+        max-height: 700px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .zwsgr-badge-wrap .zwsgr-option-item {
+        width: 50%;
+    }
+    .zwsgr-popup-content {
+        width: 60%;
+        max-height: 700px;
+    }
+    .scrollable-content {
+        max-height: 700px;
+    }
+    #zwsgrpopup2 .zwsgr-popup-content {
+        width: 50%;
+    }
+}
+
 @media only screen and (max-width: 992px) {
     .zwsgr-grid-item .zwsgr-slide-item,
     .zwsgr-grid-item#zwsgr-grid3 .zwsgr-slide-item,
     .zwsgr-grid-item#zwsgr-grid4 .zwsgr-slide-item,
     .zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-item  { 
         width: 50%;
+    }
+    .zwsgr-badge-wrap .zwsgr-option-item {
+        width: 50%;
+    }
+    .zwsgr-popup-content {
+        width: 90%;
     }
 }
 
@@ -1523,4 +1557,17 @@ input.zwsgr-radio:checked::before {
     .zwsgr-list-wrap5 .zwsgr-content-wrap {
         width: 100%;
     }
+    .zwsgr-badge-wrap .zwsgr-option-item {
+        width: 100%;
+    }
+    .zwsgr-popup-wrap .zwsgr-option-item {
+        width: 100%;
+    }
+    .zwsgr-popup-item#zwsgr-popup1 {
+        padding: 20px;
+    }
+    #zwsgrpopup2 .zwsgr-popup-content {
+        width: 90%;
+    }
+    
 }
