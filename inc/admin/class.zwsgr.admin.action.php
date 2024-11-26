@@ -1010,7 +1010,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 								<div class="zwsgr-google-icon">
 									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -1024,7 +1024,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-rating-wrap">
 									<div class="zwsgr-rating">' . $stars_html . '</div>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date " data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>
 								<div class="zwsgr-slide-wrap">
@@ -1052,7 +1052,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-rating">' . $stars_html . '</div>
 								</div>
@@ -1065,7 +1065,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<div class="zwsgr-contnt-wrap">
 									<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 							</div>';
 
@@ -1077,7 +1077,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -1095,7 +1095,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -1113,7 +1113,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -1138,7 +1138,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 								</div>
 							</div>';
@@ -1155,7 +1155,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 									</div>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
@@ -1170,7 +1170,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										</div>
 										<div class="zwsgr-data">
 											<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-											<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+											<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 										</div>
 									</div>
 									<div class="zwsgr-content-wrap">
@@ -1195,7 +1195,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -1215,7 +1215,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<div class="zwsgr-date-wrap">
 											<div class="zwsgr-rating">' . $stars_html . '</div>
-											<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+											<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 										</div>
 									</div>
 									<div class="zwsgr-google-icon">
@@ -1231,7 +1231,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-review-detail">
 										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 										<div class="zwsgr-rating-wrap">
 											<div class="zwsgr-google-icon">
 												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -1252,9 +1252,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
-								</div>
+								</div>									
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>	
 							</div>';
@@ -1267,7 +1267,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-rating">' . $stars_html . '</div>
 								</div>
@@ -2046,7 +2046,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 								<div class="zwsgr-google-icon">
 									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -2060,7 +2060,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-rating-wrap">
 								<div class="zwsgr-rating">' . $stars_html . '</div>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 							</div>
 							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>
 							<div class="zwsgr-slide-wrap">
@@ -2088,7 +2088,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</div>
 							<div class="zwsgr-review-info">
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 							</div>
 							<div class="zwsgr-rating">' . $stars_html . '</div>
 						</div>
@@ -2102,7 +2102,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-rating">' . $stars_html . '</div>
 						<div class="zwsgr-contnt-wrap">
 							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
-							<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+							<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 						</div>
 					</div>';
 
@@ -2114,7 +2114,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</div>
 							<div class="zwsgr-review-info">
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 							</div>
 							<div class="zwsgr-google-icon">
 								<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -2133,7 +2133,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</div>
 							<div class="zwsgr-review-info">
 								<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 							</div>
 							<div class="zwsgr-google-icon">
 								<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -2151,7 +2151,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 								<div class="zwsgr-google-icon">
 									<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -2176,7 +2176,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-									<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+									<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								</div>
 							</div>
 						</div>';
@@ -2193,7 +2193,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-review-info">
 									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 								</div>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 							</div>
 							<div class="zwsgr-rating">' . $stars_html . '</div>
 							<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
@@ -2208,7 +2208,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-data">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 								</div>
 								<div class="zwsgr-content-wrap">
@@ -2231,7 +2231,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-google-icon">
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -2251,7 +2251,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
 										<div class="zwsgr-date-wrap">
 											<div class="zwsgr-rating">' . $stars_html . '</div>
-											<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+											<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 										</div>
 									</div>
 									<div class="zwsgr-google-icon">
@@ -2267,7 +2267,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-review-detail">
 										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 										<div class="zwsgr-rating-wrap">
 											<div class="zwsgr-google-icon">
 												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
@@ -2289,7 +2289,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 									</div>
 								</div>									<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-								<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+								<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 								<div class="zwsgr-rating">' . $stars_html . '</div>
 								<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>	
 							</div>';
@@ -2302,7 +2302,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-review-info">
 										<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-										<h5 class="zwsgr-days-ago" data-original-date="' . esc_html($published_date) . '">' . esc_html($days_ago . ' days ago') . '</h5>
+										<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago) </h5>
 									</div>
 									<div class="zwsgr-rating">' . $stars_html . '</div>
 								</div>
