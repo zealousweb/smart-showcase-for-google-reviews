@@ -1,28 +1,24 @@
 jQuery(document).ready(function($) {
 
-	function bindPopupEvents() {
-		// Bind click event to open popup
-		$('.zwsgr-popup-item').off('click').on('click', function () {
-			var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-        	$('#' + popupId).fadeIn(); // Show the popup
-			console.log($('#' + popupId).fadeIn());
-			alert(1);
-		});
+
+	// Bind click event to open popup
+	$(document).on('click', '.zwsgr-popup-item', function () {
+		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+		$('#' + popupId).fadeIn(); // Show the popup
+	});
+
+	// Bind click event to close popup when the close button is clicked
+	$(document).on('click', '.zwsgr-close-popup', function () {
+		$(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+	});
+
+	// Bind click event to close popup when clicking outside the popup content
+	$(document).on('click', '.zwsgr-popup-overlay', function (e) {
+		if ($(e.target).is('.zwsgr-popup-overlay')) {
+			$(this).fadeOut(); // Hide the popup
+		}
+	});
 	
-		// Bind click event to close popup when the close button is clicked
-		$('.zwsgr-close-popup').off('click').on('click', function () {
-			$(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
-			alert(2);
-		});
-	
-		// Bind click event to close popup when clicking outside the popup content
-		$('.zwsgr-popup-overlay').off('click').on('click', function (e) {
-			if ($(e.target).is('.zwsgr-popup-overlay')) {
-				$(this).fadeOut(); // Hide the popup
-				alert(3);
-			}
-		});
-	}
 
 	var widget_post_type = 'zwsgr_data_widget';
 
@@ -187,19 +183,15 @@ jQuery(document).ready(function($) {
 
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
-		var selectedOptionElement = $('#' + selectedOption).clone();
+		var selectedOptionElement = $('#' + selectedOption);
 		$('#selected-option-display').html(selectedOptionElement);
 		$('#selected-option-display').find('.select-btn').remove();
 
 		// Reinitialize Slick slider after the DOM has been updated
 		setTimeout(function() {
 			reinitializeSlickSlider($('#selected-option-display'));
-
-			bindPopupEvents();
 		}, 100);
 	}
-
-	bindPopupEvents();
 	
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
@@ -239,7 +231,7 @@ jQuery(document).ready(function($) {
         }
 
 		// Fetch the HTML for the selected option using the correct optionId
-		var selectedOptionElement = $('#' + optionId).clone(); // Clone the selected option's element
+		var selectedOptionElement = $('#' + optionId); // Clone the selected option's element
 		$('#selected-option-display').html(selectedOptionElement); // Update the display area
 		$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
 	
@@ -334,6 +326,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -344,6 +352,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -364,6 +388,15 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 2,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -374,6 +407,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 	}
@@ -385,6 +434,23 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 	$('.zwsgr-slider-2').slick({
@@ -393,6 +459,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	 
 
 	$('.zwsgr-slider-4').slick({
@@ -409,6 +491,15 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 2,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	
 
 	$('.zwsgr-slider-6').slick({
@@ -417,6 +508,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 
 	// Handle click on visibility toggle icon of REview CPT
@@ -1165,7 +1272,7 @@ jQuery(document).ready(function($) {
     });
 
 	// Event listener for clicking on a star filter
-	$('#sort-by-select,.filter-rating .star-filter').on('click', function() {
+	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
 		var selectedRating = $(this).data('rating'); // Get the selected rating
 		var nonce = filter_reviews.nonce;
 		var postId = getQueryParam('zwsgr_widget_id');
@@ -1264,6 +1371,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1274,6 +1397,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1294,6 +1433,15 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 2,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1304,6 +1452,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 	}
@@ -1315,6 +1479,23 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 	$('.zwsgr-slider-2').slick({
@@ -1323,6 +1504,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	 
 
 	$('.zwsgr-slider-4').slick({
@@ -1339,6 +1536,15 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 2,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	
 
 	$('.zwsgr-slider-6').slick({
@@ -1347,6 +1553,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 });
