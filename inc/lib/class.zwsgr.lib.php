@@ -149,7 +149,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
 			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$months = $this->translate_months($language);
@@ -197,7 +197,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					break;
 
 				default:
-					$args['orderby'] = 'relevance';
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
 			}
 			
 			$query = new WP_Query($args);
@@ -366,7 +367,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
 			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$months = $this->translate_months($language);
@@ -409,7 +410,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					break;
 
 				default:
-					$args['orderby'] = 'relevance';
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
 			}
 			$query = new WP_Query($args);
 
