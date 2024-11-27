@@ -2619,66 +2619,66 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				],
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
-						<div class="zwsgr-profile-logo">
-							<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
-						</div>
-						<div class="zwsgr-profile-info">
-							<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-							<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
-						</div>
+					<div class="zwsgr-profile-logo">
+						<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 					</div>
-					<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
-						<div class="zwsgr-popup-content">
-							<div class="scrollable-content">
-								<span class="zwsgr-close-popup">&times;</span>
-								<div class="zwsgr-popup-wrap">
-									<div class="zwsgr-profile-logo">
-										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
-									</div>
-									<div class="zwsgr-profile-info">
-										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-										' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-										<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
-									</div>
+					<div class="zwsgr-profile-info">
+						<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
+					</div>
+				</div>
+				<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
+					<div class="zwsgr-popup-content">
+						<div class="scrollable-content">
+							<span class="zwsgr-close-popup">&times;</span>
+							<div class="zwsgr-popup-wrap">
+								<div class="zwsgr-profile-logo">
+									<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 								</div>
-								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . $zwsgr_popup_content1 . '
+								<div class="zwsgr-profile-info">
+									<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+									' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+									<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
 								</div>
 							</div>
-						</div>
-					</div>',
-					'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
-						<div class="zwsgr-title-wrap">
-							<img src="' . $plugin_dir_path . 'assets/images/google.png">
-							<h3>Reviews</h3>
-						</div>
-						<div class="zwsgr-info-wrap">
-							<span class="final-rating">4.7</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-							<a href="#" target="_blank" 	class="zwsgr-total-review">( 122 reviews )</a>
-						</div>
-					</div>
-					<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
-						<div class="zwsgr-popup-content">
-							<div class="scrollable-content">
-								<span class="zwsgr-close-popup">&times;</span>
-								<div class="zwsgr-popup-wrap">
-									<div class="zwsgr-profile-logo">
-										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
-									</div>
-									<div class="zwsgr-profile-info">
-										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-										' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-										<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
-									</div>
-								</div>
-								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . $zwsgr_popup_content2 . '
-								</div>
+							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
+								' . $zwsgr_popup_content1 . '
 							</div>
 						</div>
-					</div>'
+					</div>
+				</div>',
+				'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
+					<div class="zwsgr-title-wrap">
+						<img src="' . $plugin_dir_path . 'assets/images/google.png">
+						<h3>Reviews</h3>
+					</div>
+					<div class="zwsgr-info-wrap">
+						<span class="final-rating">4.7</span>
+						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						<a href="#" target="_blank" 	class="zwsgr-total-review">( 122 reviews )</a>
+					</div>
+				</div>
+				<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
+					<div class="zwsgr-popup-content">
+						<div class="scrollable-content">
+							<span class="zwsgr-close-popup">&times;</span>
+							<div class="zwsgr-popup-wrap">
+								<div class="zwsgr-profile-logo">
+									<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+								</div>
+								<div class="zwsgr-profile-info">
+									<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+									' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+									<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
+								</div>
+							</div>
+							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
+								' . $zwsgr_popup_content2 . '
+							</div>
+						</div>
+					</div>
+				</div>'
 				]
 			];
 			
