@@ -326,6 +326,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -336,6 +352,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -356,6 +388,15 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 2,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -366,6 +407,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 	}
@@ -377,6 +434,23 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 	$('.zwsgr-slider-2').slick({
@@ -385,6 +459,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	 
 
 	$('.zwsgr-slider-4').slick({
@@ -401,6 +491,15 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 2,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	
 
 	$('.zwsgr-slider-6').slick({
@@ -409,6 +508,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 
 	// Handle click on visibility toggle icon of REview CPT
@@ -1256,6 +1371,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1266,6 +1397,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1286,6 +1433,15 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 2,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1296,6 +1452,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 	}
@@ -1307,6 +1479,23 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 	$('.zwsgr-slider-2').slick({
@@ -1315,6 +1504,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	 
 
 	$('.zwsgr-slider-4').slick({
@@ -1331,6 +1536,15 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 2,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	
 
 	$('.zwsgr-slider-6').slick({
@@ -1339,6 +1553,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 });

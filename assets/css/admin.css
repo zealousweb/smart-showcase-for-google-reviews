@@ -231,7 +231,7 @@ input.zwsgr-checkbox:checked:before {
     font-size: 16px;
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
-    line-height: 1;
+    line-height: 1.2;
 }
 .zwsgr-submit-btn.button {
     padding: 20px 24px 20px 24px;
@@ -333,7 +333,9 @@ input.zwsgr-checkbox:checked:before {
 }
 
 .zwsgr-widget-wrap .zwsgr-widget-setting {
-    width: 45%;
+    width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .zwsgr-widget-wrap .zwsgr-widget-eleemt-list {
@@ -461,9 +463,15 @@ input.zwsgr-checkbox:checked:before {
     margin: 0 10px;
 }
 
+.zwsgr-slider .zwsgr-slider-1 .zwsgr-slide-item,
+.zwsgr-slider .zwsgr-slider-6 .zwsgr-slide-item {
+    padding: 0;
+}
+
 .zwsgr-slider .zwsgr-slider-2 .zwsgr-slide-item {
     border: 1px solid #E8EBEF;
     background-color: #FFFFFF;
+    border-radius: 8px;
 }
 
 .zwsgr-slider .zwsgr-slide-wrap {
@@ -853,6 +861,8 @@ input.zwsgr-radio:checked::before {
     border-radius: 8px;
 }
 
+
+#zwsgr-slider2 .zwsgr-slide-item .zwsgr-list-inner,
 #zwsgr-list4 .zwsgr-slide-item .zwsgr-list-inner,
 #zwsgr-list5 .zwsgr-slide-item .zwsgr-list-inner {
     background-color: #FFFFFF;
@@ -1569,5 +1579,7 @@ input.zwsgr-radio:checked::before {
     #zwsgrpopup2 .zwsgr-popup-content {
         width: 90%;
     }
-    
+    .zwsgr-widget-wrap .zwsgr-widget-setting {
+        width: 100%;
+    }
 }
