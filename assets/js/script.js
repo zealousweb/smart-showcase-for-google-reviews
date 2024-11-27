@@ -41,4 +41,13 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    $(document).on('click', '.toggle-content', function () {
+        var $link = $(this);
+        var fullText = $link.data('full-text');
+        var $parentParagraph = $link.closest('p');
+    
+        // Replace the trimmed content with the full content
+        $parentParagraph.html('<strong>Content:</strong> ' + fullText);
+    });
 });
