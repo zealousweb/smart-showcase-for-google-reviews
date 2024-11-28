@@ -49,7 +49,19 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             return self::$instance;
         }
 
-        public function zwsgr_total_reviews() {
+        public function zwsgr_data_render($zwsgr_filter_data) {
+            echo '<div class="zwgr-dashboard-body">'
+                . $this->zwsgr_total_reviews($zwsgr_filter_data) .
+                $this->zwsgr_average_ratings($zwsgr_filter_data) .
+            '</div>
+            <div class="zwgr-dashboard-footer">'
+                . $this->zwsgr_reviews_statics_chart($zwsgr_filter_data) .
+                $this->zwsgr_top_reviews($zwsgr_filter_data) .
+            '</div>';
+        }
+
+        public function zwsgr_total_reviews($zwsgr_filter_data) {
+
             // Fetch the total number of published reviews for the custom post type 'zwsgr_reviews'
             $zwsgr_reviews_count = wp_count_posts('zwsgr_reviews')->publish;
             // return $zwsgr_reviews_count; 
@@ -65,6 +77,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                     <p class="zwsgr-card-value">' . esc_html( number_format( $zwsgr_reviews_count ) ) . '</p> <!-- Display Review Count -->
                 </div>
             </div>';
+
         }
         
 
@@ -118,10 +131,81 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                         </li>
                     </ul>
                 </div> 
-            </div>';
-        } 
+            </div>' . 
+            $this->zwsgr_gmb_data_filter();
+        }
+
+        public function zwsgr_gmb_data_filter() {
+
+            // Get the email from the WordPress options table
+            $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
         
+            $zwsgr_gmb_data_args = [
+                'post_type'      => 'zwsgr_request_data',
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+                'meta_query'     => [
+                    [
+                        'key'     => 'zwsgr_gmb_email',
+                        'value'   => $zwsgr_gmb_email,
+                        'compare' => '='
+                    ]
+                ]
+            ];
         
+            $zwsgr_gmb_data_query = new WP_Query($zwsgr_gmb_data_args);
+        
+            // Initialize output
+            $output = '<div class="gmb-data-filter">';
+                if ($zwsgr_gmb_data_query->have_posts()) {
+                    while ($zwsgr_gmb_data_query->have_posts()) {
+                        $zwsgr_gmb_data_query->the_post();
+
+                        $zwsgr_widget_id = get_the_ID();
+
+                        // Fetch meta data for each post
+                        $zwsgr_account_number    = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
+                         // Fetch location data and check its type
+                        $zwsgr_account_location = get_post_meta(get_the_ID(), 'zwsgr_account_locations', true);
+
+
+                        // Check if the fetched data is an array (already unserialized)
+                        if (is_array($zwsgr_account_location)) {
+                            $locations = $zwsgr_account_location;
+                        } elseif (is_string($zwsgr_account_location)) {
+                            $locations = unserialize($zwsgr_account_location); // Fallback in case data is serialized
+                        } else {
+                            $locations = [];
+                        }
+
+                        $zwsgr_account_locations = unserialize($zwsgr_account_locations);
+            
+                        // Append data to output
+                        $output .= '<div class="gmb-data-item">';
+                        $output .= '<h3>' . get_the_title() . '</h3>';
+                        $output .= '<p><strong>Account Number:</strong> ' . esc_html($zwsgr_account_number) . '</p>';
+                        if (!empty($locations)) {
+                            $output .= '<ul>';
+                            foreach ($locations as $location) {
+                                $output .= '<li>' . esc_html($location['name']) . '</li>';
+                            }
+                            $output .= '</ul>';
+                        }
+                        $output .= '</div>';
+
+                    }
+
+                    wp_reset_postdata(); // Reset post data after custom query
+
+                } else {
+
+                    $output .= '<p>No GMB Data Found found.</p>';
+
+                }
+
+            $output .= '</div>';
+            return $output;
+        }        
 
         public function zwsgr_top_reviews() {
             return '<div class="zwsgr-flex-container zwsgr-flex-right">

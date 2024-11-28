@@ -840,18 +840,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<div class="zwgr-dashboard">
 				<div class="zwgr-dashboard-header">'
 					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
-				'</div>
-				<div class="zwgr-dashboard-body">'
-					. $this->zwsgr_dashboard->zwsgr_total_reviews() .
-					$this->zwsgr_dashboard->zwsgr_average_ratings() .
-				'</div>
-				<div class="zwgr-dashboard-footer">'
-					. $this->zwsgr_dashboard->zwsgr_reviews_statics_chart() .
-					$this->zwsgr_dashboard->zwsgr_top_reviews() .
-				'</div>
-			</div>';
+				'</div>';
+				$zwsgr_filter_data = [
+					'zwsgr_gmb_account'          => null,
+					'zwsgr_gmb_account_location' => null,
+					'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
+				];
+				$this->zwsgr_dashboard->zwsgr_data_render($zwsgr_filter_data);
+			echo '</div>';
 		}
-
+		
 		/**
 		 * Action: action_admin_menu
 		 * Add admin registration Dashboard page for the plugin
