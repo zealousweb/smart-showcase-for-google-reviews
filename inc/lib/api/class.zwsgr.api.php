@@ -148,7 +148,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Check if the access token is valid, refresh if necessary
             if (!$this->zwsgr_is_access_token_valid()) {
                 // Refresh the token if it's not valid
-                $this->zwsgr_refresh_access_token();
+                return $this->zwsgr_refresh_access_token();
             }
 
             return $this->zwsgr_access_token;
@@ -201,7 +201,12 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return the access token.
                 return $access_token;
 
+            } else {
+
+                return false;
+
             }
+            
 
         }
 

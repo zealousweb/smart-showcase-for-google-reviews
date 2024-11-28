@@ -1,28 +1,24 @@
 jQuery(document).ready(function($) {
 
-	function bindPopupEvents() {
-		// Bind click event to open popup
-		$('.zwsgr-popup-item').off('click').on('click', function () {
-			var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-        	$('#' + popupId).fadeIn(); // Show the popup
-			console.log($('#' + popupId).fadeIn());
-			alert(1);
-		});
+
+	// Bind click event to open popup
+	$(document).on('click', '.zwsgr-popup-item', function () {
+		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+		$('#' + popupId).fadeIn(); // Show the popup
+	});
+
+	// Bind click event to close popup when the close button is clicked
+	$(document).on('click', '.zwsgr-close-popup', function () {
+		$(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+	});
+
+	// Bind click event to close popup when clicking outside the popup content
+	$(document).on('click', '.zwsgr-popup-overlay', function (e) {
+		if ($(e.target).is('.zwsgr-popup-overlay')) {
+			$(this).fadeOut(); // Hide the popup
+		}
+	});
 	
-		// Bind click event to close popup when the close button is clicked
-		$('.zwsgr-close-popup').off('click').on('click', function () {
-			$(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
-			alert(2);
-		});
-	
-		// Bind click event to close popup when clicking outside the popup content
-		$('.zwsgr-popup-overlay').off('click').on('click', function (e) {
-			if ($(e.target).is('.zwsgr-popup-overlay')) {
-				$(this).fadeOut(); // Hide the popup
-				alert(3);
-			}
-		});
-	}
 
 	var widget_post_type = 'zwsgr_data_widget';
 
@@ -187,19 +183,15 @@ jQuery(document).ready(function($) {
 
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
-		var selectedOptionElement = $('#' + selectedOption).clone();
+		var selectedOptionElement = $('#' + selectedOption);
 		$('#selected-option-display').html(selectedOptionElement);
 		$('#selected-option-display').find('.select-btn').remove();
 
 		// Reinitialize Slick slider after the DOM has been updated
 		setTimeout(function() {
 			reinitializeSlickSlider($('#selected-option-display'));
-
-			bindPopupEvents();
 		}, 100);
 	}
-
-	bindPopupEvents();
 	
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
@@ -239,7 +231,7 @@ jQuery(document).ready(function($) {
         }
 
 		// Fetch the HTML for the selected option using the correct optionId
-		var selectedOptionElement = $('#' + optionId).clone(); // Clone the selected option's element
+		var selectedOptionElement = $('#' + optionId); // Clone the selected option's element
 		$('#selected-option-display').html(selectedOptionElement); // Update the display area
 		$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
 	
@@ -334,6 +326,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -344,6 +352,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -364,6 +388,15 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 2,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -374,6 +407,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 	}
@@ -385,6 +434,23 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 	$('.zwsgr-slider-2').slick({
@@ -393,6 +459,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	 
 
 	$('.zwsgr-slider-4').slick({
@@ -409,6 +491,15 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 2,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	
 
 	$('.zwsgr-slider-6').slick({
@@ -417,6 +508,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 
 	// Handle click on visibility toggle icon of REview CPT
@@ -785,12 +892,14 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		const zwsgr_button = $(this);
 		const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
+
+		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
 		zwsgr_button.prop("disabled", true);
 		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 	
 		processBatch(zwsgr_gmb_data_type);
-	  });
+	});
 	
 	$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").on("click", function (e) {
 		
@@ -907,12 +1016,36 @@ jQuery(document).ready(function($) {
 		const zwsgr_account_number = $(
 		  "#fetch-gmb-data #zwsgr-account-select"
 		).val();
+		$("#fetch-gmb-data #zwsgr-account-select").addClass('disabled');
+
 		const zwsgr_location_number = $(
 		  "#fetch-gmb-data #zwsgr-location-select"
 		).val();
+		$("#fetch-gmb-data #zwsgr-location-select").addClass('disabled');
+
 		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+
+		if (!zwsgr_account_number) {
+			$('#fetch-gmb-data .response').html('<p class="error">Account is required</p>');
+			return;
+		}
+
+		if (!zwsgr_location_number) {
+			$('#fetch-gmb-data .response').html('<p class="error">Location is required</p>');
+			return;
+		}
+
+		if (!zwsgr_widget_id) {
+			alert("Please select an approprite location.");
+			$('#fetch-gmb-data .response').html('<p class="error">No valid widget ID found</p>');
+			return;
+		}
+
+		$('#fetch-gmb-data .response').html('');
+
+		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
-		zwsgr_button.prop("disabled", true);
+		zwsgr_button.addClass("disabled");
 		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 	
 		processBatch(
@@ -939,6 +1072,9 @@ jQuery(document).ready(function($) {
 		  $("#fetch-gmb-data #fetch-gmd-reviews").remove();
 	
 		  const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+		  
+		  $('#fetch-gmb-data .response').html('');
+		  $('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
 		  // Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
 		  processBatch(
@@ -970,7 +1106,7 @@ jQuery(document).ready(function($) {
 		  },
 		  success: function (response) {
 			if (response.success) {
-			  console.log(response.data.message, "response");
+				$('#fetch-gmb-data .progress-bar').fadeIn();
 			}
 		  },
 		  error: function (xhr, status, error) {
@@ -979,22 +1115,103 @@ jQuery(document).ready(function($) {
 			//console.error("Response:", xhr.responseText);
 		  },
 		});
-		batchInterval = setInterval(checkBatchStatus, 1000);
+
+		batchInterval = setInterval(function() {
+			checkBatchStatus(zwsgr_gmb_data_type, batchInterval, false);
+		}, 1000);
+
 	  }
+
+	  // Check if we're on the specific page URL that contains zwsgr_widget_id dynamically
+	  if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
+        // Call the function to check batch status
+		batchInterval = setInterval(function() {
+			const zwsgr_gmb_data_type = $('#fetch-gmb-data .zwsgr-submit-btn').data('fetch-type');
+			checkBatchStatus(zwsgr_gmb_data_type, batchInterval, true);
+		}, 2000);
+
+      }
 	
-	  function checkBatchStatus() {
+	  function checkBatchStatus(zwsgr_gmb_data_type, batchInterval, isOnload) {
+
+		// Function to get URL parameters
+		function getUrlParameter(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		// Capture 'zwsgr_widget_id' from the URL
+		const zwsgr_widget_id = getUrlParameter('zwsgr_widget_id');
+
 		$.ajax({
-		  url: zwsgr_admin.ajax_url, // Use localized AJAX URL
+		  url: zwsgr_admin.ajax_url,
 		  method: "POST",
 		  data: {
 			action: "zwsgr_get_batch_processing_status",
-			security: zwsgr_admin.zwsgr_queue_manager_nounce, // Corrected to match PHP
+			security: zwsgr_admin.zwsgr_queue_manager_nounce,
+			zwsgr_widget_id: zwsgr_widget_id
 		  },
 		  success: function (response) {
-			if (response.success && !response.data.zwsgr_batch_process_status) {
-			  alert("Data retrieved successfully.");
-			  location.reload();
-			  clearInterval(batchInterval);
+
+			console.log(response, 'response');
+			// return;
+
+			if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
+				
+				$('#fetch-gmb-data .progress-bar #progress').val(100);
+				$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
+				$('#fetch-gmb-data .progress-bar #progress-percentage').text('Complete');
+
+				if (zwsgr_gmb_data_type == 'zwsgr_gmb_accounts') {
+
+					$('#fetch-gmb-data .response').html('<p class="success">Accounts processed successfully</p>');
+
+				} else if (zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+
+					$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
+					$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
+
+				}
+				
+				setTimeout(function () {
+					$('#fetch-gmb-data .progress-bar').fadeOut();
+					if (zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
+						redirectToOptionsTab();
+					} else {
+						location.reload();
+					}
+				}, 2000);
+
+			} else {
+				 
+				// Calculate the progress percentage
+				var currentIndex = response.data.zwsgr_current_index;
+				var totalPages = parseInt(response.data.zwsgr_batch_pages);
+
+				console.log('totalPages', totalPages);
+				console.log('currentIndex', currentIndex);
+
+				// Check if totalPages is greater than 0 to prevent division by zero
+				if (totalPages > 0 && !isNaN(currentIndex) && !isNaN(totalPages)) {
+					
+					var progressPercentage = (currentIndex / totalPages) * 100;
+					
+					// Ensure progressPercentage is a finite number
+					if (isFinite(progressPercentage)) {
+						// Update the progress bar with the calculated percentage
+						$('#fetch-gmb-data .progress-bar #progress').val(progressPercentage);
+						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(progressPercentage) + '%');
+
+					} else {
+						console.error('Invalid progress percentage:', progressPercentage);
+					}
+
+				} else {
+
+					console.error('Invalid totalPages or currentIndex:', totalPages, currentIndex);
+
+				}
+
 			}
 		  },
 		  error: function (xhr, status, error) {
@@ -1004,6 +1221,21 @@ jQuery(document).ready(function($) {
 		  },
 		});
 	  }
+
+	  function redirectToOptionsTab() {
+		// Get the current URL
+		let currentUrl = window.location.href;
+		
+		// Replace or add the 'tab' parameter
+		if (currentUrl.includes('tab=')) {
+			currentUrl = currentUrl.replace(/tab=[^&]+/, 'tab=tab-options'); // Replace existing 'tab' value
+		} else {
+			currentUrl += (currentUrl.includes('?') ? '&' : '?') + 'tab=tab-options'; // Add 'tab' if it doesn't exist
+		}
+		
+		// Redirect to the modified URL
+		window.location.href = currentUrl;
+	}
 	
 	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
 	
@@ -1165,7 +1397,7 @@ jQuery(document).ready(function($) {
     });
 
 	// Event listener for clicking on a star filter
-	$('#sort-by-select,.filter-rating .star-filter').on('click', function() {
+	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
 		var selectedRating = $(this).data('rating'); // Get the selected rating
 		var nonce = filter_reviews.nonce;
 		var postId = getQueryParam('zwsgr_widget_id');
@@ -1264,6 +1496,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1274,6 +1522,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1294,6 +1558,15 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 2,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 
@@ -1304,6 +1577,22 @@ jQuery(document).ready(function($) {
 				slidesToScroll: 3,
 				arrows: true,
 				dots: false,
+				responsive: [
+					{
+						breakpoint: 1200,
+						settings: {
+						  slidesToShow: 2,
+						  slidesToScroll: 2
+						}
+					},
+					{
+						breakpoint: 480,
+						settings: {
+						  slidesToShow: 1,
+						  slidesToScroll: 1
+						}
+					}
+				]
 			});
 		}
 	}
@@ -1315,6 +1604,23 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 	
 	$('.zwsgr-slider-2').slick({
@@ -1323,6 +1629,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	 
 
 	$('.zwsgr-slider-4').slick({
@@ -1339,6 +1661,15 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 2,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});	
 
 	$('.zwsgr-slider-6').slick({
@@ -1347,6 +1678,22 @@ jQuery(document).ready(function($) {
 		slidesToScroll: 3,
 		arrows: true,
 		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
 	});
 
 

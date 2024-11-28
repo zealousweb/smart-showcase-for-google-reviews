@@ -15,6 +15,8 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             $zwsgr_account_number        = isset($zwsr_batch_data['zwsgr_account_number']) ? $zwsr_batch_data['zwsgr_account_number'] : [];
             $zwsgr_location_number       = isset($zwsr_batch_data['zwsgr_location_number']) ? $zwsr_batch_data['zwsgr_location_number'] : [];
             $this->next_page_token       = isset($zwsgr_gmb_data['nextPageToken']) ? $zwsgr_gmb_data['nextPageToken'] : null;
+            $this->zwsgr_widget_id       = isset($zwsr_batch_data['zwsgr_widget_id']) ? $zwsr_batch_data['zwsgr_widget_id'] : null;
+            $this->zwsgr_total_reviews   = isset($zwsgr_gmb_data['totalReviewCount']) ? $zwsgr_gmb_data['totalReviewCount'] : null;
 
             if (!empty($zwsgr_gmb_data)) {
 
@@ -223,15 +225,16 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             $zwsgr_queue_manager = new Zwsgr_Queue_Manager();
 
-            // Update status to complete
-            update_option('zwsgr_batch_status', [
-                'status' => 'completed',
-                'zwsgr_current_index' => $zwsgr_queue_manager->zwsgr_get_current_batch_index()
-            ]);
-
             if (!empty($this->next_page_token)) {
 
-                $zwsgr_queue_manager->zwsgr_update_current_batch_index($zwsgr_queue_manager->zwsgr_get_current_batch_index() + 1);
+                update_post_meta($this->zwsgr_widget_id, 'zwgr_data_processing_init', 'true');
+
+                if (!empty($this->zwsgr_total_reviews)) {
+                    $zwsgr_batch_pages   = ceil($this->zwsgr_total_reviews / 50);
+                    update_post_meta($this->zwsgr_widget_id, 'zwsgr_batch_pages', $zwsgr_batch_pages);
+                }
+
+                $zwsgr_queue_manager->zwsgr_update_current_batch_index($this->zwsgr_widget_id, ($zwsgr_queue_manager->zwsgr_get_current_batch_index($this->zwsgr_widget_id) + 1));
                 
                 sleep(1);
 
@@ -239,11 +242,12 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             } else {
 
-                delete_option('zwsgr_batch_status');
-                delete_option('zwsgr_batch_process_status');
+                $zwsgr_queue_manager->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
 
-                $zwsgr_queue_manager->zwsgr_reset_current_batch_index();
+                update_post_meta($this->zwsgr_widget_id, 'zwgr_data_processing_init', 'false');
+                update_post_meta($this->zwsgr_widget_id, 'zwgr_data_sync_once', 'true');
 
+                delete_post_meta($this->zwsgr_widget_id, 'zwsgr_batch_pages');
                 return;
 
             }
@@ -266,20 +270,23 @@ add_action('wp_ajax_zwsgr_get_batch_processing_status', 'zwsgr_get_batch_process
  */
 function zwsgr_get_batch_processing_status() {
 
-    $zwsgr_batch_status  = get_option('zwsgr_batch_status', [
-        'status' => 'in_progress',
-        'current_batch' => 0
-    ]);
+    $zwsgr_widget_id           = $_POST['zwsgr_widget_id'];
+    $zwgr_data_processing_init = get_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init', true);
+    $zwgr_data_sync_once       = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
+    $zwsgr_batch_pages         = get_post_meta($zwsgr_widget_id, 'zwsgr_batch_pages', true);
+    $zwsgr_queue_manager       = new Zwsgr_Queue_Manager();
 
-    $zwsgr_batch_process_status = get_option('zwsgr_batch_process_status');
+    if ($zwgr_data_processing_init == 'false') {
+        delete_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init');    
+    }
 
-    // Combine current index and batch status into a response array
-    $response = [
-        'zwsgr_batch_status'         => $zwsgr_batch_status,
-        'zwsgr_batch_process_status' => $zwsgr_batch_process_status
-    ];  
+    $zwsgr_response = [
+        'zwgr_data_processing_init'  => $zwgr_data_processing_init,
+        'zwgr_data_sync_once'        => $zwgr_data_sync_once,
+        'zwsgr_current_index'        => $zwsgr_queue_manager->zwsgr_get_current_batch_index($zwsgr_widget_id),
+        'zwsgr_batch_pages'          => $zwsgr_batch_pages,
+    ];
 
-    // Send a successful JSON response with the batch processing status
-    wp_send_json_success($response);
+    wp_send_json_success($zwsgr_response);
 
 }
