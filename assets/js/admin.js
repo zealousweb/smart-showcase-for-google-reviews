@@ -892,12 +892,14 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		const zwsgr_button = $(this);
 		const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
+
+		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
 		zwsgr_button.prop("disabled", true);
 		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 	
 		processBatch(zwsgr_gmb_data_type);
-	  });
+	});
 	
 	$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").on("click", function (e) {
 		
@@ -1014,12 +1016,36 @@ jQuery(document).ready(function($) {
 		const zwsgr_account_number = $(
 		  "#fetch-gmb-data #zwsgr-account-select"
 		).val();
+		$("#fetch-gmb-data #zwsgr-account-select").addClass('disabled');
+
 		const zwsgr_location_number = $(
 		  "#fetch-gmb-data #zwsgr-location-select"
 		).val();
+		$("#fetch-gmb-data #zwsgr-location-select").addClass('disabled');
+
 		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+
+		if (!zwsgr_account_number) {
+			$('#fetch-gmb-data .response').html('<p class="error">Account is required</p>');
+			return;
+		}
+
+		if (!zwsgr_location_number) {
+			$('#fetch-gmb-data .response').html('<p class="error">Location is required</p>');
+			return;
+		}
+
+		if (!zwsgr_widget_id) {
+			alert("Please select an approprite location.");
+			$('#fetch-gmb-data .response').html('<p class="error">No valid widget ID found</p>');
+			return;
+		}
+
+		$('#fetch-gmb-data .response').html('');
+
+		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
-		zwsgr_button.prop("disabled", true);
+		zwsgr_button.addClass("disabled");
 		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 	
 		processBatch(
@@ -1046,6 +1072,9 @@ jQuery(document).ready(function($) {
 		  $("#fetch-gmb-data #fetch-gmd-reviews").remove();
 	
 		  const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+		  
+		  $('#fetch-gmb-data .response').html('');
+		  $('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
 		  // Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
 		  processBatch(
@@ -1077,7 +1106,7 @@ jQuery(document).ready(function($) {
 		  },
 		  success: function (response) {
 			if (response.success) {
-			  console.log(response.data.message, "response");
+				$('#fetch-gmb-data .progress-bar').fadeIn();
 			}
 		  },
 		  error: function (xhr, status, error) {
@@ -1086,22 +1115,103 @@ jQuery(document).ready(function($) {
 			//console.error("Response:", xhr.responseText);
 		  },
 		});
-		batchInterval = setInterval(checkBatchStatus, 1000);
+
+		batchInterval = setInterval(function() {
+			checkBatchStatus(zwsgr_gmb_data_type, batchInterval, false);
+		}, 1000);
+
 	  }
+
+	  // Check if we're on the specific page URL that contains zwsgr_widget_id dynamically
+	  if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
+        // Call the function to check batch status
+		batchInterval = setInterval(function() {
+			const zwsgr_gmb_data_type = $('#fetch-gmb-data .zwsgr-submit-btn').data('fetch-type');
+			checkBatchStatus(zwsgr_gmb_data_type, batchInterval, true);
+		}, 2000);
+
+      }
 	
-	  function checkBatchStatus() {
+	  function checkBatchStatus(zwsgr_gmb_data_type, batchInterval, isOnload) {
+
+		// Function to get URL parameters
+		function getUrlParameter(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		// Capture 'zwsgr_widget_id' from the URL
+		const zwsgr_widget_id = getUrlParameter('zwsgr_widget_id');
+
 		$.ajax({
-		  url: zwsgr_admin.ajax_url, // Use localized AJAX URL
+		  url: zwsgr_admin.ajax_url,
 		  method: "POST",
 		  data: {
 			action: "zwsgr_get_batch_processing_status",
-			security: zwsgr_admin.zwsgr_queue_manager_nounce, // Corrected to match PHP
+			security: zwsgr_admin.zwsgr_queue_manager_nounce,
+			zwsgr_widget_id: zwsgr_widget_id
 		  },
 		  success: function (response) {
-			if (response.success && !response.data.zwsgr_batch_process_status) {
-			  alert("Data retrieved successfully.");
-			  location.reload();
-			  clearInterval(batchInterval);
+
+			console.log(response, 'response');
+			// return;
+
+			if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
+				
+				$('#fetch-gmb-data .progress-bar #progress').val(100);
+				$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
+				$('#fetch-gmb-data .progress-bar #progress-percentage').text('Complete');
+
+				if (zwsgr_gmb_data_type == 'zwsgr_gmb_accounts') {
+
+					$('#fetch-gmb-data .response').html('<p class="success">Accounts processed successfully</p>');
+
+				} else if (zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+
+					$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
+					$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
+
+				}
+				
+				setTimeout(function () {
+					$('#fetch-gmb-data .progress-bar').fadeOut();
+					if (zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
+						redirectToOptionsTab();
+					} else {
+						location.reload();
+					}
+				}, 2000);
+
+			} else {
+				 
+				// Calculate the progress percentage
+				var currentIndex = response.data.zwsgr_current_index;
+				var totalPages = parseInt(response.data.zwsgr_batch_pages);
+
+				console.log('totalPages', totalPages);
+				console.log('currentIndex', currentIndex);
+
+				// Check if totalPages is greater than 0 to prevent division by zero
+				if (totalPages > 0 && !isNaN(currentIndex) && !isNaN(totalPages)) {
+					
+					var progressPercentage = (currentIndex / totalPages) * 100;
+					
+					// Ensure progressPercentage is a finite number
+					if (isFinite(progressPercentage)) {
+						// Update the progress bar with the calculated percentage
+						$('#fetch-gmb-data .progress-bar #progress').val(progressPercentage);
+						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(progressPercentage) + '%');
+
+					} else {
+						console.error('Invalid progress percentage:', progressPercentage);
+					}
+
+				} else {
+
+					console.error('Invalid totalPages or currentIndex:', totalPages, currentIndex);
+
+				}
+
 			}
 		  },
 		  error: function (xhr, status, error) {
@@ -1111,6 +1221,21 @@ jQuery(document).ready(function($) {
 		  },
 		});
 	  }
+
+	  function redirectToOptionsTab() {
+		// Get the current URL
+		let currentUrl = window.location.href;
+		
+		// Replace or add the 'tab' parameter
+		if (currentUrl.includes('tab=')) {
+			currentUrl = currentUrl.replace(/tab=[^&]+/, 'tab=tab-options'); // Replace existing 'tab' value
+		} else {
+			currentUrl += (currentUrl.includes('?') ? '&' : '?') + 'tab=tab-options'; // Add 'tab' if it doesn't exist
+		}
+		
+		// Redirect to the modified URL
+		window.location.href = currentUrl;
+	}
 	
 	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
 	
@@ -1570,5 +1695,20 @@ jQuery(document).ready(function($) {
 			}
 		]
 	});
+
+
+
+	// Handle filter button clicks
+    $('.zwsgr-filter-button').on('click', function () {
+        // Remove active class from all buttons and add it to the clicked button
+        $('.zwsgr-filter-button').removeClass('active');
+        $(this).addClass('active');		
+    });
 	
+	$('input[name="dates"]').daterangepicker({
+		opens: 'center', // optional, to center the picker
+		locale: {
+			format: 'DD-MM-YYYY' // Change the format to match your needs
+		}
+	});
 });

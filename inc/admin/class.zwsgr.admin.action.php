@@ -23,6 +23,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		private $zwsgr_gmbc;
 
+		private $zwsgr_dashboard;
+
 		function __construct()  
 		{
 
@@ -45,6 +47,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
+
+			// Initialize dashboard class
+			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
 		
 		}
 		
@@ -323,22 +328,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
 
 			echo '<table class="form-table test" id="gmb-review-data">
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Account ID', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_account_number) . '" name="zwsgr_account_number" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Location', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_location_code) . '" name="zwsgr_location_code" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
 				<tr>
 					<th>
 						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
@@ -848,8 +837,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 */
 		function zwsgr_dashboard_callback()
 		{	
-			echo '<h1>Dashboard</h1>';
-			// Dashboard content can be added here
+			echo '<div class="zwgr-dashboard">
+				<div class="zwgr-dashboard-header">'
+					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
+				'</div>
+				<div class="zwgr-dashboard-body">'
+					. $this->zwsgr_dashboard->zwsgr_total_reviews() .
+					$this->zwsgr_dashboard->zwsgr_average_ratings() .
+				'</div>
+				<div class="zwgr-dashboard-footer">'
+					. $this->zwsgr_dashboard->zwsgr_reviews_statics_chart() .
+					$this->zwsgr_dashboard->zwsgr_top_reviews() .
+				'</div>
+			</div>';
 		}
 
 		/**
@@ -917,8 +917,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			} elseif ($rating_filter_word == 'ONE') {
 				$ratings_to_include = array('ONE');
 			}
-
-
 
 			$zwsgr_reviews_args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
@@ -1629,7 +1627,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
-					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-options"><span class="zwsgr-step">1. </span>Connect</li>
+					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwsgr-step">1. </span>Fetch Data</li>
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item  <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
 					<span class="zwsgr-step-arrow"></span>
@@ -1637,6 +1635,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">4. </span>Generated Shortcode</li>
 				</ul>
+
+				<!-- Tab Data Fetch Areas -->
+				<div class="tab-content" id="tab-fetch-data">
+					<?php Zwsgr_Google_My_Business_Connector::get_instance()->zwsgr_fetch_gmb_data_callback(); ?>
+				</div>
 
 				<!-- Tab Content Areas -->
 				<div class="tab-content" id="tab-options">
