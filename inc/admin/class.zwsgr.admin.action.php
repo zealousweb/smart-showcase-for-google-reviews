@@ -325,22 +325,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<table class="form-table test" id="gmb-review-data">
 				<tr>
 					<th>
-						<label for="zwsgr_review_id">' . __('Account ID', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_account_number) . '" name="zwsgr_account_number" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Location', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_location_code) . '" name="zwsgr_location_code" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
-				<tr>
-					<th>
 						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
@@ -917,8 +901,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			} elseif ($rating_filter_word == 'ONE') {
 				$ratings_to_include = array('ONE');
 			}
-
-
 
 			$zwsgr_reviews_args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
@@ -1628,7 +1610,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
-					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-options"><span class="zwsgr-step">1. </span>Connect</li>
+					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwsgr-step">1. </span>Fetch Data</li>
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item  <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
 					<span class="zwsgr-step-arrow"></span>
@@ -1636,6 +1618,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">4. </span>Generated Shortcode</li>
 				</ul>
+
+				<!-- Tab Data Fetch Areas -->
+				<div class="tab-content" id="tab-fetch-data">
+					<?php Zwsgr_Google_My_Business_Connector::get_instance()->zwsgr_fetch_gmb_data_callback(); ?>
+				</div>
 
 				<!-- Tab Content Areas -->
 				<div class="tab-content" id="tab-options">
