@@ -962,7 +962,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					break;
 
 				default:
-					$zwsgr_reviews_args['orderby'] = 'relevance';
+					$zwsgr_reviews_args['orderby'] = 'date';
+					$zwsgr_reviews_args['order'] = 'DESC';
 			}
 
 			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
@@ -2047,7 +2048,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$args['order'] = 'ASC';
 					break;
 				default: // Default sorting (e.g., relevance)
-					$args['orderby'] = 'relevance';
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
     }
 		
 			$reviews_query = new WP_Query($args);
