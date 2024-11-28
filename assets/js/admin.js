@@ -1695,5 +1695,20 @@ jQuery(document).ready(function($) {
 			}
 		]
 	});
+
+
+
+	// Handle filter button clicks
+    $('.zwsgr-filter-button').on('click', function () {
+        // Remove active class from all buttons and add it to the clicked button
+        $('.zwsgr-filter-button').removeClass('active');
+        $(this).addClass('active');		
+    });
 	
+	$('input[name="dates"]').daterangepicker({
+		opens: 'center', // optional, to center the picker
+		locale: {
+			format: 'DD-MM-YYYY' // Change the format to match your needs
+		}
+	});
 });
