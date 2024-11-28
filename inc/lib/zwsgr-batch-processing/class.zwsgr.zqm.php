@@ -16,9 +16,13 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
     class Zwsgr_Queue_Manager {
 
+        private static $instance = null;
+
         private $process;
 
         private $client;
+
+        private $zwsgr_widget_id;
 
         public function __construct() {
 
@@ -30,6 +34,14 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             add_action('wp_ajax_zwsgr_fetch_gmb_data', array($this, 'zwsgr_fetch_gmb_data'));
             add_action('wp_ajax_nopriv_zwsgr_fetch_gmb_data', array($this, 'zwsgr_fetch_gmb_data'));
 
+        }
+
+        // Method to get the single instance of the class
+        public static function get_instance() {
+            if ( self::$instance === null ) {
+                self::$instance = new self();
+            }
+            return self::$instance;
         }
 
         public function zwsgr_fetch_gmb_data($zwsgr_internal_call = false, $zwsgr_next_page_token = false, $zwsgr_gmb_data_type = null, $zwsgr_account_number = null, $zwsgr_location_number = null, $zwsgr_widget_id = null) {
@@ -54,9 +66,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     return;
                 }
 
-                $this->zwsgr_reset_current_batch_index();
-
-                update_option('zwsgr_batch_process_status', true);
+                $this->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
 
             }
 
@@ -64,7 +74,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             $zwsgr_gmb_data_type   = isset($zwsgr_gmb_data_type) ? sanitize_text_field($zwsgr_gmb_data_type) : (isset($_POST['zwsgr_gmb_data_type']) ? sanitize_text_field($_POST['zwsgr_gmb_data_type']) : get_option('zwsgr_gmb_data_type'));
             $zwsgr_account_number  = isset($zwsgr_account_number) ? sanitize_text_field($zwsgr_account_number) : (isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : get_option('zwsgr_account_number'));
             $zwsgr_location_number = isset($zwsgr_location_number) ? sanitize_text_field($zwsgr_location_number) : (isset($_POST['zwsgr_location_number']) ? sanitize_text_field($_POST['zwsgr_location_number']) : get_option('zwsgr_location_number'));
-            $zwsgr_widget_id       = isset($zwsgr_widget_id) ? sanitize_text_field($zwsgr_widget_id) : (isset($_POST['zwsgr_widget_id']) ? sanitize_text_field($_POST['zwsgr_widget_id']) : get_option('zwsgr_widget_id'));
+            $this->zwsgr_widget_id = isset($zwsgr_widget_id) ? sanitize_text_field($zwsgr_widget_id) : (isset($_POST['zwsgr_widget_id']) ? sanitize_text_field($_POST['zwsgr_widget_id']) : get_option('zwsgr_widget_id'));
 
             // Attempt to update each option and log an error if it fails
             if (!update_option('zwsgr_gmb_data_type', $zwsgr_gmb_data_type)) {
@@ -80,17 +90,16 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             }
 
             // Add the account number as post meta for the widget ID (post_id)
-            if ($zwsgr_widget_id && $zwsgr_account_number) {
-                update_post_meta($zwsgr_widget_id, 'zwsgr_account_number', $zwsgr_account_number);
+            if ($this->zwsgr_widget_id && $zwsgr_account_number) {
+                update_option('zwsgr_widget_id', $this->zwsgr_widget_id);
+                update_post_meta($this->zwsgr_widget_id, 'zwsgr_account_number', $zwsgr_account_number);
                 // Check if location number is provided, and if so, add it as post meta
                 if (!empty($zwsgr_location_number)) {
-                    update_post_meta($zwsgr_widget_id, 'zwsgr_location_number', $zwsgr_location_number);
+                    update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_number', $zwsgr_location_number);
                 }
             }
 
-            
-
-            $zwsgr_current_index = $this->zwsgr_get_current_batch_index();
+            $zwsgr_current_index = $this->zwsgr_get_current_batch_index($this->zwsgr_widget_id);
 
             switch ($zwsgr_gmb_data_type) {
                 case 'zwsgr_gmb_accounts':
@@ -100,7 +109,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     $zwsgr_gmb_data = $this->client->zwsgr_get_locations($zwsgr_account_number, $zwsgr_next_page_token);
                     break;
                 case 'zwsgr_gmb_reviews':
-                    $zwsgr_gmb_data = $this->client->zwsgr_get_reviews($zwsgr_account_number, $zwsgr_location_number, $zwsgr_next_page_token);            
+                    $zwsgr_gmb_data = $this->client->zwsgr_get_reviews($zwsgr_account_number, $zwsgr_location_number, $zwsgr_next_page_token);        
                     break;
                 default:
                     error_log("Invalid GMB data type: " . $zwsgr_gmb_data_type);
@@ -112,6 +121,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 // Prepare data to be pushed to the queue
                 $zwsgr_push_data_to_queue = [
+                    'zwsgr_widget_id'     => $this->zwsgr_widget_id,
                     'zwsgr_gmb_data'       => $zwsgr_gmb_data,
                     'zwsgr_account_number' => $zwsgr_account_number,
                     'zwsgr_location_number' => $zwsgr_location_number
@@ -122,7 +132,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 $this->process->save()->dispatch();
 
-                if ( empty($zwsgr_gmb_data['nextPageToken']) ) {
+                if ( !isset($zwsgr_gmb_data['nextPageToken']) || empty($zwsgr_gmb_data['nextPageToken']) ) {
                     return false;
                 }
 
@@ -139,19 +149,13 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 // Log the error before resetting the index and deleting options
                 error_log("Batch processing error: Failed at index " . $zwsgr_current_index);
 
-                $this->zwsgr_reset_current_batch_index();
+                $this->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
 
                 // Log the deletion of options
                 if (delete_option('zwsgr_batch_status')) {
                     error_log("Option 'zwsgr_batch_status' deleted successfully.");
                 } else {
                     error_log("Failed to delete option 'zwsgr_batch_status: Failed at index " . $zwsgr_current_index);
-                }
-
-                if (delete_option('zwsgr_batch_process_status')) {
-                    error_log("Option 'zwsgr_batch_process_status' deleted successfully.");
-                } else {
-                    error_log("Failed to delete option 'zwsgr_batch_process_status: Failed at index " . $zwsgr_current_index);
                 }
 
                 return;
@@ -170,22 +174,25 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
         }
 
         // Helper function to get the current index from the database
-        public function zwsgr_get_current_batch_index() {
-            return get_option('zwsgr_current_index', 1);
+        public function zwsgr_get_current_batch_index($zwsgr_widget_id) {
+            $current_index = get_post_meta($zwsgr_widget_id, 'zwsgr_current_index', true);
+ 
+            // Return 1 if the value is empty or false
+            return !empty($current_index) ? $current_index : 1;
         }
 
         // Helper function to update the current index in the database
-        public function zwsgr_update_current_batch_index($index) {
-            update_option('zwsgr_current_index', intval($index));
+        public function zwsgr_update_current_batch_index($zwsgr_widget_id, $index) {
+            return update_post_meta($zwsgr_widget_id, 'zwsgr_current_index', intval($index));
         }
 
         // Helper function to reset current index
-        public function zwsgr_reset_current_batch_index() {
-            delete_option('zwsgr_current_index');
+        public function zwsgr_reset_current_batch_index($zwsgr_widget_id) {
+            delete_post_meta($zwsgr_widget_id, 'zwsgr_current_index');
         }
 
     }
 
-    new Zwsgr_Queue_Manager();
+    Zwsgr_Queue_Manager::get_instance();
 
 }

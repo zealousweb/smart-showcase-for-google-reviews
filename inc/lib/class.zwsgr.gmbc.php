@@ -18,6 +18,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
         private $client;
 
+        private $zwsgr_zqm;
+
         public function __construct() {
 
             // Hook to add admin menu items
@@ -30,6 +32,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
 
             $this->client = new ZWSGR_GMB_API('');
+
+            $this->zwsgr_zqm = new Zwsgr_Queue_Manager();
 
         }
 
@@ -51,15 +55,6 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 'zwsgr_connect_google',
                 [$this, 'zwsgr_connect_google_callback'],
                 1
-            );
-        
-            add_submenu_page(
-                null,
-                'Fetch GMB Data',
-                'Fetch GMB Data Callback',
-                'manage_options',
-                'zwsgr_fetch_gmb_data',
-                [$this, 'zwsgr_fetch_gmb_data_callback']
             );
             
         }
@@ -174,11 +169,14 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     ));
 
                     if ($zwsgr_new_widget_id) {
+
+                        $this->zwsgr_zqm->zwsgr_fetch_gmb_data(true, false, 'zwsgr_gmb_accounts');
+
                         // Redirect back to fetch gmb data page with the widget ID as a parameter
-                        wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
+                        wp_redirect(admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
                         exit;
                     } else {
-                        wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data'));
+                        wp_redirect(admin_url('edit.php?post_type=zwsgr_data_widget'));
                         exit;
                     }
 
@@ -187,7 +185,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     set_transient('zwsgr_auth_status', false, 600);
 
                     // Redirect back to the submenu page with error notice
-                    wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data'));
+                    wp_redirect(admin_url('admin.php?page=zwsgr_connect_google'));
                     exit;
 
                 }
@@ -198,8 +196,13 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         
         public function zwsgr_fetch_gmb_data_callback() {
         
-            echo '<div id="fetch-gmb-data">';
-
+            echo '<div id="fetch-gmb-data">
+                <div class="response"></div>
+                <div class="progress-bar">
+                    <progress id="progress" value="0" max="100"></progress>
+                    <span id="progress-percentage"> 0% </span>
+                </div>
+                <div class="fetch-gmb-inner-data">';
                 $zwsgr_widget_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
 
                 // Check if the widget ID is not empty
@@ -229,7 +232,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     if ($zwsgr_request_data) {
 
                         // Display the select dropdown if accounts are found
-                        echo '<select id="zwsgr-account-select" name="zwsgr_account">
+                        echo '<select id="zwsgr-account-select" name="zwsgr_account" class="zwsgr-input-text">
                             <option value="">Select an Account</option>';
                         // Loop through each post
                         foreach ($zwsgr_request_data as $post_id) {
@@ -268,7 +271,9 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         
                         // Check if the custom field has a value
                         if ( $zwsgr_account_locations ) {
-                            echo '<select id="zwsgr-location-select" name="zwsgr_location">
+                            $zwgr_data_processed = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
+                            $zwsgr_button_text = ($zwgr_data_processed === 'true') ? 'Sync Reviews' : 'Fetch Reviews';
+                            echo '<select id="zwsgr-location-select" name="zwsgr_location" class="zwsgr-input-text">
                                     <option value="">Select a Location</option>';
                                     foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
                                         $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
@@ -276,13 +281,13 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                                         echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . '>' . esc_html($zwsgr_account_location['name']) . '</option>';
                                     }                    
                             echo '</select>
-                            <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
-                                Fetch Reviews
+                            <a href="#" class="button button-secondary zwsgr-submit-btn" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
+                                '.$zwsgr_button_text.'
                             </a>';
                         }
 
                     } else {
-                        echo ' <a href="#" class="button button-secondary" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
+                        echo ' <a href="#" class="button button-secondary zwsgr-submit-btn" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
                             Fetch Accounts
                         </a>';
                     }
@@ -294,11 +299,12 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
             // Reset post data
             wp_reset_postdata();
         
-            echo '</div>';
+            echo '</div>
+            </div>';
         }
 
     }
 
-    new Zwsgr_Google_My_Business_Connector();
+    Zwsgr_Google_My_Business_Connector::get_instance();
         
 }
