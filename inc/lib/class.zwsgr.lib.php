@@ -38,7 +38,58 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				'nonce'    => wp_create_nonce('zwsgr_load_more_nonce')
 			));
 		}
+		function translate_read_more($language) 
+		{
+			$translations = [
+				'en' => 'Read more',
+				'es' => 'Leer más',
+				'fr' => 'Lire la suite',
+				'de' => 'Mehr lesen',
+				'it' => 'Leggi di più',
+				'pt' => 'Leia mais',
+				'ru' => 'Читать дальше',
+				'zh' => '阅读更多',
+				'ja' => '続きを読む',
+				'hi' => 'और पढ़ें',
+				'ar' => 'اقرأ أكثر',
+				'ko' => '더 읽기',
+				'tr' => 'Daha fazla oku',
+				'bn' => 'আরও পড়ুন',
+				'ms' => 'Baca lagi',
+				'nl' => 'Lees verder',
+				'pl' => 'Czytaj więcej',
+				'sv' => 'Läs mer',
+				'th' => 'อ่านเพิ่มเติม',
+			];
+			return $translations[$language] ?? 'Read more'; // Fallback to English
+		}
+		function translate_months($language) {
+			$month_translations = [
+				'en' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+				'es' => ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+				'fr' => ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+				'de' => ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+				'it' => ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+				'pt' => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+				'ru' => ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'],
+				'zh' => ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+				'ja' => ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+				'hi' => ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'],
+				'ar' => ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+				'ko' => ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				'tr' => ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+				'bn' => ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'],
+				'ms' => ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'],
+				'nl' => ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+				'pl' => ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'],
+				'sv' => ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'],
+				'th' => ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+			];
 		
+			return $month_translations[$language] ?? $month_translations['en']; // Fallback to English
+		}
+
+
 		// Shortcode to render initial posts and Load More button
 		function shortcode_load_more($atts) 
 		{
@@ -98,7 +149,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
+			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
+			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$months = $this->translate_months($language);
 			
 			// Query for posts
 			$args = array(
@@ -143,7 +197,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					break;
 
 				default:
-					$args['orderby'] = 'relevance';
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
 			}
 			
 			$query = new WP_Query($args);
@@ -151,44 +206,95 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			ob_start();  // Start output buffering
 
 			if ($query->have_posts()) {
+
+				// Fetch selected elements from post meta
+				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
+				$selected_elements = maybe_unserialize($selected_elements);
+
 				echo '<div id="div-container">';
 
-				// Loop through the posts and display them
-				while ($query->have_posts()) {
-					$query->the_post();
-					
-					// Retrieve the meta values
-					$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
-					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
-					$zwsgr_review_comment   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
-					$published_date  = get_the_date('F j, Y');
-					$post_date = get_the_date('U');
-					$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
-					$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
-					$char_limit = (int) $char_limit ; 
+					// Loop through the posts and display them
+					while ($query->have_posts()) {
+						$query->the_post();
+						
+						// Retrieve the meta values
+						$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
+						$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
+						$zwsgr_review_content   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+						$published_date  = get_the_date('F j, Y');
+						$post_date = get_the_date('U');
+						$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
+						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$char_limit = (int) $char_limit ; 
+						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
-					// Check if the comment length exceeds the character limit
-					$is_trimmed = mb_strlen($zwsgr_review_comment) > $char_limit;
+						// Determine if content is trimmed based on character limit
+						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
+						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
-					// Trim the comment if necessary
-					$trimmed_comment = $is_trimmed ? mb_substr($zwsgr_review_comment, 0, $char_limit) . '...' : $zwsgr_review_comment;
+						// Format the published date based on the selected format
+						$formatted_date = '';
+						if ($date_format === 'DD/MM/YYYY') {
+							$formatted_date = date('d/m/Y', strtotime($published_date));
+						} elseif ($date_format === 'MM-DD-YYYY') {
+							$formatted_date = date('m-d-Y', strtotime($published_date));
+						} elseif ($date_format === 'YYYY/MM/DD') {
+							$formatted_date = date('Y/m/d', strtotime($published_date));
+						} elseif ($date_format === 'full') {
+							$day = date('j', strtotime($published_date));
+							$month = $months[(int)date('n', strtotime($published_date)) - 1];
+							$year = date('Y', strtotime($published_date));
+						
+							// Construct the full date
+							$formatted_date = "$month $day, $year";
+						} elseif ($date_format === 'hide') {
+							$formatted_date = ''; // No display for "hide"
+						}
 
-					echo '<div class="zwsgr-review-post-item">';
-					echo '<h2>' . esc_html(get_the_title()) . '</h2>';
-
-					// Render reviewer name, rating, and comment
-					echo '<p><strong>Reviewer:</strong> ' . esc_html($zwsgr_reviewer_name) . '</p>';
-					echo '<p><strong>Rating:</strong> ' . esc_html($zwsgr_review_star_rating) . ' Stars</p>';
-					echo '<p><strong>Comment:</strong> ' . esc_html($trimmed_comment) ;
-					if ($is_trimmed) {
-						// Add a "Read more" link
-						echo '<a href="javascript:void(0);" class="toggle-comment" data-full-text="' . esc_attr($zwsgr_review_comment) . '">Read more</a>';
+						echo '<div class="zwsgr-slide-item">';
+							echo '<div class="zwsgr-slide-wrap">';
+						
+								// Profile image
+								if (!in_array('review-photo', $selected_elements)) {
+									echo '<div class="zwsgr-profile">';
+									echo '<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '">';
+									echo '</div>';
+								}
+							
+								// Reviewer info
+								echo '<div class="zwsgr-review-info">';
+									if (!in_array('review-title', $selected_elements)) {
+										echo '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+									}
+									if (!in_array('review-days-ago', $selected_elements)) {
+										echo '<p class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '"><strong>Published:</strong> ' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
+									}
+								echo '</div>';
+							
+								// Google icon
+								if (!in_array('review-photo', $selected_elements)) {
+									echo '<div class="zwsgr-google-icon">';
+									echo '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">';
+									echo '</div>';
+								}	
+							echo '</div>'; // End of zwsgr-slide-wrap
+						
+							// Rating
+							if (!in_array('review-rating', $selected_elements)) {
+								echo '<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' Stars</div>';
+							}
+						
+							// Review content
+							if (!in_array('review-content', $selected_elements)) {
+								echo '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
+								if ($is_trimmed) {
+									echo ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">'.esc_html($this->translate_read_more($language)).'</a>';
+			
+								}
+								echo '</p>';
+							}
+						echo '</div>'; // End of zwsgr-slide-item
 					}
-					'</p>';
-					echo '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
-					echo '</div>';
-				}
-
 				echo '</div>';
 
 				// Add the Load More button only if 'enable_load_more' is true
@@ -261,7 +367,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
+			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
+			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$months = $this->translate_months($language);
 
 			// Query for posts based on the current page
 			$args = array(
@@ -301,48 +410,100 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					break;
 
 				default:
-					$args['orderby'] = 'relevance';
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
 			}
 			$query = new WP_Query($args);
 
 			if ($query->have_posts()) {
 				$output = '';
 
-				// Loop through the posts and append the HTML content
-				while ($query->have_posts()) {
-					$query->the_post();
+				// Fetch selected elements from post meta
+				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
+				$selected_elements = maybe_unserialize($selected_elements);
 
-					// Retrieve meta values
-					$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
-					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
-					$zwsgr_review_comment   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
-					$published_date  = get_the_date('F j, Y');
-					$post_date = get_the_date('U');
-					$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
-					$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
-					$char_limit = (int) $char_limit ;
+				$output .= '<div id="div-container">';
+					// Loop through the posts and append the HTML content
+					while ($query->have_posts()) {
+						$query->the_post();
 
-					// Check if the comment length exceeds the character limit
-					$is_trimmed = mb_strlen($zwsgr_review_comment) > $char_limit;
+						// Retrieve meta values
+						$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
+						$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
+						$zwsgr_review_content   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+						$published_date  = get_the_date('F j, Y');
+						$post_date = get_the_date('U');
+						$days_ago = floor((time() - $post_date) / (60 * 60 * 24));
+						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$char_limit = (int) $char_limit ;
+						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
-					// Trim the comment if necessary
-					$trimmed_comment = $is_trimmed ? mb_substr($zwsgr_review_comment, 0, $char_limit) . '...' : $zwsgr_review_comment;
+						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
+						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
-					// Output the content, including the meta values
-					$output .= '<div class="zwsgr-review-post-item">';
-					$output .= '<h2>' . esc_html(get_the_title()) . '</h2>';  // Post title
+						$formatted_date = '';
+						if ($date_format === 'DD/MM/YYYY') {
+							$formatted_date = date('d/m/Y', strtotime($published_date));
+						} elseif ($date_format === 'MM-DD-YYYY') {
+							$formatted_date = date('m-d-Y', strtotime($published_date));
+						} elseif ($date_format === 'YYYY/MM/DD') {
+							$formatted_date = date('Y/m/d', strtotime($published_date));
+						} elseif ($date_format === 'full') {
+							$day = date('j', strtotime($published_date));
+							$month = $months[(int)date('n', strtotime($published_date)) - 1];
+							$year = date('Y', strtotime($published_date));
+						
+							// Construct the full date
+							$formatted_date = "$month $day, $year";
+						} elseif ($date_format === 'hide') {
+							$formatted_date = ''; // No display for "hide"
+						}
 
-					// Display the reviewer name, rating, comment, and days ago
-					$output .= '<p><strong>Reviewer Name:</strong> ' . esc_html($zwsgr_reviewer_name) . '</p>';
-					$output .= '<p><strong>Rating:</strong> ' . esc_html($zwsgr_review_star_rating) . ' stars</p>';
-					$output .= '<p><strong>Comment:</strong> ' . esc_html($trimmed_comment);
-					if ($is_trimmed) {
-						// Add a "Read more" link
-						$output .= '<a href="javascript:void(0);" class="toggle-comment" data-full-text="' . esc_attr($zwsgr_review_comment) . '">Read more</a>';
+
+						$output .= '<div class="zwsgr-review-post-item">';
+
+							// Profile image
+							if (!in_array('review-photo', $selected_elements)) {
+								$output .= '<div class="zwsgr-profile">';
+								$output .= '<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">';
+								$output .= '</div>';
+							}
+
+							// Reviewer info container
+							$output .= '<div class="zwsgr-review-info">';
+								if (!in_array('review-title', $selected_elements)) {
+									$output .= '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+								}
+								if (!in_array('review-days-ago', $selected_elements)) {
+									$output .= '<p class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '"><strong>Published:</strong> ' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
+								}
+							$output .= '</div>'; // End of reviewer info
+
+							// Google icon
+							if (!in_array('review-photo', $selected_elements)) {
+								$output .= '<div class="zwsgr-google-icon">';
+								$output .= '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">';
+								$output .= '</div>';
+							}
+
+							// Rating
+							if (!in_array('review-rating', $selected_elements)) {
+								$output .= '<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+							}
+
+							// Review content
+							if (!in_array('review-content', $selected_elements)) {
+								$output .= '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
+								if ($is_trimmed) {
+									$output .= '<a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">'.esc_html($this->translate_read_more($language)).'</a>';
+								}
+								$output .= '</p>';
+							}
+
+						// End of review post item container
+						$output .= '</div>';
 					}
-					$output .= '<p><strong>Published:</strong> ' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</p>';
-					$output .= '</div>';
-				}
+				$output .= '</div>';
 
 				// Prepare the response with the loaded content and the new page number
 				$response = array(

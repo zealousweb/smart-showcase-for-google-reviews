@@ -1467,3 +1467,100 @@ input.zwsgr-radio:checked::before {
     border-color: red;
     margin: 10px 10px 0 0;
 }
+
+@media only screen and (max-width: 1200px) {
+    .zwsgr-popup-content {
+        width: 60%;
+        max-height: 700px;
+    }
+
+    .scrollable-content {
+        max-height: 700px;
+    }
+}
+
+
+
+@media only screen and (max-width: 1024px) {
+
+    .zwsgr-badge-wrap .zwsgr-option-item {
+        width: 50%;
+    }
+    .zwsgr-popup-content {
+        width: 60%;
+        max-height: 700px;
+    }
+    .scrollable-content {
+        max-height: 700px;
+    }
+
+    #zwsgrpopup2 .zwsgr-popup-content {
+        width: 50%;
+    }
+}
+
+
+
+@media only screen and (max-width: 992px) {
+    .zwsgr-grid-item .zwsgr-slide-item,
+    .zwsgr-grid-item#zwsgr-grid3 .zwsgr-slide-item,
+    .zwsgr-grid-item#zwsgr-grid4 .zwsgr-slide-item,
+    .zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-item  { 
+        width: 50%;
+    }
+    .zwsgr-badge-wrap .zwsgr-option-item {
+        width: 50%;
+    }
+    .zwsgr-popup-content {
+        width: 90%;
+    }
+}
+
+
+
+@media only screen and (max-width: 767px) {
+    .zwsgr-section-wrap {
+        padding: 10px;
+    }
+
+    .zwsgr-nav-tab-wrapper .nav-tab {
+        margin: 0;
+        padding: 9px;
+    }
+
+    .zwsgr-layout-radio label {
+        margin-bottom: 20px;
+    }
+
+    .zwsgr-grid-item .zwsgr-slide-item,
+    .zwsgr-grid-item#zwsgr-grid3 .zwsgr-slide-item,
+    .zwsgr-grid-item#zwsgr-grid4 .zwsgr-slide-item,
+    .zwsgr-grid-item#zwsgr-grid5 .zwsgr-slide-item { 
+        width: 100%;
+    }
+
+    .zwsgr-slider .zwsgr-slide-wrap .zwsgr-review-detail,
+    .zwsgr-slider .zwsgr-slide-wrap .zwsgr-content-wrap {
+        width: 100%;
+    }
+
+    .zwsgr-list-wrap5 .zwsgr-prifile-wrap,
+    .zwsgr-list-wrap5 .zwsgr-content-wrap {
+        width: 100%;
+    }
+    .zwsgr-badge-wrap .zwsgr-option-item {
+        width: 100%;
+    }
+    .zwsgr-popup-wrap .zwsgr-option-item {
+        width: 100%;
+    }
+    .zwsgr-popup-item#zwsgr-popup1 {
+        padding: 20px;
+    }
+    #zwsgrpopup2 .zwsgr-popup-content {
+        width: 90%;
+    }
+    .zwsgr-widget-wrap .zwsgr-widget-setting {
+        width: 100%;
+    }
+}
