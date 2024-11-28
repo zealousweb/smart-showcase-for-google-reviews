@@ -32,6 +32,15 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		function ZWSGR_lib_public_enqueue() 
 		{
 			wp_enqueue_script( ZWSGR_PREFIX . '_script_js', ZWSGR_URL . 'assets/js/script.js', array( 'jquery-core' ), ZWSGR_VERSION, true );
+
+			// style css
+			wp_enqueue_style( ZWSGR_PREFIX . '-style-css', ZWSGR_URL . 'assets/css/style.css', array(), ZWSGR_VERSION );
+
+			// Slick js
+			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			
+			// Slick css
+			wp_enqueue_style( ZWSGR_PREFIX . '-slick-css', ZWSGR_URL . 'assets/css/slick.css', array(), ZWSGR_VERSION );
 			
 			wp_localize_script(ZWSGR_PREFIX . '_script_js', 'load_more', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
@@ -253,6 +262,25 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							$formatted_date = ''; // No display for "hide"
 						}
 
+						// Map textual rating to numeric values
+						$rating_map = [
+							'ONE'   => 1,
+							'TWO'   => 2,
+							'THREE' => 3,
+							'FOUR'  => 4,
+							'FIVE'  => 5,
+						];
+
+						// Convert the textual rating to numeric
+						$numeric_rating = isset($rating_map[$zwsgr_review_star_rating]) ? $rating_map[$zwsgr_review_star_rating] : 0;
+
+						// Generate stars HTML
+						$stars_html = '';
+						for ($i = 0; $i < 5; $i++) {
+							$stars_html .= $i < $numeric_rating 
+								? '<span class="zwsgr-star filled">★</span>' 
+								: '<span class="zwsgr-star">☆</span>';
+						}
 						// Slider 
 						$zwsgr_slider_item1 = '
 							<div class="zwsgr-slide-item">
@@ -276,7 +304,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 									if (!in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago)) {
 										$zwsgr_slider_item1 .= '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-											<strong>Published:</strong> ' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)
+										' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)
 										</h5>';
 									}
 
@@ -293,14 +321,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								$zwsgr_slider_item1 .= '</div>'; // End of zwsgr-slide-wrap
 
 									// Rating
-									if (!in_array('review-rating', $selected_elements) && !empty($zwsgr_review_star_rating)) {
+									if (!in_array('review-rating', $selected_elements) && !empty($stars_html)) {
 										$zwsgr_slider_item1 .= '
-										<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' Stars</div>';
+										<div class="zwsgr-rating">' . $stars_html . '</div>';
 									}
 
 									// Review content
 									if (!in_array('review-content', $selected_elements)) {
-										$zwsgr_slider_item1 .= '<p class="zwsgr-content"><strong>Content:</strong>' . esc_html($trimmed_content);
+										$zwsgr_slider_item1 .= '<p class="zwsgr-content">' . esc_html($trimmed_content);
 
 										if ($is_trimmed) {
 											$zwsgr_slider_item1 .= ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
@@ -355,7 +383,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									// Rating
 									if (!in_array('review-rating', $selected_elements)) {
 										$zwsgr_list_item1 .= '
-										<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+										<div class="zwsgr-rating">' . $stars_html . '</div>';
 									}
 
 									// Review content
@@ -410,7 +438,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										// Rating
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
-											<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+											<div class="zwsgr-rating">' . $stars_html . '</div>';
 										}
 
 										// Review content
@@ -454,7 +482,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										// Rating
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
-											<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . '</div>';
+											<div class="zwsgr-rating">' . $stars_html . '</div>';
 										}
 
 										$zwsgr_popup_item1 .= '</div>'; // End of slide-wrap
@@ -517,7 +545,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'badge' => [
 						'<div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
-							' . (!empty($zwsgr_review_star_rating) ? '<div class="zwsgr-rating">' . $zwsgr_review_star_rating . '</div>' : '') . '
+							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> 122 reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 						</div>'
@@ -529,7 +557,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 							<div class="zwsgr-profile-info">
 								<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-								' . (!empty($zwsgr_review_star_rating) ? '<div class="zwsgr-rating">' . $zwsgr_review_star_rating . '</div>' : '') . '
+								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 								<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
 							</div>
 						</div>
@@ -543,7 +571,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-											' . (!empty($zwsgr_review_star_rating) ? '<div class="zwsgr-rating">' . $zwsgr_review_star_rating . '</div>' : '') . '
+											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 											<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
 										</div>
 									</div>
@@ -729,6 +757,26 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							$formatted_date = ''; // No display for "hide"
 						}
 
+						// Map textual rating to numeric values
+						$rating_map = [
+							'ONE'   => 1,
+							'TWO'   => 2,
+							'THREE' => 3,
+							'FOUR'  => 4,
+							'FIVE'  => 5,
+						];
+
+						// Convert the textual rating to numeric
+						$numeric_rating = isset($rating_map[$zwsgr_review_star_rating]) ? $rating_map[$zwsgr_review_star_rating] : 0;
+
+						// Generate stars HTML
+						$stars_html = '';
+						for ($i = 0; $i < 5; $i++) {
+							$stars_html .= $i < $numeric_rating 
+								? '<span class="zwsgr-star filled">★</span>' 
+								: '<span class="zwsgr-star">☆</span>';
+						}
+
 						// Slider
 						$zwsgr_slider_item1 = '
 							<div class="zwsgr-slide-item">
@@ -770,7 +818,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									// Rating
 									if (!in_array('review-rating', $selected_elements)) {
 										$zwsgr_slider_item1 .= '
-										<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+										<div class="zwsgr-rating">' . $stars_html . '</div>';
 									}
 
 									// Review content
@@ -834,7 +882,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									// Rating
 									if (!in_array('review-rating', $selected_elements)) {
 										$zwsgr_list_item1 .= '
-										<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+										<div class="zwsgr-rating">' . $stars_html . '</div>';
 									}
 
 									// Review content
@@ -889,7 +937,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										// Rating
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
-											<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . ' stars</div>';
+											<div class="zwsgr-rating">' . $stars_html . '</div>';
 										}
 
 										// Review content
@@ -933,7 +981,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										// Rating
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
-											<div class="zwsgr-rating">' . esc_html($zwsgr_review_star_rating) . '</div>';
+											<div class="zwsgr-rating">' . $stars_html . '</div>';
 										}
 
 										$zwsgr_popup_item1 .= '</div>'; // End of slide-wrap
@@ -996,7 +1044,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 							<div class="zwsgr-profile-info">
 								<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-								' . (!empty($zwsgr_review_star_rating) ? '<div class="zwsgr-rating">' . $zwsgr_review_star_rating . '</div>' : '') . '
+								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 								<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
 							</div>
 						</div>
@@ -1010,7 +1058,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-											' . (!empty($zwsgr_review_star_rating) ? '<div class="zwsgr-rating">' . $zwsgr_review_star_rating . '</div>' : '') . '
+											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 											<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
 										</div>
 									</div>
