@@ -1347,10 +1347,16 @@ input.zwsgr-radio:checked::before {
 }
 
 #fetch-gmb-data .progress-bar {
+    display: none;
     position: relative;
     margin: 0 0 20px 0;
     width: 100%;
 }
+
+#fetch-gmb-data .progress-bar.true {
+    display: block;
+}
+
 
 #fetch-gmb-data .progress-bar #progress {
     width: 100%;
