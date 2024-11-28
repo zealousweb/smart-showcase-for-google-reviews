@@ -1571,3 +1571,289 @@ input.zwsgr-radio:checked::before {
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 27-11-24 */
+
+.zwgr-dashboard-body {
+    display: flex;
+    gap: 20px;
+}
+
+/* header */
+.zwsgr-date-range-filter-wrapper {
+    display: flex;
+    justify-content: space-between ;
+    align-items: center;
+    /* padding: 64px 32PX 676px 192px; */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.zwsgr-range-filter-title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    font-family: 'Poppins';
+    color: #1B1B1B;
+}
+
+
+.zwsgr-filters-list {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.zwsgr-filter-item {
+    margin: 0;
+}
+
+.zwsgr-filter-button {
+    background-color: #EDF4F5;
+    color: #1B1B1B;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    font-family: 'Poppins';
+    border: none;
+    letter-spacing: 0.25px;
+}
+
+.zwsgr-filter-button.active {
+    background-color: #0074A2;
+    color: #FCFCFC;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
+    font-family: 'Poppins';
+    border: none;
+}
+
+/* Style for the input field to match the button */
+#zwsgr-date-range-picker.active {
+    background-color: #0074A2;
+    color: #FCFCFC;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
+    font-family: 'Poppins';
+    border: none;
+    
+}
+#zwsgr-date-range-picker {
+    background-color: #EDF4F5;
+    color: #1B1B1B;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    font-family: 'Poppins';
+    border: none;
+    letter-spacing: 0.25px;
+}
+
+/* Total Reviews Card Styling */
+.zwsgr-total-reviews-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+    max-width: 350px;
+    transition: all 0.3s ease;
+    width: 286px;
+    height: 126px;
+}
+
+.zwsgr-total-reviews-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.zwsgr-card-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #42a5f5;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.zwsgr-card-icon .dashicons {
+    font-size: 24px;
+}
+
+.zwsgr-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.zwsgr-card-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1B1B1B;
+    line-height: 24px;
+    font-family: 'Poppins';
+}
+
+
+/* Average Rating Card Styling */
+.zwsgr-average-rating-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px 0;
+    max-width: 350px;
+    transition: all 0.3s ease;
+    width: 286px;
+    height: 126px;
+}
+
+.zwsgr-average-rating-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.zwsgr-card-icon.orange {
+    background-color: #FCF7EB; /* Orange color for the average rating */
+}
+.dashicons.dashicons-star-filled
+{
+    background-color: #FCF7EB;
+}
+
+.zwsgr-card-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.zwsgr-card-icon .dashicons {
+    width: 32px;
+    height: 32px;
+    padding: 20px;
+    font-size: 24px;
+}
+
+.zwsgr-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.zwsgr-card-value {
+    font-size: 32px;
+    font-weight: 600;
+    color: #F08C3C;
+    line-height: 48px;
+}
+
+
