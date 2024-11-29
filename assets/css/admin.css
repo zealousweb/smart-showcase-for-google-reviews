@@ -1376,18 +1376,18 @@ input.zwsgr-radio:checked::before {
 }
 
 #fetch-gmb-data .progress-bar #progress::-webkit-progress-bar {
-    background-color: #3caab4;
+    background-color: lightgrey;
     border-radius: 10px;
 }
 
 #fetch-gmb-data .progress-bar #progress::-webkit-progress-value {
-    background-color: #ffd700;
+    background-color: green;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
 #fetch-gmb-data .progress-bar #progress::-moz-progress-bar {
-    background-color: #ffd700;
+    background-color: green;
 }
 
 #fetch-gmb-data .zwsgr-input-text {
@@ -1451,27 +1451,29 @@ input.zwsgr-radio:checked::before {
 }
 
 /* General button styles */
-#gmb-review-data .button-large {
-    font-size: 14px;
-    font-weight: 600;
+#gmb-review-data .cta-wrapper {
+    margin: 10px 0 0 0;
 }
 
-/* Update button specific style */
-#gmb-review-data #update-replay {
-    margin: 10px 10px 0 0;
+#gmb-review-data .cta-wrapper .zwsgr-submit-btn {
+    margin-right: 10px;
 }
 
-/* Add Replay button specific style */
-#gmb-review-data #add-replay {
-    margin: 10px 10px 0 0;
-}
-
-/* Delete button specific style */
-#gmb-review-data #delete-replay {
-    background-color: red;
+#gmb-review-data .cta-wrapper .zwsgr-submit-btn.button-danger {
+    margin-right: 0;
     color: white;
     border-color: red;
-    margin: 10px 10px 0 0;
+    background-color: red;
+}
+
+#gmb-review-data .cta-wrapper .zwsgr-submit-btn.button-danger:hover {
+    background-color: white;
+    color: red;
+}
+
+
+#gmb-review-data .zwsgr-star-ratings svg {
+    margin-right: 3px;
 }
 
 @media only screen and (max-width: 1200px) {
