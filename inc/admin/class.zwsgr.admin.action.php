@@ -1094,7 +1094,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						$zwsgr_slider_item5 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
-								<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
+								<img class="zwsgr-profile" src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
 								' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 								<div class="zwsgr-contnt-wrap">
@@ -1288,7 +1288,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-review-detail">
-											<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+											<img class="zwsgr-profile" src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 												' . (!empty($published_date) && !empty($days_ago) 
 												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '') . '
@@ -2184,7 +2184,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_slider_item5 = '
 					<div class="zwsgr-slide-item">
 						<div class="zwsgr-list-inner">
-						<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
+						<img class="zwsgr-profile" src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
 						' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 						<div class="zwsgr-contnt-wrap">
@@ -2379,7 +2379,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-grid-inner">
 							<div class="zwsgr-slide-wrap">
 								<div class="zwsgr-review-detail">
-									<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+									<img class="zwsgr-profile" src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
 									' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 									' . (!empty($published_date) && !empty($days_ago) 
 									? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '') . '
