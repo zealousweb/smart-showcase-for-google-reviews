@@ -202,16 +202,24 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 // Fetch the GMB email from the options table
                 $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
                 $zwgr_data_processed       = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
+                $zwsgr_gmb_data_type       = get_post_meta($zwsgr_widget_id, 'zwsgr_gmb_data_type', true);
                 $zwgr_data_processing_init = get_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init', true);
+                $zwsgr_batch_progress      = get_post_meta($zwsgr_widget_id, 'zwsgr_batch_progress', true);
                 $zwsgr_disabled_class      = ($zwgr_data_processing_init === 'true') ? 'disabled' : '';
-                $zwsgr_button_text         = ($zwgr_data_processed === 'true') ? 'Sync Reviews' : 'Fetch Reviews';
-            }
+                $zwsgr_button_text         = ($zwgr_data_processed === 'true') && ($zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') ? 'Sync Reviews' : 'Fetch Reviews';
+
+                // If the value is empty, set it to 0
+                if (empty($zwsgr_batch_progress)) {
+                    $zwsgr_batch_progress = 0;
+                }
+
+            }            
         
             echo '<div id="fetch-gmb-data">
                 <div class="response"></div>
                 <div class="progress-bar '.$zwgr_data_processing_init.'">
-                    <progress id="progress" value="0" max="100"></progress>
-                    <span id="progress-percentage"> 0% </span>
+                    <progress id="progress" value="'.$zwsgr_batch_progress.'" max="100"></progress>
+                    <span id="progress-percentage"> '.$zwsgr_batch_progress.'% </span>
                 </div>
                 <div class="fetch-gmb-inner-data">';
                     // Check if the widget ID is not empty
