@@ -366,7 +366,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
 									' . 
-										// Show review comment if not excluded from selected elements and comment is not empty
 										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -374,7 +373,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap4">
 										<div class="zwsgr-profile">
 											' . 
-												// Show reviewer photo if not excluded from selected elements
 												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											
 											<div class="zwsgr-google-icon">
@@ -383,16 +381,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-review-info">
 											' . 
-												// Show reviewer name if not excluded from selected elements and name is not empty
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											
 											' . 
-												// Show review date if not excluded from selected elements and both date and days_ago are not empty
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 										</div>
 										' . 
-											// Show review rating if not excluded from selected elements and stars_html is not empty
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
 								</div>
@@ -403,26 +398,21 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-list-inner">
 										' . 
-											// Show reviewer photo if not excluded from selected elements
 											( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 										
 										' . 
-											// Show reviewer name if not excluded from selected elements and name is not empty
 											( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 										
 										' . 
-											// Show review rating if not excluded from selected elements and stars_html is not empty
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 										
 										<div class="zwsgr-contnt-wrap">
 											' . 
-												// Show review comment if not excluded from selected elements and comment is not empty
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 											
 											' . 
-												// Show review date if not excluded from selected elements and both date and days_ago are not empty
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 										</div>
@@ -435,16 +425,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-slide-wrap">
 											<div class="zwsgr-profile">
 												' . 
-													// Show reviewer photo if not excluded from selected elements
 													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											</div>
 											<div class="zwsgr-review-info">
 												' . 
-													// Show reviewer name if not excluded from selected elements and name is not empty
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												
 												' . 
-													// Show review date if not excluded from selected elements and both date and days_ago are not empty
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 											</div>
@@ -454,11 +441,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										
 										' . 
-											// Show review rating if not excluded from selected elements and stars_html is not empty
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 										
 										' . 
-											// Show review comment if not excluded from selected elements and comment is not empty
 											( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -524,16 +509,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-slide-wrap">
 											<div class="zwsgr-profile">
 												' . 
-													// Show reviewer photo if not excluded from selected elements
 													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											</div>
 											<div class="zwsgr-review-info">
 												' . 
-													// Show reviewer name if not excluded from selected elements and name is not empty
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												
 												' . 
-													// Show review date if not excluded from selected elements and both date and days_ago are not empty
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 											</div>
@@ -544,11 +526,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										
 										<div class="zwsgr-list-content-wrap">
 											' . 
-												// Show review rating if not excluded from selected elements and stars_html is not empty
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 											
 											' . 
-												// Show review comment if not excluded from selected elements and comment is not empty
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -561,11 +541,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-list-inner">
 								
 									' . 
-										// Show review rating if not excluded from selected elements and stars_html is not empty
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									
 									' . 
-										// Show review comment if not excluded from selected elements and comment is not empty
 										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -573,7 +551,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
 										<div class="zwsgr-profile">
 											' . 
-												// Show reviewer photo if not excluded from selected elements
 												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											
 											<div class="zwsgr-google-icon">
@@ -583,11 +560,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						
 										<div class="zwsgr-review-info">
 											' . 
-												// Show reviewer name if not excluded from selected elements and name is not empty
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 						
 											' . 
-												// Show review date if not excluded from selected elements and both date and days_ago are not empty
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 										</div>
@@ -602,7 +577,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										
 										<div class="zwsgr-profile">
 											' . 
-												// Show reviewer photo if not excluded from selected elements
 												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											
 											<div class="zwsgr-google-icon">
@@ -612,22 +586,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 										<div class="zwsgr-review-info">
 											' . 
-												// Show reviewer name if not excluded from selected elements and name is not empty
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 										</div>
 
 										' . 
-											// Show review date if not excluded from selected elements and both date and days_ago are not empty
 											( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 									</div>
 
 									' . 
-										// Show review rating if not excluded from selected elements and stars_html is not empty
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 
 									' . 
-										// Show review comment if not excluded from selected elements and comment is not empty
 										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -642,16 +612,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-prifile-wrap">
 											<div class="zwsgr-profile">
 												' . 
-													// Show reviewer photo if not excluded from selected elements
 													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											</div>
 											<div class="zwsgr-data">
 												' . 
-													// Show reviewer name if not excluded from selected elements and name is not empty
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												
 												' . 
-													// Show review date if not excluded from selected elements and both date and days_ago are not empty
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 											</div>
@@ -660,7 +627,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-content-wrap">
 											<div class="zwsgr-review-info">
 												' . 
-													// Show review rating if not excluded from selected elements and stars_html is not empty
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 
 												<div class="zwsgr-google-icon">
@@ -669,7 +635,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											</div>
 
 											' . 
-												// Show review comment if not excluded from selected elements and comment is not empty
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -685,8 +650,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-grid-inner">
 										<div class="zwsgr-slide-wrap">';
-
-										// Profile image
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
@@ -694,7 +657,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											</div>';
 										}
 
-										// Reviewer info container
 										$zwsgr_grid_item1 .= '<div class="zwsgr-review-info">';
 										if (!in_array('review-title', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
@@ -706,9 +668,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)
 												</h5>';
 										}
-										$zwsgr_grid_item1 .= '</div>'; // End of reviewer info container
-
-										// Google icon
+										$zwsgr_grid_item1 .= '</div>'; 
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-google-icon">
@@ -716,15 +676,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											</div>';
 										}
 
-										$zwsgr_grid_item1 .= '</div>'; // End of slide-wrap
+										$zwsgr_grid_item1 .= '</div>'; 
 
-										// Rating
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-rating">' . $stars_html . '</div>';
 										}
 
-										// Review content
 										if (!in_array('review-content', $selected_elements)) {
 											$zwsgr_grid_item1 .= '<p class="zwsgr-content">' . esc_html($trimmed_content);
 	
@@ -745,21 +703,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
 											' . 
-												// Show reviewer photo if not excluded from selected elements
 												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 										</div>
 										<div class="zwsgr-review-info">
 											' . 
-												// Show reviewer name if not excluded from selected elements and name is not empty
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											
 											<div class="zwsgr-date-wrap">
 												' . 
-													// Show review rating if not excluded from selected elements and stars_html is not empty
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 						
 												' . 
-													// Show review date if not excluded from selected elements and both date and days_ago are not empty
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 											</div>
@@ -769,7 +723,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 									</div>
 									' . 
-										// Show review comment if not excluded from selected elements and comment is not empty
 										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 									? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 									: '') . '</p>' : '' ) . '
@@ -782,22 +735,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-review-detail">
 											' . 
-												// Show reviewer photo if not excluded from selected elements
 												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 											
 											' . 
-												// Show reviewer name if not excluded from selected elements and name is not empty
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											
 											' . 
-												// Show review date if not excluded from selected elements and both date and days_ago are not empty
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 										</div>
 										
 										<div class="zwsgr-rating-wrap">
 											' . 
-												// Show review rating if not excluded from selected elements and stars_html is not empty
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 						
 											<div class="zwsgr-google-icon">
@@ -808,7 +757,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						
 									<div class="zwsgr-content-wrap">
 										' . 
-											// Show review comment if not excluded from selected elements and comment is not empty
 											( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -821,7 +769,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-grid-inner">
 								<div class="zwsgr-profile">
 									' . 
-										// Show reviewer photo if not excluded from selected elements
 										( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 					
 									<div class="zwsgr-google-icon">
@@ -830,20 +777,16 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								</div>
 					
 								' . 
-									// Show reviewer name if not excluded from selected elements and name is not empty
 									( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 					
 								' . 
-									// Show review date if not excluded from selected elements and both date and days_ago are not empty
 									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 					
 								' . 
-									// Show review rating if not excluded from selected elements and stars_html is not empty
 									( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 					
 								' . 
-									// Show review comment if not excluded from selected elements and comment is not empty
 									( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '  
@@ -856,27 +799,22 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
 											' . 
-												// Show reviewer photo if not excluded from selected elements
 												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
 										</div>
 										<div class="zwsgr-review-info">
 											' . 
-												// Show reviewer name if not excluded from selected elements and name is not empty
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 
 											' . 
-												// Show review date if not excluded from selected elements and both date and days_ago are not empty
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 										</div>
 
 										' . 
-											// Show review rating if not excluded from selected elements and stars_html is not empty
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
 
 									' . 
-										// Show review comment if not excluded from selected elements and comment is not empty
 										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
@@ -892,7 +830,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-list-inner">
 										<div class="zwsgr-slide-wrap">';
 
-										// Profile image
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
@@ -900,7 +837,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											</div>';
 										}
 
-										// Reviewer info container
 										$zwsgr_popup_item1 .= '<div class="zwsgr-review-info">';
 										if (!in_array('review-title', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
@@ -912,17 +848,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													' . esc_html($formatted_date) . ' (' . esc_html($days_ago) . ' days ago)
 												</h5>';
 										}
-										$zwsgr_popup_item1 .= '</div>'; // End of reviewer info container
-
-										// Rating
+										$zwsgr_popup_item1 .= '</div>'; 
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-rating">' . $stars_html . '</div>';
 										}
 
-										$zwsgr_popup_item1 .= '</div>'; // End of slide-wrap
-
-										// Review content
+										$zwsgr_popup_item1 .= '</div>'; 
 										if (!in_array('review-content', $selected_elements)) {
 											$zwsgr_popup_item1 .= '<p class="zwsgr-content">' . esc_html($trimmed_content);
 	
@@ -946,10 +878,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											</div>
 											<div class="zwsgr-review-info">
 												' . 
-													// Show reviewer name if not excluded from selected elements
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												' . 
-													// Show published date and days ago if not excluded from selected elements and if both date and days_ago are present
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) && !empty($days_ago) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_html($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '' ) . '
 											</div>
@@ -959,10 +889,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-list-content-wrap">
 											' . 
-												// Show stars rating if not excluded from selected elements and stars_html is not empty
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 											' . 
-												// Show review comment if not excluded from selected elements
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 												? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 												: '') . '</p>' : '' ). '
