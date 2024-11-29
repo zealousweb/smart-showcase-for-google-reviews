@@ -1832,3 +1832,57 @@ input.zwsgr-radio:checked::before {
     margin: 0;
 }
 
+
+
+
+
+/* dashboard review design  */
+.zwsgr-reviews-container {
+    max-height: 400px; /* Adjust height as needed */
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background to match the image */
+}
+
+.zwsgr-slide-item {
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.zwsgr-profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.zwsgr-review-info {
+    margin-top: 10px;
+}
+
+.zwsgr-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.zwsgr-days-ago {
+    color: #888;
+    font-size: 14px;
+}
+
+.zwsgr-rating {
+    margin-top: 10px;
+}
+
+.zwsgr-content {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #444;
+}
+
+.zwsgr-google-icon img {
+    width: 20px;
+    height: 20px;
+}

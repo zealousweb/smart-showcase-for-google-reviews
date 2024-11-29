@@ -247,19 +247,81 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             $output .= '</div>'; // Close the flex container
 
             $output .= '</div>';
-            
+
             return $output;
         }
 
+        // public function zwsgr_top_reviews() {
+        //     return '<div class="zwsgr-flex-container zwsgr-flex-right">
+        //         <div class="zwsgr-flex-inner-container">
+        //             <h4>' . 
+        //                 esc_html__( 'Top Reviews', 'zw-smart-google-reviews' ) . 
+        //             '</h4>
+        //         </div>
+        //     </div>';
+        // }      
         public function zwsgr_top_reviews() {
-            return '<div class="zwsgr-flex-container zwsgr-flex-right">
-                <div class="zwsgr-flex-inner-container">
-                    <h4>' . 
-                        esc_html__( 'Top Reviews', 'zw-smart-google-reviews' ) . 
-                    '</h4>
-                </div>
-            </div>';
-        }        
+            // Query to fetch top 5 reviews (order by rating or however desired)
+            $args = array(
+              'post_type'      => ZWSGR_POST_REVIEW_TYPE,
+				'posts_per_page' => 5,
+                'orderby'        => 'meta_value_num', // Assuming you store rating in a custom field
+                // 'meta_key'       => '_zwsgr_review_rating', // Replace with the actual meta key for rating
+                'order'          => 'DESC',
+            );
+        
+            $reviews_query = new WP_Query($args);
+            $plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+            
+            // Start the output for top reviews
+            $output = '<div class="zwsgr-flex-container zwsgr-flex-right">
+                        <div class="zwsgr-flex-inner-container">
+                            <h4>' . esc_html__('Top Reviews', 'zw-smart-google-reviews') . '</h4>
+                        </div>
+                    </div>';
+        
+            // Check if there are reviews to display
+            if ($reviews_query->have_posts()) :
+                $output .= '<div class="zwsgr-reviews-container" style="max-height: 400px; overflow-y: scroll;">';
+                
+                while ($reviews_query->have_posts()) : $reviews_query->the_post();
+                    $zwsgr_reviewer_name = get_post_meta(get_the_ID(), '_zwsgr_reviewer_name', true); // Customize according to your meta key
+                    $published_date = get_the_date();
+                    $days_ago = human_time_diff(get_the_time('U'), current_time('timestamp'));
+                    $stars_html = get_post_meta(get_the_ID(), '_zwsgr_review_rating', true); // Customize according to your meta key
+                    $zwsgr_review_comment = get_post_meta(get_the_ID(), '_zwsgr_review_comment', true); // Customize accordingly
+        
+                    $output .= '<div class="zwsgr-slide-item">
+                                    <div class="zwsgr-list-inner">
+                                        <div class="zwsgr-slide-wrap">
+                                            <div class="zwsgr-profile">
+                                                <img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer">
+                                            </div>
+                                            <div class="zwsgr-review-info">
+                                                ' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
+                                                ' . (!empty($published_date) && !empty($days_ago) 
+                                                    ? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($published_date) . ' (' . esc_html($days_ago) . ' days ago)</h5>' : '') . '
+                                            </div>
+                                            <div class="zwsgr-google-icon">
+                                                <img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">
+                                            </div>
+                                        </div>
+                                        ' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+                                        ' . (!empty($zwsgr_review_comment) ? '<p class="zwsgr-content">' . esc_html($zwsgr_review_comment) . '</p>' : '') . '
+                                    </div>
+                                </div>';
+                endwhile;
+                
+                $output .= '</div>';
+            else :
+                $output .= '<p>' . esc_html__('No reviews available.', 'zw-smart-google-reviews') . '</p>';
+            endif;
+        
+            wp_reset_postdata();
+        
+            return $output;
+        }
+          
         
         public function zwsgr_reviews_statics_chart() {
             return '<div class="zwsgr-flex-container zwsgr-flex-left">
