@@ -1595,4 +1595,16 @@ jQuery(document).ready(function($) {
 			format: 'DD-MM-YYYY' // Change the format to match your needs
 		}
 	});
+	$("#zwsgr-account-select-all").on("change", function() {
+		var selectedAccount = $(this).val();
+		$("#zwsgr-location-select option").each(function() {
+			var optionAccount = $(this).data("account");
+			if (selectedAccount && optionAccount == selectedAccount) {
+				$(this).show(); // Show options for the selected account
+			} else {
+				$(this).hide(); // Hide options for other accounts
+			}
+		});
+		$(".gmb-locations-dropdown").show(); // Show location dropdown
+	});
 });

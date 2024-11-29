@@ -21,7 +21,12 @@ jQuery(document).ready(function($) {
                 console.log(response, 'response ');
                 if (response.success) {
                     // Append new post content to the #div-container
-                    $('#div-container').append(response.data.content);  // This will render the HTML on the screen
+					if($('#div-container .zwsgr-list').length >= 1){
+						$('#div-container .zwsgr-list').append(response.data.content);  // This will render the HTML on the screen 
+					}
+					if($('#div-container .zwsgr-grid-item').length >= 1){
+						$('#div-container .zwsgr-grid-item').append(response.data.content);   
+					}
 
                     // Update the page number for future requests
                     button.data('page', response.data.new_page);
