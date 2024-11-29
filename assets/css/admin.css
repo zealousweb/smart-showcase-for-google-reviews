@@ -1837,52 +1837,104 @@ input.zwsgr-radio:checked::before {
 
 
 /* dashboard review design  */
-.zwsgr-reviews-container {
-    max-height: 400px; /* Adjust height as needed */
-    overflow-y: auto;
+
+/* General container for reviews */
+.zwsgr-reviews-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9; /* Light background to match the image */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.zwsgr-slide-item {
-    background-color: #fff;
-    margin-bottom: 15px;
+/* Header styling */
+.zwsgr-header-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.zwsgr-header-container h4 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Reviews container */
+.zwsgr-reviews-container {
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+/* Individual review item */
+.zwsgr-review-item {
+    display: flex;
+    align-items: flex-start;
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.zwsgr-review-item:hover {
+    transform: translateY(-5px);
+}
+
+.zwsgr-review-header {
+    display: flex;
+    width: 100%;
 }
 
 .zwsgr-profile img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-right: 15px;
 }
 
 .zwsgr-review-info {
-    margin-top: 10px;
+    flex-grow: 1;
 }
 
 .zwsgr-title {
     font-size: 18px;
     font-weight: bold;
+    color: #333;
+    margin: 0;
 }
 
-.zwsgr-days-ago {
-    color: #888;
+.zwsgr-date {
     font-size: 14px;
-}
-
-.zwsgr-rating {
-    margin-top: 10px;
-}
-
-.zwsgr-content {
-    font-size: 16px;
-    margin-top: 10px;
-    color: #444;
+    color: #777;
 }
 
 .zwsgr-google-icon img {
     width: 20px;
     height: 20px;
+    margin-left: auto;
+    display: block;
+}
+
+/* Rating stars */
+.zwsgr-rating {
+    margin-top: 10px;
+}
+
+.zwsgr-star {
+    font-size: 18px;
+    color: #ddd;
+}
+
+.zwsgr-star.filled {
+    color: #FFD700;
+}
+
+/* Review content */
+.zwsgr-content {
+    font-size: 16px;
+    color: #555;
+    margin-top: 10px;
 }
