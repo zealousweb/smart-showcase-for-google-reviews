@@ -30,9 +30,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action( 'admin_init', array( $this, 'action__admin_init' ) );
 			add_action('admin_menu', array($this, 'zwsgr_admin_menu_registration'));
-			add_action('admin_init', array($this, 'zwsgr_register_settings')); // Register settings when admin initializes
-			add_action('init', array($this, 'zwsgr_register_widget_cpt'));  // Register Widget Custom Post Type
-			add_action('init', array($this, 'zwsgr_register_review_cpt'));  // Register Review Custom Post Type
+			add_action('admin_init', array($this, 'zwsgr_register_settings'));
+			add_action('init', array($this, 'zwsgr_register_widget_cpt'));
+			add_action('init', array($this, 'zwsgr_register_review_cpt'));
 
 			add_action('add_meta_boxes', array($this, 'zwsgr_add_review_meta_box'));
 			add_action('init', array($this, 'zwsgr_register_request_data_cpt'));
@@ -47,6 +47,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
+
+			add_action('load-post-new.php', array($this, 'zwsgr_redirect_on_add_new_widget'));
 
 			// Initialize dashboard class
 			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
@@ -253,6 +255,35 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			register_post_type(ZWSGR_POST_WIDGET_TYPE, $args);
+		}
+
+		function zwsgr_redirect_on_add_new_widget() {
+			// Check if the request is for the 'zwsgr_data_widget' post type
+			if (isset($_GET['post_type']) && $_GET['post_type'] === 'zwsgr_data_widget') {
+				
+				// Create a new published widget post
+				$zwsgr_widget_id = wp_insert_post([
+					'post_title'  => 'New Widget',
+					'post_type'   => 'zwsgr_data_widget',
+					'post_status' => 'publish'
+				]);
+		
+				if (!is_wp_error($zwsgr_widget_id)) {
+
+					// Construct the redirect URL with the required tab and widget ID
+					$zwsgr_widget_configuration = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_widget_id);
+					
+					// Perform the redirect
+					wp_redirect($zwsgr_widget_configuration);
+					exit;
+
+				} else {
+
+					// Handle error (optional)
+					wp_die('Error creating new widget.');
+
+				}
+			}
 		}
 
 		function zwsgr_register_review_cpt()
@@ -917,6 +948,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
 
+			$zwsgr_account_number	= get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_location_number	= get_post_meta($post_id, 'zwsgr_location_number', true);
+
 
 			// Define the mapping from numeric values to words.
 			$rating_mapping = array(
@@ -947,14 +981,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
 				'posts_per_page' => 5,
 				'meta_query'     => array(
+					'relation' => 'AND', // Ensure all conditions are met
 					array(
 						'key'     => 'zwsgr_review_star_rating',
-						'value'   => $ratings_to_include,  // Apply the word-based rating filter
+						'value'   => $ratings_to_include,
 						'compare' => 'IN',
-						'type'    => 'CHAR'
-					)
+						'type'    => 'CHAR' // Treat the star rating as a string
+					),
 				),
-			);
+			);					
 
 			// Add sort_by filters
 			switch ($sort_by) {
@@ -2053,6 +2088,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					)
 				)
 			);
+
 			// Add sorting logic
 			switch ($sort_by) {
 				case 'newest':
