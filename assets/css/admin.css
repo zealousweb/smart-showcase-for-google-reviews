@@ -1661,13 +1661,11 @@ input.zwsgr-radio:checked::before {
 }
 
 /* header */
-.zwgr-dashboard-header{
-    padding: 20px 20px 20px 0px;
-}
 .zwsgr-date-range-filter-wrapper {
     display: flex;
     justify-content: space-between ;
     align-items: center;
+    /* padding: 64px 32PX 676px 192px; */
     padding: 20px;
     background-color: #fff;
     border: 1px solid #e0e0e0;
@@ -1754,7 +1752,7 @@ input.zwsgr-radio:checked::before {
 .zwsgr-total-reviews-card {
     display: flex;
     align-items: center;
-    background-color: #FFFFFF;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -1770,11 +1768,27 @@ input.zwsgr-radio:checked::before {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
+.zwsgr-card-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #42a5f5;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.zwsgr-card-icon .dashicons {
+    font-size: 24px;
+}
+
 .zwsgr-card-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    row-gap: 20px;
 }
 
 .zwsgr-card-title {
@@ -1783,24 +1797,14 @@ input.zwsgr-radio:checked::before {
     color: #1B1B1B;
     line-height: 24px;
     font-family: 'Poppins';
-    margin: 0;
 }
-.zwsgr-total-reviews-card .zwsgr-card-value {
-    font-size: 32px;
-    font-weight: 600;
-    color: #0074A2;
-    line-height: 48px;
-    font-family: 'Poppins';
-    margin: 0;
-}
-
 
 
 /* Average Rating Card Styling */
 .zwsgr-average-rating-card {
     display: flex;
     align-items: center;
-    background-color: #FFFFFF;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -1815,8 +1819,32 @@ input.zwsgr-radio:checked::before {
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
+
 .zwsgr-card-icon.orange {
-    border-radius: 50%;
+    background-color: #FCF7EB; /* Orange color for the average rating */
+}
+.dashicons.dashicons-star-filled
+{
+    background-color: #FCF7EB;
+}
+
+.zwsgr-card-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.zwsgr-card-icon .dashicons {
+    width: 32px;
+    height: 32px;
+    padding: 20px;
+    font-size: 24px;
 }
 
 .zwsgr-card-content {
@@ -1825,118 +1853,10 @@ input.zwsgr-radio:checked::before {
     justify-content: center;
 }
 
-.zwsgr-average-rating-card .zwsgr-card-value {
+.zwsgr-card-value {
     font-size: 32px;
     font-weight: 600;
     color: #F08C3C;
     line-height: 48px;
-    font-family: 'Poppins';
-    margin: 0;
 }
 
-
-
-
-
-/* dashboard review design  */
-
-/* General container for reviews */
-.zwsgr-reviews-wrapper {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Header styling */
-.zwsgr-header-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.zwsgr-header-container h4 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Reviews container */
-.zwsgr-reviews-container {
-    max-height: 400px;
-    overflow-y: scroll;
-}
-
-/* Individual review item */
-.zwsgr-review-item {
-    display: flex;
-    align-items: flex-start;
-    padding: 15px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.zwsgr-review-item:hover {
-    transform: translateY(-5px);
-}
-
-.zwsgr-review-header {
-    display: flex;
-    width: 100%;
-}
-
-.zwsgr-profile img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
-}
-
-.zwsgr-review-info {
-    flex-grow: 1;
-}
-
-.zwsgr-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-}
-
-.zwsgr-date {
-    font-size: 14px;
-    color: #777;
-}
-
-.zwsgr-google-icon img {
-    width: 20px;
-    height: 20px;
-    margin-left: auto;
-    display: block;
-}
-
-/* Rating stars */
-.zwsgr-rating {
-    margin-top: 10px;
-}
-
-.zwsgr-star {
-    font-size: 18px;
-    color: #ddd;
-}
-
-.zwsgr-star.filled {
-    color: #FFD700;
-}
-
-/* Review content */
-.zwsgr-content {
-    font-size: 16px;
-    color: #555;
-    margin-top: 10px;
-}
