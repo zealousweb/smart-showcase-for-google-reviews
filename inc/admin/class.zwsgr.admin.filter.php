@@ -35,16 +35,19 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		 * 
 		 * @return string Modified URL for the post edit link.
 		 */
-		function zwsgr_change_edit_post_link($zwsgr_url, $zwsgr_widget) 
+		function zwsgr_change_edit_post_link($url, $post) 
 		{
 			// Fetch the full post object using the post ID
-			$zwsgr_widget = get_post($zwsgr_widget);
+			$post = get_post($post);
 		
 			// Check if the post type is 'zwsgr_data_widget'
-			if ($zwsgr_widget && 'zwsgr_data_widget' === $zwsgr_widget->post_type) {
-				// Redirect back to fetch gmb data page with the widget ID as a parameter
-				$url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_widget->ID);
+			if ($post && 'zwsgr_data_widget' === $post->post_type) {
+				// Get the account number from the custom post meta
+				$account_number = get_post_meta($post->ID, 'zwsgr_account_number', true);
+				$layout_option = get_post_meta($post->ID, 'layout_option', true);
 				
+				// Modify the edit URL to redirect to the widget configurator page
+				$url = admin_url('admin.php?page=zwsgr_widget_configurator&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $post->ID);
 			}
 		
 			return $url;
