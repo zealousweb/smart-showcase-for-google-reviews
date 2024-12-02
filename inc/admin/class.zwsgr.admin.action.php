@@ -1093,7 +1093,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 						$zwsgr_slider_item5 = '
 							<div class="zwsgr-slide-item">
-								<div class="zwsgr-list-inner">
+								<div class="">
 									<div class="zwsgr-profile">
 										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
 										<div class="zwsgr-google-icon">
