@@ -48,6 +48,106 @@ jQuery(document).ready(function($) {
         var $parentParagraph = $link.closest('p');
     
         // Replace the trimmed content with the full content
-        $parentParagraph.html('<strong>Content:</strong> ' + fullText);
+        $parentParagraph.html(fullText);
     });
+
+
+    $('.zwsgr-slider-1').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+		adaptiveHeight: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});
+
+    $('.zwsgr-slider-2').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});	 
+
+	$('.zwsgr-slider-4').slick({
+		infinite: true,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: true,
+		dots: false,
+	});	
+
+	$('.zwsgr-slider-5').slick({
+		infinite: true,
+		slidesToShow: 2,
+		slidesToScroll: 2,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});	
+
+	$('.zwsgr-slider-6').slick({
+		infinite: true,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 1200,
+				settings: {
+				  slidesToShow: 2,
+				  slidesToScroll: 2
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});
+
 });

@@ -23,6 +23,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		private $zwsgr_gmbc;
 
+		private $zwsgr_dashboard;
+
 		function __construct()  
 		{
 
@@ -45,6 +47,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
+
+			// Initialize dashboard class
+			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
 		
 		}
 		
@@ -63,7 +68,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// admin css
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
-			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );			
+			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );	
+			
+			// style css
+			wp_enqueue_style( ZWSGR_PREFIX . '-style-css', ZWSGR_URL . 'assets/css/style.css', array(), ZWSGR_VERSION );
 		
 			// Slick js
 			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
@@ -290,7 +298,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'map_meta_cap' => true,
 				'hierarchical' => false,
 				'menu_position' => null,
-				'supports' => array('title', 'editor')
+				'supports' => array('')
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
@@ -299,6 +307,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		// Register a single meta box to display all review details
 		function zwsgr_add_review_meta_box() 
 		{
+			remove_meta_box(
+				'submitdiv', 
+				'zwsgr_reviews', 
+				'side'
+			);
 			add_meta_box(
 				'zwsgr_review_details_meta_box',
 				__('Review Details', 'zw-smart-google-reviews'),
@@ -321,32 +334,34 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
 			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
 			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
+			$zwsgr_datetime 		  = new DateTime($zwsgr_reply_update_time);
+			$zwsgr_formatted_time 	  = $zwsgr_datetime->format('F j, Y g:i A');
+
+			// Define the SVG for filled and empty stars
+			$zwsgr_filled_star = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="orange" class="bi bi-star-fill" viewBox="0 0 16 16">
+			<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+			</svg>';
+
+			$zwsgr_empty_star = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="orange" stroke-width="1" class="bi bi-star" viewBox="0 0 16 16">
+			<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+			</svg>';
+
+			// Map the rating value (in words) to numerical equivalents
+			$zwsgr_rating_map = [
+				'FIVE' => 5,
+				'FOUR' => 4,
+				'THREE' => 3,
+				'TWO' => 2,
+				'ONE' => 1,
+				'ZERO' => 0,
+			];
+
+			$zwsgr_rating_value = strtoupper($zwsgr_review_star_rating);
+			$numeric_rating = isset($zwsgr_rating_map[$zwsgr_rating_value]) ? $zwsgr_rating_map[$zwsgr_rating_value] : 0;
+			$zwsgr_filled_star = str_repeat($zwsgr_filled_star, $numeric_rating);
+			$zwsgr_empty_star = str_repeat($zwsgr_empty_star, 5 - $numeric_rating);
 
 			echo '<table class="form-table test" id="gmb-review-data">
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Account ID', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_account_number) . '" name="zwsgr_account_number" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Location', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_location_code) . '" name="zwsgr_location_code" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_review_id) . '" name="zwsgr_review_id" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
 				<tr>
 					<th>
 						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
@@ -368,7 +383,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_review_star_rating">' . __('Star Rating', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwsgr_review_star_rating) . '" readonly class="regular-text" style="width:100%;" />
+						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
 					</td>
 				</tr>
 				<tr>
@@ -376,7 +391,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwsgr_reply_update_time) . '" readonly class="regular-text" style="width:100%;" />
+						<input type="text" value="' . esc_attr($zwsgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
 					</td>
 				</tr>
 				<tr>
@@ -385,20 +400,20 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
-						
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
 							' . esc_textarea($zwsgr_reply_comment) . '
-						</textarea>';
-
-						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
-						} else {
-							echo '<button class="button button-primary button-large" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
-						}
-						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
-						}
-					echo '</td>
+						</textarea>
+						<div class="cta-wrapper">';
+							if (!empty($zwsgr_reply_comment)) {
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+							} else {
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
+							}
+							if (!empty($zwsgr_reply_comment)) {
+								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+							}
+						echo '</div>
+					</td>
 				</tr>
 			</table>';
 			
@@ -848,10 +863,20 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 */
 		function zwsgr_dashboard_callback()
 		{	
-			echo '<h1>Dashboard</h1>';
-			// Dashboard content can be added here
+			echo '<div class="zwgr-dashboard">
+				<div class="zwgr-dashboard-header">'
+					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
+				'</div>';
+				$zwsgr_filter_data = [
+					'zwsgr_gmb_account'          => null,
+					'zwsgr_gmb_account_location' => null,
+					'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
+				];
+				$this->zwsgr_dashboard->zwsgr_data_render($zwsgr_filter_data);
+			echo '</div>';
 		}
-
+		
 		/**
 		 * Action: action_admin_menu
 		 * Add admin registration Dashboard page for the plugin
@@ -918,8 +943,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$ratings_to_include = array('ONE');
 			}
 
-
-
 			$zwsgr_reviews_args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
 				'posts_per_page' => 5,
@@ -962,7 +985,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					break;
 
 				default:
-					$zwsgr_reviews_args['orderby'] = 'relevance';
+					$zwsgr_reviews_args['orderby'] = 'date';
+					$zwsgr_reviews_args['order'] = 'DESC';
 			}
 
 			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
@@ -1628,7 +1652,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
-					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-options"><span class="zwsgr-step">1. </span>Connect</li>
+					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwsgr-step">1. </span>Fetch Data</li>
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item  <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
 					<span class="zwsgr-step-arrow"></span>
@@ -1636,6 +1660,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">4. </span>Generated Shortcode</li>
 				</ul>
+
+				<!-- Tab Data Fetch Areas -->
+				<div class="tab-content" id="tab-fetch-data">
+					<?php Zwsgr_Google_My_Business_Connector::get_instance()->zwsgr_fetch_gmb_data_callback(); ?>
+				</div>
 
 				<!-- Tab Content Areas -->
 				<div class="tab-content" id="tab-options">
@@ -2047,7 +2076,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$args['order'] = 'ASC';
 					break;
 				default: // Default sorting (e.g., relevance)
-					$args['orderby'] = 'relevance';
+					$args['orderby'] = 'date';
+					$args['order'] = 'DESC';
     }
 		
 			$reviews_query = new WP_Query($args);

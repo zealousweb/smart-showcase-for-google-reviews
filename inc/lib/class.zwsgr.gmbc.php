@@ -18,6 +18,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
         private $client;
 
+        private $zwsgr_zqm;
+
         public function __construct() {
 
             // Hook to add admin menu items
@@ -30,6 +32,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
 
             $this->client = new ZWSGR_GMB_API('');
+
+            $this->zwsgr_zqm = new Zwsgr_Queue_Manager();
 
         }
 
@@ -51,15 +55,6 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 'zwsgr_connect_google',
                 [$this, 'zwsgr_connect_google_callback'],
                 1
-            );
-        
-            add_submenu_page(
-                null,
-                'Fetch GMB Data',
-                'Fetch GMB Data Callback',
-                'manage_options',
-                'zwsgr_fetch_gmb_data',
-                [$this, 'zwsgr_fetch_gmb_data_callback']
             );
             
         }
@@ -174,11 +169,14 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     ));
 
                     if ($zwsgr_new_widget_id) {
+
+                        $this->zwsgr_zqm->zwsgr_fetch_gmb_data(true, false, 'zwsgr_gmb_accounts');
+
                         // Redirect back to fetch gmb data page with the widget ID as a parameter
-                        wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
+                        wp_redirect(admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
                         exit;
                     } else {
-                        wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data'));
+                        wp_redirect(admin_url('edit.php?post_type=zwsgr_data_widget'));
                         exit;
                     }
 
@@ -187,7 +185,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     set_transient('zwsgr_auth_status', false, 600);
 
                     // Redirect back to the submenu page with error notice
-                    wp_redirect(admin_url('admin.php?page=zwsgr_fetch_gmb_data'));
+                    wp_redirect(admin_url('admin.php?page=zwsgr_connect_google'));
                     exit;
 
                 }
@@ -197,108 +195,128 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         }
         
         public function zwsgr_fetch_gmb_data_callback() {
+
+            $zwsgr_widget_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
+
+            if (!empty($zwsgr_widget_id)) {
+                // Fetch the GMB email from the options table
+                $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+                $zwgr_data_processed       = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
+                $zwsgr_gmb_data_type       = get_post_meta($zwsgr_widget_id, 'zwsgr_gmb_data_type', true);
+                $zwgr_data_processing_init = get_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init', true);
+                $zwsgr_batch_progress      = get_post_meta($zwsgr_widget_id, 'zwsgr_batch_progress', true);
+                $zwsgr_disabled_class      = ($zwgr_data_processing_init === 'true') ? 'disabled' : '';
+                $zwsgr_button_text         = ($zwgr_data_processed === 'true') && ($zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') ? 'Sync Reviews' : 'Fetch Reviews';
+
+                // If the value is empty, set it to 0
+                if (empty($zwsgr_batch_progress)) {
+                    $zwsgr_batch_progress = 0;
+                }
+
+            }            
         
-            echo '<div id="fetch-gmb-data">';
+            echo '<div id="fetch-gmb-data">
+                <div class="response"></div>
+                <div class="progress-bar '.$zwgr_data_processing_init.'">
+                    <progress id="progress" value="'.$zwsgr_batch_progress.'" max="100"></progress>
+                    <span id="progress-percentage"> '.$zwsgr_batch_progress.'% </span>
+                </div>
+                <div class="fetch-gmb-inner-data">';
+                    // Check if the widget ID is not empty
+                    if (!empty($zwsgr_widget_id)) {
 
-                $zwsgr_widget_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
+                        // Get the post meta for the widget ID
+                        $zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
 
-                // Check if the widget ID is not empty
-                if (!empty($zwsgr_widget_id)) {
+                        
 
-                    // Get the post meta for the widget ID
-                    $zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
-
-                    // Fetch the GMB email from the options table
-                    $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
-
-                    // Get posts where the zwsgr_gmb_email meta key matches the value from options
-                    $zwsgr_request_data = get_posts(array(
-                        'post_type'      => 'zwsgr_request_data',
-                        'posts_per_page' => -1,
-                        'post_status'    => 'publish',
-                        'meta_query'     => array(
-                            array(
-                                'key'     => 'zwsgr_gmb_email', // The meta key to query
-                                'value'   => $zwsgr_gmb_email,  // The value to match
-                                'compare' => '=',                // Exact match
-                            ),
-                        ),
-                        'fields'         => 'ids', // Only return post IDs
-                    ));
-
-                    if ($zwsgr_request_data) {
-
-                        // Display the select dropdown if accounts are found
-                        echo '<select id="zwsgr-account-select" name="zwsgr_account">
-                            <option value="">Select an Account</option>';
-                        // Loop through each post
-                        foreach ($zwsgr_request_data as $post_id) {
-                            // Get the account number and name for each post
-                            $account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
-                            $account_name = get_the_title($post_id);
-
-                            // Check if the account number matches the GET parameter
-                            $selected = ($account_number === $zwsgr_account_number) ? 'selected' : '';
-
-                            // Output each account option, with the selected attribute if matching
-                            echo '<option value="' . esc_attr($account_number) . '" ' . $selected . '>' . esc_html($account_name) . '</option>';
-                        }
-
-                        echo '</select>';
-
-                        // Retrieve the selected location number from the post meta
-                        $zwsgr_location_number = get_post_meta($zwsgr_widget_id, 'zwsgr_location_number', true);
-
-                        $zwsgr_request_data_id = get_posts(array(
+                        // Get posts where the zwsgr_gmb_email meta key matches the value from options
+                        $zwsgr_request_data = get_posts(array(
                             'post_type'      => 'zwsgr_request_data',
-                            'posts_per_page' => 1,
+                            'posts_per_page' => -1,
                             'post_status'    => 'publish',
-                            'meta_key'       => 'zwsgr_account_number',
-                            'meta_value'     => $zwsgr_account_number,
-                            'fields'         => 'ids',
-                        ))[0] ?? null;
-                    
-                        if (!$zwsgr_request_data_id) {
-                            // If no post is found, return early
-                            return;
-                        }
-                    
-                        // Retrieve existing locations or initialize an empty array
-                        $zwsgr_account_locations = get_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', true);
-        
-                        // Check if the custom field has a value
-                        if ( $zwsgr_account_locations ) {
-                            echo '<select id="zwsgr-location-select" name="zwsgr_location">
-                                    <option value="">Select a Location</option>';
-                                    foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
-                                        $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
-                                        $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
-                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . '>' . esc_html($zwsgr_account_location['name']) . '</option>';
-                                    }                    
-                            echo '</select>
-                            <a href="#" class="button button-secondary" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
-                                Fetch Reviews
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'zwsgr_gmb_email', // The meta key to query
+                                    'value'   => $zwsgr_gmb_email,  // The value to match
+                                    'compare' => '=',                // Exact match
+                                ),
+                            ),
+                            'fields'         => 'ids', // Only return post IDs
+                        ));
+
+                        if ($zwsgr_request_data) {
+
+                            // Display the select dropdown if accounts are found
+                            echo '<select id="zwsgr-account-select" name="zwsgr_account" class="zwsgr-input-text '.$zwsgr_disabled_class.'">
+                                <option value="">Select an Account</option>';
+                            // Loop through each post
+                            foreach ($zwsgr_request_data as $post_id) {
+                                // Get the account number and name for each post
+                                $account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+                                $account_name = get_the_title($post_id);
+
+                                // Check if the account number matches the GET parameter
+                                $selected = ($account_number === $zwsgr_account_number) ? 'selected' : '';
+
+                                // Output each account option, with the selected attribute if matching
+                                echo '<option value="' . esc_attr($account_number) . '" ' . $selected . '>' . esc_html($account_name) . '</option>';
+                            }
+
+                            echo '</select>';
+
+                            // Retrieve the selected location number from the post meta
+                            $zwsgr_location_number = get_post_meta($zwsgr_widget_id, 'zwsgr_location_number', true);
+
+                            $zwsgr_request_data_id = get_posts(array(
+                                'post_type'      => 'zwsgr_request_data',
+                                'posts_per_page' => 1,
+                                'post_status'    => 'publish',
+                                'meta_key'       => 'zwsgr_account_number',
+                                'meta_value'     => $zwsgr_account_number,
+                                'fields'         => 'ids',
+                            ))[0] ?? null;
+                        
+                            if (!$zwsgr_request_data_id) {
+                                // If no post is found, return early
+                                return;
+                            }
+                        
+                            // Retrieve existing locations or initialize an empty array
+                            $zwsgr_account_locations = get_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', true);
+            
+                            // Check if the custom field has a value
+                            if ( $zwsgr_account_locations ) {
+                                echo '<select id="zwsgr-location-select" name="zwsgr_location" class="zwsgr-input-text  '.$zwsgr_disabled_class.'">
+                                        <option value="">Select a Location</option>';
+                                        foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
+                                            $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
+                                            $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
+                                            echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . '>' . esc_html($zwsgr_account_location['name']) . '</option>';
+                                        }                    
+                                echo '</select>
+                                <a href="#" class="button button-secondary zwsgr-submit-btn '.$zwsgr_disabled_class.'" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
+                                    '.$zwsgr_button_text.'
+                                </a>';
+                            }
+
+                        } else {
+                            echo ' <a href="#" class="button button-secondary zwsgr-submit-btn '.$zwsgr_disabled_class.'" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
+                                Fetch Accounts
                             </a>';
                         }
 
                     } else {
-                        echo ' <a href="#" class="button button-secondary" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
-                            Fetch Accounts
-                        </a>';
+                        echo 'There was an error while trying to edit the widget';
                     }
-
-                } else {
-                    echo 'There was an error while trying to edit the widget';
-                }
-        
-            // Reset post data
-            wp_reset_postdata();
-        
-            echo '</div>';
+                // Reset post data
+                wp_reset_postdata();
+                echo '</div>
+            </div>';
         }
 
     }
 
-    new Zwsgr_Google_My_Business_Connector();
+    Zwsgr_Google_My_Business_Connector::get_instance();
         
 }
