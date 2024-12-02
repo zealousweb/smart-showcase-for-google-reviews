@@ -463,12 +463,17 @@ input.zwsgr-radio:checked::before {
     margin: 0 auto 20px;
 }
 
-.zwsgr-grid-item#zwsgr-grid4  .zwsgr-google-icon {
+#zwsgr-slider5 .zwsgr-profile {
+    margin: 0 auto;
+}
+
+.zwsgr-grid-item#zwsgr-grid4  .zwsgr-google-icon,
+#zwsgr-slider5  .zwsgr-google-icon {
     position: absolute;
     width: 20px;
     bottom: 0;
     right: 0;
-}
+} 
 
 .zwsgr-grid-item#zwsgr-grid4 .zwsgr-rating {
     margin: 10px auto;
