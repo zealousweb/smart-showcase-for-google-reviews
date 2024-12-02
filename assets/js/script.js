@@ -1,4 +1,24 @@
 jQuery(document).ready(function($) {
+
+	// Bind click event to open popup
+	$(document).on('click', '.zwsgr-popup-item', function () {
+		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+		$('#' + popupId).fadeIn(); // Show the popup
+	});
+
+	// Bind click event to close popup when the close button is clicked
+	$(document).on('click', '.zwsgr-close-popup', function () {
+		$(this).closest('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+	});
+
+	// Bind click event to close popup when clicking outside the popup content
+	$(document).on('click', '.zwsgr-popup-overlay', function (e) {
+		if ($(e.target).is('.zwsgr-popup-overlay')) {
+			$(this).fadeOut(); // Hide the popup
+		}
+	});
+
+	
     $('body').on('click','.load-more-meta',function() {
         var button = $(this);
         var page = button.data('page');  // Get the current page number
