@@ -27,6 +27,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
 			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
 
+			// add_action( 'wp', array($this,'frontend_sortby'));
+
 
 		}
 		function ZWSGR_lib_public_enqueue() 
@@ -98,10 +100,27 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			return $month_translations[$language] ?? $month_translations['en']; // Fallback to English
 		}
 
+		function frontend_sortby($post_id){
+
+			$sort_by = get_post_meta($post_id, 'sort_by', true);
+			?>
+			<div class="zwsgr-widget-setting-font">
+				<h3 class="zwsgr-label-font">Sort By</h3>
+				<select id="front-sort-by-select" name="front_sort_by" class="zwsgr-input-text">
+					<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
+					<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
+					<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+				</select>
+			</div>
+			<?php
+		}
+
 
 		// Shortcode to render initial posts and Load More button
 		function shortcode_load_more($atts) 
 		{
+
+			
 			// Extract the attributes passed to the shortcode
 			$atts = shortcode_atts(
 				array(
@@ -113,6 +132,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Retrieve the post ID from the shortcode attributes
 			$post_id = $atts['post-id'];
+			$this->frontend_sortby($post_id);
 
 			// Check if a post ID is provided and it exists
 			if (empty($post_id) || !get_post($post_id)) {
@@ -216,6 +236,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			ob_start();  // Start output buffering
 
+			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'">';
 			if ($query->have_posts()) {
 
 				// Fetch selected elements from post meta
@@ -223,7 +244,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
 				$selected_elements = maybe_unserialize($selected_elements);
 
-				$reviews_html .= '<div id="div-container" style="max-width: 100%;" data-widget-id="'.$post_id.'">';
+				$reviews_html .= '<div id="div-container">';
 					// Loop through the posts and display them
 					while ($query->have_posts()) {
 						$query->the_post();
@@ -1171,6 +1192,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					echo '<button class="load-more-meta" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 				
+			echo '</div>';
 			} else {
 				echo '<p>' . esc_html__('No posts found.', 'zw-smart-google-reviews') . '</p>';
 			}
@@ -1239,7 +1261,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
+			// $sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
+
+			if ($_POST['front_sort_by']) {
+				$sort_by = $_POST['front_sort_by'];
+			} else {
+				$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
+			}			
+			
 			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$months = $this->translate_months($language);
@@ -1289,6 +1318,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			if ($query->have_posts()) {
 				$output = '';
+				// `$output = "<pre>" . print_r( $args, true ) . "</pre>"; `
 
 				// Fetch selected elements from post meta
 				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
