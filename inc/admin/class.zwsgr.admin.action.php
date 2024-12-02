@@ -68,7 +68,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// admin css
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
-			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );			
+			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );	
+			
+			// style css
+			wp_enqueue_style( ZWSGR_PREFIX . '-style-css', ZWSGR_URL . 'assets/css/style.css', array(), ZWSGR_VERSION );
 		
 			// Slick js
 			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
@@ -295,7 +298,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'map_meta_cap' => true,
 				'hierarchical' => false,
 				'menu_position' => null,
-				'supports' => array('title', 'editor')
+				'supports' => array('')
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
@@ -304,6 +307,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		// Register a single meta box to display all review details
 		function zwsgr_add_review_meta_box() 
 		{
+			remove_meta_box(
+				'submitdiv', 
+				'zwsgr_reviews', 
+				'side'
+			);
 			add_meta_box(
 				'zwsgr_review_details_meta_box',
 				__('Review Details', 'zw-smart-google-reviews'),
@@ -326,16 +334,34 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
 			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
 			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
+			$zwsgr_datetime 		  = new DateTime($zwsgr_reply_update_time);
+			$zwsgr_formatted_time 	  = $zwsgr_datetime->format('F j, Y g:i A');
+
+			// Define the SVG for filled and empty stars
+			$zwsgr_filled_star = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="orange" class="bi bi-star-fill" viewBox="0 0 16 16">
+			<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+			</svg>';
+
+			$zwsgr_empty_star = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="orange" stroke-width="1" class="bi bi-star" viewBox="0 0 16 16">
+			<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+			</svg>';
+
+			// Map the rating value (in words) to numerical equivalents
+			$zwsgr_rating_map = [
+				'FIVE' => 5,
+				'FOUR' => 4,
+				'THREE' => 3,
+				'TWO' => 2,
+				'ONE' => 1,
+				'ZERO' => 0,
+			];
+
+			$zwsgr_rating_value = strtoupper($zwsgr_review_star_rating);
+			$numeric_rating = isset($zwsgr_rating_map[$zwsgr_rating_value]) ? $zwsgr_rating_map[$zwsgr_rating_value] : 0;
+			$zwsgr_filled_star = str_repeat($zwsgr_filled_star, $numeric_rating);
+			$zwsgr_empty_star = str_repeat($zwsgr_empty_star, 5 - $numeric_rating);
 
 			echo '<table class="form-table test" id="gmb-review-data">
-				<tr>
-					<th>
-						<label for="zwsgr_review_id">' . __('Review ID', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_review_id) . '" name="zwsgr_review_id" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
 				<tr>
 					<th>
 						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
@@ -357,7 +383,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_review_star_rating">' . __('Star Rating', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwsgr_review_star_rating) . '" readonly class="regular-text" style="width:100%;" />
+						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
 					</td>
 				</tr>
 				<tr>
@@ -365,7 +391,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwsgr_reply_update_time) . '" readonly class="regular-text" style="width:100%;" />
+						<input type="text" value="' . esc_attr($zwsgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
 					</td>
 				</tr>
 				<tr>
@@ -374,20 +400,20 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
-						
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
 							' . esc_textarea($zwsgr_reply_comment) . '
-						</textarea>';
-
-						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
-						} else {
-							echo '<button class="button button-primary button-large" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
-						}
-						if (!empty($zwsgr_reply_comment)) {
-							echo '<button class="button button-primary button-large" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
-						}
-					echo '</td>
+						</textarea>
+						<div class="cta-wrapper">';
+							if (!empty($zwsgr_reply_comment)) {
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+							} else {
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
+							}
+							if (!empty($zwsgr_reply_comment)) {
+								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+							}
+						echo '</div>
+					</td>
 				</tr>
 			</table>';
 			
@@ -1067,8 +1093,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 						$zwsgr_slider_item5 = '
 							<div class="zwsgr-slide-item">
-								<div class="zwsgr-list-inner">
-								<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
+								<div class="">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">	
+										<div class="zwsgr-google-icon">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+										</div>
+									</div>
 								' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 								<div class="zwsgr-contnt-wrap">

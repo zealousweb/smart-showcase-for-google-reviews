@@ -1117,7 +1117,7 @@ jQuery(document).ready(function($) {
 		});
 
 		batchInterval = setInterval(function() {
-			checkBatchStatus(zwsgr_gmb_data_type, batchInterval, false);
+			checkBatchStatus();
 		}, 1000);
 
 	  }
@@ -1126,13 +1126,12 @@ jQuery(document).ready(function($) {
 	  if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
         // Call the function to check batch status
 		batchInterval = setInterval(function() {
-			const zwsgr_gmb_data_type = $('#fetch-gmb-data .zwsgr-submit-btn').data('fetch-type');
-			checkBatchStatus(zwsgr_gmb_data_type, batchInterval, true);
-		}, 2000);
+			checkBatchStatus();
+		}, 2500);
 
       }
 	
-	  function checkBatchStatus(zwsgr_gmb_data_type, batchInterval, isOnload) {
+	  function checkBatchStatus() {
 
 		// Function to get URL parameters
 		function getUrlParameter(name) {
@@ -1153,20 +1152,17 @@ jQuery(document).ready(function($) {
 		  },
 		  success: function (response) {
 
-			console.log(response, 'response');
-			// return;
-
 			if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
 				
 				$('#fetch-gmb-data .progress-bar #progress').val(100);
 				$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
-				$('#fetch-gmb-data .progress-bar #progress-percentage').text('Complete');
+				$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
 
-				if (zwsgr_gmb_data_type == 'zwsgr_gmb_accounts') {
+				if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
 
-					$('#fetch-gmb-data .response').html('<p class="success">Accounts processed successfully</p>');
+					$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
 
-				} else if (zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+				} else if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
 
 					$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
 					$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
@@ -1175,7 +1171,7 @@ jQuery(document).ready(function($) {
 				
 				setTimeout(function () {
 					$('#fetch-gmb-data .progress-bar').fadeOut();
-					if (zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
+					if (response.data.zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
 						redirectToOptionsTab();
 					} else {
 						location.reload();
@@ -1184,32 +1180,20 @@ jQuery(document).ready(function($) {
 
 			} else {
 				 
-				// Calculate the progress percentage
-				var currentIndex = response.data.zwsgr_current_index;
-				var totalPages = parseInt(response.data.zwsgr_batch_pages);
+				// Use the batch progress directly from the response
+				var zwsgr_batch_progress = response.data.zwsgr_batch_progress;
 
-				console.log('totalPages', totalPages);
-				console.log('currentIndex', currentIndex);
-
-				// Check if totalPages is greater than 0 to prevent division by zero
-				if (totalPages > 0 && !isNaN(currentIndex) && !isNaN(totalPages)) {
+				// Check if zwsgr_batch_progress is a valid number
+				if (!isNaN(zwsgr_batch_progress) && zwsgr_batch_progress >= 0 && zwsgr_batch_progress <= 100) {
 					
-					var progressPercentage = (currentIndex / totalPages) * 100;
-					
-					// Ensure progressPercentage is a finite number
-					if (isFinite(progressPercentage)) {
-						// Update the progress bar with the calculated percentage
-						$('#fetch-gmb-data .progress-bar #progress').val(progressPercentage);
-						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(progressPercentage) + '%');
-
-					} else {
-						console.error('Invalid progress percentage:', progressPercentage);
-					}
+					// Update the progress bar with the batch progress
+					$('#fetch-gmb-data .progress-bar #progress').val(zwsgr_batch_progress);
+					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwsgr_batch_progress) + '%');
 
 				} else {
 
-					console.error('Invalid totalPages or currentIndex:', totalPages, currentIndex);
-
+					console.error('Invalid batch progress:', zwsgr_batch_progress);
+					
 				}
 
 			}
@@ -1597,106 +1581,6 @@ jQuery(document).ready(function($) {
 		}
 	}
 
-	// Slick sliders
-	$('.zwsgr-slider-1').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		adaptiveHeight: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
-				}
-			}
-		]
-	});
-	
-	$('.zwsgr-slider-2').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
-				}
-			}
-		]
-	});	 
-
-	$('.zwsgr-slider-4').slick({
-		infinite: true,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		arrows: true,
-		dots: false,
-	});	
-
-	$('.zwsgr-slider-5').slick({
-		infinite: true,
-		slidesToShow: 2,
-		slidesToScroll: 2,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 480,
-				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
-				}
-			}
-		]
-	});	
-
-	$('.zwsgr-slider-6').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
-				}
-			}
-		]
-	});
-
-
 
 	// Handle filter button clicks
     $('.zwsgr-filter-button').on('click', function () {
@@ -1710,17 +1594,5 @@ jQuery(document).ready(function($) {
 		locale: {
 			format: 'DD-MM-YYYY' // Change the format to match your needs
 		}
-	});
-	$("#zwsgr-account-select-all").on("change", function() {
-		var selectedAccount = $(this).val();
-		$("#zwsgr-location-select option").each(function() {
-			var optionAccount = $(this).data("account");
-			if (selectedAccount && optionAccount == selectedAccount) {
-				$(this).show(); // Show options for the selected account
-			} else {
-				$(this).hide(); // Hide options for other accounts
-			}
-		});
-		$(".gmb-locations-dropdown").show(); // Show location dropdown
 	});
 });
