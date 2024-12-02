@@ -5,6 +5,10 @@
     margin: 0 10px;
 }
 
+.zwsgr-slider {
+    max-width: 100%;
+}
+
 .zwsgr-slider .zwsgr-slider-1 .zwsgr-slide-item,
 .zwsgr-slider .zwsgr-slider-6 .zwsgr-slide-item {
     padding: 0;
@@ -166,7 +170,9 @@
     padding-left: 20px;
 }
 
-
+.zwsgr-slider .slick-arrow:focus {
+    outline: none;
+}
 .zwsgr-slider .slick-arrow {
     position: absolute;
     top: 50%;
@@ -351,6 +357,10 @@ input.zwsgr-radio:checked::before {
     box-sizing: border-box;
     margin: 0;
     display: flex;
+}
+
+.zwsgr-slider .zwsgr-slide-item:focus {
+    outline: none;
 }
 
 .zwsgr-slider .zwsgr-slide-item {
