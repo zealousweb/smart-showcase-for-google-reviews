@@ -1351,6 +1351,78 @@ jQuery(document).ready(function($) {
 	
 	});
 
+	$("#gmb-data-filter #zwsgr-account-select").on("change", function (e) {
+
+		e.preventDefault();
+
+		// Get the selected value
+		var zwsgr_account_number = $(this).val();
+	
+		$.ajax({
+			url: zwsgr_admin.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'zwsgr_gmb_dashboard_data_filter',
+				zwsgr_account_number: zwsgr_account_number,
+				security: zwsgr_admin.zwsgr_gmb_dashboard_filter
+			},
+			success: function(response) {
+				$('#gmb-data-filter #zwsgr-location-select').remove();
+				if (response.success) {
+					$('#gmb-data-filter').append(response.data);
+					$("#gmb-data-filter #zwsgr-location-select").trigger('change');
+				}
+
+			}
+		});
+	
+	});
+
+	$("#gmb-data-filter").on("change", "#zwsgr-location-select", function (e) {
+
+		var zwsgr_gmb_account_number   = $("#gmb-data-filter #zwsgr-account-select").val();
+		var zwsgr_gmb_account_location = $("#gmb-data-filter #zwsgr-location-select").val();
+
+		var zwsgr_filter_data = {
+			zwsgr_gmb_account_number: zwsgr_gmb_account_number,
+			zwsgr_gmb_account_location: zwsgr_gmb_account_location,
+			zwsgr_range_filter_type: 'rangeofdays',
+			zwsgr_range_filter_data: 'monthly'
+		};
+	
+		$.ajax({
+			url: zwsgr_admin.ajax_url,
+			type: 'POST',
+			data: {
+				action: 'zwsgr_data_render',
+				zwsgr_filter_data: zwsgr_filter_data,
+				security: zwsgr_admin.zwsgr_data_render
+			},
+			beforeSend: function() {
+				// Add the loader before the request is sent
+				$('#render-dynamic').html('<div class="loader">Loading...</div>');
+			},
+			success: function(response) {
+				$('#render-dynamic').empty(); // Clear previous content
+				if (response.success) {
+					$('#render-dynamic').append(response.data.html);
+				} else {
+					$('#render-dynamic').html('<p>Error loading data.</p>');
+				}
+			},
+			complete: function() {
+				// Remove the loader when the request is complete
+				$('.loader').remove();
+			},
+			error: function() {
+				$('#render-dynamic').html('<p>An error occurred while fetching data.</p>');
+			}
+		});
+	
+	});
+	
+
+
  	$('.star-filter').on('click', function() {
         var rating = $(this).data('rating');  // Get the rating of the clicked star
         

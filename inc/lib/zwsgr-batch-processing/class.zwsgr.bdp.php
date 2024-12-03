@@ -12,11 +12,12 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
         protected function task($zwsr_batch_data) {
 
             $zwsgr_gmb_data              = isset($zwsr_batch_data['zwsgr_gmb_data']) ? $zwsr_batch_data['zwsgr_gmb_data'] : [];
-            $zwsgr_account_number        = isset($zwsr_batch_data['zwsgr_account_number']) ? $zwsr_batch_data['zwsgr_account_number'] : [];
-            $zwsgr_location_number       = isset($zwsr_batch_data['zwsgr_location_number']) ? $zwsr_batch_data['zwsgr_location_number'] : [];
+            $this->zwsgr_account_number  = isset($zwsr_batch_data['zwsgr_account_number']) ? $zwsr_batch_data['zwsgr_account_number'] : [];
+            $this->zwsgr_location_number = isset($zwsr_batch_data['zwsgr_location_number']) ? $zwsr_batch_data['zwsgr_location_number'] : [];
             $this->next_page_token       = isset($zwsgr_gmb_data['nextPageToken']) ? $zwsgr_gmb_data['nextPageToken'] : null;
             $this->zwsgr_widget_id       = isset($zwsr_batch_data['zwsgr_widget_id']) ? $zwsr_batch_data['zwsgr_widget_id'] : null;
             $this->zwsgr_total_reviews   = isset($zwsgr_gmb_data['totalReviewCount']) ? $zwsgr_gmb_data['totalReviewCount'] : null;
+            $this->zwsgr_average_rating  = isset($zwsgr_gmb_data['averageRating']) ? $zwsgr_gmb_data['averageRating'] : null;
 
             if (!empty($zwsgr_gmb_data)) {
 
@@ -27,7 +28,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 // Check if the method exists and call it
                 if (method_exists($this, $process_zwsgr_gmb_method)) {
                     // If the method exists, call it
-                    $this->$process_zwsgr_gmb_method($zwsgr_gmb_data, $zwsgr_account_number, $zwsgr_location_number);
+                    $this->$process_zwsgr_gmb_method($zwsgr_gmb_data, $this->zwsgr_account_number, $this->zwsgr_location_number);
                 } else {
                     error_log("Method $process_zwsgr_gmb_method does not exist.");
                 }
@@ -61,7 +62,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                     // Check if a post with this title already exists
                     $zwsgr_existing_post  = get_page_by_title($zwsgr_request_data['post_title'], OBJECT, 'zwsgr_request_data');
                     $zwsgr_account_name = isset($zwsgr_account['name']) ? sanitize_text_field($zwsgr_account['name']) : '';
-                    $zwsgr_account_number = $zwsgr_account_name ? ltrim(strrchr($zwsgr_account_name, '/'), '/') : '';
+                    $this->zwsgr_account_number = $zwsgr_account_name ? ltrim(strrchr($zwsgr_account_name, '/'), '/') : '';
                     
                     if ($zwsgr_existing_post) {
                         // Update existing post
@@ -76,7 +77,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         }
 
                         // Update the account number for the existing post
-                        update_post_meta($zwsgr_existing_post->ID, 'zwsgr_account_number', $zwsgr_account_number);
+                        update_post_meta($zwsgr_existing_post->ID, 'zwsgr_account_number', $this->zwsgr_account_number);
 
                     } else {
                         
@@ -89,7 +90,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                             error_log("Failed to create new post: Unknown error.");
                         } else {
                             // Add the account number for the new post
-                            update_post_meta($zwsgr_insert_account, 'zwsgr_account_number', $zwsgr_account_number);
+                            update_post_meta($zwsgr_insert_account, 'zwsgr_account_number', $this->zwsgr_account_number);
                         }
 
                     }
@@ -101,14 +102,17 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
         }
 
-        protected function process_zwsgr_gmb_locations($zwsgr_gmb_data, $zwsgr_account_number) {
+        protected function process_zwsgr_gmb_locations($zwsgr_gmb_data, $zwsgr_account_number = null) {
+
+            // If $zwsgr_account_number is not provided, use the class property
+            $zwsgr_account_number = $zwsgr_account_number ?? $this->zwsgr_account_number;
 
             $zwsgr_request_data_id = get_posts(array(
                 'post_type'      => 'zwsgr_request_data',
                 'posts_per_page' => 1,
                 'post_status'    => 'publish',
                 'meta_key'       => 'zwsgr_account_number',
-                'meta_value'     => $zwsgr_account_number,
+                'meta_value'     => $this->zwsgr_account_number,
                 'fields'         => 'ids',
             ))[0] ?? null;
         
@@ -151,7 +155,11 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             return;
         }              
 
-        protected function process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number, $zwsgr_location_code) {
+        protected function process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number = null, $zwsgr_location_code) {
+
+            // If $zwsgr_account_number is not provided, use the class property
+            $zwsgr_account_number = $zwsgr_account_number ?? $this->zwsgr_account_number;
+
 
             if ( isset( $zwsgr_gmb_data['reviews'] ) && is_array( $zwsgr_gmb_data['reviews'] ) ) {
                 foreach ( $zwsgr_gmb_data['reviews'] as $zwsgr_review ) {
@@ -190,8 +198,14 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                     // Check if post was inserted or updated successfully
                     if ( $zwsgr_wp_review_id && ! is_wp_error( $zwsgr_wp_review_id ) ) {
 
+                        $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+
+                        if (!empty($zwsgr_gmb_email)) {
+                            update_post_meta($zwsgr_wp_review_id, 'zwsgr_gmb_email', $zwsgr_gmb_email);
+                        }
+
                         //Update parent account & locations meta
-                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_account_number', $zwsgr_account_number );
+                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_account_number', $this->zwsgr_account_number );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_location_code', $zwsgr_location_code);
 
                         // Update custom fields
@@ -249,6 +263,23 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token);
 
             } else {
+
+                $zwsgr_request_data_id = get_posts(array(
+                    'post_type'      => 'zwsgr_request_data',
+                    'posts_per_page' => 1,
+                    'post_status'    => 'publish',
+                    'meta_key'       => 'zwsgr_account_number',
+                    'meta_value'     => $this->zwsgr_account_number,
+                    'fields'         => 'ids',
+                ))[0] ?? null;
+
+                if (!empty($this->zwsgr_total_reviews)) {
+                    update_post_meta($zwsgr_request_data_id, "zwsgr_location_{$this->zwsgr_location_number}_total_reviews", $this->zwsgr_total_reviews);
+                }
+
+                if (!empty($this->zwsgr_average_rating)) {
+                    update_post_meta($zwsgr_request_data_id, "zwsgr_location_{$this->zwsgr_location_number}_average_rating", $this->zwsgr_average_rating);
+                }
 
                 $zwsgr_queue_manager->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
 
