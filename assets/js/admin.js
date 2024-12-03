@@ -1595,4 +1595,14 @@ jQuery(document).ready(function($) {
 			format: 'DD-MM-YYYY' // Change the format to match your needs
 		}
 	});
+
+	$(document).on('click', '.toggle-content', function () {
+        var $link = $(this);
+        var fullText = $link.data('full-text');
+		console.log(fullText);
+        var $parentParagraph = $link.closest('p');
+    
+        // Replace the trimmed content with the full content
+        $parentParagraph.html(fullText);
+    });
 });
