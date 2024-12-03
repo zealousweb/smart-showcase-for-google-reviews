@@ -7,6 +7,7 @@
 
 .zwsgr-slider {
     max-width: 100%;
+    height: fit-content;
 }
 
 .zwsgr-slider .zwsgr-slider-1 .zwsgr-slide-item,
@@ -15,8 +16,12 @@
 }
 
 .zwsgr-slider .zwsgr-slider-2 .zwsgr-slide-item {
-    border: 1px solid #E8EBEF;
-    background-color: #FFFFFF;
+  padding: 0;
+}
+
+.zwsgr-slider .zwsgr-slider-2 .zwsgr-slide-item .zwsgr-list-inner {
+    border: 1px solid #E8EBEF; 
+    background-color: #FFFFFF; 
     border-radius: 8px;
 }
 
@@ -80,10 +85,13 @@
 .zwsgr-slider .zwsgr-star {
     font-size: 20px;
     color: #ccc;
+    font-family: 'Poppins', sans-serif;
 }
+
 
 .zwsgr-slider .zwsgr-star.filled {
     color: #f39c12;
+    font-family: 'Poppins', sans-serif;
 }
 
 
@@ -227,6 +235,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 20px;
+    align-items: center;
 }
 
 .zwsgr-rating-wrap .zwsgr-rating {
