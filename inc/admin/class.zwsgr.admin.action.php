@@ -66,12 +66,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
 			wp_enqueue_script( ZWSGR_PREFIX . '-admin-js', ZWSGR_URL . 'assets/js/admin.js', array( 'jquery-core' ), ZWSGR_VERSION );
 
+			// Enqueue Moment.js (required by daterangepicker)
+
+			wp_enqueue_script( ZWSGR_PREFIX . '-moment-min-js', ZWSGR_URL . 'assets/js/moment.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+
+			// Enqueue Daterangepicker JS
+			wp_enqueue_script( ZWSGR_PREFIX . '-daterangepicker-min-js', ZWSGR_URL . 'assets/js/daterangepicker.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+
 			// admin css
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-css', ZWSGR_URL . 'assets/css/admin.css', array(), ZWSGR_VERSION );	
 			
 			// style css
 			wp_enqueue_style( ZWSGR_PREFIX . '-style-css', ZWSGR_URL . 'assets/css/style.css', array(), ZWSGR_VERSION );
+
+			// Enqueue Daterangepicker CSS
+
+			wp_enqueue_style( ZWSGR_PREFIX . '-daterangepicker-css', ZWSGR_URL . 'assets/css/daterangepicker.css', array(), ZWSGR_VERSION );
 		
 			// Slick js
 			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
@@ -93,6 +104,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_delete_oauth_connection' => wp_create_nonce('zwsgr_delete_oauth_connection'),
 				'zwsgr_add_update_reply_nonce'  => wp_create_nonce('zwsgr_add_update_reply_nonce'),
 				'zwsgr_delete_review_reply'	    => wp_create_nonce('zwsgr_delete_review_reply'),
+				'zwsgr_gmb_dashboard_filter'	=> wp_create_nonce('zwsgr_gmb_dashboard_filter'),
+				'zwsgr_data_render'				=> wp_create_nonce('zwsgr_data_render'),
 				'zwsgr_wp_review_id' 		    => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
 			));
 
@@ -916,15 +929,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<div class="zwgr-dashboard">
 				<div class="zwgr-dashboard-header">'
 					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
-				'</div>';
-				$zwsgr_filter_data = [
-					'zwsgr_gmb_account'          => null,
-					'zwsgr_gmb_account_location' => null,
-					'zwsgr_range_filter_type'    => 'rangeofdays',
-					'zwsgr_range_filter_data'    => 'monthly'
-				];
-				$this->zwsgr_dashboard->zwsgr_data_render($zwsgr_filter_data);
-			echo '</div>';
+				'</div>'
+				. $this->zwsgr_dashboard->zwsgr_data_render() .
+			'</div>';
 		}
 		
 		/**
