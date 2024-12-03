@@ -1034,3 +1034,96 @@ input.zwsgr-radio:checked::before {
         width: 100%;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 3-12-24 */
+#front-keywords-list {
+    background-color: #f0f0f0; 
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#front-keywords-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#front-keywords-list ul li {
+    background-color: #ddd; 
+    padding: 5px 10px;
+    margin: 5px; 
+    border-radius: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+#front-keywords-list ul li:hover {
+    background-color: #bbb; 
+    cursor: pointer; 
+}
