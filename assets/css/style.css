@@ -941,6 +941,80 @@ input.zwsgr-radio:checked::before {
 }
 
 
+.zwsgr-front-review-filter-wrap {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.zwsgr-front-review-filter-wrap .zwsgr-widget-setting-font{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+ 
+}
+
+.zwsgr-front-review-filter-wrap .zwsgr-label-font {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0;
+    margin-right: 10px;
+}
+
+.zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list {
+    border-radius: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-left: 20px;
+}
+
+.zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list ul li {
+    background-color: #fff; 
+    border: 1px solid #ddd;
+    padding: 5px 20px;
+    margin: 5px; 
+    border-radius: 18px;
+    font-size: 16px;
+    color: #000;
+}
+.zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list ul li.selected,
+.zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list ul li:hover {
+    background-color: #bbb; 
+    cursor: pointer; 
+}
+
+.zwsgr-front-review-filter-wrap .zwsgr-input-text{
+    padding: 10px 30px 10px 16px;
+    border: 1px solid #C1CFDE;
+    height: 48px;
+    box-shadow: none;
+    color: #4A494B;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1;
+    background: #FCFCFC url(../images/down-arrow.png) no-repeat right 7px top 55%;
+    background-size: 16px 10px;
+    /* Remove default select box arrow */
+    appearance: none; /* For Webkit browsers */
+    -webkit-appearance: none; /* For Webkit browsers (Safari, Chrome) */
+    -moz-appearance: none; /* For Firefox */
+}
 
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
@@ -1037,93 +1111,75 @@ input.zwsgr-radio:checked::before {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 3-12-24 */
-#front-keywords-list {
-    background-color: #f0f0f0; 
-    padding: 10px;
-    border-radius: 5px;
+@media only screen and (max-width: 480px) {
+    .zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list,
+    .zwsgr-front-review-filter-wrap .zwsgr-widget-setting-font {
+        width: 100%;
+        padding-left: 0;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+    }
+    .zwsgr-front-review-filter-wrap .zwsgr-label-font {
+        margin-bottom: 10px;
+    }
 }
 
-#front-keywords-list ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
 
-#front-keywords-list ul li {
-    background-color: #ddd; 
-    padding: 5px 10px;
-    margin: 5px; 
-    border-radius: 15px;
-    font-size: 14px;
-    color: #333;
-}
 
-#front-keywords-list ul li:hover {
-    background-color: #bbb; 
-    cursor: pointer; 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

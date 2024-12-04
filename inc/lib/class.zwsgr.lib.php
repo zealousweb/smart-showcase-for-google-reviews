@@ -123,7 +123,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		
 			// Check if keywords are available and is an array
 			if (is_array($keywords) && !empty($keywords)) {
-				echo '<div id="front-keywords-list" class="front-keywords-list">';
+				echo '<div id="front-keywords-list" class="front-keywords-list zwsgr-front-keyword-list">';
+				echo '<h3 class="zwsgr-label-font">Keywords</h3>';
 				echo '<ul>';  // Start an unordered list
 				foreach ($keywords as $keyword) {
 					// Display each keyword as a list item
@@ -253,9 +254,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$query = new WP_Query($args);
 
 			ob_start();  // Start output buffering
-
-			$this->frontend_sortby($post_id);
-			$this->keyword_search($post_id);
+			echo '<div class="zwsgr-front-review-filter-wrap">';
+				$this->frontend_sortby($post_id);
+				$this->keyword_search($post_id);
+			echo '</div>';
 
 			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'">';
 			if ($query->have_posts()) {
