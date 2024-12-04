@@ -958,7 +958,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$char_limit = get_post_meta($post_id, 'char_limit', true);
 			$language = get_post_meta($post_id, 'language', true);
 			$sort_by = get_post_meta($post_id, 'sort_by', true);
-			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
+			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true)?'checked':'';
 			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
 			$bg_color = get_post_meta($post_id, 'bg_color', true);
 			$text_color = get_post_meta($post_id, 'text_color', true);
@@ -1408,11 +1408,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 												' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 											</div>
 										</div>
-										<div class="zwsgr-content-wrap">
-											' . ( !empty($trimmed_content) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										' . ( !empty($trimmed_content) ? '<div class="zwsgr-content-wrap"><p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-										: '') . '</p>' : '' ) . '
-										</div>
+										: '') . '</div></p>' : '' ) . '
 									</div>
 								</div>
 							</div>';
@@ -2569,11 +2567,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 												' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
 											</div>
 										</div>
-										<div class="zwsgr-content-wrap">
-											' . ( !empty($trimmed_content) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										' . ( !empty($trimmed_content) ? '<div class="zwsgr-content-wrap"><p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-										: '') . '</p>' : '' ) . '
-										</div>
+										: '') . '</div></p>' : '' ) . '
 									</div>
 								</div>
 							</div>';

@@ -1,9 +1,14 @@
 jQuery(document).ready(function($) {
 
 	// Bind click event to open popup
-	$(document).on('click', '.zwsgr-popup-item', function () {
+	$(document).on('click', '.zwsgr-popup-item', function (e) {
 		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-		$('#' + popupId).fadeIn(); // Show the popup
+		
+		if( $( e.target ).hasClass('zwsgr-popup-item') ){
+			$('#' + popupId).fadeIn(); // Show the popup
+		} else {
+			console.log( 'not found');
+		}
 	});
 
 	// Bind click event to close popup when the close button is clicked
@@ -254,6 +259,12 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-6').empty('');
 				// Append the 'Load More' button before making the AJAX request
 				$('.zwsgr-slider-6').append(response.data.content);
+
+				// Popup
+				$('.zwsgr-popup-item').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-popup-item').append(response.data.content);
+				
 				
 				if (layoutType === 'list' || layoutType === 'grid') {
 					if( true != response.data.disable_button ){
@@ -341,6 +352,11 @@ jQuery(document).ready(function($) {
 				// Append the 'Load More' button before making the AJAX request
 				$('.zwsgr-slider-6').append(response.data.content);
 
+				// Popup
+				$('.zwsgr-popup-item').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-popup-item').append(response.data.content);
+				
 				if (layoutType === 'list' || layoutType === 'grid') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
