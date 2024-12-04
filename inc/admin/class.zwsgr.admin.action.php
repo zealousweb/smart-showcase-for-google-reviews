@@ -2086,7 +2086,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// $rating_filter = isset($_POST['rating_filter']) ? sanitize_text_field($_POST['rating_filter']) : '';
 			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
 			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : '';
+			
 			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : 0;
+
 			$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : '';
 			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : '';
 			$enable_load_more = isset($_POST['enable_load_more']) ? intval($_POST['enable_load_more']) : 0;
