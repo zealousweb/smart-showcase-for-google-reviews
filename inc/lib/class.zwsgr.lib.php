@@ -123,18 +123,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		
 			// Check if keywords are available and is an array
 			if (is_array($keywords) && !empty($keywords)) {
-				echo '<div id="front-keywords-list" class="front-keywords-list zwsgr-front-keyword-list">';
+				echo '<div id="zwsgr-front-keywords-list" class="zwsgr-front-keywords-list zwsgr-front-keyword-list">';
 				echo '<h3 class="zwsgr-label-font">Keywords</h3>';
 				echo '<ul>';  // Start an unordered list
+		
+				// Add "All" as the first keyword
+				echo '<li class="zwsgr-keyword-item zwsgr-all-keyword" data-zwsgr-keyword="all">All</li>';
+		
 				foreach ($keywords as $keyword) {
 					// Display each keyword as a list item
-					echo '<li data-zwsgr-keyword="' . esc_attr($keyword) . '">' . esc_html($keyword) . '</li>';
+					echo '<li class="zwsgr-keyword-item" data-zwsgr-keyword="' . esc_attr($keyword) . '">' . esc_html($keyword) . '</li>';
 				}
 				echo '</ul>';
 				echo '</div>';
-			} else {
-				// If no keywords, display an empty div
-				echo '<div id="front-keywords-list" class="front-keywords-list"></div>';
 			}
 		}
 
@@ -1341,11 +1342,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			);
 
 			// Add the LIKE condition if front_keyword is present
-			if ($front_keyword) {
+			if ($front_keyword && $front_keyword !== 'all') {
 				$args['meta_query'][]= array(
 					'key'     => 'zwsgr_review_comment', // Replace with the actual meta key for the keyword
 					'value'   => $front_keyword,
 					'compare' => 'LIKE',
+				);
+			}else{
+				$args['meta_query'][]=array(
+					'key'     => 'zwsgr_review_star_rating',
+					'value'   => $ratings_to_include,  // Apply the word-based rating filter
+					'compare' => 'IN',
+					'type'    => 'CHAR'
 				);
 			}
  
