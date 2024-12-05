@@ -1378,7 +1378,17 @@ jQuery(document).ready(function($) {
 	
 	});
 
-	$("#gmb-data-filter").on("change", "#zwsgr-location-select", function (e) {
+	$(".zwgr-dashboard").on("click", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button, .applyBtn", function (e) {
+
+		e.preventDefault();
+	
+		var zwsgr_range_filter_type = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-type');
+		
+		if (zwsgr_range_filter_type == 'rangeofdays') {
+			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-filter');
+		} else if (zwsgr_range_filter_type == 'rangeofdate') {
+			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').val();
+		}
 
 		var zwsgr_gmb_account_number   = $("#gmb-data-filter #zwsgr-account-select").val();
 		var zwsgr_gmb_account_location = $("#gmb-data-filter #zwsgr-location-select").val();
@@ -1386,8 +1396,8 @@ jQuery(document).ready(function($) {
 		var zwsgr_filter_data = {
 			zwsgr_gmb_account_number: zwsgr_gmb_account_number,
 			zwsgr_gmb_account_location: zwsgr_gmb_account_location,
-			zwsgr_range_filter_type: 'rangeofdays',
-			zwsgr_range_filter_data: 'monthly'
+			zwsgr_range_filter_type: zwsgr_range_filter_type,
+			zwsgr_range_filter_data: zwsgr_range_filter_data
 		};
 	
 		$.ajax({
