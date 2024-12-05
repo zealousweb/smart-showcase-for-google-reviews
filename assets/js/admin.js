@@ -292,6 +292,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -303,6 +304,10 @@ jQuery(document).ready(function($) {
 
 		if (slider2.hasClass('slick-initialized')) {
 			slider2.slick('unslick');
+		}
+
+		if (slider3.hasClass('slick-initialized')) {
+			slider3.slick('unslick');
 		}
 
 		if (slider4.hasClass('slick-initialized')) {
@@ -365,6 +370,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -476,6 +500,23 @@ jQuery(document).ready(function($) {
 			}
 		]
 	});	 
+
+	$('.zwsgr-slider-3').slick({
+		infinite: true,
+		slidesToShow: 2,
+		slidesToScroll: 2,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 1180,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});	
 
 	$('.zwsgr-slider-4').slick({
 		infinite: true,
@@ -839,7 +880,7 @@ jQuery(document).ready(function($) {
 		var charLimit = $('#review-char-limit').val();
 		var language = $('#language-select').val();
 		var sortBy = $('#sort-by-select').val();
-		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
+		var enableLoadMore = $('#enable-load-more').is(':checked') ? 0 : 1;
 		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
@@ -1378,7 +1419,17 @@ jQuery(document).ready(function($) {
 	
 	});
 
-	$("#gmb-data-filter").on("change", "#zwsgr-location-select", function (e) {
+	$(".zwgr-dashboard").on("click", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button, .applyBtn", function (e) {
+
+		e.preventDefault();
+	
+		var zwsgr_range_filter_type = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-type');
+		
+		if (zwsgr_range_filter_type == 'rangeofdays') {
+			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-filter');
+		} else if (zwsgr_range_filter_type == 'rangeofdate') {
+			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').val();
+		}
 
 		var zwsgr_gmb_account_number   = $("#gmb-data-filter #zwsgr-account-select").val();
 		var zwsgr_gmb_account_location = $("#gmb-data-filter #zwsgr-location-select").val();
@@ -1386,8 +1437,8 @@ jQuery(document).ready(function($) {
 		var zwsgr_filter_data = {
 			zwsgr_gmb_account_number: zwsgr_gmb_account_number,
 			zwsgr_gmb_account_location: zwsgr_gmb_account_location,
-			zwsgr_range_filter_type: 'rangeofdays',
-			zwsgr_range_filter_data: 'monthly'
+			zwsgr_range_filter_type: zwsgr_range_filter_type,
+			zwsgr_range_filter_data: zwsgr_range_filter_data
 		};
 	
 		$.ajax({
@@ -1518,6 +1569,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -1529,6 +1581,10 @@ jQuery(document).ready(function($) {
 
 		if (slider2.hasClass('slick-initialized')) {
 			slider2.slick('unslick');
+		}
+
+		if (slider3.hasClass('slick-initialized')) {
+			slider3.slick('unslick');
 		}
 
 		if (slider4.hasClass('slick-initialized')) {
@@ -1591,6 +1647,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]

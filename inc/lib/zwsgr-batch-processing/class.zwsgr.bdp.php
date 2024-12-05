@@ -264,23 +264,6 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             } else {
 
-                $zwsgr_request_data_id = get_posts(array(
-                    'post_type'      => 'zwsgr_request_data',
-                    'posts_per_page' => 1,
-                    'post_status'    => 'publish',
-                    'meta_key'       => 'zwsgr_account_number',
-                    'meta_value'     => $this->zwsgr_account_number,
-                    'fields'         => 'ids',
-                ))[0] ?? null;
-
-                if (!empty($this->zwsgr_total_reviews)) {
-                    update_post_meta($zwsgr_request_data_id, "zwsgr_location_{$this->zwsgr_location_number}_total_reviews", $this->zwsgr_total_reviews);
-                }
-
-                if (!empty($this->zwsgr_average_rating)) {
-                    update_post_meta($zwsgr_request_data_id, "zwsgr_location_{$this->zwsgr_location_number}_average_rating", $this->zwsgr_average_rating);
-                }
-
                 $zwsgr_queue_manager->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
 
                 update_post_meta($this->zwsgr_widget_id, 'zwgr_data_processing_init', 'false');

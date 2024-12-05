@@ -1154,6 +1154,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>';
 
+						$zwsgr_slider_item3 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-list-inner">
+								' . ( !empty($trimmed_content) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . '	
+								<div class="zwsgr-slide-wrap4">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+										<div class="zwsgr-google-icon">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+										</div>
+									</div>
+									<div class="zwsgr-review-info">
+											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
+											' . (!empty($published_date)
+										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '') . '
+									</div>
+									' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								</div>
+								</div>
+							</div>';
+
 						$zwsgr_slider_item4 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
@@ -1504,6 +1527,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					// Add the slider item to the slider content array
 					$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 					$zwsgr_slider_content2[] = $zwsgr_slider_item2;
+					$zwsgr_slider_content3[] = $zwsgr_slider_item3;
 					$zwsgr_slider_content4[] = $zwsgr_slider_item4;
 					$zwsgr_slider_content5[] = $zwsgr_slider_item5;
 					$zwsgr_slider_content6[] = $zwsgr_slider_item6;
@@ -1530,6 +1554,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
+			$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
 			$zwsgr_slider_content4 = implode('', (array) $zwsgr_slider_content4);
 			$zwsgr_slider_content5 = implode('', (array) $zwsgr_slider_content5);
 			$zwsgr_slider_content6 = implode('', (array) $zwsgr_slider_content6);
@@ -1575,7 +1600,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							' . $zwsgr_slider_content2 . '
 						</div>
 					</div>',
-					'<div class="slider-item" id="slider3">Slider 3 Content</div>',
+					'<div class="zwsgr-slider" id="zwsgr-slider3">
+						<div class="zwsgr-slider-badge">
+							<div class="zwsgr-badge-item" id="zwsgr-badge1">
+								<h3 class="zwsgr-average">Good</h3>
+								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+								<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							</div>
+						</div>
+						<div class="zwsgr-slider-3">
+							' . $zwsgr_slider_content3 . '
+						</div>
+					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider4">
 						<div class="zwsgr-slider-4">
 							' . $zwsgr_slider_content4 . '
@@ -1780,7 +1817,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<ul class="tab-nav zwsgr-custom-tab">
 					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwsgr-step">1. </span>Fetch Data</li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item  <?php echo ($current_tab === 'tab-options') ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
+					<li class="tab-item zwsgr-tab-item  <?php echo ($layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
 					<span class="zwsgr-step-arrow"></span>
 					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step">3. </span>Selected Option</li>
 					<span class="zwsgr-step-arrow"></span>
@@ -1796,9 +1833,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-options">
 					<!-- Dynamically Render Radio Buttons -->
 					<div class="zwsgr-layout-radio"> 
-						<label><input type="radio" name="display_option" class="zwsgr-radio" value="all" <?php echo $selected_display_option === 'all' ? 'checked' : ''; ?>> <span>All</span></label>
+						<label><input type="radio" name="display_option" class="zwsgr-radio" value="all" checked> <span>All</span></label>
 						<?php foreach ($options as $key => $layouts) : ?>
-							<label><input type="radio" name="display_option" class="zwsgr-radio" value="<?php echo esc_attr($key); ?>" <?php echo $selected_display_option === $key ? 'checked' : ''; ?>><span> <?php echo ucfirst($key); ?></span></label>
+							<label><input type="radio" name="display_option" class="zwsgr-radio" value="<?php echo esc_attr($key); ?>"><span> <?php echo ucfirst($key); ?></span></label>
 						<?php endforeach; ?>
 					</div>
 
@@ -1813,11 +1850,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							if( $option_type == "popup") {
 								echo '<div class="zwsgr-popup-wrap">';
 							}
-							foreach ($layouts as $layout_content) {
+							foreach ($layouts as $layout_content) { 
 								$element_id = $option_type . '-' . $layout_count;
 
 								// Only show layouts for the selected display option
-								$display_style = ($selected_display_option === $option_type || $selected_display_option === 'all') ? 'block' : 'none';
+								$display_style = ($selected_display_option === $option_type || $selected_display_option === 'all') ? 'block' : 'block';
 								$selected_class = ($element_id === $layout_option) ? ' selected' : ''; // Check if this layout is selected
 								
 								echo '<div id="' . esc_attr($element_id) . '" class="zwsgr-option-item' . $selected_class . '" data-type="' . esc_attr($option_type) . '" style="display: ' . $display_style . ';">';
@@ -2023,7 +2060,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
 					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
 				</div>
-					<button id="save-get-code-btn" class="zwsgr-btn">Save & Get Code</button>
+					<button id="save-get-code-btn" class="zwsgr-btn" data-zwsgr-btn='zwsgr-btn'>Save & Get Code</button>
 				</div>
 
 				<div class="tab-content" id="tab-shortcode" style="display:none;">
@@ -2078,33 +2115,39 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$setting_tb = ( isset( $_POST['settings'] ) && ! empty( $_POST['settings'] ) ) ? sanitize_text_field( $_POST['settings'] ) : '';
 
 			if(  $setting_tb == 'tab-options' ){
-				$display_option = isset($_POST['display_option']) ? sanitize_text_field($_POST['display_option']) : '';
-				update_post_meta($post_id, 'display_option', $display_option);
+			$display_option = isset($_POST['display_option']) ? sanitize_text_field($_POST['display_option']) : get_post_meta($post_id, 'display_option', true);
+			update_post_meta($post_id, 'display_option', $display_option);	
 
-				$layout_option =  isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : '';
-				update_post_meta($post_id, 'layout_option', $layout_option);
-
-				$current_tab = sanitize_text_field($_POST['current_tab']); // The active tab
-				update_post_meta($post_id, 'tab-options', $current_tab); // Save the active tab state
+			$layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
+			update_post_meta($post_id, 'layout_option', $layout_option);
+			
+			$current_tab = sanitize_text_field($_POST['current_tab']); // The active tab
+			update_post_meta($post_id, 'tab-options', $current_tab); // Save the active tab state
 
 			}
 
-			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : array();
-			// $rating_filter = isset($_POST['rating_filter']) ? sanitize_text_field($_POST['rating_filter']) : '';
-			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
-			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : '';
-			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : 0;
-			$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : '';
-			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : '';
-			$enable_load_more = isset($_POST['enable_load_more']) ? intval($_POST['enable_load_more']) : 0;
-			$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
-			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
-			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
-			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
-			$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
+			$layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
+			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : get_post_meta($post_id, 'selected_elements', true);
+			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
+			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : get_post_meta($post_id, 'keywords', true);
+			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : (get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY');
+			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : get_post_meta($post_id, 'char_limit', true);
+			$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : get_post_meta($post_id, 'language', true);
+			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : get_post_meta($post_id, 'sort_by', true);
+			$enable_load_more = isset($_POST['enable_load_more']) ? (intval($_POST['enable_load_more']) ? 'checked' : '') : (get_post_meta($post_id, 'enable_load_more', true) ? 'checked' : '');
+			$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : get_post_meta($post_id, 'google_review_toggle', true);
+			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : get_post_meta($post_id, 'bg_color', true);
+			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : get_post_meta($post_id, 'text_color', true);
+			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : get_post_meta($post_id, 'posts_per_page', true);
+			$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : (intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0);
 
+			$existing_value = get_post_meta( $post_id, 'tab-selected', true ); // Get the existing value
 			$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
-			update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
+
+			if ($existing_value != 'tab-selected') {
+				update_post_meta($post_id, 'tab-selected', $current_tab2);
+			}
+
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);
@@ -2322,6 +2365,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>';
 
+						$zwsgr_slider_item3 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-list-inner">
+								' . ( !empty($trimmed_content) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . '	
+								<div class="zwsgr-slide-wrap4">
+									<div class="zwsgr-profile">
+										<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+										<div class="zwsgr-google-icon">
+											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+										</div>
+									</div>
+									<div class="zwsgr-review-info">
+											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
+											' . (!empty($published_date)
+										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '') . '
+									</div>
+									' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								</div>
+								</div>
+							</div>';
+
 						$zwsgr_slider_item4 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
@@ -2670,6 +2736,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					// Add the slider item to the slider content array
 					$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 					$zwsgr_slider_content2[] = $zwsgr_slider_item2;
+					$zwsgr_slider_content3[] = $zwsgr_slider_item3;
 					$zwsgr_slider_content4[] = $zwsgr_slider_item4;
 					$zwsgr_slider_content5[] = $zwsgr_slider_item5;
 					$zwsgr_slider_content6[] = $zwsgr_slider_item6;
@@ -2697,6 +2764,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
+			$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
 			$zwsgr_slider_content4 = implode('', (array) $zwsgr_slider_content4);
 			$zwsgr_slider_content5 = implode('', (array) $zwsgr_slider_content5);
 			$zwsgr_slider_content6 = implode('', (array) $zwsgr_slider_content6);
@@ -2741,7 +2809,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							' . $zwsgr_slider_content2 . '
 						</div>
 					</div>',
-					'<div class="slider-item" id="slider3">Slider 3 Content</div>',
+					'<div class="zwsgr-slider" id="zwsgr-slider3">
+						<div class="zwsgr-slider-badge">
+							<div class="zwsgr-badge-item" id="zwsgr-badge1">
+								<h3 class="zwsgr-average">Good</h3>
+								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+								<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							</div>
+						</div>
+						<div class="zwsgr-slider-3">
+							' . $zwsgr_slider_content3 . '
+						</div>
+					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider4">
 						<div class="zwsgr-slider-4">
 							' . $zwsgr_slider_content4 . '

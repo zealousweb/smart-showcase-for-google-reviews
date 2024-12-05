@@ -135,6 +135,23 @@ jQuery(document).ready(function($) {
 		]
 	});	 
 
+	$('.zwsgr-slider-3').slick({
+		infinite: true,
+		slidesToShow: 2,
+		slidesToScroll: 2,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 1180,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});	
+
 	$('.zwsgr-slider-4').slick({
 		infinite: true,
 		slidesToShow: 1,
