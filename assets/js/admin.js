@@ -839,7 +839,7 @@ jQuery(document).ready(function($) {
 		var charLimit = $('#review-char-limit').val();
 		var language = $('#language-select').val();
 		var sortBy = $('#sort-by-select').val();
-		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
+		var enableLoadMore = $('#enable-load-more').is(':checked') ? 0 : 1;
 		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
