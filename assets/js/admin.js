@@ -604,6 +604,7 @@ jQuery(document).ready(function($) {
         $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').fadeIn(600);
         $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').fadeOut(600) : $('.selected-option-display .zwsgr-content').fadeIn(600);
 		$('#review-photo').is(':checked') ? $('.selected-option-display .zwsgr-profile').fadeOut(600) : $('.selected-option-display .zwsgr-profile').fadeIn(600);
+		$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwsgr-google-icon').fadeOut(600) : $('.selected-option-display .zwsgr-google-icon').fadeIn(600);
     }
 
     // Attach change event listeners to checkboxes

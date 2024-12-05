@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
         var page = button.data('page');  // Get the current page number
         var post_id = button.data('post-id');  // Get the post-id from the button data attribute
 		var selectedValue = $('#front-sort-by-select').val();
-		var keyword = $('#front-keywords-list li.selected').data('zwsgr-keyword');
+		var keyword = $('#zwsgr-front-keywords-list li.selected').data('zwsgr-keyword');
 
         // Disable the button to prevent multiple clicks
         button.prop('disabled', true).text('Loading...');
@@ -201,9 +201,9 @@ jQuery(document).ready(function($) {
 		]
 	});
 
-	$('body').on('click', '#front-keywords-list li', function() {
+	$('body').on('click', '#zwsgr-front-keywords-list li', function() {
 
-		$('#front-keywords-list li').removeClass('selected');  // Remove previous selection
+		$('#zwsgr-front-keywords-list li').removeClass('selected');  // Remove previous selection
 		$(this).addClass('selected');  // Add the 'selected' class to the clicked keyword
 
 		// Get the keyword from the clicked element's data attribute
@@ -230,6 +230,20 @@ jQuery(document).ready(function($) {
 				nonce: load_more.nonce
             },
             success: function(response) {
+
+				  // Check if there is content in the response
+				if (!response.data.content || response.data.content.trim() === '') {
+					// No more posts, show the "No more posts." message
+					$('.zwsgr-slider.zwsgr-list').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-grid-item').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-1').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-2').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-4').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-5').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-6').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-popup-item').html('<p>' + response.data.err_msg + '</p>');
+					return;
+				}
 
 				// List
 				$('.zwsgr-slider.zwsgr-list').empty('');
@@ -296,7 +310,7 @@ jQuery(document).ready(function($) {
 	$('body').on('change', '#front-sort-by-select',function(){	
 
 		var selectedValue = $('#front-sort-by-select').val();
-		var keyword = $('#front-keywords-list li.selected').data('zwsgr-keyword'); 
+		var keyword = $('#zwsgr-front-keywords-list li.selected').data('zwsgr-keyword'); 
 	
 		var postId = $('.main-div-wrapper').data('widget-id');
 		var ratingFilter = $('.main-div-wrapper').data('rating-filter');
@@ -322,6 +336,20 @@ jQuery(document).ready(function($) {
 			success: function(response) {
 
 				// console.log(response.data.content, 'response');
+
+				 // Check if there is content in the response
+				if (!response.data.content || response.data.content.trim() === '') {
+					// No more posts, show the "No more posts." message
+					$('.zwsgr-slider.zwsgr-list').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-grid-item').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-1').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-2').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-4').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-5').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-6').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-popup-item').html('<p>' + response.data.err_msg + '</p>');
+					return;
+				}
 
 				// List
 				$('.zwsgr-slider.zwsgr-list').empty('');
