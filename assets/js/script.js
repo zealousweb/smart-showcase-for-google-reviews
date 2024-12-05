@@ -1,9 +1,14 @@
 jQuery(document).ready(function($) {
 
 	// Bind click event to open popup
-	$(document).on('click', '.zwsgr-popup-item', function () {
+	$(document).on('click', '.zwsgr-popup-item', function (e) {
 		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-		$('#' + popupId).fadeIn(); // Show the popup
+		
+		if( $( e.target ).hasClass('zwsgr-popup-item') ){
+			$('#' + popupId).fadeIn(); // Show the popup
+		} else {
+			console.log( 'not found');
+		}
 	});
 
 	// Bind click event to close popup when the close button is clicked
@@ -18,12 +23,12 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	
     $('body').on('click','.load-more-meta',function() {
         var button = $(this);
         var page = button.data('page');  // Get the current page number
         var post_id = button.data('post-id');  // Get the post-id from the button data attribute
 		var selectedValue = $('#front-sort-by-select').val();
+		var keyword = $('#front-keywords-list li.selected').data('zwsgr-keyword');
 
         // Disable the button to prevent multiple clicks
         button.prop('disabled', true).text('Loading...');
@@ -37,6 +42,7 @@ jQuery(document).ready(function($) {
                 post_id: post_id,  // Pass the post-id from the button
                 page: page,  // Pass the current page number
 				front_sort_by: selectedValue,
+				front_keyword: keyword,
                 nonce: load_more.nonce  // Include the nonce for security
             },
             success: function(response) {
@@ -178,11 +184,102 @@ jQuery(document).ready(function($) {
 		]
 	});
 
+	$('body').on('click', '#front-keywords-list li', function() {
+
+		$('#front-keywords-list li').removeClass('selected');  // Remove previous selection
+		$(this).addClass('selected');  // Add the 'selected' class to the clicked keyword
+
+		// Get the keyword from the clicked element's data attribute
+		const keyword = $(this).data('zwsgr-keyword');
+		var postId = $('.main-div-wrapper').data('widget-id');
+		var ratingFilter = $('.main-div-wrapper').data('rating-filter');
+		var layoutType = $('.main-div-wrapper').data('layout-type');
+		var selectedValue = $('#front-sort-by-select').val();
+
+		var loadMoreButton = '<button class="load-more-meta" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
+		$('.zwsgr-slider.zwsgr-list');
+
+		$('.load-more-meta').hide();
+
+		// AJAX request
+        $.ajax({
+			url: load_more.ajax_url,
+			method: 'POST',
+			data: {
+				action: 'load_more_meta_data',
+				front_keyword: keyword,
+				post_id: postId,
+				front_sort_by: selectedValue,
+				nonce: load_more.nonce
+            },
+            success: function(response) {
+
+				// List
+				$('.zwsgr-slider.zwsgr-list').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider.zwsgr-list').append(response.data.content);
+
+				// Grid
+				$('.zwsgr-slider.zwsgr-grid-item').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider.zwsgr-grid-item').append(response.data.content);
+
+				// Slider
+				setTimeout(function() {
+					reinitializeSlickSlider($('.zwsgr-slider-1'));
+				}, 100);
+				$('.zwsgr-slider-1').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider-1').append(response.data.content);
+
+				setTimeout(function() {
+					reinitializeSlickSlider($('.zwsgr-slider-2'));
+				}, 100);
+				$('.zwsgr-slider-2').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider-2').append(response.data.content);
+
+				setTimeout(function() {
+					reinitializeSlickSlider($('.zwsgr-slider-4'));
+				}, 100);
+				$('.zwsgr-slider-4').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider-4').append(response.data.content);
+
+				setTimeout(function() {
+					reinitializeSlickSlider($('.zwsgr-slider-5'));
+				}, 100);
+				$('.zwsgr-slider-5').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider-5').append(response.data.content);
+
+				setTimeout(function() {
+					reinitializeSlickSlider($('.zwsgr-slider-6'));
+				}, 100);
+				$('.zwsgr-slider-6').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-slider-6').append(response.data.content);
+
+				// Popup
+				$('.zwsgr-popup-item').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-popup-item').append(response.data.content);
+				
+				
+				if (layoutType === 'list' || layoutType === 'grid') {
+					if( true != response.data.disable_button ){
+						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
+					}
+				}
+            }
+        });
+	});
+
 	// Listen for the change event on the select dropdown
 	$('body').on('change', '#front-sort-by-select',function(){	
 
 		var selectedValue = $('#front-sort-by-select').val();
-		console.log(selectedValue); 
+		var keyword = $('#front-keywords-list li.selected').data('zwsgr-keyword'); 
 	
 		var postId = $('.main-div-wrapper').data('widget-id');
 		var ratingFilter = $('.main-div-wrapper').data('rating-filter');
@@ -202,6 +299,7 @@ jQuery(document).ready(function($) {
 				action: 'load_more_meta_data',
 				front_sort_by: selectedValue,
 				post_id: postId,
+				front_keyword: keyword,
 				nonce: load_more.nonce
 			},
 			success: function(response) {
@@ -254,10 +352,15 @@ jQuery(document).ready(function($) {
 				// Append the 'Load More' button before making the AJAX request
 				$('.zwsgr-slider-6').append(response.data.content);
 
+				// Popup
+				$('.zwsgr-popup-item').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('.zwsgr-popup-item').append(response.data.content);
 				
-				 
 				if (layoutType === 'list' || layoutType === 'grid') {
-					$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
+					if( true != response.data.disable_button ){
+						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
+					}
 				}
 				// console.log(response); // Log success response
 			}

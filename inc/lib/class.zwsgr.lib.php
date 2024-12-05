@@ -18,6 +18,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 	 * The main ZWSGR class
 	 */
 	class ZWSGR_Lib {
+
+		private $zwsgr_dashboard;
 		
 		function __construct() 
 		{
@@ -27,8 +29,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
 			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
 
-			// add_action( 'wp', array($this,'frontend_sortby'));
-
+			// Initialize dashboard class
+			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
 
 		}
 		function ZWSGR_lib_public_enqueue() 
@@ -115,12 +117,32 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			<?php
 		}
 
+		function keyword_search($post_id) {
+			// Get the keywords meta data for the given post ID
+			$keywords = get_post_meta($post_id, 'keywords', true);
+		
+			// Check if keywords are available and is an array
+			if (is_array($keywords) && !empty($keywords)) {
+				echo '<div id="front-keywords-list" class="front-keywords-list zwsgr-front-keyword-list">';
+				echo '<h3 class="zwsgr-label-font">Keywords</h3>';
+				echo '<ul>';  // Start an unordered list
+				foreach ($keywords as $keyword) {
+					// Display each keyword as a list item
+					echo '<li data-zwsgr-keyword="' . esc_attr($keyword) . '">' . esc_html($keyword) . '</li>';
+				}
+				echo '</ul>';
+				echo '</div>';
+			} else {
+				// If no keywords, display an empty div
+				echo '<div id="front-keywords-list" class="front-keywords-list"></div>';
+			}
+		}
+
 
 		// Shortcode to render initial posts and Load More button
 		function shortcode_load_more($atts) 
 		{
 
-			
 			// Extract the attributes passed to the shortcode
 			$atts = shortcode_atts(
 				array(
@@ -132,7 +154,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Retrieve the post ID from the shortcode attributes
 			$post_id = $atts['post-id'];
-			$this->frontend_sortby($post_id);
 
 			// Check if a post ID is provided and it exists
 			if (empty($post_id) || !get_post($post_id)) {
@@ -141,15 +162,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Retrieve the 'enable_load_more' setting from post meta
 			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
-			// $layout =get_post_meta($post_id,'layout_option',true);
-			// echo $layout;
 
 			// Retrieve dynamic 'posts_per_page' from post meta
 			$stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
 
 			// Determine the number of posts per page based on 'enable_load_more'
 			$posts_per_page = $enable_load_more ? ($stored_posts_per_page ? intval($stored_posts_per_page) : 2) : -1; 
-			// If 'enable_load_more' is enabled, use the stored 'posts_per_page', default to 2 if not set, otherwise show all posts.
 
 			// Retrieve the 'rating_filter' value from the post meta
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
@@ -236,6 +254,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$query = new WP_Query($args);
 
 			ob_start();  // Start output buffering
+			echo '<div class="zwsgr-front-review-filter-wrap">';
+				$this->frontend_sortby($post_id);
+				$this->keyword_search($post_id);
+			echo '</div>';
 
 			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'">';
 			if ($query->have_posts()) {
@@ -748,21 +770,20 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
-										<div class="zwsgr-rating-wrap">
-											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+											<div class="zwsgr-rating-wrap">
+												<div class="zwsgr-google-icon">
+													<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+												</div>
+												' . 
+													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 											</div>
-											' . 
-												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 										</div>
-									</div>
-						
-									<div class="zwsgr-content-wrap">
+										
 										' . 
-											( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+											( !in_array('review-content', $selected_elements) && !empty($trimmed_content) ? '<div class="zwsgr-content-wrap"><p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-										: '') . '</p>' : '' ) . '
+										: '') . '</div></p>' : '' ) . '
+										
 									</div>
 								</div>
 							</div>';
@@ -937,6 +958,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$zwsgr_popup_content1 = implode('', (array) $zwsgr_popup_content1);
 				$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
 
+				$zwsgr_gmb_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+				$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_account_locations', true);
+
+				$zwsgr_filter_data = [
+					'zwsgr_gmb_account_number'   => $zwsgr_gmb_account_number,
+					'zwsgr_gmb_account_location' => $zwsgr_gmb_account_location,
+					'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
+				];
+
+				$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
+
 	
 				// Define your options and layouts with corresponding HTML content
 				$options = [
@@ -1006,7 +1039,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						'<div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
 							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-							<p class="zwsgr-based-on">Based on <b> 122 reviews </b></p>
+							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 						</div>',
 
@@ -1017,7 +1050,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-badge-info">
 								<h3 class="zwsgr-average">Good</h3>
 								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-								<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
+								<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 							</div>
 						</div>',
 
@@ -1078,7 +1111,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 							<span class="final-rating">4.7</span>
 							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-							<p class="zwsgr-based-on">Based on <b>122 reviews</b></p>
+							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 						</div>'
 						
 					],
@@ -1090,7 +1123,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-profile-info">
 								<h3>Zealousweb Technologies Pvt. Ltd.</h3>
 								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-								<a href="#" target="_blank" class="zwsgr-total-review">122 Google reviews</a>
+								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 							</div>
 						</div>
 						<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
@@ -1104,7 +1137,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-profile-info">
 											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
 											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-											<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
+											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 										</div>
 									</div>
 									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
@@ -1121,7 +1154,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						<div class="zwsgr-info-wrap">
 							<span class="final-rating">4.7</span>
 							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-							<a href="#" target="_blank" 	class="zwsgr-total-review">( 122 reviews )</a>
+							<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 						</div>
 					</div>
 					<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
@@ -1135,7 +1168,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-profile-info">
 										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
 										' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
-										<p class="zwsgr-based-on">Based on <b>122 Google reviews</b></p>
+										<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
@@ -1158,7 +1191,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				
 				
 				// Add the Load More button only if 'enable_load_more' is true
-				if ($enable_load_more && $query->max_num_pages >=2 && in_array($display_option, ['list', 'grid'])) {
+				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($display_option, ['list', 'grid'])) {
 					echo '<button class="load-more-meta" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 				
@@ -1237,7 +1270,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$sort_by = $_POST['front_sort_by'];
 			} else {
 				$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
-			}			
+  			}            
+			
+			$front_keyword =$_POST['front_keyword'];
 			
 			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
@@ -1249,6 +1284,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				'posts_per_page' => $posts_per_page,  // Use dynamic posts per page value
 				'paged'          => $page,
 				'meta_query'     => array(
+					'relation' => 'AND',
 					array(
 						'key'     => 'zwsgr_review_star_rating',
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
@@ -1257,6 +1293,15 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					)
 				),
 			);
+
+			// Add the LIKE condition if front_keyword is present
+			if ($front_keyword) {
+				$args['meta_query'][]= array(
+					'key'     => 'zwsgr_review_comment', // Replace with the actual meta key for the keyword
+					'value'   => $front_keyword,
+					'compare' => 'LIKE',
+				);
+			}
  
 			// Adjust sorting based on the 'sort_by' value
 			switch ($sort_by) {
@@ -1794,21 +1839,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
-										<div class="zwsgr-rating-wrap">
-											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+											<div class="zwsgr-rating-wrap">
+												<div class="zwsgr-google-icon">
+													<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+												</div>
+												' . 
+													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 											</div>
-											' . 
-												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 										</div>
-									</div>
-						
-									<div class="zwsgr-content-wrap">
 										' . 
-											( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+											( !in_array('review-content', $selected_elements) && !empty($trimmed_content) ? '<div class="zwsgr-content-wrap"><p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-										: '') . '</p>' : '' ) . '
+										: '') . '</div></p>' : '' ) . '
 									</div>
 								</div>
 							</div>';
@@ -1863,6 +1905,79 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								</div>
 							</div>';
 
+							// Popup
+							$zwsgr_popup_item1 = '
+								<div class="zwsgr-slide-item">
+									<div class="zwsgr-list-inner">
+										<div class="zwsgr-slide-wrap">';
+
+										if (!in_array('review-photo', $selected_elements)) {
+											$zwsgr_popup_item1 .= '
+											<div class="zwsgr-profile">
+												<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+											</div>';
+										}
+
+										$zwsgr_popup_item1 .= '<div class="zwsgr-review-info">';
+										if (!in_array('review-title', $selected_elements)) {
+											$zwsgr_popup_item1 .= '
+												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										}
+										if (!in_array('review-days-ago', $selected_elements)) {
+											$zwsgr_popup_item1 .= '
+												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													' . esc_html($formatted_date) . ' 
+												</h5>';
+										}
+										$zwsgr_popup_item1 .= '</div>'; 
+
+										if (!in_array('review-rating', $selected_elements)) {
+											$zwsgr_popup_item1 .= '
+											<div class="zwsgr-rating">' . $stars_html . '</div>';
+										}
+										$zwsgr_popup_item1 .= '</div>'; 
+
+										if (!in_array('review-content', $selected_elements)) {
+											$zwsgr_popup_item1 .= '<p class="zwsgr-content">' . esc_html($trimmed_content);
+	
+											if ($is_trimmed) {
+												$zwsgr_popup_item1 .= ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+											}
+											$zwsgr_popup_item1 .= '</p>';
+										}
+								$zwsgr_popup_item1 .= '
+									</div>
+								</div>';
+						
+								$zwsgr_popup_item2 = '
+								<div class="zwsgr-slide-item">
+									<div class="zwsgr-list-inner">
+										<div class="zwsgr-slide-wrap">
+											<div class="zwsgr-profile">
+												<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
+											</div>
+											<div class="zwsgr-review-info">
+												' . 
+													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
+												' . 
+													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
+														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+											</div>
+											<div class="zwsgr-google-icon">
+												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
+											</div>
+										</div>
+										<div class="zwsgr-list-content-wrap">
+											' . 
+												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
+											' .
+												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+												? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+												: '') . '</p>' : '' ). '
+										</div>
+									</div>
+								</div>';
+
 						$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 						$zwsgr_slider_content2[] = $zwsgr_slider_item2;
 						$zwsgr_slider_content4[] = $zwsgr_slider_item4;
@@ -1880,6 +1995,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_grid_content3[] = $zwsgr_grid_item3;	
 						$zwsgr_grid_content4[] = $zwsgr_grid_item4;	
 						$zwsgr_grid_content5[] = $zwsgr_grid_item5;	
+
+						$zwsgr_popup_content1[] = $zwsgr_popup_item1;
+						$zwsgr_popup_content2[] = $zwsgr_popup_item2;
+
 					}
 				// $output .= '</div>';
 				$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
@@ -1900,6 +2019,21 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$zwsgr_grid_content3 = implode('', (array) $zwsgr_grid_content3);
 				$zwsgr_grid_content4 = implode('', (array) $zwsgr_grid_content4);
 				$zwsgr_grid_content5 = implode('', (array) $zwsgr_grid_content5);
+
+				$zwsgr_popup_content1 = implode('', (array) $zwsgr_popup_content1);
+				$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
+
+				$zwsgr_gmb_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+				$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_account_locations', true);
+
+				$zwsgr_filter_data = [
+					'zwsgr_gmb_account_number'   => $zwsgr_gmb_account_number,
+					'zwsgr_gmb_account_location' => $zwsgr_gmb_account_location,
+					'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
+				];
+
+				$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
 
 				$filter_layout = [
 					'slider' => [
@@ -1944,6 +2078,69 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_grid_content4,
 						$zwsgr_grid_content5
 					],
+					'popup' => [
+						'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
+							<div class="zwsgr-profile-logo">
+								<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+							</div>
+							<div class="zwsgr-profile-info">
+								<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
+							</div>
+						</div>
+						<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
+							<div class="zwsgr-popup-content">
+								<div class="scrollable-content">
+									<span class="zwsgr-close-popup">&times;</span>
+									<div class="zwsgr-popup-wrap">
+										<div class="zwsgr-profile-logo">
+											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+										</div>
+										<div class="zwsgr-profile-info">
+											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
+										</div>
+									</div>
+									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
+										' . $zwsgr_popup_content1 . '
+									</div>
+								</div>
+							</div>
+						</div>',
+						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
+							<div class="zwsgr-title-wrap">
+								<img src="' . $plugin_dir_path . 'assets/images/google.png">
+								<h3>Reviews</h3>
+							</div>
+							<div class="zwsgr-info-wrap">
+								<span class="final-rating">4.7</span>
+								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
+							</div>
+						</div>
+						<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
+							<div class="zwsgr-popup-content">
+								<div class="scrollable-content">
+									<span class="zwsgr-close-popup">&times;</span>
+									<div class="zwsgr-popup-wrap">
+										<div class="zwsgr-profile-logo">
+											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+										</div>
+										<div class="zwsgr-profile-info">
+											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
+										</div>
+									</div>
+									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
+										' . $zwsgr_popup_content2 . '
+									</div>
+								</div>
+							</div>
+						</div>'
+					]
 				];
 
 				$layout_option = get_post_meta($post_id, 'layout_option', true);
@@ -1958,20 +2155,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'content'   => $output,  // Send HTML content in the response
 					'new_page'  => $page + 1,
 				);
-
-				// Check if there are no more pages to load and disable the button
-				if ($query->max_num_pages <= $page) {
-					$response['disable_button'] = true;
-				}
-
 				wp_reset_postdata();
-
-				// Send success response with content and page information
-				wp_send_json_success($response);
 			} else {
 				// No more posts available
-				wp_send_json_error(esc_html__('No more posts.', 'zw-smart-google-reviews'));
+				$response['err_msg'] = esc_html__('No more posts.', 'zw-smart-google-reviews');
 			}
+			$response['disable_button'] = ( $query->max_num_pages <= $page ) ? true : false;
+			wp_send_json_success($response);
 
 			wp_die();  // Properly terminate the AJAX request
 		}
