@@ -1451,18 +1451,17 @@ jQuery(document).ready(function($) {
 			},
 			beforeSend: function() {
 				// Add the loader before the request is sent
-				$('#render-dynamic').html('<div class="loader">Loading...</div>');
+				$('.zwgr-dashboard #render-dynamic').remove();
+				$('.zwgr-dashboard').append('<div class="loader">Loading...</div>');
 			},
 			success: function(response) {
-				$('#render-dynamic').empty(); // Clear previous content
 				if (response.success) {
-					$('#render-dynamic').append(response.data.html);
+					$('.zwgr-dashboard ').append(response.data.html);
 				} else {
-					$('#render-dynamic').html('<p>Error loading data.</p>');
+					$('.zwgr-dashboard ').html('<p>Error loading data.</p>');
 				}
 			},
 			complete: function() {
-				// Remove the loader when the request is complete
 				$('.loader').remove();
 			},
 			error: function() {

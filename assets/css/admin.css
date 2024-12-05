@@ -832,24 +832,71 @@ input.zwsgr-radio:checked::before {
 
 /* 27-11-24 */
 
-.zwgr-dashboard-body {
-    display: flex;
-    gap: 20px;
+.toplevel_page_zwsgr_dashboard {
+    background-color: #FFFFFF;
 }
 
-/* header */
-.zwsgr-date-range-filter-wrapper {
+.toplevel_page_zwsgr_dashboard #wpcontent {
+    padding: 32px;
+}
+
+.zwgr-dashboard .zwgr-dashboard-header {
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(27, 27, 27, 0.1);
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-date-range-filter-wrapper {
     display: flex;
-    justify-content: space-between ;
+    justify-content: space-between;
     align-items: center;
-    /* padding: 64px 32PX 676px 192px; */
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    margin: 0 0 32px 0;
 }
 
-.zwsgr-range-filter-title {
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
+    font-family: 'Poppins';
+    color: #1B1B1B;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    margin: 0;    
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filters-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item {
+    margin: 0 12px 0 0;
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item:last-child {
+    margin: 0;
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button, .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
+    background-color: #EDF4F5;
+    color: #1B1B1B;
+    padding: 10px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.14;
+    border: none;
+    letter-spacing: 0.25px;
+    transition: all 0.1s ease-in-out;
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button.active {
+    color: #FCFCFC;
+    background-color: #0074A2;
+}
+
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
     font-size: 20px;
     font-weight: 500;
     line-height: 30px;
@@ -857,186 +904,178 @@ input.zwsgr-radio:checked::before {
     color: #1B1B1B;
 }
 
-
-.zwsgr-filters-list {
-    display: flex;
-    gap: 10px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.zwsgr-filter-item {
-    margin: 0;
-}
-
-.zwsgr-filter-button {
-    background-color: #EDF4F5;
-    color: #1B1B1B;
-    padding: 10px 24px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16px;
-    font-family: 'Poppins';
-    border: none;
-    letter-spacing: 0.25px;
-}
-
-.zwsgr-filter-button.active {
+.zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker.active {
     background-color: #0074A2;
-    color: #FCFCFC;
-    padding: 10px 24px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16px;
-    font-family: 'Poppins';
-    border: none;
+    color: #FCFCFC;    
 }
 
-/* Style for the input field to match the button */
-#zwsgr-date-range-picker.active {
-    background-color: #0074A2;
-    color: #FCFCFC;
-    padding: 10px 24px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16px;
-    font-family: 'Poppins';
-    border: none;
-    
-}
-#zwsgr-date-range-picker {
-    background-color: #EDF4F5;
-    color: #1B1B1B;
-    padding: 10px 24px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16px;
-    font-family: 'Poppins';
-    border: none;
-    letter-spacing: 0.25px;
+.zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select, 
+.zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-location-select {
+    max-width: 310px;
+    margin-right: 10px;
 }
 
-/* Total Reviews Card Styling */
-.zwsgr-total-reviews-card {
+.zwgr-dashboard #render-dynamic {
+    padding: 32px 0 0 0;
+}
+
+.zwgr-dashboard #render-dynamic .zwsgr-data-card {
+    width: 100%;
+    max-width: 286px;
+    margin: 0 24px 0 0;
+    padding: 24px 27px;
     display: flex;
+    justify-content: flex-start;
     align-items: center;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px 0;
-    max-width: 350px;
-    transition: all 0.3s ease;
-    width: 286px;
-    height: 126px;
-}
-
-.zwsgr-total-reviews-card:hover {
-    transform: scale(1.05);
+    pointer-events: auto;
+    border-radius: 12px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
 }
 
-.zwsgr-card-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #42a5f5;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 24px;
-    margin-right: 15px;
+.zwgr-dashboard #render-dynamic .zwsgr-data-card:last-child {
+    margin: 0;
 }
 
-.zwsgr-card-icon .dashicons {
-    font-size: 24px;
+.zwgr-dashboard #render-dynamic .zwsgr-data-card .zwsgr-card-icon {
+    width: 100%;
+    margin-right: 20px;
+    max-width: 72px;
+    max-height: 72px;
 }
 
-.zwsgr-card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.zwsgr-card-title {
+.zwgr-dashboard #render-dynamic .zwsgr-data-card .zwsgr-card-title {
+    color: #1B1B1B;
+    font-family: 'Poppins';
     font-size: 16px;
     font-weight: 500;
-    color: #1B1B1B;
-    line-height: 24px;
+    line-height: 1.5;
+    text-align: left;
+    margin: 0 0 6px 0;
+}
+
+.zwgr-dashboard #render-dynamic .zwsgr-data-card .zwsgr-card-value {
+    display: inline-block;
+    color: #0074A2;
     font-family: 'Poppins';
-}
-
-
-/* Average Rating Card Styling */
-.zwsgr-average-rating-card {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px 0;
-    max-width: 350px;
-    transition: all 0.3s ease;
-    width: 286px;
-    height: 126px;
-}
-
-.zwsgr-average-rating-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.zwsgr-card-icon.orange {
-    background-color: #FCF7EB; /* Orange color for the average rating */
-}
-.dashicons.dashicons-star-filled
-{
-    background-color: #FCF7EB;
-}
-
-.zwsgr-card-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-    color: #fff;
-    font-size: 24px;
-    margin-right: 15px;
-}
-
-.zwsgr-card-icon .dashicons {
-    width: 32px;
-    height: 32px;
-    padding: 20px;
-    font-size: 24px;
-}
-
-.zwsgr-card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.zwsgr-card-value {
     font-size: 32px;
     font-weight: 600;
-    color: #F08C3C;
     line-height: 48px;
+    text-align: left;
+    margin: 0;
 }
 
+.zwgr-dashboard #render-dynamic .zwsgr-average-rating-card .zwsgr-card-value {
+    color: #F08C3C;
+}
 
+.zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 0 36px 0;
+}
 
+.zwgr-dashboard #render-dynamic .zwgr-dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 0 -12px;
+}
 
+.zwgr-dashboard #render-dynamic .zwsgr-flex-column {
+    width: 50%;
+    padding: 0 12px;
+}
+
+.zwsgr-flex-inner-container {
+    height: 100%;
+    padding: 24px 27px;
+    box-shadow: 0px 0.5px 2px 0px rgba(37, 42, 59, 0.11);
+    border-radius: 12px;
+}
+
+.zwsgr-flex-inner-container .zwsgr-header-container {
+    margin: 0 0 20px 0;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container {
+    height: 254px;
+    overflow: auto;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-item {
+    margin: 0 0 16px 0;
+    border-radius: 8px 0px 0px 0px;
+    background-color: rgba(246, 246, 246, 1);
+    padding: 16px;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-item:last-child {
+    margin: 0;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-header .zwsgr-profile {
+    margin: 0 11px 0 0;
+    border-radius: 50px;
+    width: 32px;
+    height: 32px;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-header .zwsgr-title {
+    margin: 0 0 2px 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: left;
+    color: #1B1B1B;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-date {
+    font-weight: 400;
+    line-height: 14px;
+    color: #8E8E8E;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-title, .zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-date {
+    font-family: 'Arial';
+    margin: 0;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-rating {
+    margin: 9px 0 9px 0;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-rating svg {
+    margin: 0 3px 0 0;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-content {
+    margin: 9px 0 0 0;
+    color: #1B1B1B;
+    font-family: 'Arial';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+}
+
+.zwsgr-flex-inner-container h4 {
+    margin: 0;
+    display: inline-block;
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    text-align: left;
+}
+
+.zwsgr-data-card:hover {
+    transform: scale(1.05);
+}
