@@ -1923,7 +1923,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<li>
 										<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
 										<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-days-ago" class="zwsgr-chechbox-label">Days Ago</label>
+										<label for="review-days-ago" class="zwsgr-chechbox-label">Date</label>
 									</li>
 									<li>
 										<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
@@ -1934,6 +1934,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
 										<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
 										<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
+									</li>
+									<li>
+										<input type="checkbox" id="review-g-icon" class="zwsgr-checkbox" name="review-element" value="review-photo" 
+										<?php echo in_array('review-g-icon', $selected_elements) ? 'checked' : ''; ?>>
+										<label for="review-g-icon" class="zwsgr-chechbox-label">G Icon</label>
 									</li>
 									<!-- Add more elements as needed -->
 								</ul>
@@ -2129,7 +2134,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
 			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : get_post_meta($post_id, 'selected_elements', true);
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
-			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : get_post_meta($post_id, 'keywords', true);
+			// $keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : get_post_meta($post_id, 'keywords', true);
+			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
+			// $keywords = isset($_POST['keywords']) && !empty($this_keywords) ? array_map('sanitize_text_field', $_POST['keywords']) : delete_post_meta($post_id, 'keywords') ?? [];
+
 			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : (get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY');
 			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : get_post_meta($post_id, 'char_limit', true);
 			$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : get_post_meta($post_id, 'language', true);
@@ -2369,7 +2377,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
 								' . ( !empty($trimmed_content) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
