@@ -292,6 +292,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -303,6 +304,10 @@ jQuery(document).ready(function($) {
 
 		if (slider2.hasClass('slick-initialized')) {
 			slider2.slick('unslick');
+		}
+
+		if (slider3.hasClass('slick-initialized')) {
+			slider3.slick('unslick');
 		}
 
 		if (slider4.hasClass('slick-initialized')) {
@@ -365,6 +370,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -476,6 +500,23 @@ jQuery(document).ready(function($) {
 			}
 		]
 	});	 
+
+	$('.zwsgr-slider-3').slick({
+		infinite: true,
+		slidesToShow: 2,
+		slidesToScroll: 2,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 1180,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});	
 
 	$('.zwsgr-slider-4').slick({
 		infinite: true,
@@ -1528,6 +1569,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -1539,6 +1581,10 @@ jQuery(document).ready(function($) {
 
 		if (slider2.hasClass('slick-initialized')) {
 			slider2.slick('unslick');
+		}
+
+		if (slider3.hasClass('slick-initialized')) {
+			slider3.slick('unslick');
 		}
 
 		if (slider4.hasClass('slick-initialized')) {
@@ -1601,6 +1647,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
