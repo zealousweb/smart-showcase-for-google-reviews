@@ -1266,21 +1266,22 @@ jQuery(document).ready(function($) {
 	
 		e.preventDefault();
 
-		// Show the WordPress loader
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#delete-replay").after(loader);
-	
 		// Get the value of the 'Reply Comment' textarea
 		var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
-	
-		// Get the value of the 'Account ID' input
-		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
-	
-		// Get the value of the 'Location' input
-		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
-	
-		// Get the value of the 'Review ID' input
-		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+
+		if (zwsgr_reply_comment === "") {
+            $("#json-response-message").html('<div class="notice notice-error"><p>' + 
+                'Please enter a reply comment.'+ '</p></div>');
+            return;
+        }
+
+		$("#gmb-review-data #add-replay").addClass('disabled');
+		$("#gmb-review-data #update-replay").addClass('disabled');
+		$("#gmb-review-data #delete-replay").addClass('disabled');
+
+		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
+		$("#gmb-review-data #add-replay").after(loader);
+		$("#gmb-review-data #update-replay").after(loader);
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1288,11 +1289,8 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwsgr_add_update_review_reply',
-				zwsgr_reply_comment: zwsgr_reply_comment,
-				zwsgr_account_number: zwsgr_account_number,
-				zwsgr_location_code: zwsgr_location_code,
-				zwsgr_review_id: zwsgr_review_id,
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_reply_comment: zwsgr_reply_comment,
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
 			success: function(response) {
@@ -1302,7 +1300,7 @@ jQuery(document).ready(function($) {
 				if (response.success) {
 
 					// Append the error message below the reply button
-					$("#json-response-message").html(response.data.message);
+					$("#json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 
 					setTimeout(function() {
 						location.reload();
@@ -1315,8 +1313,8 @@ jQuery(document).ready(function($) {
 
 				// Construct the error message to be appended
 				var errorMessage = $("<div>", {
-					class: "error-message",
-					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
+					class: "notice notice-error",
+					html: 'Error:' + error
 				});
 
 				// Append the error message below the reply button
@@ -1336,15 +1334,9 @@ jQuery(document).ready(function($) {
 		// Show the WordPress loader
 		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
 		$("#delete-replay").after(loader);
-	
-		// Get the value of the 'Account ID' input
-		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
-	
-		// Get the value of the 'Location' input
-		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
-	
-		// Get the value of the 'Review ID' input
-		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+
+		$("#gmb-review-data #update-replay").addClass('disabled');
+		$("#gmb-review-data #delete-replay").addClass('disabled');
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1352,9 +1344,6 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwsgr_delete_review_reply',
-				zwsgr_account_number: zwsgr_account_number,
-				zwsgr_location_code: zwsgr_location_code,
-				zwsgr_review_id: zwsgr_review_id,
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
@@ -1365,7 +1354,7 @@ jQuery(document).ready(function($) {
 				if (response.success) {
 
 					// Append the error message below the reply button
-					$("#json-response-message").html(response.data.message);
+					$("#json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 
 					setTimeout(function() {
 						location.reload();
