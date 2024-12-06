@@ -338,10 +338,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		// Display all review details in one meta box
 		function zwsgr_display_review_details_meta_box($zwsgr_review) 
 		{
-			// Retrieve review fields
-			$zwsgr_account_number 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_account_number', true);
-			$zwsgr_location_code 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_location_code', true);
-			$zwsgr_review_id 		  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_id', true);
 			$zwsgr_review_comment	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_comment', true);
 			$zwsgr_reviewer_name 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reviewer_name', true);
 			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
@@ -374,7 +370,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_filled_star = str_repeat($zwsgr_filled_star, $numeric_rating);
 			$zwsgr_empty_star = str_repeat($zwsgr_empty_star, 5 - $numeric_rating);
 
-			echo '<table class="form-table test" id="gmb-review-data">
+			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="'.$zwsgr_review->ID.'">
 				<tr>
 					<th>
 						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
@@ -413,9 +409,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
-						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width:100%;">
-							' . esc_textarea($zwsgr_reply_comment) . '
-						</textarea>
+						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width: 100%;">'. esc_textarea($zwsgr_reply_comment) .'</textarea>
 						<div class="cta-wrapper">';
 							if (!empty($zwsgr_reply_comment)) {
 								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
