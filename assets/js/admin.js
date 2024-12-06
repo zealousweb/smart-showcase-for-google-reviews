@@ -890,6 +890,9 @@ jQuery(document).ready(function($) {
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
 		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+		// Get the custom CSS value
+		var customCSS = $('.zwsgr-textarea').val();
+		console.log(customCSS);
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -914,7 +917,8 @@ jQuery(document).ready(function($) {
 				text_color: textColor,
 				settings: settings,
 				posts_per_page: postsPerPage,
-				current_tab2: currentTab2 
+				current_tab2: currentTab2,
+				custom_css: customCSS  // Add the custom CSS value here
 			},
 			success: function(response) {
 				if (response.success) {

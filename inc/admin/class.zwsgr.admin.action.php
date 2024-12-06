@@ -967,6 +967,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
 			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
 			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
+			$custom_css = get_post_meta($post_id, '_zwsgr_custom_css', true);
 	
 			// Generate the shortcode by calling the new function
 			$generated_shortcode = $this->generate_shortcode($post_id);
@@ -2070,7 +2071,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</div>
 				<div class="zwsgr-widget-settings">
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
-					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
+					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($custom_css); ?></textarea>
 				</div>
 					<button id="save-get-code-btn" class="zwsgr-btn" data-zwsgr-btn='zwsgr-btn'>Save & Get Code</button>
 				</div>
@@ -2162,7 +2163,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			if ($existing_value != 'tab-selected') {
 				update_post_meta($post_id, 'tab-selected', $current_tab2);
 			}
-
+			
+			// $custom_css = sanitize_textarea_field($_POST['custom_css']);  
+			$custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : get_post_meta($post_id, '_zwsgr_custom_css', true);
+			
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);
@@ -2175,6 +2179,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			update_post_meta($post_id, 'bg_color', $bg_color);
 			update_post_meta($post_id, 'text_color', $text_color);
 			update_post_meta($post_id, 'posts_per_page', $posts_per_page);
+			update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);  // Save custom CSS
 		
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
