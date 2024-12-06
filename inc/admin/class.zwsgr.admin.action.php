@@ -1583,8 +1583,26 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query($zwsgr_filter_data);		
 			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
-			
+			$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
 
+			$final_rating = ' <div class="zwsgr-final-review-wrap">
+				<svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M30.0001 14.4156L34.7771 17.0896L33.7102 11.72L37.7293 8.00321L32.293 7.35866L30.0001 2.38752L27.7071 7.35866L22.2707 8.00321L26.2899 11.72L25.223 17.0896L30.0001 14.4156ZM23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616L23.8197 19.0211Z" fill="#ccc" />
+					<path d="M50.0001 14.4156L54.7771 17.0896L53.7102 11.72L57.7293 8.0032L52.293 7.35866L50.0001 2.38752L47.7071 7.35866L42.2707 8.0032L46.2899 11.72L45.223 17.0896L50.0001 14.4156ZM43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616L43.8197 19.0211Z" fill="#ccc" />
+					<path d="M70.0005 14.4159L74.7773 17.0899L73.7106 11.7203L77.7295 8.00334L72.2928 7.35876L70.0003 2.3876L67.7071 7.35877L62.2705 8.00334L66.2895 11.7203L65.2227 17.09L70.0005 14.4159ZM63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619L63.8195 19.0214Z" fill="#ccc" />
+					<path d="M10.0001 14.4156L14.7771 17.0896L13.7102 11.7201L17.7293 8.00322L12.293 7.35867L10.0001 2.38751L7.70704 7.35867L2.27068 8.00322L6.28991 11.7201L5.223 17.0896L10.0001 14.4156ZM3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616L3.81966 19.0211Z" fill="#ccc" />
+					<path d="M90.0005 14.4159L94.7773 17.0899L93.7106 11.7203L97.7295 8.00335L92.2928 7.35877L90.0003 2.38761L87.7071 7.35878L82.2705 8.00335L86.2895 11.7203L85.2227 17.09L90.0005 14.4159ZM83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619L83.8195 19.0214Z" fill="#ccc" />
+				</svg>
+				<div class="zwsgr-final-review-fill" style="width: ' . $widthPercentage . '%;">
+					<svg width="100" height="20" viewBox="0 0 100 20" className="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M30.0001 15.5616L23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616Z" fill="#f39c12" />
+						<path d="M50.0001 15.5616L43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616Z" fill="#f39c12" />
+						<path d="M70.0004 15.5619L63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619Z" fill="#f39c12" />
+						<path d="M10.0001 15.5616L3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616Z" fill="#f39c12" />
+						<path d="M90.0004 15.5619L83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619Z" fill="#f39c12" />
+					</svg>
+				</div>
+			</div>';
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
@@ -1602,7 +1620,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-slider-badge">
 							<div class="zwsgr-badge-item" id="zwsgr-badge1">
 								<h3 class="zwsgr-average">Good</h3>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 								<img src="' . $plugin_dir_path . 'assets/images/google.png">
 							</div>
@@ -1664,7 +1682,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'badge' => [
 					'<div class="zwsgr-badge-item" id="zwsgr-badge1">
 						<h3 class="zwsgr-average">Good</h3>
-						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 						<img src="' . $plugin_dir_path . 'assets/images/google.png">
 					</div>',
@@ -1675,15 +1693,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</div>
 						<div class="zwsgr-badge-info">
 							<h3 class="zwsgr-average">Good</h3>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 						</div>
 					</div>',
 
 					'<div class="zwsgr-badge-item" id="zwsgr-badge3">
 						<div class="zwsgr-rating-wrap">
-							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							<span class="final-rating">3</span>
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 					</div>',
@@ -1691,7 +1709,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					'<div class="zwsgr-badge-item" id="zwsgr-badge4">
 						<div class="zwsgr-badge4-rating">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<div class="zwsgr-badge4-info">
 							<h3 class="zwsgr-google">Google</h3>
@@ -1707,14 +1725,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-badge5-info">
 							<h3 class="zwsgr-google">Google</h3>
 							<p class="zwsgr-avg-note">Average Rating</p>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 					</div>',
 
 					'<div class="zwsgr-badge-item" id="zwsgr-badge6">
 						<div class="zwsgr-badge6-rating">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<div class="zwsgr-badge6-info">
 							<h3 class="zwsgr-google">Google</h3>
@@ -1726,7 +1744,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 						<div class="zwsgr-badge7-rating">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 					</div>',
 
@@ -1736,7 +1754,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<p class="zwsgr-avg-note">Google Reviews</p>
 						</div>
 						<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 					</div>'
 				],
@@ -1747,7 +1765,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</div>
 						<div class="zwsgr-profile-info">
 							<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 						</div>
 					</div>
@@ -1761,7 +1779,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-										' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 									</div>
 								</div>
@@ -1778,7 +1796,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</div>
 						<div class="zwsgr-info-wrap">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 						</div>
 					</div>
@@ -1792,7 +1810,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-										' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 									</div>
 								</div>
@@ -2331,7 +2349,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							? '<span class="zwsgr-star filled">★</span>' 
 							: '<span class="zwsgr-star">☆</span>';
 					}
-					
+				
+			
 
 					// Format the slider item for each review
 					$zwsgr_slider_item1 = '
@@ -2813,6 +2832,28 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
 
+			
+			$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
+
+			$final_rating = ' <div class="zwsgr-final-review-wrap">
+				<svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M30.0001 14.4156L34.7771 17.0896L33.7102 11.72L37.7293 8.00321L32.293 7.35866L30.0001 2.38752L27.7071 7.35866L22.2707 8.00321L26.2899 11.72L25.223 17.0896L30.0001 14.4156ZM23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616L23.8197 19.0211Z" fill="#ccc" />
+					<path d="M50.0001 14.4156L54.7771 17.0896L53.7102 11.72L57.7293 8.0032L52.293 7.35866L50.0001 2.38752L47.7071 7.35866L42.2707 8.0032L46.2899 11.72L45.223 17.0896L50.0001 14.4156ZM43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616L43.8197 19.0211Z" fill="#ccc" />
+					<path d="M70.0005 14.4159L74.7773 17.0899L73.7106 11.7203L77.7295 8.00334L72.2928 7.35876L70.0003 2.3876L67.7071 7.35877L62.2705 8.00334L66.2895 11.7203L65.2227 17.09L70.0005 14.4159ZM63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619L63.8195 19.0214Z" fill="#ccc" />
+					<path d="M10.0001 14.4156L14.7771 17.0896L13.7102 11.7201L17.7293 8.00322L12.293 7.35867L10.0001 2.38751L7.70704 7.35867L2.27068 8.00322L6.28991 11.7201L5.223 17.0896L10.0001 14.4156ZM3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616L3.81966 19.0211Z" fill="#ccc" />
+					<path d="M90.0005 14.4159L94.7773 17.0899L93.7106 11.7203L97.7295 8.00335L92.2928 7.35877L90.0003 2.38761L87.7071 7.35878L82.2705 8.00335L86.2895 11.7203L85.2227 17.09L90.0005 14.4159ZM83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619L83.8195 19.0214Z" fill="#ccc" />
+				</svg>
+				<div class="zwsgr-final-review-fill" style="width: ' . $widthPercentage . '%;">
+					<svg width="100" height="20" viewBox="0 0 100 20" className="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M30.0001 15.5616L23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616Z" fill="#f39c12" />
+						<path d="M50.0001 15.5616L43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616Z" fill="#f39c12" />
+						<path d="M70.0004 15.5619L63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619Z" fill="#f39c12" />
+						<path d="M10.0001 15.5616L3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616Z" fill="#f39c12" />
+						<path d="M90.0004 15.5619L83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619Z" fill="#f39c12" />
+					</svg>
+				</div>
+			</div>';
+
 
 			$filter_layout = [
 				'slider' => [
@@ -2830,7 +2871,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-slider-badge">
 							<div class="zwsgr-badge-item" id="zwsgr-badge1">
 								<h3 class="zwsgr-average">Good</h3>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 								<img src="' . $plugin_dir_path . 'assets/images/google.png">
 							</div>
@@ -2892,7 +2933,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'badge' => [
 					'<div class="zwsgr-badge-item" id="zwsgr-badge1">
 						<h3 class="zwsgr-average">Good</h3>
-						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 						<img src="' . $plugin_dir_path . 'assets/images/google.png">
 					</div>',
@@ -2903,7 +2944,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</div>
 						<div class="zwsgr-badge-info">
 							<h3 class="zwsgr-average">Good</h3>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 						</div>
 					</div>',
@@ -2911,7 +2952,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					'<div class="zwsgr-badge-item" id="zwsgr-badge3">
 						<div class="zwsgr-rating-wrap">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 					</div>',
@@ -2919,7 +2960,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					'<div class="zwsgr-badge-item" id="zwsgr-badge4">
 						<div class="zwsgr-badge4-rating">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<div class="zwsgr-badge4-info">
 							<h3 class="zwsgr-google">Google</h3>
@@ -2935,14 +2976,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-badge5-info">
 							<h3 class="zwsgr-google">Google</h3>
 							<p class="zwsgr-avg-note">Average Rating</p>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 					</div>',
 
 					'<div class="zwsgr-badge-item" id="zwsgr-badge6">
 						<div class="zwsgr-badge6-rating">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<div class="zwsgr-badge6-info">
 							<h3 class="zwsgr-google">Google</h3>
@@ -2954,7 +2995,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 						<div class="zwsgr-badge7-rating">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 					</div>',
 
@@ -2964,7 +3005,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<p class="zwsgr-avg-note">Google Reviews</p>
 						</div>
 						<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 					</div>'
 				],
@@ -2975,7 +3016,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>
 					<div class="zwsgr-profile-info">
 						<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 					</div>
 				</div>
@@ -2989,7 +3030,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 								<div class="zwsgr-profile-info">
 									<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-									' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 									<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 								</div>
 							</div>
@@ -3006,7 +3047,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					</div>
 					<div class="zwsgr-info-wrap">
 						<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-						' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 					</div>
 				</div>
@@ -3020,7 +3061,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 								<div class="zwsgr-profile-info">
 									<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-									' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 									<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 								</div>
 							</div>
