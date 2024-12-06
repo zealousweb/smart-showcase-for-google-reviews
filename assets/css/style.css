@@ -781,6 +781,18 @@ input.zwsgr-radio:checked::before {
     justify-content: center;
 }
 
+#zwsgr-popup2 .zwsgr-title-wrap,
+#zwsgr-popup2 .final-rating,
+#zwsgr-popup2 .zwsgr-rating {
+    pointer-events: none;
+}
+
+#zwsgr-popup1 .zwsgr-profile-logo,
+#zwsgr-popup1 .zwsgr-rating,
+#zwsgr-popup1 .zwsgr-profile-info h3 {
+    pointer-events: none;
+}
+
 .zwsgr-info-wrap {
     margin-top: 20px;
 }
