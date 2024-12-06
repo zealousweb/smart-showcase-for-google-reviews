@@ -832,12 +832,9 @@ input.zwsgr-radio:checked::before {
 
 /* 27-11-24 */
 
-.toplevel_page_zwsgr_dashboard {
-    background-color: #fcfcfc;
-}
-
 .toplevel_page_zwsgr_dashboard #wpcontent {
     padding: 32px;
+    background-color: #fcfcfc;
 }
 
 .zwgr-dashboard .zwgr-dashboard-header {
