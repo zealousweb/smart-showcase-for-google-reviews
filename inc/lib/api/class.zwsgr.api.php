@@ -288,11 +288,11 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             check_ajax_referer('zwsgr_add_update_reply_nonce', 'security');
 
             // Retrieve POST values
-            $zwsgr_reply_comment  = isset($_POST['zwsgr_reply_comment']) ? sanitize_textarea_field($_POST['zwsgr_reply_comment']) : '';
-            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
-            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
-            $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
-            $zwsgr_wp_review_id   = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : ''; // Capture post ID
+            $zwsgr_wp_review_id    = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
+            $zwsgr_reply_comment   = isset($_POST['zwsgr_reply_comment']) ? sanitize_text_field($_POST['zwsgr_reply_comment']) : '';
+            $zwsgr_account_number  = get_post_meta($zwsgr_wp_review_id, 'zwsgr_account_number', true);
+            $zwsgr_location_code   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_code', true);
+            $zwsgr_review_id       = get_post_meta($zwsgr_wp_review_id, 'zwsgr_review_id', true);
 
             // Check that all parameters are provided
             if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) || empty( $zwsgr_reply_comment ) ) {
@@ -364,11 +364,12 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Check nonce and AJAX referer for security
             check_ajax_referer('zwsgr_delete_review_reply', 'security');
 
-            // Sanitize and retrieve account number, location code, and review ID from AJAX request
-            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
-            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
-            $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
+            // Retrieve POST values
             $zwsgr_wp_review_id   = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
+            $zwsgr_account_number  = get_post_meta($zwsgr_wp_review_id, 'zwsgr_account_number', true);
+            $zwsgr_location_code   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_code', true);
+            $zwsgr_review_id       = get_post_meta($zwsgr_wp_review_id, 'zwsgr_review_id', true);
+            $zwsgr_reply_comment   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_comment', true);
 
             // Ensure all required parameters are provided
             if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
