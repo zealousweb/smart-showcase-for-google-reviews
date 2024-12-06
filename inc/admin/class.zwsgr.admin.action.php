@@ -2064,7 +2064,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<span class="slider"></span>
 								</label>
 
-								<div id="load-more-settings" style="display: <?php echo ($enable_load_more) ? 'none' : 'block'; ?>">
+								<div id="load-more-settings" style="display:'block';">
 								<h3 class="zwsgr-label">Number Of Review:</h3>
 								<select id="posts-per-page" name="posts_per_page" class="zwsgr-input-text">
 									<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
@@ -2152,47 +2152,80 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			}
 
-			$layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
-			$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : get_post_meta($post_id, 'selected_elements', true);
-			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
-			// $keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : get_post_meta($post_id, 'keywords', true);
-			$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
-			// $keywords = isset($_POST['keywords']) && !empty($this_keywords) ? array_map('sanitize_text_field', $_POST['keywords']) : delete_post_meta($post_id, 'keywords') ?? [];
+			else if(  $setting_tb == 'tab-selected' ){
+				$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : array();
+				// $rating_filter = isset($_POST['rating_filter']) ? sanitize_text_field($_POST['rating_filter']) : '';
+				$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
+				$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : '';
+				$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : 0;
+				$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : '';
+				$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : '';
+				$enable_load_more = isset($_POST['enable_load_more']) ? intval($_POST['enable_load_more']) : 0;
+				$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
+				$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
+				$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
+				$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
+				$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
+				$custom_css = sanitize_textarea_field($_POST['custom_css']);
+				$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
 
-			$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : (get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY');
-			$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : get_post_meta($post_id, 'char_limit', true);
-			$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : get_post_meta($post_id, 'language', true);
-			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : get_post_meta($post_id, 'sort_by', true);
-			$enable_load_more = isset($_POST['enable_load_more']) ? (intval($_POST['enable_load_more']) ? 'checked' : '') : (get_post_meta($post_id, 'enable_load_more', true) ? 'checked' : '');
-			$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : get_post_meta($post_id, 'google_review_toggle', true);
-			$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : get_post_meta($post_id, 'bg_color', true);
-			$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : get_post_meta($post_id, 'text_color', true);
-			$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : get_post_meta($post_id, 'posts_per_page', true);
-			$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : (intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0);
-
-			$existing_value = get_post_meta( $post_id, 'tab-selected', true ); // Get the existing value
-			$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
-
-			if ($existing_value != 'tab-selected') {
-				update_post_meta($post_id, 'tab-selected', $current_tab2);
+				update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
+				update_post_meta($post_id, 'selected_elements', $selected_elements);
+				update_post_meta($post_id, 'rating_filter', $rating_filter);
+				update_post_meta($post_id, 'keywords', $keywords);
+				update_post_meta($post_id, 'date_format', $date_format);
+				update_post_meta($post_id, 'char_limit', $char_limit);
+				update_post_meta($post_id, 'language', $language);
+				update_post_meta($post_id, 'sort_by', $sort_by);
+				update_post_meta($post_id, 'enable_load_more', $enable_load_more);
+				update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
+				update_post_meta($post_id, 'bg_color', $bg_color);
+				update_post_meta($post_id, 'text_color', $text_color);
+				update_post_meta($post_id, 'posts_per_page', $posts_per_page);
+				update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);
 			}
+
+			// $layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
+			// $selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : get_post_meta($post_id, 'selected_elements', true);
+			// $selected_elements = is_array($selected_elements) ? $selected_elements : [];
+			// // $keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : get_post_meta($post_id, 'keywords', true);
+			// $keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
+			// // $keywords = isset($_POST['keywords']) && !empty($this_keywords) ? array_map('sanitize_text_field', $_POST['keywords']) : delete_post_meta($post_id, 'keywords') ?? [];
+
+			// $date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : (get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY');
+			// $char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : get_post_meta($post_id, 'char_limit', true);
+			// $language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : get_post_meta($post_id, 'language', true);
+			// $sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : get_post_meta($post_id, 'sort_by', true);
+			// $enable_load_more = isset($_POST['enable_load_more']) ? (intval($_POST['enable_load_more']) ? 'checked' : '') : (get_post_meta($post_id, 'enable_load_more', true) ? 'checked' : '');
+			// $google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : get_post_meta($post_id, 'google_review_toggle', true);
+			// $bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : get_post_meta($post_id, 'bg_color', true);
+			// $text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : get_post_meta($post_id, 'text_color', true);
+			// $posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : get_post_meta($post_id, 'posts_per_page', true);
+			// $rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : (intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0);
+
+			// $existing_value = get_post_meta( $post_id, 'tab-selected', true ); // Get the existing value
+			// $current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
+
+			// if ($existing_value != 'tab-selected') {
+			// 	update_post_meta($post_id, 'tab-selected', $current_tab2);
+			// }
 			
-			// $custom_css = sanitize_textarea_field($_POST['custom_css']);  
-			$custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : get_post_meta($post_id, '_zwsgr_custom_css', true);
+			// // $custom_css = sanitize_textarea_field($_POST['custom_css']);  
+			// $custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : get_post_meta($post_id, '_zwsgr_custom_css', true);
 			
-			update_post_meta($post_id, 'selected_elements', $selected_elements);
-			update_post_meta($post_id, 'rating_filter', $rating_filter);
-			update_post_meta($post_id, 'keywords', $keywords);
-			update_post_meta($post_id, 'date_format', $date_format);
-			update_post_meta($post_id, 'char_limit', $char_limit);
-			update_post_meta($post_id, 'language', $language);
-			update_post_meta($post_id, 'sort_by', $sort_by);
-			update_post_meta($post_id, 'enable_load_more', $enable_load_more);
-			update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
-			update_post_meta($post_id, 'bg_color', $bg_color);
-			update_post_meta($post_id, 'text_color', $text_color);
-			update_post_meta($post_id, 'posts_per_page', $posts_per_page);
-			update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);  // Save custom CSS
+			// update_post_meta($post_id, 'selected_elements', $selected_elements);
+			// update_post_meta($post_id, 'rating_filter', $rating_filter);
+			// update_post_meta($post_id, 'keywords', $keywords);
+			// update_post_meta($post_id, 'date_format', $date_format);
+			// update_post_meta($post_id, 'char_limit', $char_limit);
+			// update_post_meta($post_id, 'language', $language);
+			// update_post_meta($post_id, 'sort_by', $sort_by);
+			// update_post_meta($post_id, 'enable_load_more', $enable_load_more);
+			// update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
+			// update_post_meta($post_id, 'bg_color', $bg_color);
+			// update_post_meta($post_id, 'text_color', $text_color);
+			// update_post_meta($post_id, 'posts_per_page', $posts_per_page);
+			// update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);  // Save custom CSS
 		
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
