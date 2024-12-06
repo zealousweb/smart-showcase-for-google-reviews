@@ -234,14 +234,14 @@ jQuery(document).ready(function($) {
 				  // Check if there is content in the response
 				if (!response.data.content || response.data.content.trim() === '') {
 					// No more posts, show the "No more posts." message
-					$('.zwsgr-slider.zwsgr-list').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider.zwsgr-grid-item').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-1').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-2').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-4').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-5').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-6').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-popup-item').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-list').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -340,14 +340,14 @@ jQuery(document).ready(function($) {
 				 // Check if there is content in the response
 				if (!response.data.content || response.data.content.trim() === '') {
 					// No more posts, show the "No more posts." message
-					$('.zwsgr-slider.zwsgr-list').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider.zwsgr-grid-item').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-1').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-2').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-4').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-5').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider-6').html('<p>' + response.data.err_msg + '</p>');
-					$('.zwsgr-popup-item').html('<p>' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-list').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 

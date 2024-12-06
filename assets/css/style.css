@@ -1066,6 +1066,13 @@ input.zwsgr-radio:checked::before {
     margin: 0 auto;
 }
 
+.zwsgr-no-found-message {
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    text-transform: capitalize;
+}
+
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
         width: 60%;

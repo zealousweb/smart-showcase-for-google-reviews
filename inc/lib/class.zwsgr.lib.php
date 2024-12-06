@@ -2291,7 +2291,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				wp_reset_postdata();
 			} else {
 				// No more posts available
-				$response['err_msg'] = esc_html__('No more posts.', 'zw-smart-google-reviews');
+				$response['err_msg'] = esc_html__('No Review Founds.', 'zw-smart-google-reviews');
 			}
 			$response['disable_button'] = ( $query->max_num_pages <= $page ) ? true : false;
 			wp_send_json_success($response);
