@@ -776,17 +776,8 @@ jQuery(document).ready(function($) {
         }
     });
 
-	// Toggle for enabling 'Load More' settings
-	$('#enable-load-more').on('change', function() {
-		if ($(this).is(':checked')) {
-			$('#load-more-settings').fadeIn();  // Show the settings div
-		} else {
-			$('#load-more-settings').fadeOut(); // Hide the settings div
-		}
-    });
-
-	 // Color picker for background color
-	 $('#bg-color-picker').on('input', function() {
+	// Color picker for background color
+	$('#bg-color-picker').on('input', function() {
         var bgColor = $(this).val();
         $('#google-review-section').css('background-color', bgColor);
     });
@@ -890,9 +881,7 @@ jQuery(document).ready(function($) {
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
 		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
-		// Get the custom CSS value
 		var customCSS = $('.zwsgr-textarea').val();
-		console.log(customCSS);
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
