@@ -654,6 +654,7 @@ input.zwsgr-radio:checked::before {
     border-radius: 16px 0 0 16px;
     width: 40%;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .zwsgr-badge-item#zwsgr-badge5 .zwsgr-badge5-info {
