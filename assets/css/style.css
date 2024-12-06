@@ -1073,6 +1073,25 @@ input.zwsgr-radio:checked::before {
     text-transform: capitalize;
 }
 
+.zwsgr-final-review-wrap {
+    position: relative;
+    width: 100px;
+}
+
+#zwsgr-badge1 .zwsgr-final-review-wrap,
+#zwsgr-badge4 .zwsgr-final-review-wrap,
+#zwsgr-badge8 .zwsgr-final-review-wrap {
+    margin: 5px auto;
+}
+
+.zwsgr-final-review-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
         width: 60%;
