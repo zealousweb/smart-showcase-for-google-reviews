@@ -826,14 +826,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</a>
 					</h2>
 					<?php if ($current_tab === 'google'): ?>
-						<form action="options.php" method="post" class="zwsgr-setting-form">
+						<?php /* <form action="options.php" method="post" class="zwsgr-setting-form">
 							<?php
 							settings_fields('zwsgr_google_account_settings');
 							do_settings_sections('zwsgr_google_account_settings');
 							submit_button( 'Save Google Settings', 'zwsgr-submit-btn', 'submit_buttons' );
 							
 							?>
-						</form>
+						</form> */?>
 					<?php elseif ($current_tab === 'notifications'): ?>
 						<form id="notification-form" action="" method="post" class="zwsgr-setting-form">
 							<?php
