@@ -425,6 +425,14 @@ input.zwsgr-radio:checked::before {
     border-radius: 8px;
 }
 
+#zwsgr-slider1 .zwsgr-slide-item,
+#zwsgr-slider2 .zwsgr-slide-item,
+#zwsgr-slider3 .zwsgr-slide-item,
+#zwsgr-slider4 .zwsgr-slide-item,
+#zwsgr-slider6 .zwsgr-slide-item {
+    margin: 0 ;
+}
+
 #zwsgr-slider1 .zwsgr-slide-item .zwsgr-list-inner,
 #zwsgr-slider2 .zwsgr-slide-item .zwsgr-list-inner,
 #zwsgr-slider3 .zwsgr-slide-item .zwsgr-list-inner,
