@@ -967,6 +967,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
 			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
 			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
+			$custom_css = get_post_meta($post_id, '_zwsgr_custom_css', true);
 	
 			// Generate the shortcode by calling the new function
 			$generated_shortcode = $this->generate_shortcode($post_id);
@@ -1029,16 +1030,18 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						$zwsgr_reviews_args['order'] = 'DESC';
 					} else {
 						// Default behavior if no filter is set
-						$zwsgr_reviews_args['meta_query'][0]['value'] = 'FIVE';
-						$zwsgr_reviews_args['orderby'] = 'meta_value_num';
-						$zwsgr_reviews_args['order'] = 'DESC';
+						// $zwsgr_reviews_args['meta_query'][0]['value'] = 'FIVE';
+						$zwsgr_reviews_args['orderby'] = 'meta_value';
+						$zwsgr_reviews_args['order'] = 'ASC';
+						$azwsgr_reviews_argsrgs['meta_key'] = 'zwsgr_review_star_rating';
 					}
 					break;
 
 				case 'lowest':
-					$zwsgr_reviews_args['meta_query'][0]['value'] = 'ONE';
-					$zwsgr_reviews_args['orderby'] = 'meta_value_num';
-					$zwsgr_reviews_args['order'] = 'ASC';    
+					// $zwsgr_reviews_args['meta_query'][0]['value'] = 'ONE';
+					$zwsgr_reviews_args['orderby'] = 'meta_value';
+						$zwsgr_reviews_args['order'] = 'DESC';
+						$azwsgr_reviews_argsrgs['meta_key'] = 'zwsgr_review_star_rating';
 					break;
 
 				default:
@@ -1936,7 +1939,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
 									</li>
 									<li>
-										<input type="checkbox" id="review-g-icon" class="zwsgr-checkbox" name="review-element" value="review-photo" 
+										<input type="checkbox" id="review-g-icon" class="zwsgr-checkbox" name="review-element" value="review-g-icon" 
 										<?php echo in_array('review-g-icon', $selected_elements) ? 'checked' : ''; ?>>
 										<label for="review-g-icon" class="zwsgr-chechbox-label">G Icon</label>
 									</li>
@@ -2044,7 +2047,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Load More</h3>
 								<label class="switch">
-									<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more) ? '' : 'checked'; ?>>
+									<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php ((get_post_meta($post_id, 'enable_load_more', true) !== '0')  &&  '') || $enable_load_more ? 'checked' : '';?> checked>
 									<span class="slider"></span>
 								</label>
 
@@ -2056,6 +2059,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>
 									<option value="4" <?php echo ($posts_per_page == 4) ? 'selected' : ''; ?>>4</option>
 									<option value="5" <?php echo ($posts_per_page == 5) ? 'selected' : ''; ?>>5</option>
+									<option value="6" <?php echo ($posts_per_page == 6) ? 'selected' : ''; ?>>6</option>
+									<option value="7" <?php echo ($posts_per_page == 7) ? 'selected' : ''; ?>>7</option>
+									<option value="8" <?php echo ($posts_per_page == 8) ? 'selected' : ''; ?>>8</option>
+									<option value="9" <?php echo ($posts_per_page == 9) ? 'selected' : ''; ?>>9</option>
+									<option value="10" <?php echo ($posts_per_page == 10) ? 'selected' : ''; ?>>10</option>
 								</select>
 							</div>
 						</div>
@@ -2063,7 +2071,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</div>
 				<div class="zwsgr-widget-settings">
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
-					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"></textarea>
+					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($custom_css); ?></textarea>
 				</div>
 					<button id="save-get-code-btn" class="zwsgr-btn" data-zwsgr-btn='zwsgr-btn'>Save & Get Code</button>
 				</div>
@@ -2155,7 +2163,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			if ($existing_value != 'tab-selected') {
 				update_post_meta($post_id, 'tab-selected', $current_tab2);
 			}
-
+			
+			// $custom_css = sanitize_textarea_field($_POST['custom_css']);  
+			$custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : get_post_meta($post_id, '_zwsgr_custom_css', true);
+			
 			update_post_meta($post_id, 'selected_elements', $selected_elements);
 			update_post_meta($post_id, 'rating_filter', $rating_filter);
 			update_post_meta($post_id, 'keywords', $keywords);
@@ -2168,6 +2179,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			update_post_meta($post_id, 'bg_color', $bg_color);
 			update_post_meta($post_id, 'text_color', $text_color);
 			update_post_meta($post_id, 'posts_per_page', $posts_per_page);
+			update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);  // Save custom CSS
 		
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );
@@ -2206,7 +2218,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$language = get_post_meta($post_id, 'language', true);
 			$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 		
-			// Mapping numeric values to string values
 			$rating_mapping = array(
 				1 => 'ONE',
 				2 => 'TWO',
@@ -2214,7 +2225,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				4 => 'FOUR',
 				5 => 'FIVE'
 			);
-		
+
 			// Create an array of string values based on the selected numeric ratings
 			$rating_strings = array();
 			foreach ($rating_filter as $filter) {
@@ -2239,34 +2250,37 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						'compare' => 'IN',
 						'type' => 'CHAR'
 					)
-				)
+				),
+				'orderby' => 'date', // Default order by date
+				'order' => 'DESC'    // Default order
 			);
+
 			// Add sorting logic
 			switch ($sort_by) {
 				case 'newest':
 					$args['orderby'] = 'date';
 					$args['order'] = 'DESC';
 					break;
-				 case 'highest':
-					// If 'highest' is selected, only show reviews of the highest selected rating
-					$highest_rating = max($rating_filter); // Get the highest rating selected
-					$rating_str = $rating_mapping[$highest_rating]; // Get the corresponding string
-					$args['meta_query'][0]['value'] = $rating_str;
-					$args['orderby'] = 'meta_value_num';
-					$args['order'] = 'DESC';
-					break;
-				case 'lowest':
-					// If 'lowest' is selected, show only the lowest selected rating
-					$lowest_rating = min($rating_filter); // Get the lowest rating selected
-					$rating_str = $rating_mapping[$lowest_rating]; // Get the corresponding string
-					$args['meta_query'][0]['value'] = $rating_str;
-					$args['orderby'] = 'meta_value_num';
+
+				case 'highest':
+					// Sort by highest rating first
+					$args['orderby'] = 'meta_value';
 					$args['order'] = 'ASC';
+					$args['meta_key'] = 'zwsgr_review_star_rating';
 					break;
-				default: // Default sorting (e.g., relevance)
+
+				case 'lowest':
+					// Sort by lowest rating first
+					$args['orderby'] = 'meta_value';
+					$args['order'] = 'DESC';
+					$args['meta_key'] = 'zwsgr_review_star_rating';
+					break;
+
+				default:
+					// Default sorting (e.g., relevance)
 					$args['orderby'] = 'date';
 					$args['order'] = 'DESC';
-    }
+			}
 		
 			$reviews_query = new WP_Query($args);
 

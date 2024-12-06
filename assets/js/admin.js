@@ -881,7 +881,7 @@ jQuery(document).ready(function($) {
 		var charLimit = $('#review-char-limit').val();
 		var language = $('#language-select').val();
 		var sortBy = $('#sort-by-select').val();
-		var enableLoadMore = $('#enable-load-more').is(':checked') ? 0 : 1;
+		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
 		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
@@ -890,6 +890,9 @@ jQuery(document).ready(function($) {
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
 		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+		// Get the custom CSS value
+		var customCSS = $('.zwsgr-textarea').val();
+		console.log(customCSS);
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -914,7 +917,8 @@ jQuery(document).ready(function($) {
 				text_color: textColor,
 				settings: settings,
 				posts_per_page: postsPerPage,
-				current_tab2: currentTab2 
+				current_tab2: currentTab2,
+				custom_css: customCSS  // Add the custom CSS value here
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1399,6 +1403,7 @@ jQuery(document).ready(function($) {
 
 		// Get the selected value
 		var zwsgr_account_number = $(this).val();
+		$(this).addClass('disabled');
 	
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -1412,15 +1417,17 @@ jQuery(document).ready(function($) {
 				$('#gmb-data-filter #zwsgr-location-select').remove();
 				if (response.success) {
 					$('#gmb-data-filter').append(response.data);
-					$("#gmb-data-filter #zwsgr-location-select").trigger('change');
+					//$("#gmb-data-filter #zwsgr-location-select").trigger('change');
 				}
-
-			}
+			},
+			complete: function() {
+				$("#gmb-data-filter #zwsgr-account-select").removeClass('disabled');
+			},
 		});
 	
 	});
 
-	$(".zwgr-dashboard").on("click", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button, .applyBtn", function (e) {
+	$(".zwgr-dashboard").on("change", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button", function (e) {
 
 		e.preventDefault();
 	
@@ -1432,8 +1439,16 @@ jQuery(document).ready(function($) {
 			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').val();
 		}
 
-		var zwsgr_gmb_account_number   = $("#gmb-data-filter #zwsgr-account-select").val();
-		var zwsgr_gmb_account_location = $("#gmb-data-filter #zwsgr-location-select").val();
+		var zwsgr_gmb_account_div = $("#gmb-data-filter #zwsgr-account-select");
+		var zwsgr_gmb_location_div = $("#gmb-data-filter #zwsgr-location-select");
+
+		if ($(e.target).is("#gmb-data-filter #zwsgr-location-select")) {
+			zwsgr_gmb_account_div.addClass('disabled');
+			zwsgr_gmb_location_div.addClass('disabled');
+		}
+
+		var zwsgr_gmb_account_number   = zwsgr_gmb_account_div.val();
+		var zwsgr_gmb_account_location = zwsgr_gmb_location_div.val();
 
 		var zwsgr_filter_data = {
 			zwsgr_gmb_account_number: zwsgr_gmb_account_number,
@@ -1453,7 +1468,7 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Add the loader before the request is sent
 				$('.zwgr-dashboard #render-dynamic').remove();
-				$('.zwgr-dashboard').append('<div class="loader">Loading...</div>');
+				$('.zwgr-dashboard').append('<div class="loader"></div>');
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1464,6 +1479,8 @@ jQuery(document).ready(function($) {
 			},
 			complete: function() {
 				$('.loader').remove();
+				zwsgr_gmb_account_div.removeClass('disabled');
+				zwsgr_gmb_location_div.removeClass('disabled');
 			},
 			error: function() {
 				$('#render-dynamic').html('<p>An error occurred while fetching data.</p>');
