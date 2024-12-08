@@ -343,8 +343,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
 			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
 			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
-			$zwsgr_datetime 		  = new DateTime($zwsgr_reply_update_time);
-			$zwsgr_formatted_time 	  = $zwsgr_datetime->format('F j, Y g:i A');
 
 			// Define the SVG for filled and empty stars
 			$zwsgr_filled_star = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="orange" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -381,7 +379,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_review_comment">' . __('Reviewer Comment', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_review_comment">' . __('Review Content', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<textarea readonly class="regular-text" rows="5" style="width:100%;">' . esc_textarea($zwsgr_review_comment) . '</textarea>
@@ -394,16 +392,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<td>
 						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
 					</td>
-				</tr>
-				<tr>
-					<th>
-						<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
-					</th>
-					<td>
-						<input type="text" value="' . esc_attr($zwsgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
-					</td>
-				</tr>
-				<tr>
+				</tr>';
+				if (!empty($zwsgr_reply_update_time)) {
+
+					$zwsgr_datetime = new DateTime($zwsgr_reply_update_time);
+					$zwsgr_formatted_time = $zwsgr_datetime->format('F j, Y g:i A');
+					
+					echo '<tr>
+						<th>
+							<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
+						</th>
+						<td>
+							<input type="text" value="' . esc_attr($zwsgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
+						</td>
+					</tr>';
+
+				}
+				echo '<tr>
 					<th>
 						<label for="zwsgr_reply_comment"> ' . __('Reply Comment', 'zw-smart-google-reviews') . ' </label>
 					</th>
@@ -412,12 +417,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width: 100%;">'. esc_textarea($zwsgr_reply_comment) .'</textarea>
 						<div class="cta-wrapper">';
 							if (!empty($zwsgr_reply_comment)) {
-								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-replay"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-reply"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
 							} else {
-								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-replay"> ' . __('Add Replay', 'zw-smart-google-reviews') . ' </button>';
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-reply"> ' . __('Add Reply', 'zw-smart-google-reviews') . ' </button>';
 							}
 							if (!empty($zwsgr_reply_comment)) {
-								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-replay">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-reply">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
 							}
 						echo '</div>
 					</td>
