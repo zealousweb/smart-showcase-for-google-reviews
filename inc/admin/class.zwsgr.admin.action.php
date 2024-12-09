@@ -368,7 +368,21 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_filled_star = str_repeat($zwsgr_filled_star, $numeric_rating);
 			$zwsgr_empty_star = str_repeat($zwsgr_empty_star, 5 - $numeric_rating);
 
+			$zwsgr_attachment_id = get_post_thumbnail_id($zwsgr_review->ID);
+
 			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="'.$zwsgr_review->ID.'">
+				<tr>
+					<th>
+						<label for="zwsgr_reviewer_image">' . __('', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>';
+						if (!empty($zwsgr_attachment_id)) {
+							echo wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;'));
+						} else {
+							echo 'No DP available.';
+						}
+					echo '</td>
+				</tr>
 				<tr>
 					<th>
 						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
