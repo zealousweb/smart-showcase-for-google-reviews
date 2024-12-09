@@ -704,11 +704,16 @@ input.zwsgr-radio:checked::before {
 
 /* General button styles */
 #gmb-review-data .cta-wrapper {
+    position: relative;
     margin: 10px 0 0 0;
 }
 
 #gmb-review-data .cta-wrapper .zwsgr-submit-btn {
     margin-right: 10px;
+}
+
+#gmb-review-data .cta-wrapper .zwsgr-submit-btn#add-reply {
+    margin-right: 0px !important;
 }
 
 #gmb-review-data .cta-wrapper .zwsgr-submit-btn.button-danger {
@@ -723,9 +728,12 @@ input.zwsgr-radio:checked::before {
     color: red;
 }
 
-
 #gmb-review-data .zwsgr-star-ratings svg {
     margin-right: 3px;
+}
+
+#gmb-review-data #json-response-message .notice-error {
+    color: red;
 }
 
 
@@ -1080,7 +1088,7 @@ input.zwsgr-radio:checked::before {
     transform: scale(1.05);
 }
 
-.zwgr-dashboard .loader {
+.zwgr-dashboard .loader, #gmb-review-data .loader {
     display: inline-block;
     width: 50px;
     height: 50px;
@@ -1089,6 +1097,15 @@ input.zwsgr-radio:checked::before {
     border-top-color: #0074A2;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
+  }
+
+  #gmb-review-data .loader {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid #F08C3C;
+    border-top-color: #0074A2;
+    top: 21.5%;
   }
   
   @keyframes spin {
