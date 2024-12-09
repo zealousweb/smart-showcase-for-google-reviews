@@ -204,6 +204,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$months = $this->translate_months($language);
 			$display_option = get_post_meta($post_id, 'display_option', true);
+			$layout_option = get_post_meta($post_id, 'layout_option', true);
+
+			$badge_layout_option = preg_match('/^badge-\d+$/', $layout_option) ? substr($layout_option, 0, -2) : $layout_option;
 			
 			// Query for posts
 			$args = array(
@@ -260,8 +263,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			ob_start();  // Start output buffering
 			echo '<div class="zwsgr-front-review-filter-wrap">';
-				$this->frontend_sortby($post_id);
-				$this->keyword_search($post_id);
+				if ($badge_layout_option === 'badge') {
+				}else{
+					$this->frontend_sortby($post_id);
+					$this->keyword_search($post_id);
+				}
 			echo '</div>';
 
 			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'">';
@@ -500,7 +506,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
 											? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
 											: '') .
-										(!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements) 
+										((!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements))
 											? '<div class="zwsgr-contnt-wrap">' .
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwsgr-content">' . esc_html($trimmed_content) .
@@ -1331,7 +1337,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($display_option, ['list', 'grid'])) {
-					echo '<button class="load-more-meta" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
+					echo '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 				
 			echo '</div>';
