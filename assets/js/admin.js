@@ -1256,28 +1256,22 @@ jQuery(document).ready(function($) {
 		window.location.href = currentUrl;
 	}
 	
-	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
+	  $("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
 	
-		e.preventDefault();
+		event.preventDefault();
 
-		// Get the value of the 'Reply Comment' textarea
-		var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
+		// Get the value of the 'Reply Comment' from textarea
+		var zwsgr_reply_comment = $("#gmb-review-data textarea[name='zwsgr_reply_comment']").val();
 
 		if (zwsgr_reply_comment === "") {
-            $("#json-response-message").html('<div class="notice notice-error"><p>' + 
-                'Please enter a reply comment.'+ '</p></div>');
+            $("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Please enter a valid reply.' + '</p></div>');
             return;
         }
 
-		$("#gmb-review-data #add-replay").addClass('disabled');
-		$("#gmb-review-data #update-replay").addClass('disabled');
-		$("#gmb-review-data #delete-replay").addClass('disabled');
-
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#gmb-review-data #add-replay").after(loader);
-		$("#gmb-review-data #update-replay").after(loader);
+		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 	
-		// Send AJAX request to handle the reply update
+		// Send AJAX request to handle the add / update reply request
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
 			type: 'POST',
@@ -1287,50 +1281,35 @@ jQuery(document).ready(function($) {
 				zwsgr_reply_comment: zwsgr_reply_comment,
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
+			beforeSend: function() {
+				buttons.addClass('disabled');
+				$("#gmb-review-data textarea[name='zwsgr_reply_comment']").prop('readonly', true);
+				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(loader.clone());
+			},
 			success: function(response) {
-
-				loader.remove();
-
 				if (response.success) {
-
-					// Append the error message below the reply button
-					$("#json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-
+					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
 						location.reload();
 					}, 2000);
-
 				}
-
+			},
+			complete: function() {
+				$("#gmb-review-data .loader.is-active").remove();
 			},
 			error: function(xhr, status, error) {
-
-				// Construct the error message to be appended
-				var errorMessage = $("<div>", {
-					class: "notice notice-error",
-					html: 'Error:' + error
-				});
-
-				// Append the error message below the reply button
-				$("#json-response-message").html(errorMessage);
-
-				loader.remove();
-
+				$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p> Error:' + error + '</p></div>');
 			}
 		});
 	
 	  });
 	
-	  $("#gmb-review-data #delete-replay").on("click", function (e) {
+	  $("#gmb-review-data #delete-reply").on("click", function (event) {
 		
-		e.preventDefault();
+		event.preventDefault();
 
-		// Show the WordPress loader
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#delete-replay").after(loader);
-
-		$("#gmb-review-data #update-replay").addClass('disabled');
-		$("#gmb-review-data #delete-replay").addClass('disabled');
+		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		var buttons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1341,35 +1320,24 @@ jQuery(document).ready(function($) {
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
+			beforeSend: function() {
+				buttons.addClass('disabled');
+				$("#gmb-review-data textarea[name='zwsgr_reply_comment']").prop('readonly', true);
+				$("#gmb-review-data #delete-reply").after(loader);
+			},
 			success: function(response) {
-				
-				loader.remove();
-
 				if (response.success) {
-
-					// Append the error message below the reply button
-					$("#json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-
+					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
 						location.reload();
 					}, 2000);
-
 				}
-
+			},
+			complete: function() {
+				$("#gmb-review-data .loader.is-active").remove();
 			},
 			error: function(xhr, status, error) {
-				
-				// Construct the error message to be appended
-				var errorMessage = $("<div>", {
-					class: "error-message",
-					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
-				});
-
-				// Append the error message below the reply button
-				$("#json-response-message").html(errorMessage);
-
-				loader.remove();
-
+				$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p> Error:' + error + '</p></div>');
 			}
 		});
 	
