@@ -48,6 +48,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
 
+			add_filter('manage_' . ZWSGR_POST_WIDGET_TYPE . '_posts_columns', array($this,'zwsgr_add_shortcode_column'));
+			add_action('manage_' . ZWSGR_POST_WIDGET_TYPE . '_posts_custom_column', array($this,'zwsgr_populate_shortcode_column'), 10, 2);
+
+
 			// Initialize dashboard class
 			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
 		
@@ -510,12 +514,44 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 		}
 
+		// Add the custom "Shortcode" column
+		function zwsgr_add_shortcode_column($columns) 
+		{
+			$new_columns = array();
+			foreach ($columns as $key => $title) {
+				if ($key === 'title') {
+					$new_columns[$key] = $title; // Keep the Title column
+					$new_columns['shortcode'] = __('Shortcode', 'zw-smart-google-reviews'); // Add Shortcode column after Title
+				} else {
+					$new_columns[$key] = $title; // Add other columns
+				}
+			}
+			return $new_columns;
+		}
+
+
+		// Populate the "Shortcode" column
+		function zwsgr_populate_shortcode_column($column, $post_id) 
+		{
+			if ($column === 'shortcode') {
+				// Generate the shortcode
+				$shortcode = sprintf('[zwsgr_widget id="%d"]', $post_id);
+		
+				// Display the shortcode and copy icon
+				echo '<div style="display: flex; align-items: center;">';
+				echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . $post_id . '">';
+				echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . __('Copy Shortcode', 'zw-smart-google-reviews') . '"></span>';
+				echo '</div>';
+			}
+		}
+
+
 		/**
-		 * Filter: manage_zuserreg_data_posts_columns
+		 * Filter: manage_zwsgr_reviews_posts_columns
 		 *
-		 * - Used to add new column fields for the "zuserreg_data" CPT
+		 * - Used to add new column fields for the "zwsgr_reviews" CPT
 		 *
-		 * @method filter__zwsgr_manage_zuserreg_data_posts_columns
+		 * @method filter__zwsgr_manage_zwsgr_reviews_posts_columns
 		 *
 		 * @param  array $columns
 		 *
@@ -975,6 +1011,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
 			$bg_color = get_post_meta($post_id, 'bg_color', true);
 			$text_color = get_post_meta($post_id, 'text_color', true);
+			$bg_color_load = get_post_meta($post_id, 'bg_color_load', true);
+			$text_color_load = get_post_meta($post_id, 'text_color_load', true);
 			$posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
 
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
@@ -987,6 +1025,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$current_tab = get_post_meta($post_id, 'tab-options', true); 
 			$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+			$enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
 
 
 			// Define the mapping from numeric values to words.
@@ -1920,6 +1959,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-selected" style="display:none;">
 					<h3>Selected Option</h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
+					<div class="zwsgr-toogle-display">
+							<a href="" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle">Review Us On G</a>
+						</div>
+					
 					<div class="zwsgr-widget-settings">
 						<h2 class="zwsgr-page-title">Widget Settings</h2>
 						<div class="zwsgr-widget-wrap">
@@ -2066,6 +2109,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
 									<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
 								</select>
+								<div class="zwsgr-sort-by-checkbox">
+										<input type="checkbox" class="zwsgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($enable_sort_by ? 'checked' : ''); ?> />
+										<label class="zwsgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
+								</div>
 							</div>
 	
 							<div class="zwsgr-widget-setting">
@@ -2078,13 +2125,35 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
 								</select>
 							</div>
+							<?php
 
+								if ($current_tab2 == '' && $enable_load_more == '') {
+									$is_checked = 'checked';
+								} else if ($current_tab2 == 'tab-selected' && $enable_load_more === true) {
+									$is_checked = 'checked';
+								} else {
+									$enable_background_color = '';
+									$is_checked = '';
+								}
+
+								
+							?>
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Load More</h3>
 								<label class="switch">
-									<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php ((get_post_meta($post_id, 'enable_load_more', true) !== '0')  &&  '') || $enable_load_more ? 'checked' : '';?> checked>
+									<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo $is_checked;?> />
 									<span class="slider"></span>
 								</label>
+							<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
+									<div class="zwsgr-color-picker-load">
+										<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
+										<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load); ?>">
+									</div>
+									<div class="zwsgr-color-picker-load">
+										<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
+										<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load); ?>">
+									</div>
+								</div>
 
 								<div id="load-more-settings" style="display:'block';">
 								<h3 class="zwsgr-label">Number Of Review:</h3>
@@ -2186,10 +2255,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
 				$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
 				$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
+				$bg_color_load = isset($_POST['bg_color_load']) ? sanitize_hex_color($_POST['bg_color_load']) : '';
+				$text_color_load = isset($_POST['text_color_load']) ? sanitize_hex_color($_POST['text_color_load']) : '';
 				$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
 				$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
 				$custom_css = sanitize_textarea_field($_POST['custom_css']);
 				$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
+				$enable_sort_by = isset($_POST['enable_sort_by']) ? intval($_POST['enable_sort_by']) : 0;
 
 				update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
 				update_post_meta($post_id, 'selected_elements', $selected_elements);
@@ -2203,51 +2275,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
 				update_post_meta($post_id, 'bg_color', $bg_color);
 				update_post_meta($post_id, 'text_color', $text_color);
+				update_post_meta($post_id, 'bg_color_load', $bg_color_load);
+				update_post_meta($post_id, 'text_color_load', $text_color_load);
 				update_post_meta($post_id, 'posts_per_page', $posts_per_page);
 				update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);
+				update_post_meta($post_id, 'enable_sort_by', $enable_sort_by);
 			}
-
-			// $layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
-			// $selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : get_post_meta($post_id, 'selected_elements', true);
-			// $selected_elements = is_array($selected_elements) ? $selected_elements : [];
-			// // $keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : get_post_meta($post_id, 'keywords', true);
-			// $keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
-			// // $keywords = isset($_POST['keywords']) && !empty($this_keywords) ? array_map('sanitize_text_field', $_POST['keywords']) : delete_post_meta($post_id, 'keywords') ?? [];
-
-			// $date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : (get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY');
-			// $char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : get_post_meta($post_id, 'char_limit', true);
-			// $language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : get_post_meta($post_id, 'language', true);
-			// $sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : get_post_meta($post_id, 'sort_by', true);
-			// $enable_load_more = isset($_POST['enable_load_more']) ? (intval($_POST['enable_load_more']) ? 'checked' : '') : (get_post_meta($post_id, 'enable_load_more', true) ? 'checked' : '');
-			// $google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : get_post_meta($post_id, 'google_review_toggle', true);
-			// $bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : get_post_meta($post_id, 'bg_color', true);
-			// $text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : get_post_meta($post_id, 'text_color', true);
-			// $posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : get_post_meta($post_id, 'posts_per_page', true);
-			// $rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : (intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0);
-
-			// $existing_value = get_post_meta( $post_id, 'tab-selected', true ); // Get the existing value
-			// $current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
-
-			// if ($existing_value != 'tab-selected') {
-			// 	update_post_meta($post_id, 'tab-selected', $current_tab2);
-			// }
-			
-			// // $custom_css = sanitize_textarea_field($_POST['custom_css']);  
-			// $custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : get_post_meta($post_id, '_zwsgr_custom_css', true);
-			
-			// update_post_meta($post_id, 'selected_elements', $selected_elements);
-			// update_post_meta($post_id, 'rating_filter', $rating_filter);
-			// update_post_meta($post_id, 'keywords', $keywords);
-			// update_post_meta($post_id, 'date_format', $date_format);
-			// update_post_meta($post_id, 'char_limit', $char_limit);
-			// update_post_meta($post_id, 'language', $language);
-			// update_post_meta($post_id, 'sort_by', $sort_by);
-			// update_post_meta($post_id, 'enable_load_more', $enable_load_more);
-			// update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
-			// update_post_meta($post_id, 'bg_color', $bg_color);
-			// update_post_meta($post_id, 'text_color', $text_color);
-			// update_post_meta($post_id, 'posts_per_page', $posts_per_page);
-			// update_post_meta($post_id, '_zwsgr_custom_css', $custom_css);  // Save custom CSS
 		
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $setting_tb );

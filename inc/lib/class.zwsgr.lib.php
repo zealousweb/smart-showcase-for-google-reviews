@@ -173,6 +173,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Retrieve the 'enable_load_more' setting from post meta
 			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
+			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
+			$bg_color = get_post_meta($post_id, 'bg_color', true);
+			$text_color = get_post_meta($post_id, 'text_color', true);
 
 			// Retrieve dynamic 'posts_per_page' from post meta
 			$stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
@@ -215,6 +218,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$months = $this->translate_months($language);
 			$display_option = get_post_meta($post_id, 'display_option', true);
 			$layout_option = get_post_meta($post_id, 'layout_option', true);
+			$enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
 
 			$badge_layout_option = preg_match('/^badge-\d+$/', $layout_option) ? substr($layout_option, 0, -2) : $layout_option;
 			
@@ -276,7 +280,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			echo '<div class="zwsgr-front-review-filter-wrap">';
 				if ($badge_layout_option === 'badge') {
 				}else{
-					$this->frontend_sortby($post_id);
+					if ($enable_sort_by) { // Check if "Sort By" is not enabled
+						$this->frontend_sortby($post_id);
+					}
 					$this->keyword_search($post_id);
 				}
 			echo '</div>';
@@ -1352,6 +1358,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($display_option, ['list', 'grid'])) {
 					echo '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
+				}
+				
+				if($google_review_toggle){
+					echo '<a href="" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle">Review Us On G</a>';
 				}
 				
 			echo '</div>';

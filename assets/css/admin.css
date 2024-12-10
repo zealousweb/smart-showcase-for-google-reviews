@@ -677,6 +677,22 @@ input.zwsgr-radio:checked::before {
     align-items: center;
 }
 
+.zwsgr-sort-by-checkbox {
+    padding-top: 10px;
+}
+
+.zwsgr-sort-by-checkbox .zwsgr-chechbox-label {
+    font-size: 14px;
+}
+
+.zwsgr-toogle-display {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    padding: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+
 @media only screen and (max-width: 782px) {
     
     .zwsgr-gmbc-outer-wrapper {
