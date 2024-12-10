@@ -176,6 +176,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
 			$bg_color = get_post_meta($post_id, 'bg_color', true);
 			$text_color = get_post_meta($post_id, 'text_color', true);
+			$bg_color_load = get_post_meta($post_id, 'bg_color_load', true);
+			$text_color_load = get_post_meta($post_id, 'text_color_load', true);
 
 			// Retrieve dynamic 'posts_per_page' from post meta
 			$stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
@@ -1357,7 +1359,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($display_option, ['list', 'grid'])) {
-					echo '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
+					echo '<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 				
 				if($google_review_toggle){

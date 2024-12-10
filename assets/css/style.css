@@ -1101,7 +1101,7 @@ input.zwsgr-radio:checked::before {
     display: block;
     cursor: pointer;
     font-size: 16px;
-    border: 1px solid #000;
+    border: none;
 }
 
 .zwsgr-load-more-btn:hover {
