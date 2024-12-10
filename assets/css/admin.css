@@ -643,8 +643,10 @@ input.zwsgr-radio:checked::before {
 }
 
 #fetch-gmb-data .zwsgr-input-text {
+    padding: 10px 26px 10px 16px;
     max-width: 310px;
     margin-right: 10px;
+    text-overflow: ellipsis;
 }
 
 #fetch-gmb-data .zwsgr-input-text.disabled {
