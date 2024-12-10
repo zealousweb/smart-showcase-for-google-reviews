@@ -212,8 +212,11 @@ jQuery(document).ready(function($) {
 		var ratingFilter = $('.main-div-wrapper').data('rating-filter');
 		var layoutType = $('.main-div-wrapper').data('layout-type');
 		var selectedValue = $('#front-sort-by-select').val();
+		var bg_color_load =$('.main-div-wrapper').data('bg-color');
+		var text_color_load =$('.main-div-wrapper').data('text-color');
 
-		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
+		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+
 		$('.zwsgr-slider.zwsgr-list');
 
 		$('.load-more-meta').hide();
@@ -315,8 +318,10 @@ jQuery(document).ready(function($) {
 		var postId = $('.main-div-wrapper').data('widget-id');
 		var ratingFilter = $('.main-div-wrapper').data('rating-filter');
 		var layoutType = $('.main-div-wrapper').data('layout-type');
+		var bg_color_load =$('.main-div-wrapper').data('bg-color');
+		var text_color_load =$('.main-div-wrapper').data('text-color');
 
-		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
+		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
 		$('.zwsgr-slider.zwsgr-list');
 
 		$('.load-more-meta').remove();

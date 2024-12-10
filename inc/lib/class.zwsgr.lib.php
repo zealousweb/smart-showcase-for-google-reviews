@@ -289,7 +289,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				}
 			echo '</div>';
 
-			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'">';
+			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'" data-bg-color="'.esc_attr($bg_color_load).'" data-text-color="'.esc_attr($text_color_load).'">';
 			if ($query->have_posts()) {
 
 				// Fetch selected elements from post meta
