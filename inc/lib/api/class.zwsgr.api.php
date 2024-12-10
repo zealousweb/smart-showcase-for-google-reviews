@@ -92,10 +92,12 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 if (defined('DOING_AJAX') && DOING_AJAX) {
                     
                     // For AJAX requests, send a JSON error response
-                    wp_send_json_error([
-                        'status'  => 'error',
-                        'message' => $e->getMessage(),
-                    ]);
+                    wp_send_json_error(
+                        array(
+                            'status'  => 'error',
+                            'message' => $e->getMessage(),
+                        )
+                    );
 
                 } elseif (is_admin()) {
                     
@@ -275,11 +277,10 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         /**
          * Adds or updates a reply to a specific Google My Business review using the review ID.
          *
-         * @param string $zwsgr_account_id The account ID associated with the Google My Business account.
-         * @param string $zwsgr_location_id The location ID for the specific business location.
-         * @param string $zwsgr_review_id The ID of the review to reply to.
-         * @param string $zwsgr_reply_comment The text of the reply to add or update.
-         * @return array The decoded JSON response from the API.
+         * This function handles the addition or update of a reply to a review on Google My Business. 
+         * It retrieves the required details (account number, location code, review ID) from the 
+         * specified WordPress review post and sends the reply to the Google My Business API.
+         *
          * @throws Exception If the API request fails or returns an error.
          */
         public function zwsgr_add_update_review_reply( ) {
@@ -288,24 +289,32 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             check_ajax_referer('zwsgr_add_update_reply_nonce', 'security');
 
             // Retrieve POST values
-            $zwsgr_reply_comment  = isset($_POST['zwsgr_reply_comment']) ? sanitize_textarea_field($_POST['zwsgr_reply_comment']) : '';
-            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
-            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
-            $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
-            $zwsgr_wp_review_id   = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : ''; // Capture post ID
+            $zwsgr_wp_review_id    = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
+            $zwsgr_reply_comment   = isset($_POST['zwsgr_reply_comment']) ? sanitize_text_field($_POST['zwsgr_reply_comment']) : '';
+            $zwsgr_account_number  = get_post_meta($zwsgr_wp_review_id, 'zwsgr_account_number', true);
+            $zwsgr_location_code   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_code', true);
+            $zwsgr_review_id       = get_post_meta($zwsgr_wp_review_id, 'zwsgr_review_id', true);
 
             // Check that all parameters are provided
-            if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) || empty( $zwsgr_reply_comment ) ) {
+            if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_reply_comment ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
                 wp_send_json_error(
                     array(
-                        'message' => 'Account ID, location ID, review ID, and reply comment all are required.',
+                        'message' => 'Missing required fields: Review ID, reply comment, account number, location code, or review ID.',
                         'status'  => 400
                     )
                 );
-                return;
             }
 
-            $this->zwsgr_get_access_token();
+            $zwsgr_access_token = $this->zwsgr_get_access_token();
+
+            if ($zwsgr_access_token == false) {
+                wp_send_json_error(
+                    array(
+                        'message' => 'No Valid access token found',
+                        'status'  => 400
+                    )
+                );
+            }
 
             // Prepare the payload for the request
             $zwsgr_payload_data = [
@@ -322,10 +331,12 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             if ( isset($zwsgr_response['error']) ) {
 
                 // If there's an error in the response, send a JSON error response
-                wp_send_json_error( array(
-                    'status'  => 'error',
-                    'message' => $zwsgr_response['error']['message'] ?? 'Unknown error occurred.',
-                ));
+                wp_send_json_error( 
+                    array(
+                        'status'  => 'error',
+                        'message' => $zwsgr_response['error']['message'] ?? 'An Unknown error occurred.',
+                    )
+                );
 
             }
 
@@ -337,14 +348,15 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_comment', $zwsgr_reply_comment);
                 update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_update_time', $zwsgr_reply_update_time);
 
-                // Send a success response back to the client
-                wp_send_json_success( array(
-                    'message' => __('Review updated successfully', 'zw-smart-google-reviews'),
-                    'status'  => 200,
-                ));
-                exit;
+                wp_send_json_success(
+                    array(
+                        'message' => __('Reply updated successfully', 'zw-smart-google-reviews'),
+                        'status'  => 200,
+                    )
+                );
 
             }
+            
         }
         
         /**
@@ -353,37 +365,40 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
          * This function sends a DELETE request to the Google My Business API to remove
          * an existing reply associated with a specific review.
          *
-         * @param string $zwsgr_account_id The account ID associated with the Google My Business account.
-         * @param string $zwsgr_location_id The location ID for the specific business location.
-         * @param string $zwsgr_review_id The ID of the review from which the reply will be deleted.
-         * @return array The decoded JSON response from the API if successful.
-         * @throws Exception If the API request fails or returns an error.
+         * @return void This function sends a JSON response back to the client.
          */
         public function zwsgr_delete_review_reply() {
 
             // Check nonce and AJAX referer for security
             check_ajax_referer('zwsgr_delete_review_reply', 'security');
 
-            // Sanitize and retrieve account number, location code, and review ID from AJAX request
-            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
-            $zwsgr_location_code  = isset($_POST['zwsgr_location_code']) ? sanitize_text_field($_POST['zwsgr_location_code']) : '';
-            $zwsgr_review_id      = isset($_POST['zwsgr_review_id']) ? sanitize_text_field($_POST['zwsgr_review_id']) : '';
-            $zwsgr_wp_review_id   = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
+            // Retrieve POST values
+            $zwsgr_wp_review_id    = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
+            $zwsgr_account_number  = get_post_meta($zwsgr_wp_review_id, 'zwsgr_account_number', true);
+            $zwsgr_location_code   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_code', true);
+            $zwsgr_review_id       = get_post_meta($zwsgr_wp_review_id, 'zwsgr_review_id', true);
 
-            // Ensure all required parameters are provided
-            if ( empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
-                // Send a JSON error response if any parameters are missing
+            // Check that all parameters are provided
+            if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
                 wp_send_json_error(
                     array(
-                        'message' => 'Account ID, location ID, and review ID are all required.',
+                        'message' => 'Missing required fields: Review ID, account number, location code, or review ID.',
                         'status'  => 400
                     )
                 );
-                return;
             }
 
             // Get the access token required to authenticate with Google My Business API
-            $this->zwsgr_get_access_token();
+            $zwsgr_access_token = $this->zwsgr_get_access_token();
+
+            if ($zwsgr_access_token === false) {
+                wp_send_json_error(
+                    array(
+                    'message' => 'No valid access token found.',
+                    'status'  => 400,
+                    )
+                );
+            }
 
             // Construct the Google My Business API endpoint URL for deleting the reply to the specified review
             $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_code}/reviews/{$zwsgr_review_id}/reply";
@@ -391,27 +406,31 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Send the DELETE request to the Google My Business API to delete the review reply
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, [], 'DELETE', 'v4' );
 
-            // Check if the API response was successful
+            // Check if the API response was unsuccessful
             if ( isset($zwsgr_response['error']) ) {
 
-                // If there's an error in the response, send a JSON error response
-                wp_send_json_error( array(
-                    'status'  => 'error',
-                    'message' => $zwsgr_response['error']['message'] ?? 'Unknown error occurred.',
-                ));
+                wp_send_json_error( 
+                    array(
+                        'status'  => 'error',
+                        'message' => $zwsgr_response['error']['message'] ?? 'An Unknown error occurred.',
+                    )
+                );
 
             }
 
             // Delete the reply comment from the postmeta table if it's associated with the review
             if ( !empty( $zwsgr_wp_review_id ) ) {
                 delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_comment' );
+                delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_update_time' );
             }
 
             // Send a success response back to the client
-            wp_send_json_success( array(
-                'message' => 'Review reply successfully deleted.',
-                'status'  => 200,
-            ));
+            wp_send_json_success( 
+                array(
+                    'message' => 'Reply deleted successfully.',
+                    'status'  => 200,
+                )
+            );
 
         }
 

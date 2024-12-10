@@ -292,6 +292,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -303,6 +304,10 @@ jQuery(document).ready(function($) {
 
 		if (slider2.hasClass('slick-initialized')) {
 			slider2.slick('unslick');
+		}
+
+		if (slider3.hasClass('slick-initialized')) {
+			slider3.slick('unslick');
 		}
 
 		if (slider4.hasClass('slick-initialized')) {
@@ -365,6 +370,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -477,6 +501,23 @@ jQuery(document).ready(function($) {
 		]
 	});	 
 
+	$('.zwsgr-slider-3').slick({
+		infinite: true,
+		slidesToShow: 2,
+		slidesToScroll: 2,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 1180,
+				settings: {
+				  slidesToShow: 1,
+				  slidesToScroll: 1
+				}
+			}
+		]
+	});	
+
 	$('.zwsgr-slider-4').slick({
 		infinite: true,
 		slidesToShow: 1,
@@ -563,6 +604,7 @@ jQuery(document).ready(function($) {
         $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').fadeIn(600);
         $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').fadeOut(600) : $('.selected-option-display .zwsgr-content').fadeIn(600);
 		$('#review-photo').is(':checked') ? $('.selected-option-display .zwsgr-profile').fadeOut(600) : $('.selected-option-display .zwsgr-profile').fadeIn(600);
+		$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwsgr-google-icon').fadeOut(600) : $('.selected-option-display .zwsgr-google-icon').fadeIn(600);
     }
 
     // Attach change event listeners to checkboxes
@@ -734,17 +776,8 @@ jQuery(document).ready(function($) {
         }
     });
 
-	// Toggle for enabling 'Load More' settings
-	$('#enable-load-more').on('change', function() {
-		if ($(this).is(':checked')) {
-			$('#load-more-settings').fadeIn();  // Show the settings div
-		} else {
-			$('#load-more-settings').fadeOut(); // Hide the settings div
-		}
-    });
-
-	 // Color picker for background color
-	 $('#bg-color-picker').on('input', function() {
+	// Color picker for background color
+	$('#bg-color-picker').on('input', function() {
         var bgColor = $(this).val();
         $('#google-review-section').css('background-color', bgColor);
     });
@@ -848,6 +881,7 @@ jQuery(document).ready(function($) {
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
 		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+		var customCSS = $('.zwsgr-textarea').val();
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -872,7 +906,8 @@ jQuery(document).ready(function($) {
 				text_color: textColor,
 				settings: settings,
 				posts_per_page: postsPerPage,
-				current_tab2: currentTab2 
+				current_tab2: currentTab2,
+				custom_css: customCSS  // Add the custom CSS value here
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1221,89 +1256,60 @@ jQuery(document).ready(function($) {
 		window.location.href = currentUrl;
 	}
 	
-	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
+	  $("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
 	
-		e.preventDefault();
+		event.preventDefault();
 
-		// Show the WordPress loader
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#delete-replay").after(loader);
+		// Get the value of the 'Reply Comment' from textarea
+		var zwsgr_reply_comment = $("#gmb-review-data textarea[name='zwsgr_reply_comment']").val();
+
+		if (zwsgr_reply_comment === "") {
+            $("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Please enter a valid reply.' + '</p></div>');
+            return;
+        }
+
+		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 	
-		// Get the value of the 'Reply Comment' textarea
-		var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
-	
-		// Get the value of the 'Account ID' input
-		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
-	
-		// Get the value of the 'Location' input
-		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
-	
-		// Get the value of the 'Review ID' input
-		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
-	
-		// Send AJAX request to handle the reply update
+		// Send AJAX request to handle the add / update reply request
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
 			type: 'POST',
 			data: {
 				action: 'zwsgr_add_update_review_reply',
-				zwsgr_reply_comment: zwsgr_reply_comment,
-				zwsgr_account_number: zwsgr_account_number,
-				zwsgr_location_code: zwsgr_location_code,
-				zwsgr_review_id: zwsgr_review_id,
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_reply_comment: zwsgr_reply_comment,
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
+			beforeSend: function() {
+				buttons.addClass('disabled');
+				$("#gmb-review-data textarea[name='zwsgr_reply_comment']").prop('readonly', true);
+				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(loader.clone());
+			},
 			success: function(response) {
-
-				loader.remove();
-
 				if (response.success) {
-
-					// Append the error message below the reply button
-					$("#json-response-message").html(response.data.message);
-
+					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
 						location.reload();
 					}, 2000);
-
 				}
-
+			},
+			complete: function() {
+				$("#gmb-review-data .loader.is-active").remove();
 			},
 			error: function(xhr, status, error) {
-
-				// Construct the error message to be appended
-				var errorMessage = $("<div>", {
-					class: "error-message",
-					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
-				});
-
-				// Append the error message below the reply button
-				$("#json-response-message").html(errorMessage);
-
-				loader.remove();
-
+				$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p> Error:' + error + '</p></div>');
 			}
 		});
 	
 	  });
 	
-	  $("#gmb-review-data #delete-replay").on("click", function (e) {
+	  $("#gmb-review-data #delete-reply").on("click", function (event) {
 		
-		e.preventDefault();
+		event.preventDefault();
 
-		// Show the WordPress loader
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#delete-replay").after(loader);
-	
-		// Get the value of the 'Account ID' input
-		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
-	
-		// Get the value of the 'Location' input
-		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
-	
-		// Get the value of the 'Review ID' input
-		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		var buttons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1311,41 +1317,27 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwsgr_delete_review_reply',
-				zwsgr_account_number: zwsgr_account_number,
-				zwsgr_location_code: zwsgr_location_code,
-				zwsgr_review_id: zwsgr_review_id,
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
+			beforeSend: function() {
+				buttons.addClass('disabled');
+				$("#gmb-review-data textarea[name='zwsgr_reply_comment']").prop('readonly', true);
+				$("#gmb-review-data #delete-reply").after(loader);
+			},
 			success: function(response) {
-				
-				loader.remove();
-
 				if (response.success) {
-
-					// Append the error message below the reply button
-					$("#json-response-message").html(response.data.message);
-
+					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
 						location.reload();
 					}, 2000);
-
 				}
-
+			},
+			complete: function() {
+				$("#gmb-review-data .loader.is-active").remove();
 			},
 			error: function(xhr, status, error) {
-				
-				// Construct the error message to be appended
-				var errorMessage = $("<div>", {
-					class: "error-message",
-					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
-				});
-
-				// Append the error message below the reply button
-				$("#json-response-message").html(errorMessage);
-
-				loader.remove();
-
+				$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p> Error:' + error + '</p></div>');
 			}
 		});
 	
@@ -1357,6 +1349,7 @@ jQuery(document).ready(function($) {
 
 		// Get the selected value
 		var zwsgr_account_number = $(this).val();
+		$(this).addClass('disabled');
 	
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -1370,24 +1363,44 @@ jQuery(document).ready(function($) {
 				$('#gmb-data-filter #zwsgr-location-select').remove();
 				if (response.success) {
 					$('#gmb-data-filter').append(response.data);
-					$("#gmb-data-filter #zwsgr-location-select").trigger('change');
+					//$("#gmb-data-filter #zwsgr-location-select").trigger('change');
 				}
-
-			}
+			},
+			complete: function() {
+				$("#gmb-data-filter #zwsgr-account-select").removeClass('disabled');
+			},
 		});
 	
 	});
 
-	$("#gmb-data-filter").on("change", "#zwsgr-location-select", function (e) {
+	$(".zwgr-dashboard").on("change", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button", function (e) {
 
-		var zwsgr_gmb_account_number   = $("#gmb-data-filter #zwsgr-account-select").val();
-		var zwsgr_gmb_account_location = $("#gmb-data-filter #zwsgr-location-select").val();
+		e.preventDefault();
+	
+		var zwsgr_range_filter_type = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-type');
+		
+		if (zwsgr_range_filter_type == 'rangeofdays') {
+			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-filter');
+		} else if (zwsgr_range_filter_type == 'rangeofdate') {
+			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').val();
+		}
+
+		var zwsgr_gmb_account_div = $("#gmb-data-filter #zwsgr-account-select");
+		var zwsgr_gmb_location_div = $("#gmb-data-filter #zwsgr-location-select");
+
+		if ($(e.target).is("#gmb-data-filter #zwsgr-location-select")) {
+			zwsgr_gmb_account_div.addClass('disabled');
+			zwsgr_gmb_location_div.addClass('disabled');
+		}
+
+		var zwsgr_gmb_account_number   = zwsgr_gmb_account_div.val();
+		var zwsgr_gmb_account_location = zwsgr_gmb_location_div.val();
 
 		var zwsgr_filter_data = {
 			zwsgr_gmb_account_number: zwsgr_gmb_account_number,
 			zwsgr_gmb_account_location: zwsgr_gmb_account_location,
-			zwsgr_range_filter_type: 'rangeofdays',
-			zwsgr_range_filter_data: 'monthly'
+			zwsgr_range_filter_type: zwsgr_range_filter_type,
+			zwsgr_range_filter_data: zwsgr_range_filter_data
 		};
 	
 		$.ajax({
@@ -1400,19 +1413,20 @@ jQuery(document).ready(function($) {
 			},
 			beforeSend: function() {
 				// Add the loader before the request is sent
-				$('#render-dynamic').html('<div class="loader">Loading...</div>');
+				$('.zwgr-dashboard #render-dynamic').remove();
+				$('.zwgr-dashboard').append('<div class="loader"></div>');
 			},
 			success: function(response) {
-				$('#render-dynamic').empty(); // Clear previous content
 				if (response.success) {
-					$('#render-dynamic').append(response.data.html);
+					$('.zwgr-dashboard ').append(response.data.html);
 				} else {
-					$('#render-dynamic').html('<p>Error loading data.</p>');
+					$('.zwgr-dashboard ').html('<p>Error loading data.</p>');
 				}
 			},
 			complete: function() {
-				// Remove the loader when the request is complete
 				$('.loader').remove();
+				zwsgr_gmb_account_div.removeClass('disabled');
+				zwsgr_gmb_location_div.removeClass('disabled');
 			},
 			error: function() {
 				$('#render-dynamic').html('<p>An error occurred while fetching data.</p>');
@@ -1518,6 +1532,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -1529,6 +1544,10 @@ jQuery(document).ready(function($) {
 
 		if (slider2.hasClass('slick-initialized')) {
 			slider2.slick('unslick');
+		}
+
+		if (slider3.hasClass('slick-initialized')) {
+			slider3.slick('unslick');
 		}
 
 		if (slider4.hasClass('slick-initialized')) {
@@ -1591,6 +1610,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]

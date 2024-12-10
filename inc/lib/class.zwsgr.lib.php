@@ -123,18 +123,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		
 			// Check if keywords are available and is an array
 			if (is_array($keywords) && !empty($keywords)) {
-				echo '<div id="front-keywords-list" class="front-keywords-list zwsgr-front-keyword-list">';
+				echo '<div id="zwsgr-front-keywords-list" class="zwsgr-front-keywords-list zwsgr-front-keyword-list">';
 				echo '<h3 class="zwsgr-label-font">Keywords</h3>';
 				echo '<ul>';  // Start an unordered list
+		
+				// Add "All" as the first keyword
+				echo '<li class="zwsgr-keyword-item zwsgr-all-keyword" data-zwsgr-keyword="all">All</li>';
+		
 				foreach ($keywords as $keyword) {
 					// Display each keyword as a list item
-					echo '<li data-zwsgr-keyword="' . esc_attr($keyword) . '">' . esc_html($keyword) . '</li>';
+					echo '<li class="zwsgr-keyword-item" data-zwsgr-keyword="' . esc_attr($keyword) . '">' . esc_html($keyword) . '</li>';
 				}
 				echo '</ul>';
 				echo '</div>';
-			} else {
-				// If no keywords, display an empty div
-				echo '<div id="front-keywords-list" class="front-keywords-list"></div>';
 			}
 		}
 
@@ -203,6 +204,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$months = $this->translate_months($language);
 			$display_option = get_post_meta($post_id, 'display_option', true);
+			$layout_option = get_post_meta($post_id, 'layout_option', true);
+
+			$badge_layout_option = preg_match('/^badge-\d+$/', $layout_option) ? substr($layout_option, 0, -2) : $layout_option;
 			
 			// Query for posts
 			$args = array(
@@ -215,6 +219,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => '_is_hidden',
+						'compare' => 'NOT EXISTS',           // Ensure only visible posts
 					)
 				),
 			);
@@ -234,16 +242,16 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$args['order'] = 'DESC';
 					} else {
 						// Default behavior if no filter is set
-						$args['meta_query'][0]['value'] = 'FIVE';
-						$args['orderby'] = 'meta_value_num';
-						$args['order'] = 'DESC';
+						$args['orderby'] = 'meta_value';
+						$args['order'] = 'ASC';
+						$args['meta_key'] = 'zwsgr_review_star_rating';
 					}
 					break;
 
 				case 'lowest':
-					$args['meta_query'][0]['value'] = 'ONE';
-					$args['orderby'] = 'meta_value_num';
-					$args['order'] = 'ASC';    
+					$args['orderby'] = 'meta_value';
+					$args['order'] = 'DESC';
+					$args['meta_key'] = 'zwsgr_review_star_rating';
 					break;
 
 				default:
@@ -255,8 +263,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			ob_start();  // Start output buffering
 			echo '<div class="zwsgr-front-review-filter-wrap">';
-				$this->frontend_sortby($post_id);
-				$this->keyword_search($post_id);
+				if ($badge_layout_option === 'badge') {
+				}else{
+					$this->frontend_sortby($post_id);
+					$this->keyword_search($post_id);
+				}
 			echo '</div>';
 
 			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'">';
@@ -276,6 +287,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
 						$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
 						$zwsgr_review_content   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+						$zwsgr_attachment_id = get_post_thumbnail_id(get_the_ID());
 						$published_date  = get_the_date('F j, Y');
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 						$char_limit = (int) $char_limit ; 
@@ -331,22 +343,23 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div class="zwsgr-slide-wrap">' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-												'<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '"/>' .
+												wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')) .
 											'</div>' 
 											: '') .
-
+										(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)?
 										'<div class="zwsgr-review-info">' .
 											(!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) 
 												? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
 												: '') .
-											(!empty($published_date) 
+											(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
 												: '') .
-										'</div>' .
-
+										'</div>':'') .
+										(!in_array('review-g-icon', $selected_elements)?
 										'<div class="zwsgr-google-icon">' .
-											'<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' .
-										'</div>' .
+											''.
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+										'</div>':'') .
 									'</div>' .
 
 									(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
@@ -367,31 +380,75 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 						$zwsgr_slider_item2 = '
 							<div class="zwsgr-slide-item">
-								<div class="zwsgr-list-inner">
-									<div class="zwsgr-rating-wrap">
-										' . 
-											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . 
-										
-										( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-											? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) .
-									'</div>
+								<div class="zwsgr-list-inner">'.
+									(!in_array('review-rating', $selected_elements) || !in_array('review-days-ago', $selected_elements)?'<div class="zwsgr-rating-wrap">
+									' . 
+										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . 
+									
+									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
+										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) .
+									'</div>':'').'
+									
 									' . 
 										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . 
 									
-									'<div class="zwsgr-slide-wrap">
-										<div class="zwsgr-profile">
+									'<div class="zwsgr-slide-wrap">'.	
+										( !in_array('review-photo', $selected_elements)?
+										'<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) .
-										'</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) .
+										'</div>':'').'
+									
+										'. (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) .
-										'</div>
-										<div class="zwsgr-google-icon">
-											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-										</div>
+										'</div>' :'').'
+										
+										'.( !in_array('review-g-icon', $selected_elements)?
+										'<div class="zwsgr-google-icon">
+											'.
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+										</div>':'' ).'
+									</div>
+								</div>
+							</div>';
+
+
+							$zwsgr_slider_item3 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-list-inner">
+									' . 
+										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . '
+									
+									<div class="zwsgr-slide-wrap4">
+										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
+										<div class="zwsgr-profile">
+											' . 
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											'.( !in_array('review-g-icon', $selected_elements)?'
+											<div class="zwsgr-google-icon">
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+											
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)) ?'
+											<div class="zwsgr-review-info">
+											' . 
+												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
+											
+											' . 
+												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
+													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+										</div>':'').'
+									
+										' . 
+											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
 								</div>
 							</div>';
@@ -405,14 +462,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										: '') . '</p>' : '' ) . '
 									
 									<div class="zwsgr-slide-wrap4">
+										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
-										</div>
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+											
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)) ?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -420,7 +481,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
+										</div>':'').'
 										' . 
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
@@ -433,11 +494,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div>' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-												'<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '">' .
-												'<div class="zwsgr-google-icon">' .
-													'<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' .
-												'</div>' .
-											'</div>' 
+													wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+												'.( !in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">'.
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+												'</div>':'').'	
+											</div>' 
 											: '') .
 										(!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) 
 											? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
@@ -445,7 +507,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
 											? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
 											: '') .
-										(!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements) 
+										((!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements))
 											? '<div class="zwsgr-contnt-wrap">' .
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwsgr-content">' . esc_html($trimmed_content) .
@@ -466,10 +528,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-list-inner">
 										<div class="zwsgr-slide-wrap">
+											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											</div>
+													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											</div>':'').'
+											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -477,10 +541,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'').'
+											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
 										</div>
 										
 										' . 
@@ -501,25 +567,28 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-profile">
-											<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+											'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
 										</div>';
 									}
-									$zwsgr_list_item1 .= '<div class="zwsgr-review-info">';
-									if (!in_array('review-title', $selected_elements)) {
-										$zwsgr_list_item1 .= '
-											<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+									if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
+										$zwsgr_list_item1 .= '<div class="zwsgr-review-info">';
+										if (!in_array('review-title', $selected_elements)) {
+											$zwsgr_list_item1 .= '
+												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										}
+										if (!in_array('review-days-ago', $selected_elements)) {
+											$zwsgr_list_item1 .= '
+												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													' . esc_html($formatted_date) . ' 
+												</h5>';
+										}
+										$zwsgr_list_item1 .= '</div>';
 									}
-									if (!in_array('review-days-ago', $selected_elements)) {
-										$zwsgr_list_item1 .= '
-											<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-												' . esc_html($formatted_date) . ' 
-											</h5>';
-									}
-									$zwsgr_list_item1 .= '</div>';
+									
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-google-icon">
-											<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">
+											'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
 										</div>';
 									}
 
@@ -546,10 +615,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-list-inner">
 										<div class="zwsgr-slide-wrap">
+											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											</div>
+													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											</div>':'').'
+											'.( (!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -557,13 +628,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'').'
+											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
 										</div>
-										
-										<div class="zwsgr-list-content-wrap">
+										'.((!in_array('review-rating', $selected_elements) ||!in_array('review-content', $selected_elements))?'<div class="zwsgr-list-content-wrap">
 											' . 
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 											
@@ -571,7 +643,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
-										</div>
+										</div>':'').'
 									</div>
 								</div>';
 
@@ -585,20 +657,25 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
+										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												'.(!in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">
+												'.
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+												
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
+										</div>':'').'
 									</div>
 								</div>
 							</div>';
@@ -607,19 +684,23 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap4">
-										
+										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											
-											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												'.(!in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">
+												'.
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+												
+										</div>':'').'
+										'.( (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
-										</div>
+										</div>':'').'
+										
 										' . 
 											( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
@@ -638,10 +719,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-list-wrap5">
 										<div class="zwsgr-prifile-wrap">
+											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											</div>
+													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											</div>':'').'
+											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-data">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -649,19 +732,20 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'') .'
 										</div>
 
 										<div class="zwsgr-content-wrap">
+											'.((!in_array('review-rating', $selected_elements) ||!in_array('review-g-icon', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
-
+												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
-													<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-												</div>
-											</div>
-
+													'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												</div>':'').'
+											</div>':'').'
 											' . 
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
@@ -680,27 +764,30 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
-												<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+											'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
 											</div>';
 										}
 
-										$zwsgr_grid_item1 .= '<div class="zwsgr-review-info">';
-										if (!in_array('review-title', $selected_elements)) {
-											$zwsgr_grid_item1 .= '
-												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
+											$zwsgr_grid_item1 .= '<div class="zwsgr-review-info">';
+											if (!in_array('review-title', $selected_elements)) {
+												$zwsgr_grid_item1 .= '
+													<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+											}
+											if (!in_array('review-days-ago', $selected_elements)) {
+												$zwsgr_grid_item1 .= '
+													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+														' . esc_html($formatted_date) . ' 
+													</h5>';
+											}
+											$zwsgr_grid_item1 .= '</div>'; 
 										}
-										if (!in_array('review-days-ago', $selected_elements)) {
-											$zwsgr_grid_item1 .= '
-												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-													' . esc_html($formatted_date) . ' 
-												</h5>';
-										}
-										$zwsgr_grid_item1 .= '</div>'; 
+										
 
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-google-icon">
-												<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">
+												'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
 											</div>';
 										}
 
@@ -729,25 +816,30 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
-										<div class="zwsgr-profile">
+									'.( !in_array('review-photo', $selected_elements)?'
+									<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements))||( !in_array('review-rating', $selected_elements))||(!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
-											
+											'.( (!in_array('review-rating', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-date-wrap">
 												' . 
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
-										</div>
+											</div>':'').'
+											
+										</div>':'').'
+										'.( !in_array('review-g-icon', $selected_elements)?'
 										<div class="zwsgr-google-icon">
-											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-										</div>
+											'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+										</div>':'').'	
 									</div>
 									' . 
 										
@@ -763,22 +855,27 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-review-detail">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img class="zwsgr-profile" src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '<div class="zwsgr-profile">
+												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+											</div>' : '' ) . '
 											
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+											'.((!in_array('review-g-icon', $selected_elements) ||!in_array('review-rating', $selected_elements))?'
 											<div class="zwsgr-rating-wrap">
+												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
-													<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-												</div>
+													'.
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												</div>':'').'
+												
 												' . 
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
-											</div>
+											</div>':'').'	
 										</div>
-										
 										' . 
 											( !in_array('review-content', $selected_elements) && !empty($trimmed_content) ? '<div class="zwsgr-content-wrap"><p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
@@ -791,14 +888,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_grid_item4 = '
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-grid-inner">
-								<div class="zwsgr-profile">
-									' . 
-										( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-					
-									<div class="zwsgr-google-icon">
-										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-									</div>
-								</div>
+								'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
+										<div class="zwsgr-profile">
+											' . 
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												'.(!in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">
+												'.
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+												
+										</div>':'').'
 								' . 
 									( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 								' . 
@@ -817,17 +917,20 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
+										'.( !in_array('review-photo', $selected_elements)?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+										</div>':'').'
+										'.(( !in_array('review-title', $selected_elements)||!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
+										</div>':'').'
+										
 										' . 
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
@@ -847,22 +950,24 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
-												<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
 											</div>';
 										}
-
-										$zwsgr_popup_item1 .= '<div class="zwsgr-review-info">';
-										if (!in_array('review-title', $selected_elements)) {
-											$zwsgr_popup_item1 .= '
-												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
+											$zwsgr_popup_item1 .= '<div class="zwsgr-review-info">';
+											if (!in_array('review-title', $selected_elements)) {
+												$zwsgr_popup_item1 .= '
+													<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+											}
+											if (!in_array('review-days-ago', $selected_elements)) {
+												$zwsgr_popup_item1 .= '
+													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+														' . esc_html($formatted_date) . ' 
+													</h5>';
+											}
+											$zwsgr_popup_item1 .= '</div>'; 
 										}
-										if (!in_array('review-days-ago', $selected_elements)) {
-											$zwsgr_popup_item1 .= '
-												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-													' . esc_html($formatted_date) . ' 
-												</h5>';
-										}
-										$zwsgr_popup_item1 .= '</div>'; 
+									
 
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
@@ -886,20 +991,27 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-list-inner">
 										<div class="zwsgr-slide-wrap">
-											<div class="zwsgr-profile">
-												<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
-											</div>
+											'.( !in_array('review-photo', $selected_elements)?'
+												<div class="zwsgr-profile">
+													' . 
+														( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												</div>':'').'
+											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'').'
+											'.( !in_array('review-g-icon', $selected_elements) ?'
 											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+											
 										</div>
+										'.((!in_array('review-rating', $selected_elements) || !in_array('review-content', $selected_elements))?'
 										<div class="zwsgr-list-content-wrap">
 											' . 
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
@@ -907,12 +1019,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 												? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 												: '') . '</p>' : '' ). '
-										</div>
+										</div>':'') .'
 									</div>
 								</div>';
 							
 						$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 						$zwsgr_slider_content2[] = $zwsgr_slider_item2;
+						$zwsgr_slider_content3[] = $zwsgr_slider_item3;
 						$zwsgr_slider_content4[] = $zwsgr_slider_item4;
 						$zwsgr_slider_content5[] = $zwsgr_slider_item5;
 						$zwsgr_slider_content6[] = $zwsgr_slider_item6;
@@ -937,6 +1050,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 				$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 				$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
+				$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
 				$zwsgr_slider_content4 = implode('', (array) $zwsgr_slider_content4);
 				$zwsgr_slider_content5 = implode('', (array) $zwsgr_slider_content5);
 				$zwsgr_slider_content6 = implode('', (array) $zwsgr_slider_content6);
@@ -959,16 +1073,38 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
 
 				$zwsgr_gmb_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
-				$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_account_locations', true);
+				$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
 
 				$zwsgr_filter_data = [
 					'zwsgr_gmb_account_number'   => $zwsgr_gmb_account_number,
 					'zwsgr_gmb_account_location' => $zwsgr_gmb_account_location,
-					'zwsgr_range_filter_type'    => 'rangeofdays',
-					'zwsgr_range_filter_data'    => 'monthly'
+					'zwsgr_range_filter_type'    => '',
+					'zwsgr_range_filter_data'    => ''
 				];
 
-				$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
+				$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query($zwsgr_filter_data);		
+				$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
+
+				$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
+
+				$final_rating = ' <div class="zwsgr-final-review-wrap">
+					<svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M30.0001 14.4156L34.7771 17.0896L33.7102 11.72L37.7293 8.00321L32.293 7.35866L30.0001 2.38752L27.7071 7.35866L22.2707 8.00321L26.2899 11.72L25.223 17.0896L30.0001 14.4156ZM23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616L23.8197 19.0211Z" fill="#ccc" />
+						<path d="M50.0001 14.4156L54.7771 17.0896L53.7102 11.72L57.7293 8.0032L52.293 7.35866L50.0001 2.38752L47.7071 7.35866L42.2707 8.0032L46.2899 11.72L45.223 17.0896L50.0001 14.4156ZM43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616L43.8197 19.0211Z" fill="#ccc" />
+						<path d="M70.0005 14.4159L74.7773 17.0899L73.7106 11.7203L77.7295 8.00334L72.2928 7.35876L70.0003 2.3876L67.7071 7.35877L62.2705 8.00334L66.2895 11.7203L65.2227 17.09L70.0005 14.4159ZM63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619L63.8195 19.0214Z" fill="#ccc" />
+						<path d="M10.0001 14.4156L14.7771 17.0896L13.7102 11.7201L17.7293 8.00322L12.293 7.35867L10.0001 2.38751L7.70704 7.35867L2.27068 8.00322L6.28991 11.7201L5.223 17.0896L10.0001 14.4156ZM3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616L3.81966 19.0211Z" fill="#ccc" />
+						<path d="M90.0005 14.4159L94.7773 17.0899L93.7106 11.7203L97.7295 8.00335L92.2928 7.35877L90.0003 2.38761L87.7071 7.35878L82.2705 8.00335L86.2895 11.7203L85.2227 17.09L90.0005 14.4159ZM83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619L83.8195 19.0214Z" fill="#ccc" />
+					</svg>
+					<div class="zwsgr-final-review-fill" style="width: ' . $widthPercentage . '%;">
+						<svg width="100" height="20" viewBox="0 0 100 20" className="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M30.0001 15.5616L23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616Z" fill="#f39c12" />
+							<path d="M50.0001 15.5616L43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616Z" fill="#f39c12" />
+							<path d="M70.0004 15.5619L63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619Z" fill="#f39c12" />
+							<path d="M10.0001 15.5616L3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616Z" fill="#f39c12" />
+							<path d="M90.0004 15.5619L83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619Z" fill="#f39c12" />
+						</svg>
+					</div>
+				</div>';
 
 	
 				// Define your options and layouts with corresponding HTML content
@@ -984,7 +1120,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								' . $zwsgr_slider_content2 . '
 							</div>
 						</div>',
-						'<div class="slider-item" id="slider3">Slider 3 Content</div>',
+						'<div class="zwsgr-slider" id="zwsgr-slider3">
+							<div class="zwsgr-slider-badge">
+								<div class="zwsgr-badge-item" id="zwsgr-badge1">
+									<h3 class="zwsgr-average">Good</h3>
+									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+									<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+									<img src="' . $plugin_dir_path . 'assets/images/google.png">
+								</div>
+							</div>
+							<div class="zwsgr-slider-3">
+								' . $zwsgr_slider_content3 . '
+							</div>
+						</div>',
 						'<div class="zwsgr-slider" id="zwsgr-slider4">
 							<div class="zwsgr-slider-4">
 								' . $zwsgr_slider_content4 . '
@@ -1038,7 +1186,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'badge' => [
 						'<div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 						</div>',
@@ -1049,23 +1197,23 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 							<div class="zwsgr-badge-info">
 								<h3 class="zwsgr-average">Good</h3>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 							</div>
 						</div>',
 
 						'<div class="zwsgr-badge-item" id="zwsgr-badge3">
 							<div class="zwsgr-rating-wrap">
-								<span class="final-rating">4.8</span>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 						</div>',
 
 						'<div class="zwsgr-badge-item" id="zwsgr-badge4">
 							<div class="zwsgr-badge4-rating">
-								<span class="final-rating">4.7</span>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 							<div class="zwsgr-badge4-info">
 								<h3 class="zwsgr-google">Google</h3>
@@ -1076,19 +1224,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 						'<div class="zwsgr-badge-item" id="zwsgr-badge5">
 							<div class="zwsgr-badge5-rating">
-								<span class="final-rating">4.7</span>
+								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							</div>
 							<div class="zwsgr-badge5-info">
 								<h3 class="zwsgr-google">Google</h3>
 								<p class="zwsgr-avg-note">Average Rating</p>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 						</div>',
 
 						'<div class="zwsgr-badge-item" id="zwsgr-badge6">
 							<div class="zwsgr-badge6-rating">
-								<span class="final-rating">4.7</span>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 							<div class="zwsgr-badge6-info">
 								<h3 class="zwsgr-google">Google</h3>
@@ -1099,8 +1247,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						'<div class="zwsgr-badge-item" id="zwsgr-badge7">
 							<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 							<div class="zwsgr-badge7-rating">
-								<span class="final-rating">4.7</span>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 						</div>',
 
@@ -1109,8 +1257,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 								<p class="zwsgr-avg-note">Google Reviews</p>
 							</div>
-							<span class="final-rating">4.7</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 						</div>'
 						
@@ -1122,7 +1270,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 							<div class="zwsgr-profile-info">
 								<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 							</div>
 						</div>
@@ -1136,7 +1284,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+											' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 										</div>
 									</div>
@@ -1152,8 +1300,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<h3>Reviews</h3>
 						</div>
 						<div class="zwsgr-info-wrap">
-							<span class="final-rating">4.7</span>
-							' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 						</div>
 					</div>
@@ -1167,7 +1315,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-										' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 									</div>
 								</div>
@@ -1192,7 +1340,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($display_option, ['list', 'grid'])) {
-					echo '<button class="load-more-meta" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
+					echo '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 				
 			echo '</div>';
@@ -1295,11 +1443,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			);
 
 			// Add the LIKE condition if front_keyword is present
-			if ($front_keyword) {
+			if ($front_keyword && $front_keyword !== 'all') {
 				$args['meta_query'][]= array(
 					'key'     => 'zwsgr_review_comment', // Replace with the actual meta key for the keyword
 					'value'   => $front_keyword,
 					'compare' => 'LIKE',
+				);
+			}else{
+				$args['meta_query'][]=array(
+					'key'     => 'zwsgr_review_star_rating',
+					'value'   => $ratings_to_include,  // Apply the word-based rating filter
+					'compare' => 'IN',
+					'type'    => 'CHAR'
 				);
 			}
  
@@ -1317,12 +1472,16 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$args['meta_query'][0]['value'] = $rating_filter_word; // Limit to the selected rating
 					} else {
 						// Default behavior if no filter is set
-						$args['meta_query'][0]['value'] = 'FIVE';
+						$args['orderby'] = 'meta_value';
+						$args['order'] = 'ASC';
+						$args['meta_key'] = 'zwsgr_review_star_rating';
 					}
 					break;
 
 				case 'lowest':
-					$args['meta_query'][0]['value'] = 'ONE'; 
+					$args['orderby'] = 'meta_value';
+					$args['order'] = 'DESC';
+					$args['meta_key'] = 'zwsgr_review_star_rating';
 					break;
 
 				default:
@@ -1348,6 +1507,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_reviewer_name    = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
 						$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
 						$zwsgr_review_content   = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
+						$zwsgr_attachment_id = get_post_thumbnail_id(get_the_ID());
+						
 						$published_date  = get_the_date('F j, Y');
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 						$char_limit = (int) $char_limit ;
@@ -1401,22 +1562,23 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div class="zwsgr-slide-wrap">' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-												'<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '"/>' .
+												wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')) .
 											'</div>' 
 											: '') .
-
+										(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)?
 										'<div class="zwsgr-review-info">' .
 											(!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) 
 												? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
 												: '') .
-											(!empty($published_date) 
+											(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
 												: '') .
-										'</div>' .
-
+										'</div>':'') .
+										(!in_array('review-g-icon', $selected_elements)?
 										'<div class="zwsgr-google-icon">' .
-											'<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' .
-										'</div>' .
+											''.
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+										'</div>':'') .
 									'</div>' .
 
 									(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
@@ -1434,111 +1596,102 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										: '') .
 								'</div>' .
 							'</div>';
-						$zwsgr_slider_item2 = '
-						<div class="zwsgr-slide-item">
-							<div class="zwsgr-list-inner">
-								<div class="zwsgr-rating-wrap">
+							$zwsgr_slider_item2 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-list-inner">'.
+									(!in_array('review-rating', $selected_elements) || !in_array('review-days-ago', $selected_elements)?'<div class="zwsgr-rating-wrap">
 									' . 
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . 
 									
 									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) .
-								'</div>
-								' . 
-									( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-									? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-									: '') . '</p>' : '' ) . 
-								
-								'<div class="zwsgr-slide-wrap">
-									<div class="zwsgr-profile">
-										' . 
-											( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) .
-									'</div>
-									<div class="zwsgr-review-info">
-										' . 
-											( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) .
-									'</div>
-									<div class="zwsgr-google-icon">
-										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-									</div>
-								</div>
-							</div>
-						</div>';
-
-						$zwsgr_slider_item4 = '
-						<div class="zwsgr-slide-item">
-							<div class="zwsgr-list-inner">
-								' . 
-									( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-									? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-									: '') . '</p>' : '' ) . '
-								
-								<div class="zwsgr-slide-wrap4">
-									<div class="zwsgr-profile">
-										' . 
-											( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-										
-										<div class="zwsgr-google-icon">
-											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-										</div>
-									</div>
-									<div class="zwsgr-review-info">
-										' . 
-											( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
-										
-										' . 
-											( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-									</div>
+									'</div>':'').'
+									
 									' . 
-										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
+										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . 
+									
+									'<div class="zwsgr-slide-wrap">'.	
+										( !in_array('review-photo', $selected_elements)?
+										'<div class="zwsgr-profile">
+											' . 
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) .
+										'</div>':'').'
+									
+										'. (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '
+										<div class="zwsgr-review-info">
+											' . 
+												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) .
+										'</div>' :'').'
+										
+										'.( !in_array('review-g-icon', $selected_elements)?
+										'<div class="zwsgr-google-icon">
+											'.
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+										</div>':'' ).'
+									</div>
 								</div>
-							</div>
-						</div>';
-						
+							</div>';
 
-						$zwsgr_slider_item5 = '
-							<div class="zwsgr-slide-item">' .
-								'<div>' .
-									(!in_array('review-photo', $selected_elements) 
-										? '<div class="zwsgr-profile">' .
-											'<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '">' .
-											'<div class="zwsgr-google-icon">' .
-												'<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' .
-											'</div>' .
-										'</div>' 
-										: '') .
-									(!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) 
-										? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
-										: '') .
-									(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
-										? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
-										: '') .
-									(!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements) 
-										? '<div class="zwsgr-contnt-wrap">' .
-											(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
-												? '<p class="zwsgr-content">' . esc_html($trimmed_content) .
-													($is_trimmed 
-														? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-														: '') .
-												'</p>' 
-												: '') .
-											(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
-												: '') .
-										'</div>' 
-										: '') .
-								'</div>' .
-							'</div>';
 
-						$zwsgr_slider_item6 = '
+							$zwsgr_slider_item3 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
-									<div class="zwsgr-slide-wrap">
+									' . 
+										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . '
+									
+									<div class="zwsgr-slide-wrap4">
+										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											'.( !in_array('review-g-icon', $selected_elements)?'
+											<div class="zwsgr-google-icon">
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+											
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)) ?'
+											<div class="zwsgr-review-info">
+											' . 
+												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
+											
+											' . 
+												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
+													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+										</div>':'').'
+									
+										' . 
+											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
+									</div>
+								</div>
+							</div>';
+
+							$zwsgr_slider_item4 = '
+							<div class="zwsgr-slide-item">
+								<div class="zwsgr-list-inner">
+									' . 
+										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . '
+									
+									<div class="zwsgr-slide-wrap4">
+										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
+										<div class="zwsgr-profile">
+											' . 
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											'.( !in_array('review-g-icon', $selected_elements)?'
+											<div class="zwsgr-google-icon">
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+											
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)) ?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -1546,23 +1699,85 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
-										<div class="zwsgr-google-icon">
-											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-										</div>
+										</div>':'').'
+										' . 
+											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
-									
-									' . 
-										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
-									
-									' . 
-										( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-									? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
-									: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
+							
 
-						// List
+							$zwsgr_slider_item5 = '
+								<div class="zwsgr-slide-item">' .
+									'<div>' .
+										(!in_array('review-photo', $selected_elements) 
+											? '<div class="zwsgr-profile">' .
+												wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+												'.( !in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">'.
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+												'</div>':'').'	
+											</div>' 
+											: '') .
+										(!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) 
+											? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
+											: '') .
+										(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
+											? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
+											: '') .
+										(!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements) 
+											? '<div class="zwsgr-contnt-wrap">' .
+												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
+													? '<p class="zwsgr-content">' . esc_html($trimmed_content) .
+														($is_trimmed 
+															? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+															: '') .
+													'</p>' 
+													: '') .
+												(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
+													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
+													: '') .
+											'</div>' 
+											: '') .
+									'</div>' .
+								'</div>';
+
+							$zwsgr_slider_item6 = '
+								<div class="zwsgr-slide-item">
+									<div class="zwsgr-list-inner">
+										<div class="zwsgr-slide-wrap">
+											'.( !in_array('review-photo', $selected_elements)?'
+											<div class="zwsgr-profile">
+												' . 
+													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											</div>':'').'
+											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
+											<div class="zwsgr-review-info">
+												' . 
+													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
+												
+												' . 
+													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
+														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+											</div>':'').'
+											'.( !in_array('review-g-icon', $selected_elements)?'
+											<div class="zwsgr-google-icon">
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+										</div>
+										
+										' . 
+											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
+										
+										' . 
+											( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
+										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										: '') . '</p>' : '' ) . '
+									</div>
+								</div>';
+							
+							// List
 							$zwsgr_list_item1 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
@@ -1570,25 +1785,28 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-profile">
-											<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+											'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
 										</div>';
 									}
-									$zwsgr_list_item1 .= '<div class="zwsgr-review-info">';
-									if (!in_array('review-title', $selected_elements)) {
-										$zwsgr_list_item1 .= '
-											<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+									if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
+										$zwsgr_list_item1 .= '<div class="zwsgr-review-info">';
+										if (!in_array('review-title', $selected_elements)) {
+											$zwsgr_list_item1 .= '
+												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										}
+										if (!in_array('review-days-ago', $selected_elements)) {
+											$zwsgr_list_item1 .= '
+												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													' . esc_html($formatted_date) . ' 
+												</h5>';
+										}
+										$zwsgr_list_item1 .= '</div>';
 									}
-									if (!in_array('review-days-ago', $selected_elements)) {
-										$zwsgr_list_item1 .= '
-											<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-												' . esc_html($formatted_date) . ' 
-											</h5>';
-									}
-									$zwsgr_list_item1 .= '</div>';
+									
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-google-icon">
-											<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">
+											'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
 										</div>';
 									}
 
@@ -1615,10 +1833,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-list-inner">
 										<div class="zwsgr-slide-wrap">
+											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											</div>
+													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											</div>':'').'
+											'.( (!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -1626,13 +1846,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'').'
+											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
 										</div>
-										
-										<div class="zwsgr-list-content-wrap">
+										'.((!in_array('review-rating', $selected_elements) ||!in_array('review-content', $selected_elements))?'<div class="zwsgr-list-content-wrap">
 											' . 
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 											
@@ -1640,7 +1861,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
-										</div>
+										</div>':'').'
 									</div>
 								</div>';
 
@@ -1654,20 +1875,25 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
+										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												'.(!in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">
+												'.
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+												
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
+										</div>':'').'
 									</div>
 								</div>
 							</div>';
@@ -1676,19 +1902,23 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap4">
-										
+										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											
-											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												'.(!in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">
+												'.
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+												
+										</div>':'').'
+										'.( (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
-										</div>
+										</div>':'').'
+										
 										' . 
 											( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
@@ -1707,10 +1937,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-list-wrap5">
 										<div class="zwsgr-prifile-wrap">
+											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-											</div>
+													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+											</div>':'').'
+											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-data">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
@@ -1718,19 +1950,20 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'') .'
 										</div>
 
 										<div class="zwsgr-content-wrap">
+											'.((!in_array('review-rating', $selected_elements) ||!in_array('review-g-icon', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
-
+												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
-													<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-												</div>
-											</div>
-
+													'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												</div>':'').'
+											</div>':'').'
 											' . 
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
@@ -1749,27 +1982,30 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
-												<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
 											</div>';
 										}
 
-										$zwsgr_grid_item1 .= '<div class="zwsgr-review-info">';
-										if (!in_array('review-title', $selected_elements)) {
-											$zwsgr_grid_item1 .= '
-												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
+											$zwsgr_grid_item1 .= '<div class="zwsgr-review-info">';
+											if (!in_array('review-title', $selected_elements)) {
+												$zwsgr_grid_item1 .= '
+													<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+											}
+											if (!in_array('review-days-ago', $selected_elements)) {
+												$zwsgr_grid_item1 .= '
+													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+														' . esc_html($formatted_date) . ' 
+													</h5>';
+											}
+											$zwsgr_grid_item1 .= '</div>'; 
 										}
-										if (!in_array('review-days-ago', $selected_elements)) {
-											$zwsgr_grid_item1 .= '
-												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-													' . esc_html($formatted_date) . ' 
-												</h5>';
-										}
-										$zwsgr_grid_item1 .= '</div>'; 
+										
 
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-google-icon">
-												<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">
+												'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
 											</div>';
 										}
 
@@ -1798,25 +2034,30 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
-										<div class="zwsgr-profile">
+									'.( !in_array('review-photo', $selected_elements)?'
+									<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+										</div>':'').'
+										'.((!in_array('review-title', $selected_elements))||( !in_array('review-rating', $selected_elements))||(!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
-											
+											'.( (!in_array('review-rating', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-date-wrap">
 												' . 
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
-										</div>
+											</div>':'').'
+											
+										</div>':'').'
+										'.( !in_array('review-g-icon', $selected_elements)?'
 										<div class="zwsgr-google-icon">
-											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-										</div>
+											'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+										</div>':'').'	
 									</div>
 									' . 
 										
@@ -1832,25 +2073,32 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-review-detail">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img class="zwsgr-profile" src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '<div class="zwsgr-profile">
+												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+											</div>' : '' ) . '
 											
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+											'.((!in_array('review-g-icon', $selected_elements) ||!in_array('review-rating', $selected_elements))?'
 											<div class="zwsgr-rating-wrap">
+												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
-													<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-												</div>
+													'.
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												</div>':'').'
+												
 												' . 
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
-											</div>
+											</div>':'').'	
 										</div>
 										' . 
 											( !in_array('review-content', $selected_elements) && !empty($trimmed_content) ? '<div class="zwsgr-content-wrap"><p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 										? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 										: '') . '</div></p>' : '' ) . '
+										
 									</div>
 								</div>
 							</div>';
@@ -1858,14 +2106,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_grid_item4 = '
 						<div class="zwsgr-slide-item">
 							<div class="zwsgr-grid-inner">
-								<div class="zwsgr-profile">
-									' . 
-										( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-					
-									<div class="zwsgr-google-icon">
-										<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-									</div>
-								</div>
+								'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
+										<div class="zwsgr-profile">
+											' . 
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												'.(!in_array('review-g-icon', $selected_elements)?'
+												<div class="zwsgr-google-icon">
+												'.
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+												
+										</div>':'').'
 								' . 
 									( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 								' . 
@@ -1884,17 +2135,20 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
+										'.( !in_array('review-photo', $selected_elements)?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">' : '' ) . '
-										</div>
+												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+										</div>':'').'
+										'.(( !in_array('review-title', $selected_elements)||!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
 											' . 
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-										</div>
+										</div>':'').'
+										
 										' . 
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 									</div>
@@ -1914,22 +2168,24 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
-												<img src="' . esc_url($plugin_dir_path . 'assets/images/testi-pic.png') . '" alt="Reviewer Image">
+												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
 											</div>';
 										}
-
-										$zwsgr_popup_item1 .= '<div class="zwsgr-review-info">';
-										if (!in_array('review-title', $selected_elements)) {
-											$zwsgr_popup_item1 .= '
-												<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
+											$zwsgr_popup_item1 .= '<div class="zwsgr-review-info">';
+											if (!in_array('review-title', $selected_elements)) {
+												$zwsgr_popup_item1 .= '
+													<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>';
+											}
+											if (!in_array('review-days-ago', $selected_elements)) {
+												$zwsgr_popup_item1 .= '
+													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+														' . esc_html($formatted_date) . ' 
+													</h5>';
+											}
+											$zwsgr_popup_item1 .= '</div>'; 
 										}
-										if (!in_array('review-days-ago', $selected_elements)) {
-											$zwsgr_popup_item1 .= '
-												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
-													' . esc_html($formatted_date) . ' 
-												</h5>';
-										}
-										$zwsgr_popup_item1 .= '</div>'; 
+									
 
 										if (!in_array('review-rating', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
@@ -1953,20 +2209,27 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slide-item">
 									<div class="zwsgr-list-inner">
 										<div class="zwsgr-slide-wrap">
-											<div class="zwsgr-profile">
-												<img src="' . $plugin_dir_path . 'assets/images/testi-pic.png">
-											</div>
+											'.( !in_array('review-photo', $selected_elements)?'
+												<div class="zwsgr-profile">
+													' . 
+														( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												</div>':'').'
+											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
 												' . 
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
 														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
-											</div>
+											</div>':'').'
+											'.( !in_array('review-g-icon', $selected_elements) ?'
 											<div class="zwsgr-google-icon">
-												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
-											</div>
+												'.
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											</div>':'').'
+											
 										</div>
+										'.((!in_array('review-rating', $selected_elements) || !in_array('review-content', $selected_elements))?'
 										<div class="zwsgr-list-content-wrap">
 											' . 
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
@@ -1974,12 +2237,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-content', $selected_elements) ? '<p class="zwsgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
 												? ' <a href="javascript:void(0);" class="toggle-content" data-full-text="' . esc_attr($zwsgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
 												: '') . '</p>' : '' ). '
-										</div>
+										</div>':'') .'
 									</div>
 								</div>';
 
 						$zwsgr_slider_content1[] = $zwsgr_slider_item1;
 						$zwsgr_slider_content2[] = $zwsgr_slider_item2;
+						$zwsgr_slider_content3[] = $zwsgr_slider_item3;
 						$zwsgr_slider_content4[] = $zwsgr_slider_item4;
 						$zwsgr_slider_content5[] = $zwsgr_slider_item5;
 						$zwsgr_slider_content6[] = $zwsgr_slider_item6;
@@ -2003,6 +2267,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				// $output .= '</div>';
 				$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 				$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
+				$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
 				$zwsgr_slider_content4 = implode('', (array) $zwsgr_slider_content4);
 				$zwsgr_slider_content5 = implode('', (array) $zwsgr_slider_content5);
 				$zwsgr_slider_content6 = implode('', (array) $zwsgr_slider_content6);
@@ -2024,16 +2289,37 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
 
 				$zwsgr_gmb_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
-				$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_account_locations', true);
+				$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
 
 				$zwsgr_filter_data = [
 					'zwsgr_gmb_account_number'   => $zwsgr_gmb_account_number,
 					'zwsgr_gmb_account_location' => $zwsgr_gmb_account_location,
-					'zwsgr_range_filter_type'    => 'rangeofdays',
-					'zwsgr_range_filter_data'    => 'monthly'
+					'zwsgr_range_filter_type'    => '',
+					'zwsgr_range_filter_data'    => ''
 				];
 
-				$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
+				$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query($zwsgr_filter_data);		
+				$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
+				$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
+
+				$final_rating = ' <div class="zwsgr-final-review-wrap">
+					<svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M30.0001 14.4156L34.7771 17.0896L33.7102 11.72L37.7293 8.00321L32.293 7.35866L30.0001 2.38752L27.7071 7.35866L22.2707 8.00321L26.2899 11.72L25.223 17.0896L30.0001 14.4156ZM23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616L23.8197 19.0211Z" fill="#ccc" />
+						<path d="M50.0001 14.4156L54.7771 17.0896L53.7102 11.72L57.7293 8.0032L52.293 7.35866L50.0001 2.38752L47.7071 7.35866L42.2707 8.0032L46.2899 11.72L45.223 17.0896L50.0001 14.4156ZM43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616L43.8197 19.0211Z" fill="#ccc" />
+						<path d="M70.0005 14.4159L74.7773 17.0899L73.7106 11.7203L77.7295 8.00334L72.2928 7.35876L70.0003 2.3876L67.7071 7.35877L62.2705 8.00334L66.2895 11.7203L65.2227 17.09L70.0005 14.4159ZM63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619L63.8195 19.0214Z" fill="#ccc" />
+						<path d="M10.0001 14.4156L14.7771 17.0896L13.7102 11.7201L17.7293 8.00322L12.293 7.35867L10.0001 2.38751L7.70704 7.35867L2.27068 8.00322L6.28991 11.7201L5.223 17.0896L10.0001 14.4156ZM3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616L3.81966 19.0211Z" fill="#ccc" />
+						<path d="M90.0005 14.4159L94.7773 17.0899L93.7106 11.7203L97.7295 8.00335L92.2928 7.35877L90.0003 2.38761L87.7071 7.35878L82.2705 8.00335L86.2895 11.7203L85.2227 17.09L90.0005 14.4159ZM83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619L83.8195 19.0214Z" fill="#ccc" />
+					</svg>
+					<div class="zwsgr-final-review-fill" style="width: ' . $widthPercentage . '%;">
+						<svg width="100" height="20" viewBox="0 0 100 20" className="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M30.0001 15.5616L23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616Z" fill="#f39c12" />
+							<path d="M50.0001 15.5616L43.8197 19.0211L45.2 12.0742L40 7.26541L47.0335 6.43152L50.0001 0L52.9666 6.43152L60 7.26541L54.8001 12.0742L56.1804 19.0211L50.0001 15.5616Z" fill="#f39c12" />
+							<path d="M70.0004 15.5619L63.8195 19.0214L65.1996 12.0744L60 7.26554L67.0335 6.43163L70.0004 0L72.9665 6.43163L80 7.26554L74.8004 12.0744L76.1805 19.0214L70.0004 15.5619Z" fill="#f39c12" />
+							<path d="M10.0001 15.5616L3.81966 19.0211L5.19999 12.0742L0 7.26543L7.03344 6.43153L10.0001 0L12.9666 6.43153L20 7.26543L14.8001 12.0742L16.1804 19.0211L10.0001 15.5616Z" fill="#f39c12" />
+							<path d="M90.0004 15.5619L83.8195 19.0214L85.1996 12.0744L80 7.26554L87.0335 6.43163L90.0004 0L92.9665 6.43163L100 7.26554L94.8004 12.0744L96.1805 19.0214L90.0004 15.5619Z" fill="#f39c12" />
+						</svg>
+					</div>
+				</div>';
 
 				$filter_layout = [
 					'slider' => [
@@ -2047,7 +2333,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								' . $zwsgr_slider_content2 . '
 							</div>
 						</div>',
-						'<div class="slider-item" id="slider3">Slider 3 Content</div>',
+						'<div class="zwsgr-slider" id="zwsgr-slider3">
+							<div class="zwsgr-slider-badge">
+								<div class="zwsgr-badge-item" id="zwsgr-badge1">
+									<h3 class="zwsgr-average">Good</h3>
+									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+									<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+									<img src="' . $plugin_dir_path . 'assets/images/google.png">
+								</div>
+							</div>
+							<div class="zwsgr-slider-3">
+								' . $zwsgr_slider_content3 . '
+							</div>
+						</div>',
 						'<div class="zwsgr-slider" id="zwsgr-slider4">
 							<div class="zwsgr-slider-4">
 								' . $zwsgr_slider_content4 . '
@@ -2085,7 +2383,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 							<div class="zwsgr-profile-info">
 								<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 							</div>
 						</div>
@@ -2099,7 +2397,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+											' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 										</div>
 									</div>
@@ -2115,8 +2413,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<h3>Reviews</h3>
 							</div>
 							<div class="zwsgr-info-wrap">
-								<span class="final-rating">4.7</span>
-								' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
+								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 							</div>
 						</div>
@@ -2130,7 +2428,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>Zealousweb Technologies Pvt. Ltd.</h3>
-											' . (!empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '') . '
+											' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 										</div>
 									</div>
@@ -2158,7 +2456,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				wp_reset_postdata();
 			} else {
 				// No more posts available
-				$response['err_msg'] = esc_html__('No more posts.', 'zw-smart-google-reviews');
+				$response['err_msg'] = esc_html__('No Review Founds.', 'zw-smart-google-reviews');
 			}
 			$response['disable_button'] = ( $query->max_num_pages <= $page ) ? true : false;
 			wp_send_json_success($response);

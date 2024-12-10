@@ -160,7 +160,6 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             // If $zwsgr_account_number is not provided, use the class property
             $zwsgr_account_number = $zwsgr_account_number ?? $this->zwsgr_account_number;
 
-
             if ( isset( $zwsgr_gmb_data['reviews'] ) && is_array( $zwsgr_gmb_data['reviews'] ) ) {
                 foreach ( $zwsgr_gmb_data['reviews'] as $zwsgr_review ) {
             
@@ -198,8 +197,10 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                     // Check if post was inserted or updated successfully
                     if ( $zwsgr_wp_review_id && ! is_wp_error( $zwsgr_wp_review_id ) ) {
 
-                        $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
-
+                        $zwsgr_gmb_email     = get_option('zwsgr_gmb_email');
+                        $zwsgr_review_dp_url = isset($zwsgr_review['reviewer']['profilePhotoUrl']) ? $zwsgr_review['reviewer']['profilePhotoUrl'] : null;
+                        $zwsgr_save_path     = wp_upload_dir()['path'] . '/temp-reviewer-img.png';
+                        
                         if (!empty($zwsgr_gmb_email)) {
                             update_post_meta($zwsgr_wp_review_id, 'zwsgr_gmb_email', $zwsgr_gmb_email);
                         }
@@ -207,6 +208,17 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         //Update parent account & locations meta
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_account_number', $this->zwsgr_account_number );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_location_code', $zwsgr_location_code);
+
+                        $zwsgr_download_review_image_status = $this->zwsgr_download_review_image($zwsgr_review_dp_url, $zwsgr_save_path);
+
+                        if (!empty($zwsgr_download_review_image_status) && $zwsgr_download_review_image_status) {
+                            $zwsgr_upload_featured_image_status = $this->zwsgr_upload_featured_image($zwsgr_save_path, $zwsgr_wp_review_id);
+                            if (empty($zwsgr_upload_featured_image_status) && !$zwsgr_upload_featured_image_status) {
+                                error_log('BDM: There was an error while uploading DP: ' . $zwsgr_wp_review_id);
+                            }
+                        } else {
+                            error_log('BDM: There was an error while saving.' . $zwsgr_wp_review_id);
+                        }
 
                         // Update custom fields
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_id', $zwsgr_review_id );
@@ -231,6 +243,90 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             }            
 
             return;
+
+        }
+
+         /**
+        * Downloads an image from a URL and saves it to a specified path.
+        *
+        * @param string $zwsgr_review_dp_url The image URL to download.
+        * @param string $zwsgr_save_path The path where the image should be saved.
+        * 
+        * @return string|bool The path to the saved image if successful, otherwise false.
+        */
+        protected function zwsgr_download_review_image($zwsgr_review_dp_url, $zwsgr_save_path) {
+
+            // Fetch image data
+            $zwsgr_review_image_data = file_get_contents($zwsgr_review_dp_url);
+
+            // Check if the image was downloaded successfully
+            if ($zwsgr_review_image_data === false) {
+                error_log("Error: Unable to download the image from URL: " . $zwsgr_review_dp_url);
+                return false;
+            }
+
+            $zwsgr_temp_directory = dirname($zwsgr_save_path);
+            if (!is_dir($zwsgr_temp_directory)) {
+                wp_mkdir_p($zwsgr_temp_directory);
+            }
+
+            // Save the image data to the file system
+            $zwsgr_put_image_content = file_put_contents($zwsgr_save_path, $zwsgr_review_image_data);
+
+            if ($zwsgr_put_image_content === false) {
+                error_log("Error: Failed to save the image to the specified path: " . $zwsgr_save_path);
+                return false;
+            }
+
+            // Return the path to the saved image
+            return $zwsgr_save_path;
+            
+        }
+
+         /**
+         * Upload an image from a specific path and set it as the post thumbnail.
+         *
+         * @param string $zwsgr_review_dp_path The path to the image file.
+         * @param int $zwsgr_wp_review_id The ID of the post (custom post type).
+         * 
+         * @return int|WP_Error The ID of the uploaded image on success, or WP_Error on failure.
+         */
+        function zwsgr_upload_featured_image($zwsgr_save_path, $zwsgr_wp_review_id) {
+
+            // Check if we have image data
+            if (empty($zwsgr_save_path)) {
+                error_log("Error: No image data provided.");
+                return false;
+            }
+
+			 // Include necessary WordPress file functions
+			if ( ! function_exists( 'media_handle_sideload' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+			}
+
+            $zwsgr_upload_dir = wp_upload_dir();
+
+            if (!is_dir($zwsgr_upload_dir['path'])) {
+                wp_mkdir_p($zwsgr_upload_dir['path']);
+            }
+
+            $zwsgr_file_array = array(
+                'name' => basename($zwsgr_save_path),
+                'tmp_name' => $zwsgr_save_path
+            );
+
+            $zwsgr_attachment_id = media_handle_sideload($zwsgr_file_array, $zwsgr_wp_review_id);
+
+            if (is_wp_error($zwsgr_attachment_id)) {
+                error_log("Error: Unable to upload image to WordPress. Error: " . $zwsgr_attachment_id->get_error_message());
+                return $zwsgr_attachment_id;
+            }
+
+            @unlink($zwsgr_save_path);
+
+            set_post_thumbnail($zwsgr_wp_review_id, $zwsgr_attachment_id);
+
+            return $zwsgr_attachment_id;
 
         }
 
@@ -263,23 +359,6 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token);
 
             } else {
-
-                $zwsgr_request_data_id = get_posts(array(
-                    'post_type'      => 'zwsgr_request_data',
-                    'posts_per_page' => 1,
-                    'post_status'    => 'publish',
-                    'meta_key'       => 'zwsgr_account_number',
-                    'meta_value'     => $this->zwsgr_account_number,
-                    'fields'         => 'ids',
-                ))[0] ?? null;
-
-                if (!empty($this->zwsgr_total_reviews)) {
-                    update_post_meta($zwsgr_request_data_id, "zwsgr_location_{$this->zwsgr_location_number}_total_reviews", $this->zwsgr_total_reviews);
-                }
-
-                if (!empty($this->zwsgr_average_rating)) {
-                    update_post_meta($zwsgr_request_data_id, "zwsgr_location_{$this->zwsgr_location_number}_average_rating", $this->zwsgr_average_rating);
-                }
 
                 $zwsgr_queue_manager->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
 
