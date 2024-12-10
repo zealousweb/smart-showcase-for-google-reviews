@@ -379,7 +379,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						if (!empty($zwsgr_attachment_id)) {
 							echo wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;'));
 						} else {
-							echo 'No DP available.';
+							echo '<img src="' . ZWSGR_URL . '/assets/images/fallback-user-dp.svg" class="fallback-user-dp">';
 						}
 					echo '</td>
 				</tr>

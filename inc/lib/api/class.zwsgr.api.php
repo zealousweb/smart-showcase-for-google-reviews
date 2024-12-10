@@ -241,7 +241,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         public function zwsgr_get_locations( $zwsgr_account_id, $zwsgr_page_token = null ) {
 
             // Define the endpoint with account ID and query parameters.
-            $zwsgr_api_endpoint = "accounts/{$zwsgr_account_id}/locations?readMask=name,storeCode&pageSize=50";
+            $zwsgr_api_endpoint = "accounts/{$zwsgr_account_id}/locations?readMask=name,title,storeCode&pageSize=50";
             $zwsgr_api_params   = $zwsgr_page_token ? [ 'pageToken' => $zwsgr_page_token ] : [];
 
             // Make the API request to fetch locations.
