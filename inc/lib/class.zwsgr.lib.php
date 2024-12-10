@@ -51,6 +51,16 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				'nonce'    => wp_create_nonce('zwsgr_load_more_nonce')
 			));
 		}
+
+		function enqueue_custom_plugin_styles($post_id) {
+			$custom_css = get_post_meta($post_id, '_zwsgr_custom_css', true);
+			// Check if there's any custom CSS to render
+			if (!empty($custom_css)) {
+				echo '<style type="text/css">' . esc_html($custom_css) . '</style>';
+			}
+		}
+		
+		
 		function translate_read_more($language) 
 		{
 			$translations = [
@@ -262,6 +272,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$query = new WP_Query($args);
 
 			ob_start();  // Start output buffering
+			$this->enqueue_custom_plugin_styles($post_id);
 			echo '<div class="zwsgr-front-review-filter-wrap">';
 				if ($badge_layout_option === 'badge') {
 				}else{
