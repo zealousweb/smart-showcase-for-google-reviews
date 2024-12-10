@@ -2062,11 +2062,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwsgr-color-options">
 									<div class="zwsgr-color-picker">
 										<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
-										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color); ?>">
+										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#000000'); ?>">
 									</div>
 									<div class="zwsgr-color-picker">
 										<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>
-										<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color); ?>">
+										<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color ? $text_color : '#ffffff'); ?>">
 									</div>
 								</div>
 							</div>
@@ -2147,11 +2147,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
 									<div class="zwsgr-color-picker-load">
 										<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
-										<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load); ?>">
+										<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
 									</div>
 									<div class="zwsgr-color-picker-load">
 										<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
-										<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load); ?>">
+										<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
 									</div>
 								</div>
 

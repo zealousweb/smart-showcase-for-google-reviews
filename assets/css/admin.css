@@ -350,18 +350,21 @@ input.zwsgr-checkbox:checked:before {
     width: 33.33%;
 }
 
-.zwsgr-color-options {
+.zwsgr-color-options,
+.zwsgr-color-options_load {
     display: flex;
     margin-top: 10px;
 }
 
-.zwsgr-color-options .zwsgr-color-picker {
+.zwsgr-color-options .zwsgr-color-picker,
+.zwsgr-color-options_load .zwsgr-color-picker-load{
     margin-right: 25px;
     display: flex;
     align-items: center;
 }
 
-.zwsgr-color-options .zwsgr-color-picker label {
+.zwsgr-color-options .zwsgr-color-picker label,
+.zwsgr-color-options_load .zwsgr-color-picker-load label {
     padding-right: 10px;
 }
 
