@@ -18,6 +18,20 @@ jQuery(document).ready(function($) {
 			$(this).fadeOut(); // Hide the popup
 		}
 	});
+
+	$('.copy-shortcode-icon').on('click', function () {
+        var targetId = $(this).data('target');
+        var $input = $('#' + targetId);
+
+        if ($input.length) {
+            $input.select(); // Select the input field text
+            document.execCommand('copy'); // Copy the selected text
+            $(this).addClass('dashicons-yes'); // Change icon to a checkmark
+            setTimeout(() => {
+                $(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
+            }, 2000);
+        }
+    });
 	
 
 	var widget_post_type = 'zwsgr_data_widget';
@@ -597,6 +611,43 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	$('#toggle-google-review').on('change', function() {
+        // Update button colors based on the color pickers
+        var bgColor = $('#bg-color-picker').val();
+        var textColor = $('#text-color-picker').val();
+
+        $('.zwsgr-google-toggle').css({
+            'background-color': bgColor,
+            'color': textColor
+        });
+    });
+
+    // When the background color picker changes
+    $('#bg-color-picker').on('input', function() {
+        var bgColor = $(this).val();
+        $('.zwsgr-google-toggle').css('background-color', bgColor);
+    });
+
+    // When the text color picker changes
+    $('#text-color-picker').on('input', function() {
+        var textColor = $(this).val();
+        $('.zwsgr-google-toggle').css('color', textColor);
+    });
+
+	function toggleButtonVisibility() {
+		if ($('#toggle-google-review').is(':checked')) {
+			$('.zwsgr-google-toggle').show(); // Show the button
+		} else {
+			$('.zwsgr-google-toggle').hide(); // Hide the button
+		}
+	}
+
+	// Run the function when the page loads
+	toggleButtonVisibility();
+
+	// Run the function whenever the checkbox state changes
+	$('#toggle-google-review').on('change', toggleButtonVisibility);
+
 	// Function to hide or show elements with a smooth effect
     function toggleElements() {
         $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').fadeOut(600) : $('.selected-option-display .zwsgr-title').fadeIn(600);
@@ -768,25 +819,29 @@ jQuery(document).ready(function($) {
 	// Toggle for Google Review link
     $('#toggle-google-review').on('change', function() {
         if ($(this).is(':checked')) {
-            $('#google-review-section').fadeIn();
+
             $('#color-picker-options').fadeIn(); // Show color picker options
         } else {
-            $('#google-review-section').fadeOut();
             $('#color-picker-options').fadeOut(); // Hide color picker options
         }
     });
 
-	// Color picker for background color
-	$('#bg-color-picker').on('input', function() {
-        var bgColor = $(this).val();
-        $('#google-review-section').css('background-color', bgColor);
+	// Toggle for Lode More
+	$('#enable-load-more').on('change', function () {
+        if ($(this).is(':checked')) {
+            // If checkbox is checked, fade in the color picker options
+            $('#zwsgr-load-color-picker-options').fadeIn();
+        } else {
+            // If checkbox is unchecked, fade out the color picker options
+            $('#zwsgr-load-color-picker-options').fadeOut();
+        }
     });
 
-    // Color picker for text color
-    $('#text-color-picker').on('input', function() {
-        var textColor = $(this).val();
-        $('#google-review-section').css('color', textColor);
-    });
+	if ($('#enable-load-more').is(':checked')) {
+        $('#zwsgr-load-color-picker-options').show();
+    } else {
+        $('#zwsgr-load-color-picker-options').hide();
+    }
 
 	// Function to update the hidden input field with the keywords in a comma-separated format
     const updateInputField = () => {
@@ -876,12 +931,15 @@ jQuery(document).ready(function($) {
 		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
+		var bgColorLoad = $('#bg-color-picker_load').val();
+		var textColorLoad = $('#text-color-picker_load').val();
 		var settings = $('.tab-item.active').attr('data-tab');
 		var postsPerPage = $('#posts-per-page').val();
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
 		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
 		var customCSS = $('.zwsgr-textarea').val();
+		var enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -904,9 +962,12 @@ jQuery(document).ready(function($) {
 				google_review_toggle: googleReviewToggle,
 				bg_color: bgColor,
 				text_color: textColor,
+				bg_color_load: bgColorLoad,
+				text_color_load: textColorLoad,
 				settings: settings,
 				posts_per_page: postsPerPage,
 				current_tab2: currentTab2,
+				enable_sort_by: enableSortBy,
 				custom_css: customCSS  // Add the custom CSS value here
 			},
 			success: function(response) {
