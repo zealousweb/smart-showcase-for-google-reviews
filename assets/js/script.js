@@ -213,7 +213,7 @@ jQuery(document).ready(function($) {
 		var layoutType = $('.main-div-wrapper').data('layout-type');
 		var selectedValue = $('#front-sort-by-select').val();
 
-		var loadMoreButton = '<button class="load-more-meta" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
+		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
 		$('.zwsgr-slider.zwsgr-list');
 
 		$('.load-more-meta').hide();
@@ -235,7 +235,7 @@ jQuery(document).ready(function($) {
 				if (!response.data.content || response.data.content.trim() === '') {
 					// No more posts, show the "No more posts." message
 					$('.zwsgr-slider.zwsgr-list').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message" style="width:100%;">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
@@ -316,7 +316,7 @@ jQuery(document).ready(function($) {
 		var ratingFilter = $('.main-div-wrapper').data('rating-filter');
 		var layoutType = $('.main-div-wrapper').data('layout-type');
 
-		var loadMoreButton = '<button class="load-more-meta" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
+		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '">Load More</button>';
 		$('.zwsgr-slider.zwsgr-list');
 
 		$('.load-more-meta').remove();
@@ -341,7 +341,7 @@ jQuery(document).ready(function($) {
 				if (!response.data.content || response.data.content.trim() === '') {
 					// No more posts, show the "No more posts." message
 					$('.zwsgr-slider.zwsgr-list').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message" style="width:100%;">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
