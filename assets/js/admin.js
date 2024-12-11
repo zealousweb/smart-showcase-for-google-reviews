@@ -1324,10 +1324,15 @@ jQuery(document).ready(function($) {
 		// Get the value of the 'Reply Comment' from textarea
 		var zwsgr_reply_comment = $("#gmb-review-data textarea[name='zwsgr_reply_comment']").val();
 
-		if (zwsgr_reply_comment === "") {
+		if (zwsgr_reply_comment.trim() === "") {
             $("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Please enter a valid reply.' + '</p></div>');
             return;
         }
+		
+		if (zwsgr_reply_comment.trim().length > 4086) {
+			$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Reply cannot exceed 4086 characters.' + '</p></div>');
+			return;
+		}
 
 		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
 		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
