@@ -266,7 +266,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'map_meta_cap' => true,
 				'hierarchical' => false,
 				'menu_position' => null,
-				'supports' => array('title', 'editor')
+				'supports' => array('title')
 			);
 
 			register_post_type(ZWSGR_POST_WIDGET_TYPE, $args);
