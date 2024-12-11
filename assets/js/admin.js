@@ -1117,6 +1117,15 @@ jQuery(document).ready(function($) {
 		const zwsgr_location_number = $(
 		  "#fetch-gmb-data #zwsgr-location-select"
 		).val();
+
+		const zwsgr_location_name = $(
+			"#fetch-gmb-data #zwsgr-location-select option:selected"
+		).text();
+
+		const zwsgr_location_new_review_uri = $(
+			"#fetch-gmb-data #zwsgr-location-select option:selected"
+		).attr("data-new-review-url");
+		
 		$("#fetch-gmb-data #zwsgr-location-select").addClass('disabled');
 
 		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
@@ -1148,7 +1157,9 @@ jQuery(document).ready(function($) {
 		  zwsgr_gmb_data_type,
 		  zwsgr_account_number,
 		  zwsgr_location_number,
-		  zwsgr_widget_id
+		  zwsgr_widget_id,
+		  zwsgr_location_name,
+		  zwsgr_location_new_review_uri
 		);
 	  });
 	
@@ -1186,7 +1197,9 @@ jQuery(document).ready(function($) {
 		zwsgr_gmb_data_type,
 		zwsgr_account_number,
 		zwsgr_location_number,
-		zwsgr_widget_id
+		zwsgr_widget_id,
+		zwsgr_location_name,
+		zwsgr_location_new_review_uri
 	  ) {
 		$.ajax({
 		  url: zwsgr_admin.ajax_url,
@@ -1199,6 +1212,8 @@ jQuery(document).ready(function($) {
 			zwsgr_account_number: zwsgr_account_number,
 			zwsgr_location_number: zwsgr_location_number,
 			zwsgr_widget_id: zwsgr_widget_id,
+			zwsgr_location_name: zwsgr_location_name,
+			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri
 		  },
 		  success: function (response) {
 			if (response.success) {
