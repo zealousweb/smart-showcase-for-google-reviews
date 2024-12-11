@@ -1037,6 +1037,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
 			$enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
+			$zwsgr_location_new_review_uri = get_post_meta($post_id, 'zwsgr_location_new_review_uri', true);
+			$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 
 
 			// Define the mapping from numeric values to words.
@@ -1836,7 +1838,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 						</div>
 						<div class="zwsgr-profile-info">
-							<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+							<h3>'.$zwsgr_location_name.'</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 						</div>
@@ -1850,7 +1852,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 									</div>
 									<div class="zwsgr-profile-info">
-										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+										<h3>'.$zwsgr_location_name.'</h3>
 										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 									</div>
@@ -1881,7 +1883,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 									</div>
 									<div class="zwsgr-profile-info">
-										<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+										<h3>'.$zwsgr_location_name.'</h3>
 										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 									</div>
@@ -1971,7 +1973,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h3>Selected Option</h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="zwsgr-toogle-display">
-							<a href="" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle">Review Us On G</a>
+							<a href="<?php echo esc_attr($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle">Review Us On G</a>
 						</div>
 					
 					<div class="zwsgr-widget-settings">
@@ -2405,6 +2407,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_review_content = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
 					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
 					$zwsgr_attachment_id = get_post_thumbnail_id(get_the_ID());
+					$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 					$published_date = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
 
@@ -3117,7 +3120,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 					</div>
 					<div class="zwsgr-profile-info">
-						<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+						<h3>'.$zwsgr_location_name.'</h3>
 						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 					</div>
@@ -3131,7 +3134,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 								</div>
 								<div class="zwsgr-profile-info">
-									<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+									<h3>'.$zwsgr_location_name.'</h3>
 									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 									<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 								</div>
@@ -3162,7 +3165,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 								</div>
 								<div class="zwsgr-profile-info">
-									<h3>Zealousweb Technologies Pvt. Ltd.</h3>
+									<h3>'.$zwsgr_location_name.'</h3>
 									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 									<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
 								</div>
