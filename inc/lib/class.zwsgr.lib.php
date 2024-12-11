@@ -362,7 +362,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div class="zwsgr-slide-wrap">' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-												wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')) .
+													''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'' .
 											'</div>' 
 											: '') .
 										(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)?
@@ -417,7 +417,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										( !in_array('review-photo', $selected_elements)?
 										'<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) .
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) .
 										'</div>':'').'
 									
 										'. (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '
@@ -448,7 +448,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
@@ -484,7 +484,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
@@ -513,7 +513,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div>' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-													wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+														''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">'.
 													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
@@ -550,7 +550,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -586,7 +586,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-profile">
-											'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+											'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 										</div>';
 									}
 									if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -637,7 +637,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											</div>':'').'
 											'.( (!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -679,7 +679,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
@@ -706,7 +706,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
@@ -741,7 +741,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-data">
@@ -783,7 +783,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
-											'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+											'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 											</div>';
 										}
 
@@ -838,7 +838,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'.( !in_array('review-photo', $selected_elements)?'
 									<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 										</div>':'').'
 										'.((!in_array('review-title', $selected_elements))||( !in_array('review-rating', $selected_elements))||(!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -875,7 +875,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-review-detail">
 											' . 
 												( !in_array('review-photo', $selected_elements) ? '<div class="zwsgr-profile">
-												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+												'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 											</div>' : '' ) . '
 											
 											' . 
@@ -910,7 +910,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
@@ -939,7 +939,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-photo', $selected_elements)?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 										</div>':'').'
 										'.(( !in_array('review-title', $selected_elements)||!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -969,7 +969,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
-												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+												'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 											</div>';
 										}
 										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -1013,7 +1013,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 												<div class="zwsgr-profile">
 													' . 
-														( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+														( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -1585,7 +1585,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div class="zwsgr-slide-wrap">' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-												wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')) .
+													''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'' .
 											'</div>' 
 											: '') .
 										(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)?
@@ -1619,7 +1619,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										: '') .
 								'</div>' .
 							'</div>';
-							$zwsgr_slider_item2 = '
+
+						$zwsgr_slider_item2 = '
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-list-inner">'.
 									(!in_array('review-rating', $selected_elements) || !in_array('review-days-ago', $selected_elements)?'<div class="zwsgr-rating-wrap">
@@ -1639,7 +1640,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										( !in_array('review-photo', $selected_elements)?
 										'<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) .
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) .
 										'</div>':'').'
 									
 										'. (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '
@@ -1670,7 +1671,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
@@ -1706,7 +1707,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
@@ -1735,7 +1736,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div>' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-												wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+														''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">'.
 													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
@@ -1748,7 +1749,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
 											? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
 											: '') .
-										(!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements) 
+										((!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements))
 											? '<div class="zwsgr-contnt-wrap">' .
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwsgr-content">' . esc_html($trimmed_content) .
@@ -1772,7 +1773,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -1808,7 +1809,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-profile">
-											'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+											'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 										</div>';
 									}
 									if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -1859,7 +1860,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											</div>':'').'
 											'.( (!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -1901,7 +1902,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
@@ -1928,7 +1929,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
@@ -1963,7 +1964,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-data">
@@ -2005,7 +2006,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
-												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+											'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 											</div>';
 										}
 
@@ -2060,7 +2061,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'.( !in_array('review-photo', $selected_elements)?'
 									<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 										</div>':'').'
 										'.((!in_array('review-title', $selected_elements))||( !in_array('review-rating', $selected_elements))||(!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -2097,7 +2098,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-review-detail">
 											' . 
 												( !in_array('review-photo', $selected_elements) ? '<div class="zwsgr-profile">
-												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+												'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 											</div>' : '' ) . '
 											
 											' . 
@@ -2132,7 +2133,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
@@ -2161,7 +2162,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-photo', $selected_elements)?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 										</div>':'').'
 										'.(( !in_array('review-title', $selected_elements)||!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -2191,7 +2192,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
-												'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'
+												'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
 											</div>';
 										}
 										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -2235,7 +2236,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 												<div class="zwsgr-profile">
 													' . 
-														( !in_array('review-photo', $selected_elements) ? '	'.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'' : '' ) . '
+														( !in_array('review-photo', $selected_elements) ? '	'.	''.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
 												</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
