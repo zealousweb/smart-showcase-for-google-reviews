@@ -530,21 +530,27 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 
-		// Populate the "Shortcode" column
 		function zwsgr_populate_shortcode_column($column, $post_id) 
 		{
 			if ($column === 'shortcode') {
-				// Generate the shortcode
-				$shortcode = sprintf('[zwsgr_widget id="%d"]', $post_id);
-		
-				// Display the shortcode and copy icon
-				echo '<div style="display: flex; align-items: center;">';
-				echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . $post_id . '">';
-				echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . __('Copy Shortcode', 'zw-smart-google-reviews') . '"></span>';
-				echo '</div>';
+				// Check if the "tab-selected" metadata exists and meets a specific condition
+				$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
+				
+				if ($current_tab2) { // Or use any specific condition for `$current_tab2`
+					// Generate the shortcode
+					$shortcode = sprintf('[zwsgr_widget post-id="%d"]', $post_id);
+					
+					// Display the shortcode and copy icon
+					echo '<div style="display: flex; align-items: center;">';
+					echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . $post_id . '">';
+					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . __('Copy Shortcode', 'zw-smart-google-reviews') . '"></span>';
+					echo '</div>';
+				} else {
+					// Optionally, you can display a message or leave it blank if the condition is not met
+					echo '<span>' . __('Please select the appropriate options', 'zw-smart-google-reviews') . '</span>';
+				}
 			}
 		}
-
 
 		/**
 		 * Filter: manage_zwsgr_reviews_posts_columns
@@ -2067,7 +2073,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwsgr-color-options">
 									<div class="zwsgr-color-picker">
 										<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
-										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#000000'); ?>">
+										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#3780ff'); ?>">
 									</div>
 									<div class="zwsgr-color-picker">
 										<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>

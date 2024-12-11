@@ -1371,11 +1371,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				echo '<p>' . esc_html__('No posts found.', 'zw-smart-google-reviews') . '</p>';
 			}
 
-			
-
-			// // Reset post data
-			// wp_reset_postdata();
-
 			return ob_get_clean();  // Return the buffered content
 		}
 		
