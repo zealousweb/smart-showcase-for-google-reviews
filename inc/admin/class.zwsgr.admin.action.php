@@ -637,9 +637,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			//Advance Setting
 			register_setting('zwsgr_advanced_account_settings', 'zwsgr_sync_reviews');
-			register_setting('zwsgr_advanced_account_settings', 'zwsgr_multilingual_support');
-			register_setting('zwsgr_advanced_account_settings', 'zwsgr_spam_keywords');
-			register_setting('zwsgr_advanced_account_settings', 'zwsgr_spam_detection_enabled');
+			register_setting('zwsgr_advanced_account_settings', 'zwsgr_google_analytics_tracking_id');
 
 			// Google setting section & fields
 			add_settings_section(
@@ -855,6 +853,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					// Clear only the email field after submission
 					update_option('zwsgr_admin_notification_emails', '');
 				}
+				if (isset($_POST['advance_submit_buttons'])){
+					add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
+				}
+				
 			}
 			
 			// Now render the form and tabs
@@ -875,7 +877,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						</a>
 					</h2>
 					<?php if ($current_tab === 'google'): ?>
-						<?php /* <form action="options.php" method="post" class="zwsgr-setting-form">
+						<?php /* <form action="" method="post" class="zwsgr-setting-form">
 							<?php
 							settings_fields('zwsgr_google_account_settings');
 							do_settings_sections('zwsgr_google_account_settings');
@@ -886,6 +888,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<?php elseif ($current_tab === 'notifications'): ?>
 						<form id="notification-form" action="" method="post" class="zwsgr-setting-form">
 							<?php
+							// Display WordPress admin notices
+    						settings_errors('zwsgr_notification_settings');
 							settings_fields('zwsgr_notification_settings');
 							do_settings_sections('zwsgr_notification_settings');
 							?>
@@ -904,11 +908,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							?>
 						</form>
 					<?php elseif ($current_tab === 'advanced'): ?>
-						<form action="options.php" method="post" class="zwsgr-setting-form">
+						<form action="" method="post" class="zwsgr-setting-form">
 							<?php
+							settings_errors('zwsgr_advanced_account_settings');
 							settings_fields('zwsgr_advanced_account_settings');
 							do_settings_sections('zwsgr_advanced_account_settings');
-							submit_button( 'Save Advanced Settings', 'zwsgr-submit-btn', 'submit_buttons' );
+							submit_button( 'Save Advanced Settings', 'zwsgr-submit-btn', 'advance_submit_buttons' );
 
 							?>
 						</form>
