@@ -350,18 +350,21 @@ input.zwsgr-checkbox:checked:before {
     width: 33.33%;
 }
 
-.zwsgr-color-options {
+.zwsgr-color-options,
+.zwsgr-color-options_load {
     display: flex;
     margin-top: 10px;
 }
 
-.zwsgr-color-options .zwsgr-color-picker {
+.zwsgr-color-options .zwsgr-color-picker,
+.zwsgr-color-options_load .zwsgr-color-picker-load{
     margin-right: 25px;
     display: flex;
     align-items: center;
 }
 
-.zwsgr-color-options .zwsgr-color-picker label {
+.zwsgr-color-options .zwsgr-color-picker label,
+.zwsgr-color-options_load .zwsgr-color-picker-load label {
     padding-right: 10px;
 }
 
@@ -643,8 +646,10 @@ input.zwsgr-radio:checked::before {
 }
 
 #fetch-gmb-data .zwsgr-input-text {
+    padding: 10px 26px 10px 16px;
     max-width: 310px;
     margin-right: 10px;
+    text-overflow: ellipsis;
 }
 
 #fetch-gmb-data .zwsgr-input-text.disabled {
@@ -673,6 +678,22 @@ input.zwsgr-radio:checked::before {
     display: flex;
     justify-content: left;
     align-items: center;
+}
+
+.zwsgr-sort-by-checkbox {
+    padding-top: 10px;
+}
+
+.zwsgr-sort-by-checkbox .zwsgr-chechbox-label {
+    font-size: 14px;
+}
+
+.zwsgr-toogle-display {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    padding: 30px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 @media only screen and (max-width: 782px) {
@@ -704,11 +725,16 @@ input.zwsgr-radio:checked::before {
 
 /* General button styles */
 #gmb-review-data .cta-wrapper {
+    position: relative;
     margin: 10px 0 0 0;
 }
 
 #gmb-review-data .cta-wrapper .zwsgr-submit-btn {
     margin-right: 10px;
+}
+
+#gmb-review-data .cta-wrapper .zwsgr-submit-btn#add-reply {
+    margin-right: 0px !important;
 }
 
 #gmb-review-data .cta-wrapper .zwsgr-submit-btn.button-danger {
@@ -723,9 +749,12 @@ input.zwsgr-radio:checked::before {
     color: red;
 }
 
-
 #gmb-review-data .zwsgr-star-ratings svg {
     margin-right: 3px;
+}
+
+#gmb-review-data #json-response-message .notice-error {
+    color: red;
 }
 
 
@@ -832,12 +861,9 @@ input.zwsgr-radio:checked::before {
 
 /* 27-11-24 */
 
-.toplevel_page_zwsgr_dashboard {
-    background-color: #fcfcfc;
-}
-
 .toplevel_page_zwsgr_dashboard #wpcontent {
     padding: 32px;
+    background-color: #fcfcfc;
 }
 
 .zwgr-dashboard .zwgr-dashboard-header {
@@ -1083,7 +1109,7 @@ input.zwsgr-radio:checked::before {
     transform: scale(1.05);
 }
 
-.zwgr-dashboard .loader {
+.zwgr-dashboard .loader, #gmb-review-data .loader {
     display: inline-block;
     width: 50px;
     height: 50px;
@@ -1092,6 +1118,15 @@ input.zwsgr-radio:checked::before {
     border-top-color: #0074A2;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
+  }
+
+  #gmb-review-data .loader {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid #F08C3C;
+    border-top-color: #0074A2;
+    top: 21.5%;
   }
   
   @keyframes spin {

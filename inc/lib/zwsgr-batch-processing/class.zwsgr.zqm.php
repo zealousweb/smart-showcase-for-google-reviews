@@ -44,7 +44,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             return self::$instance;
         }
 
-        public function zwsgr_fetch_gmb_data($zwsgr_internal_call = false, $zwsgr_next_page_token = false, $zwsgr_gmb_data_type = null, $zwsgr_account_number = null, $zwsgr_location_number = null, $zwsgr_widget_id = null) {
+        public function zwsgr_fetch_gmb_data($zwsgr_internal_call = false, $zwsgr_next_page_token = false, $zwsgr_gmb_data_type = null, $zwsgr_account_number = null, $zwsgr_location_number = null, $zwsgr_widget_id = null, $zwsgr_location_name = null) {
 
             $zwsgr_access_token =  $this->client->zwsgr_get_access_token();
 
@@ -71,10 +71,13 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             }
 
             // Get the values from method parameters, $_POST, or options as fallback
-            $zwsgr_gmb_data_type   = isset($zwsgr_gmb_data_type) ? sanitize_text_field($zwsgr_gmb_data_type) : (isset($_POST['zwsgr_gmb_data_type']) ? sanitize_text_field($_POST['zwsgr_gmb_data_type']) : get_option('zwsgr_gmb_data_type'));
-            $zwsgr_account_number  = isset($zwsgr_account_number) ? sanitize_text_field($zwsgr_account_number) : (isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : get_option('zwsgr_account_number'));
-            $zwsgr_location_number = isset($zwsgr_location_number) ? sanitize_text_field($zwsgr_location_number) : (isset($_POST['zwsgr_location_number']) ? sanitize_text_field($_POST['zwsgr_location_number']) : get_option('zwsgr_location_number'));
-            $this->zwsgr_widget_id = isset($zwsgr_widget_id) ? sanitize_text_field($zwsgr_widget_id) : (isset($_POST['zwsgr_widget_id']) ? sanitize_text_field($_POST['zwsgr_widget_id']) : get_option('zwsgr_widget_id'));
+            $zwsgr_gmb_data_type                  = isset($zwsgr_gmb_data_type)            ? sanitize_text_field($zwsgr_gmb_data_type)   : (isset($_POST['zwsgr_gmb_data_type']) ? sanitize_text_field($_POST['zwsgr_gmb_data_type']) : get_option('zwsgr_gmb_data_type'));
+            $zwsgr_account_number                 = isset($zwsgr_account_number)           ? sanitize_text_field($zwsgr_account_number)  : (isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : get_option('zwsgr_account_number'));
+            $zwsgr_location_number                = isset($zwsgr_location_number)          ? sanitize_text_field($zwsgr_location_number) : (isset($_POST['zwsgr_location_number']) ? sanitize_text_field($_POST['zwsgr_location_number']) : get_option('zwsgr_location_number'));
+            $this->zwsgr_widget_id                = isset($zwsgr_widget_id)                ? sanitize_text_field($zwsgr_widget_id)       : (isset($_POST['zwsgr_widget_id']) ? sanitize_text_field($_POST['zwsgr_widget_id']) : get_option('zwsgr_widget_id'));
+            $this->zwsgr_location_new_review_uri = isset($zwsgr_location_new_review_uri)  ? esc_url($zwsgr_location_new_review_uri)     : (isset($_POST['zwsgr_location_new_review_uri']) ? esc_url($_POST['zwsgr_location_new_review_uri']) : esc_url(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri')));
+            $this->zwsgr_location_name           = isset($zwsgr_location_name)            ? sanitize_text_field($zwsgr_location_name)   : (isset($_POST['zwsgr_location_name']) ? sanitize_text_field($_POST['zwsgr_location_name']) : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name')));
+            
 
             // Attempt to update each option and log an error if it fails
             if (!update_option('zwsgr_gmb_data_type', $zwsgr_gmb_data_type)) {
@@ -136,7 +139,17 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     return false;
                 }
 
-                if (defined('DOING_AJAX') && DOING_AJAX) {
+                if (defined('DOING_AJAX') && DOING_AJAX) {                    
+
+                    if ($zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+                        if (!empty($this->zwsgr_location_new_review_uri) && !empty($this->zwsgr_location_name)) {
+                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', $this->zwsgr_location_new_review_uri);
+                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $this->zwsgr_location_name);
+                        } else {
+                            error_log("Missing data for one of the fields: " . print_r($this, true));
+                        }
+                    }
+                    
                     wp_send_json_success(
                         array(
                             'message' => "Batch Processing started.",

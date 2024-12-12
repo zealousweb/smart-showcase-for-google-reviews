@@ -18,6 +18,20 @@ jQuery(document).ready(function($) {
 			$(this).fadeOut(); // Hide the popup
 		}
 	});
+
+	$('.copy-shortcode-icon').on('click', function () {
+        var targetId = $(this).data('target');
+        var $input = $('#' + targetId);
+
+        if ($input.length) {
+            $input.select(); // Select the input field text
+            document.execCommand('copy'); // Copy the selected text
+            $(this).addClass('dashicons-yes'); // Change icon to a checkmark
+            setTimeout(() => {
+                $(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
+            }, 2000);
+        }
+    });
 	
 
 	var widget_post_type = 'zwsgr_data_widget';
@@ -597,6 +611,43 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	$('#toggle-google-review').on('change', function() {
+        // Update button colors based on the color pickers
+        var bgColor = $('#bg-color-picker').val();
+        var textColor = $('#text-color-picker').val();
+
+        $('.zwsgr-google-toggle').css({
+            'background-color': bgColor,
+            'color': textColor
+        });
+    });
+
+    // When the background color picker changes
+    $('#bg-color-picker').on('input', function() {
+        var bgColor = $(this).val();
+        $('.zwsgr-google-toggle').css('background-color', bgColor);
+    });
+
+    // When the text color picker changes
+    $('#text-color-picker').on('input', function() {
+        var textColor = $(this).val();
+        $('.zwsgr-google-toggle').css('color', textColor);
+    });
+
+	function toggleButtonVisibility() {
+		if ($('#toggle-google-review').is(':checked')) {
+			$('.zwsgr-google-toggle').show(); // Show the button
+		} else {
+			$('.zwsgr-google-toggle').hide(); // Hide the button
+		}
+	}
+
+	// Run the function when the page loads
+	toggleButtonVisibility();
+
+	// Run the function whenever the checkbox state changes
+	$('#toggle-google-review').on('change', toggleButtonVisibility);
+
 	// Function to hide or show elements with a smooth effect
     function toggleElements() {
         $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').fadeOut(600) : $('.selected-option-display .zwsgr-title').fadeIn(600);
@@ -768,34 +819,29 @@ jQuery(document).ready(function($) {
 	// Toggle for Google Review link
     $('#toggle-google-review').on('change', function() {
         if ($(this).is(':checked')) {
-            $('#google-review-section').fadeIn();
+
             $('#color-picker-options').fadeIn(); // Show color picker options
         } else {
-            $('#google-review-section').fadeOut();
             $('#color-picker-options').fadeOut(); // Hide color picker options
         }
     });
 
-	// Toggle for enabling 'Load More' settings
-	$('#enable-load-more').on('change', function() {
-		if ($(this).is(':checked')) {
-			$('#load-more-settings').fadeIn();  // Show the settings div
-		} else {
-			$('#load-more-settings').fadeOut(); // Hide the settings div
-		}
+	// Toggle for Lode More
+	$('#enable-load-more').on('change', function () {
+        if ($(this).is(':checked')) {
+            // If checkbox is checked, fade in the color picker options
+            $('#zwsgr-load-color-picker-options').fadeIn();
+        } else {
+            // If checkbox is unchecked, fade out the color picker options
+            $('#zwsgr-load-color-picker-options').fadeOut();
+        }
     });
 
-	 // Color picker for background color
-	 $('#bg-color-picker').on('input', function() {
-        var bgColor = $(this).val();
-        $('#google-review-section').css('background-color', bgColor);
-    });
-
-    // Color picker for text color
-    $('#text-color-picker').on('input', function() {
-        var textColor = $(this).val();
-        $('#google-review-section').css('color', textColor);
-    });
+	if ($('#enable-load-more').is(':checked')) {
+        $('#zwsgr-load-color-picker-options').show();
+    } else {
+        $('#zwsgr-load-color-picker-options').hide();
+    }
 
 	// Function to update the hidden input field with the keywords in a comma-separated format
     const updateInputField = () => {
@@ -881,15 +927,19 @@ jQuery(document).ready(function($) {
 		var charLimit = $('#review-char-limit').val();
 		var language = $('#language-select').val();
 		var sortBy = $('#sort-by-select').val();
-		var enableLoadMore = $('#enable-load-more').is(':checked') ? 0 : 1;
+		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
 		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
 		var bgColor = $('#bg-color-picker').val();
 		var textColor = $('#text-color-picker').val();
+		var bgColorLoad = $('#bg-color-picker_load').val();
+		var textColorLoad = $('#text-color-picker_load').val();
 		var settings = $('.tab-item.active').attr('data-tab');
 		var postsPerPage = $('#posts-per-page').val();
 		// Fetch the selected star rating from the star filter
 		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
 		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+		var customCSS = $('.zwsgr-textarea').val();
+		var enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -912,9 +962,13 @@ jQuery(document).ready(function($) {
 				google_review_toggle: googleReviewToggle,
 				bg_color: bgColor,
 				text_color: textColor,
+				bg_color_load: bgColorLoad,
+				text_color_load: textColorLoad,
 				settings: settings,
 				posts_per_page: postsPerPage,
-				current_tab2: currentTab2 
+				current_tab2: currentTab2,
+				enable_sort_by: enableSortBy,
+				custom_css: customCSS  // Add the custom CSS value here
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1063,6 +1117,15 @@ jQuery(document).ready(function($) {
 		const zwsgr_location_number = $(
 		  "#fetch-gmb-data #zwsgr-location-select"
 		).val();
+
+		const zwsgr_location_name = $(
+			"#fetch-gmb-data #zwsgr-location-select option:selected"
+		).text();
+
+		const zwsgr_location_new_review_uri = $(
+			"#fetch-gmb-data #zwsgr-location-select option:selected"
+		).attr("data-new-review-url");
+		
 		$("#fetch-gmb-data #zwsgr-location-select").addClass('disabled');
 
 		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
@@ -1094,7 +1157,9 @@ jQuery(document).ready(function($) {
 		  zwsgr_gmb_data_type,
 		  zwsgr_account_number,
 		  zwsgr_location_number,
-		  zwsgr_widget_id
+		  zwsgr_widget_id,
+		  zwsgr_location_name,
+		  zwsgr_location_new_review_uri
 		);
 	  });
 	
@@ -1132,7 +1197,9 @@ jQuery(document).ready(function($) {
 		zwsgr_gmb_data_type,
 		zwsgr_account_number,
 		zwsgr_location_number,
-		zwsgr_widget_id
+		zwsgr_widget_id,
+		zwsgr_location_name,
+		zwsgr_location_new_review_uri
 	  ) {
 		$.ajax({
 		  url: zwsgr_admin.ajax_url,
@@ -1145,6 +1212,8 @@ jQuery(document).ready(function($) {
 			zwsgr_account_number: zwsgr_account_number,
 			zwsgr_location_number: zwsgr_location_number,
 			zwsgr_widget_id: zwsgr_widget_id,
+			zwsgr_location_name: zwsgr_location_name,
+			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri
 		  },
 		  success: function (response) {
 			if (response.success) {
@@ -1263,89 +1332,65 @@ jQuery(document).ready(function($) {
 		window.location.href = currentUrl;
 	}
 	
-	  $("#gmb-review-data #add-replay, #gmb-review-data #update-replay").on("click", function (e) {
+	  $("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
 	
-		e.preventDefault();
+		event.preventDefault();
 
-		// Show the WordPress loader
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#delete-replay").after(loader);
+		// Get the value of the 'Reply Comment' from textarea
+		var zwsgr_reply_comment = $("#gmb-review-data textarea[name='zwsgr_reply_comment']").val();
+
+		if (zwsgr_reply_comment.trim() === "") {
+            $("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Please enter a valid reply.' + '</p></div>');
+            return;
+        }
+		
+		if (zwsgr_reply_comment.trim().length > 4086) {
+			$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Reply cannot exceed 4086 characters.' + '</p></div>');
+			return;
+		}
+
+		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 	
-		// Get the value of the 'Reply Comment' textarea
-		var zwsgr_reply_comment = $("textarea[name='zwsgr_reply_comment']").val();
-	
-		// Get the value of the 'Account ID' input
-		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
-	
-		// Get the value of the 'Location' input
-		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
-	
-		// Get the value of the 'Review ID' input
-		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
-	
-		// Send AJAX request to handle the reply update
+		// Send AJAX request to handle the add / update reply request
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
 			type: 'POST',
 			data: {
 				action: 'zwsgr_add_update_review_reply',
-				zwsgr_reply_comment: zwsgr_reply_comment,
-				zwsgr_account_number: zwsgr_account_number,
-				zwsgr_location_code: zwsgr_location_code,
-				zwsgr_review_id: zwsgr_review_id,
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_reply_comment: zwsgr_reply_comment,
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
+			beforeSend: function() {
+				buttons.addClass('disabled');
+				$("#gmb-review-data textarea[name='zwsgr_reply_comment']").prop('readonly', true);
+				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(loader.clone());
+			},
 			success: function(response) {
-
-				loader.remove();
-
 				if (response.success) {
-
-					// Append the error message below the reply button
-					$("#json-response-message").html(response.data.message);
-
+					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
 						location.reload();
 					}, 2000);
-
 				}
-
+			},
+			complete: function() {
+				$("#gmb-review-data .loader.is-active").remove();
 			},
 			error: function(xhr, status, error) {
-
-				// Construct the error message to be appended
-				var errorMessage = $("<div>", {
-					class: "error-message",
-					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
-				});
-
-				// Append the error message below the reply button
-				$("#json-response-message").html(errorMessage);
-
-				loader.remove();
-
+				$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p> Error:' + error + '</p></div>');
 			}
 		});
 	
 	  });
 	
-	  $("#gmb-review-data #delete-replay").on("click", function (e) {
+	  $("#gmb-review-data #delete-reply").on("click", function (event) {
 		
-		e.preventDefault();
+		event.preventDefault();
 
-		// Show the WordPress loader
-		var loader = $('<span class="spinner is-active" style="margin-left: 10px;"></span>');
-		$("#delete-replay").after(loader);
-	
-		// Get the value of the 'Account ID' input
-		var zwsgr_account_number = $("input[name='zwsgr_account_number']").val();
-	
-		// Get the value of the 'Location' input
-		var zwsgr_location_code = $("input[name='zwsgr_location_code']").val();
-	
-		// Get the value of the 'Review ID' input
-		var zwsgr_review_id = $("input[name='zwsgr_review_id']").val();
+		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		var buttons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1353,41 +1398,27 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwsgr_delete_review_reply',
-				zwsgr_account_number: zwsgr_account_number,
-				zwsgr_location_code: zwsgr_location_code,
-				zwsgr_review_id: zwsgr_review_id,
 				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
+			beforeSend: function() {
+				buttons.addClass('disabled');
+				$("#gmb-review-data textarea[name='zwsgr_reply_comment']").prop('readonly', true);
+				$("#gmb-review-data #delete-reply").after(loader);
+			},
 			success: function(response) {
-				
-				loader.remove();
-
 				if (response.success) {
-
-					// Append the error message below the reply button
-					$("#json-response-message").html(response.data.message);
-
+					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
 						location.reload();
 					}, 2000);
-
 				}
-
+			},
+			complete: function() {
+				$("#gmb-review-data .loader.is-active").remove();
 			},
 			error: function(xhr, status, error) {
-				
-				// Construct the error message to be appended
-				var errorMessage = $("<div>", {
-					class: "error-message",
-					html: '<strong>' + __('Error:', 'zw-smart-google-reviews') + '</strong> ' + error
-				});
-
-				// Append the error message below the reply button
-				$("#json-response-message").html(errorMessage);
-
-				loader.remove();
-
+				$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p> Error:' + error + '</p></div>');
 			}
 		});
 	

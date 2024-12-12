@@ -24,6 +24,7 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		{
 
 			add_filter('get_edit_post_link', array($this, 'zwsgr_change_edit_post_link'), 10, 2);
+			add_filter('post_row_actions', array($this, 'zwsgr_remove_quick_edit_from_reviews_listings'), 10, 2);
 
 		}
 
@@ -51,6 +52,35 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			}
 		
 			return $url;
+		}
+
+		/**
+		 * Remove the 'Quick Edit' option from the row actions in custom post type listings.
+		 *
+		 * This function modifies the row actions for a specific post type 
+		 * to remove the 'Quick Edit' action from the WordPress admin area.
+		 *
+		 * @param array $zwsgr_actions An array of row actions.
+		 * @param WP_Post $zwsgr_post The current post object being processed.
+		 * @return array Modified array of row actions.
+		 */
+		function zwsgr_remove_quick_edit_from_reviews_listings($zwsgr_actions, $zwsgr_post) {
+
+			// Check if the post type is 'zwsgr_reviews'
+			if ($zwsgr_post->post_type == 'zwsgr_reviews') {
+				
+				// Remove the 'View' link
+				unset($zwsgr_actions['view']);
+				
+				// Remove the 'Trash' link
+				unset($zwsgr_actions['trash']);
+				
+				// Remove the 'Quick Edit' link
+				unset($zwsgr_actions['inline hide-if-no-js']);
+			}
+			
+			return $zwsgr_actions;
+			
 		}
 
 	}
