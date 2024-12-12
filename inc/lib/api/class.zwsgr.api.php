@@ -86,34 +86,31 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Get the response body and decode it
                 $zwsgr_api_response_body = wp_remote_retrieve_body( $zwsgr_api_response );
 
-                return array( 
+                return array(
                     'success' => true,
                     'data' => json_decode( $zwsgr_api_response_body, true )
                 );
         
-            } catch (Exception $e) {
+            } catch (Exception $e) {                
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
-                    
-                    // For AJAX requests, send a JSON error response
-                    wp_send_json_error(
-                        array(
-                            'status'  => 'error',
-                            'message' => $e->getMessage(),
-                        )
-                    );
 
-                } elseif (is_admin()) {
+                    // For AJAX requests, send a JSON error response
+                    wp_send_json_error([
+                        'error'  => 'api_response_error',
+                        'message' => $e->getMessage(),
+                    ], 400);
                     
-                    // For admin requests, display a WordPress admin notice
-                    add_action('admin_notices', function() use ($e) {
-                        echo "<div class='notice notice-error'><p>Error: {$e->getMessage()}</p></div>";
-                    });
 
                 } else {
 
-                    // For other contexts, log the error
-                    error_log("API Error: {$e->getMessage()}");
+                    return array(
+                        'success' => false,
+                        'data'    => array(
+                            'error'   => 'api_response_error',
+                            'message' => $e->getMessage(),
+                        ),
+                    );
                     
                 }
 
@@ -196,10 +193,10 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Make the API request to get oauth URl.
             $zwsgr_response = $this->zwsgr_api_request( 'zwsgr/v1/get-access-token', $zwsgr_payload_data, 'POST', '', 'https://plugintest.siteproofs.com/wp-json/');
 
-            // Check if the response is successful and contains the access token.
-            if (!empty($zwsgr_response['success']) && $zwsgr_response['success'] == 1 && !empty($zwsgr_response['data']['data']['access_token'])) {
+                // Check if the response is successful and contains the oauth URL
+                if (isset($zwsgr_response['success']) && $zwsgr_response['success'] === true && isset($zwsgr_response['data']['access_token'])) {
                 
-                $access_token = $zwsgr_response['data']['data']['access_token'];
+                $access_token = $zwsgr_response['data']['access_token'];
                 
                 // Store the new access token in a transient for future use.
                 set_transient('zwsgr_access_token', $access_token, 3600); // Store for 1 hour or as needed.
@@ -230,7 +227,20 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_api_params = $zwsgr_page_token ? [ 'pageToken' => $zwsgr_page_token ] : [];
             
             // Make the API request to the 'accounts' endpoint.
-            return $this->zwsgr_api_request( 'accounts', $zwsgr_api_params, 'GET', 'v1' );
+            $zwsgr_response = $this->zwsgr_api_request( 'accounts', $zwsgr_api_params, 'GET', 'v1' );
+
+            if (
+                isset($zwsgr_response['success']) && 
+                $zwsgr_response['success'] === true && 
+                isset($zwsgr_response['data'])
+            ) {
+                $zwsgr_gmb_data = $zwsgr_response['data'];
+            } else {
+                $zwsgr_gmb_data = '';
+            }
+
+            return $zwsgr_gmb_data;
+
         }
 
         /**
