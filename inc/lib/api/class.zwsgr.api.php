@@ -85,7 +85,11 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         
                 // Get the response body and decode it
                 $zwsgr_api_response_body = wp_remote_retrieve_body( $zwsgr_api_response );
-                return json_decode( $zwsgr_api_response_body, true );
+
+                return array( 
+                    'success' => true,
+                    'data' => json_decode( $zwsgr_api_response_body, true )
+                );
         
             } catch (Exception $e) {
 
@@ -450,8 +454,10 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_response = $this->zwsgr_api_request( 'zwsgr/v1/auth', $zwsgr_payload_data, 'POST', '', 'https://plugintest.siteproofs.com/wp-json/');
 
             // Check if the response is successful and contains the oauth URL
-            if (isset($zwsgr_response['success']) && $zwsgr_response['success'] === true && isset($zwsgr_response['data']['data']['zwsgr_oauth_url'])) {
-                $zwsgr_oauth_url = $zwsgr_response['data']['data']['zwsgr_oauth_url'];
+            if (isset($zwsgr_response['success']) && $zwsgr_response['success'] === true && isset($zwsgr_response['data']['zwsgr_oauth_url'])) {
+                
+                $zwsgr_oauth_url = $zwsgr_response['data']['zwsgr_oauth_url'];
+
                 // Return a success response with the OAuth URL
                 wp_send_json_success(
                     array(
@@ -459,8 +465,9 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                         'zwsgr_oauth_url' => esc_url_raw($zwsgr_oauth_url)
                     )
                 );
-                exit;
+
             } else {
+
                 // Return a failure message
                 wp_send_json_error(
                     array(
@@ -468,6 +475,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                         'code' => 'oauth_url_error'
                     )
                 );
+
             }
 
             wp_die();
