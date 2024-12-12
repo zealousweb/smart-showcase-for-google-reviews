@@ -1796,4 +1796,35 @@ jQuery(document).ready(function($) {
         // Replace the trimmed content with the full content
         $parentParagraph.html(fullText);
     });
+
+	function setDateRange() {
+		// Get today's date
+		var today = new Date();
+		var currentDate = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
+		var currentMonth = today.getMonth() + 1; // Month is 0-based
+		var currentYear = today.getFullYear();
+		var formattedToday = currentDate + '-' + currentMonth + '-' + currentYear; // Format as DD-MM-YYYY
+	
+		// Get the first day of the previous month
+		var firstDayPrevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+		var firstDayPrevMonthDate = firstDayPrevMonth.getDate() < 10 ? '0' + firstDayPrevMonth.getDate() : firstDayPrevMonth.getDate();
+		var firstDayPrevMonthMonth = firstDayPrevMonth.getMonth() + 1; // Month is 0-based
+		var firstDayPrevMonthYear = firstDayPrevMonth.getFullYear();
+		var formattedPrevMonth = firstDayPrevMonthDate + '-' + firstDayPrevMonthMonth + '-' + firstDayPrevMonthYear; // Format as DD-MM-YYYY
+	
+		// Check if the date picker element exists
+		var dateRangePicker = $('#zwsgr-date-range-picker');
+		if (dateRangePicker.length) {
+			// Set the value of the date range picker input field (From date - To date)
+			dateRangePicker.val(formattedPrevMonth + ' - ' + formattedToday);
+	
+			// If your date picker requires reinitialization, trigger the update
+			// Assuming a date range picker like jQuery UI datepicker
+			dateRangePicker.datepicker("setDate", formattedPrevMonth + ' - ' + formattedToday);
+		}
+	}
+	
+	// Call this function to manually trigger the date range setting
+	setDateRange();
+	
 });
