@@ -8,33 +8,57 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
         protected $action = 'Zwsgr_GMB_Background_Data_Processor';
 
+        private $zwsr_batch_data;
+
+        private $zwsgr_widget_id;
+
+        private $zwsgr_current_index;
+
+        private $zwsgr_account_number;
+
+        private $zwsgr_location_number;
+
+        private $next_page_token;
+
+        private $zwsgr_total_reviews;
+
+        private $zwsgr_average_rating;
+
         // Process each file by logging account names
         protected function task($zwsr_batch_data) {
 
-            $zwsgr_gmb_data              = isset($zwsr_batch_data['zwsgr_gmb_data']) ? $zwsr_batch_data['zwsgr_gmb_data'] : [];
-            $this->zwsgr_account_number  = isset($zwsr_batch_data['zwsgr_account_number']) ? $zwsr_batch_data['zwsgr_account_number'] : [];
+            $zwsgr_gmb_data              = isset($zwsr_batch_data['zwsgr_gmb_data'])        ? $zwsr_batch_data['zwsgr_gmb_data']        : [];
+            $this->zwsgr_widget_id       = isset($zwsr_batch_data['zwsgr_widget_id'])       ? $zwsr_batch_data['zwsgr_widget_id']       : null;
+            $this->zwsgr_account_number  = isset($zwsr_batch_data['zwsgr_account_number'])  ? $zwsr_batch_data['zwsgr_account_number']  : [];
             $this->zwsgr_location_number = isset($zwsr_batch_data['zwsgr_location_number']) ? $zwsr_batch_data['zwsgr_location_number'] : [];
-            $this->next_page_token       = isset($zwsgr_gmb_data['nextPageToken']) ? $zwsgr_gmb_data['nextPageToken'] : null;
-            $this->zwsgr_widget_id       = isset($zwsr_batch_data['zwsgr_widget_id']) ? $zwsr_batch_data['zwsgr_widget_id'] : null;
-            $this->zwsgr_total_reviews   = isset($zwsgr_gmb_data['totalReviewCount']) ? $zwsgr_gmb_data['totalReviewCount'] : null;
-            $this->zwsgr_average_rating  = isset($zwsgr_gmb_data['averageRating']) ? $zwsgr_gmb_data['averageRating'] : null;
+            $this->next_page_token       = isset($zwsgr_gmb_data['nextPageToken'])          ? $zwsgr_gmb_data['nextPageToken']          : null;
+            $this->zwsgr_total_reviews   = isset($zwsgr_gmb_data['totalReviewCount'])       ? $zwsgr_gmb_data['totalReviewCount']       : null;
+            $this->zwsgr_average_rating  = isset($zwsgr_gmb_data['averageRating'])          ? $zwsgr_gmb_data['averageRating']          : null;
 
             if (!empty($zwsgr_gmb_data)) {
 
                 $zwsgr_data_key            = key($zwsgr_gmb_data);
                 $this->zwsgr_gmb_data_type = 'zwsgr_gmb_'. key($zwsgr_gmb_data);
                 $process_zwsgr_gmb_method = 'process_zwsgr_gmb_' . $zwsgr_data_key;
-
-                // Check if the method exists and call it
+                
                 if (method_exists($this, $process_zwsgr_gmb_method)) {
-                    // If the method exists, call it
                     $this->$process_zwsgr_gmb_method($zwsgr_gmb_data, $this->zwsgr_account_number, $this->zwsgr_location_number);
                 } else {
-                    error_log("Method $process_zwsgr_gmb_method does not exist.");
+                    error_log('BDP: Method ' . $process_zwsgr_gmb_method . ' does not exist. for: ' . $this->zwsgr_gmb_data_type .' & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
                 }
 
             } else {
-                error_log("No data found in \$zwsgr_gmb_data.");
+
+                error_log('BDP: No $zwsgr_gmb_data data found for: ' . $this->zwsgr_gmb_data_type .' & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                
+                return array(
+                    'success' => false,
+                    'data'    => array (
+                        'error'   => 'empty_zwsgr_gmb_data',
+                        'message'  => 'Empty GMb data'
+                    ),
+                );
+
             }
 
             return false;
@@ -43,14 +67,14 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
         public function process_zwsgr_gmb_accounts($zwsgr_gmb_data) {
             
             if (isset($zwsgr_gmb_data['accounts'])) {
+
                 foreach ($zwsgr_gmb_data['accounts'] as $zwsgr_account) {
 
                     $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
-                    // Prepare post data
                     $zwsgr_request_data = array(
                         'post_title'   => sanitize_text_field($zwsgr_account['accountName']),
-                        'post_content' => '', // You can add more content if needed
+                        'post_content' => '',
                         'post_status'  => 'publish',
                         'post_type'    => 'zwsgr_request_data',
                         'post_name'    => sanitize_title($zwsgr_account['name']),
@@ -59,21 +83,21 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         ),
                     );
             
-                    // Check if a post with this title already exists
-                    $zwsgr_existing_post  = get_page_by_title($zwsgr_request_data['post_title'], OBJECT, 'zwsgr_request_data');
-                    $zwsgr_account_name = isset($zwsgr_account['name']) ? sanitize_text_field($zwsgr_account['name']) : '';
+                    $zwsgr_existing_post        = get_page_by_title($zwsgr_request_data['post_title'], OBJECT, 'zwsgr_request_data');
+                    $zwsgr_account_name         = isset($zwsgr_account['name']) ? sanitize_text_field($zwsgr_account['name']) : '';
                     $this->zwsgr_account_number = $zwsgr_account_name ? ltrim(strrchr($zwsgr_account_name, '/'), '/') : '';
                     
                     if ($zwsgr_existing_post) {
+                        
                         // Update existing post
-                        $zwsgr_request_data['ID'] = $zwsgr_existing_post->ID; // Set the ID to update
+                        $zwsgr_request_data['ID'] = $zwsgr_existing_post->ID;
 
                         $zwsgr_update_result = wp_update_post($zwsgr_request_data);
                         
                         if (is_wp_error($zwsgr_update_result)) {
-                            error_log("Failed to update post ID {$zwsgr_existing_post->ID}: " . $zwsgr_update_result->get_error_message());
+                            error_log("BDP: Failed to update account ID {$zwsgr_existing_post->ID}: for Widget ID " . $this->$zwsgr_widget_id . $zwsgr_update_result->get_error_message());
                         } elseif ($zwsgr_update_result == 0) {
-                            error_log("Failed to update post ID {$zwsgr_existing_post->ID}: Unknown error.");
+                            error_log("BDP: Failed to update account ID {$zwsgr_existing_post->ID}: for Widget ID " . $this->$zwsgr_widget_id . ' Unknown error ');
                         }
 
                         // Update the account number for the existing post
@@ -85,9 +109,9 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         $zwsgr_insert_account = wp_insert_post($zwsgr_request_data);
 
                         if (is_wp_error($zwsgr_insert_account)) {
-                            error_log("Failed to create new post: " . $zwsgr_insert_account->get_error_message());
+                            error_log("BDP: Failed to create new account for Widget ID " . $this->$zwsgr_widget_id . $zwsgr_insert_account->get_error_message());
                         } elseif ($zwsgr_insert_account == 0) {
-                            error_log("Failed to create new post: Unknown error.");
+                            error_log("BDP: Failed to create new account for Widget ID " . $this->$zwsgr_widget_id);
                         } else {
                             // Add the account number for the new post
                             update_post_meta($zwsgr_insert_account, 'zwsgr_account_number', $this->zwsgr_account_number);
@@ -96,9 +120,27 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                     }
 
                 }
-            }
 
-            return;
+                return array(
+                    'success' => true,
+                    'data'    => array(
+                        'message'   => 'Accounts for Processed successfully'
+                    ),
+                );
+
+            } else {
+
+                error_log('BDP: Unexpected zwsgr_data for accounts & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                
+                return array(
+                    'success' => false,
+                    'data'    => array (
+                        'error'   => 'unexpected_zwsgr_gmb_data',
+                        'message'  => 'Unexpected error for zwsgr_gmb_data'
+                    ),
+                );
+
+            }
 
         }
 
@@ -117,8 +159,16 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             ))[0] ?? null;
         
             if (!$zwsgr_request_data_id) {
+
                 // If no post is found, return early
-                return;
+                return array(
+                    'success' => false,
+                    'data'    => array (
+                        'error'   => 'invalid_zwsgr_request_data',
+                        'message'  => 'Invalid request data id'
+                    ),
+                );
+
             }
         
             // Retrieve existing locations or initialize an empty array
@@ -152,10 +202,16 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 update_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', $zwsgr_account_locations);
             }
         
-            return;
+            return array(
+                'success' => true,
+                'data'    => array(
+                    'message'   => 'Locations for Processed successfully'
+                ),
+            );
+
         }              
 
-        protected function process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number = null, $zwsgr_location_code) {
+        protected function process_zwsgr_gmb_reviews($zwsgr_gmb_data, $zwsgr_account_number = null, $zwsgr_location_number) {
 
             // If $zwsgr_account_number is not provided, use the class property
             $zwsgr_account_number = $zwsgr_account_number ?? $this->zwsgr_account_number;
@@ -181,6 +237,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         $zwsgr_existing_review_query->the_post();
                         $zwsgr_wp_review_id = get_the_ID();
                     } else {
+
                         // Review does not exist, insert it
                         $zwsgr_review_data = [
                             'post_title'   => $zwsgr_review['reviewer']['displayName'] ?? 'Anonymous',
@@ -199,7 +256,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                         $zwsgr_gmb_email     = get_option('zwsgr_gmb_email');
                         $zwsgr_review_dp_url = isset($zwsgr_review['reviewer']['profilePhotoUrl']) ? $zwsgr_review['reviewer']['profilePhotoUrl'] : null;
-                        $zwsgr_save_path     = wp_upload_dir()['path'] . '/temp-reviewer-img.png';
+                        $zwsgr_save_path     = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
                         
                         if (!empty($zwsgr_gmb_email)) {
                             update_post_meta($zwsgr_wp_review_id, 'zwsgr_gmb_email', $zwsgr_gmb_email);
@@ -207,17 +264,12 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                         //Update parent account & locations meta
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_account_number', $this->zwsgr_account_number );
-                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_location_code', $zwsgr_location_code);
+                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_location_number', $this->zwsgr_location_number);
 
                         $zwsgr_download_review_image_status = $this->zwsgr_download_review_image($zwsgr_review_dp_url, $zwsgr_save_path);
 
-                        if (!empty($zwsgr_download_review_image_status) && $zwsgr_download_review_image_status) {
-                            $zwsgr_upload_featured_image_status = $this->zwsgr_upload_featured_image($zwsgr_save_path, $zwsgr_wp_review_id);
-                            if (empty($zwsgr_upload_featured_image_status) && !$zwsgr_upload_featured_image_status) {
-                                error_log('BDM: There was an error while uploading DP: ' . $zwsgr_wp_review_id);
-                            }
-                        } else {
-                            error_log('BDM: There was an error while saving.' . $zwsgr_wp_review_id);
+                        if (!$zwsgr_download_review_image_status['success']) {
+                            error_log('BDP: There was an error while downoading reviewer image.' . $zwsgr_wp_review_id . $zwsgr_review['reviewer']['displayName'] );
                         }
 
                         // Update custom fields
@@ -232,17 +284,25 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         }
 
                     } else {
-                        
-                        error_log( "Failed to insert/update review: " . ( is_wp_error( $zwsgr_wp_review_id ) ? $zwsgr_wp_review_id->get_error_message() : "Unknown error" ) );
-                        
+                        error_log( "BDP: Failed to insert/update review: " . ( is_wp_error( $zwsgr_wp_review_id ) ? $zwsgr_wp_review_id->get_error_message() : "Unknown error" ) );   
                     }
             
                     // Reset post data after each query
                     wp_reset_postdata();
                 }
-            }            
+            } else {
 
-            return;
+                error_log('BDP: Unexpected zwsgr_data for reviews & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                
+                return array(
+                    'success' => false,
+                    'data'    => array (
+                        'error'   => 'unexpected_zwsgr_gmb_data',
+                        'message'  => 'Unexpected error for zwsgr_gmb_data'
+                    ),
+                );
+
+            }
 
         }
 
@@ -261,11 +321,18 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             // Check if the image was downloaded successfully
             if ($zwsgr_review_image_data === false) {
-                error_log("Error: Unable to download the image from URL: " . $zwsgr_review_dp_url);
-                return false;
+                error_log("BDP: Unable to download the image from URL: " . $zwsgr_review_dp_url . " for Widget ID " . $this->$zwsgr_widget_id  . ' & current index ' . $this->zwsgr_current_index);
+                return array(
+                    'success' => false,
+                    'data'    => array (
+                        'error'   => 'failed_to_download_image',
+                        'message'  => 'Failed to download image from specified path'
+                    ),
+                );
             }
 
             $zwsgr_temp_directory = dirname($zwsgr_save_path);
+
             if (!is_dir($zwsgr_temp_directory)) {
                 wp_mkdir_p($zwsgr_temp_directory);
             }
@@ -274,60 +341,27 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
             $zwsgr_put_image_content = file_put_contents($zwsgr_save_path, $zwsgr_review_image_data);
 
             if ($zwsgr_put_image_content === false) {
-                error_log("Error: Failed to save the image to the specified path: " . $zwsgr_save_path);
-                return false;
+
+                error_log("Error: Failed to save the image to the specified path: " . $zwsgr_save_path . " for Widget ID " . $this->$zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                
+                return array(
+                    'success' => false,
+                    'data'    => array (
+                        'error'   => 'failed_to_save_image',
+                        'message'  => 'Failed to save image to specified path'
+                    ),
+                );
+
             }
 
             // Return the path to the saved image
-            return $zwsgr_save_path;
-            
-        }
-
-         /**
-         * Upload an image from a specific path and set it as the post thumbnail.
-         *
-         * @param string $zwsgr_review_dp_path The path to the image file.
-         * @param int $zwsgr_wp_review_id The ID of the post (custom post type).
-         * 
-         * @return int|WP_Error The ID of the uploaded image on success, or WP_Error on failure.
-         */
-        function zwsgr_upload_featured_image($zwsgr_save_path, $zwsgr_wp_review_id) {
-
-            // Check if we have image data
-            if (empty($zwsgr_save_path)) {
-                error_log("Error: No image data provided.");
-                return false;
-            }
-
-			 // Include necessary WordPress file functions
-			if ( ! function_exists( 'media_handle_sideload' ) ) {
-				require_once( ABSPATH . 'wp-admin/includes/file.php' );
-			}
-
-            $zwsgr_upload_dir = wp_upload_dir();
-
-            if (!is_dir($zwsgr_upload_dir['path'])) {
-                wp_mkdir_p($zwsgr_upload_dir['path']);
-            }
-
-            $zwsgr_file_array = array(
-                'name' => basename($zwsgr_save_path),
-                'tmp_name' => $zwsgr_save_path
+            return array(
+                'success' => true,
+                'data'    => array(
+                    'zwsgr_save_path'   => $zwsgr_save_path
+                ),
             );
-
-            $zwsgr_attachment_id = media_handle_sideload($zwsgr_file_array, $zwsgr_wp_review_id);
-
-            if (is_wp_error($zwsgr_attachment_id)) {
-                error_log("Error: Unable to upload image to WordPress. Error: " . $zwsgr_attachment_id->get_error_message());
-                return $zwsgr_attachment_id;
-            }
-
-            @unlink($zwsgr_save_path);
-
-            set_post_thumbnail($zwsgr_wp_review_id, $zwsgr_attachment_id);
-
-            return $zwsgr_attachment_id;
-
+            
         }
 
         protected function complete() {
@@ -345,18 +379,18 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                     update_post_meta($this->zwsgr_widget_id, 'zwsgr_batch_pages', $zwsgr_batch_pages);
                 }
 
-                $zwsgr_current_index = $zwsgr_queue_manager->zwsgr_get_current_batch_index($this->zwsgr_widget_id);
+                $this->zwsgr_current_index = $zwsgr_queue_manager->zwsgr_get_current_batch_index($this->zwsgr_widget_id);
 
                 if (!empty($zwsgr_batch_pages) && $zwsgr_batch_pages > 0) {
-                    $zwsgr_batch_progress = round(($zwsgr_current_index + 1) / $zwsgr_batch_pages * 100);
+                    $zwsgr_batch_progress = round(($this->zwsgr_current_index + 1) / $zwsgr_batch_pages * 100);
                     update_post_meta($this->zwsgr_widget_id, 'zwsgr_batch_progress', $zwsgr_batch_progress);
                 }
 
-                $zwsgr_queue_manager->zwsgr_update_current_batch_index($this->zwsgr_widget_id, ($zwsgr_current_index + 1));
+                $zwsgr_queue_manager->zwsgr_update_current_batch_index($this->zwsgr_widget_id, ($this->zwsgr_current_index + 1));
                 
                 sleep(1);
 
-                $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token);
+                $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token, null, null, null, $this->zwsgr_widget_id);
 
             } else {
 
@@ -367,7 +401,14 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 update_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', $this->zwsgr_gmb_data_type);
                 delete_post_meta($this->zwsgr_widget_id, 'zwsgr_batch_pages');
                 delete_post_meta($this->zwsgr_widget_id, 'zwsgr_batch_progress');
-                return;
+
+                // Return the path to the saved image
+                return array(
+                    'success' => true,
+                    'data'    => array(
+                        'message'   => 'Data processed successfully.'
+                    ),
+                );
 
             }
 
@@ -394,7 +435,6 @@ function zwsgr_get_batch_processing_status() {
     $zwgr_data_sync_once       = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
     $zwsgr_gmb_data_type       = get_post_meta($zwsgr_widget_id, 'zwsgr_gmb_data_type', true);
     $zwsgr_batch_progress      = get_post_meta($zwsgr_widget_id, 'zwsgr_batch_progress', true);
-    $zwsgr_queue_manager       = new Zwsgr_Queue_Manager();
 
     if ($zwgr_data_processing_init == 'false') {
         delete_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init');    

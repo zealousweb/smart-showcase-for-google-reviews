@@ -1368,6 +1368,7 @@ jQuery(document).ready(function($) {
 				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(loader.clone());
 			},
 			success: function(response) {
+				console.log(response);
 				if (response.success) {
 					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {
