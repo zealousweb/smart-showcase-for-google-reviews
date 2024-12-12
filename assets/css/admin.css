@@ -623,6 +623,7 @@ input.zwsgr-radio:checked::before {
 
 #fetch-gmb-data .progress-bar #progress-percentage {
     position: absolute;
+    color: white;
     font-size: 18px;
     top: 50%; 
     left: 50%; 
