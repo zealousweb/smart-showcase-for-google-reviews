@@ -2007,7 +2007,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<li>
 										<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
 										<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-title" class="zwsgr-chechbox-label">Title</label>
+										<label for="review-title" class="zwsgr-chechbox-label">Reviewer Name</label>
 									</li>
 									<li>
 										<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
@@ -2356,7 +2356,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Query reviews with the selected string-based filters
 			$args = array(
 				'post_type' => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
-				'posts_per_page' => -1,
+				'posts_per_page' => 5,
 				'meta_query' => array(
 					array(
 						'key' => 'zwsgr_review_star_rating',
