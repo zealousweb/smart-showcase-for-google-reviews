@@ -1141,8 +1141,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_review_id		  	   = get_post_meta(get_the_ID(), 'zwsgr_review_id', true);
 					$zwsgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
-
-					$zwsgr_attachment_id = get_post_thumbnail_id(get_the_ID());
 					$published_date  = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
 
@@ -1195,7 +1193,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-list-inner">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-									'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+										'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 									</div>
 									<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1228,7 +1226,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1248,7 +1246,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -1271,7 +1269,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -1290,7 +1288,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'	
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'	
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -1312,7 +1310,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+										'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 									</div>
 									<div class="zwsgr-review-info">
 										' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1335,7 +1333,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1358,7 +1356,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1387,7 +1385,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '	
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											<div class="zwsgr-google-icon">
 												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 											</div>
@@ -1406,7 +1404,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap4">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											<div class="zwsgr-google-icon">
 												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 											</div>
@@ -1430,7 +1428,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-list-wrap5">
 										<div class="zwsgr-prifile-wrap">
 											<div class="zwsgr-profile">
-													'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											</div>
 											<div class="zwsgr-data">
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1458,7 +1456,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1481,7 +1479,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1507,7 +1505,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-review-detail">
 											<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											</div>
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 												' . (!empty($published_date)
@@ -1530,7 +1528,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -1550,7 +1548,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1570,7 +1568,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1590,7 +1588,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -1993,216 +1991,215 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-toogle-display">
 							<a href="<?php echo esc_attr($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle">Review Us On G</a>
 					</div>
-					
-					<div class="zwsgr-widget-settings">
-						<h2 class="zwsgr-page-title">Widget Settings</h2>
-						<div class="zwsgr-widget-wrap">
-							<div class="zwsgr-widget-setting">
-								<?php if ($display_option !== 'badge') : // Check if the selected option is not 'badge' ?>
-									<h3 class="zwsgr-label">Filter Rating</h3>
-									<div class="filter-rating">
-										<?php
-										for ($i = 1; $i <= 5; $i++) {
-											$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
-											$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
-											?>
-											<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
-												</svg>
-											</span>
+					<?php if ($display_option !== 'badge') : ?>
+						<div class="zwsgr-widget-settings">
+							<h2 class="zwsgr-page-title">Widget Settings</h2>
+							<div class="zwsgr-widget-wrap">
+								<div class="zwsgr-widget-setting">
+										<h3 class="zwsgr-label">Filter Rating</h3>
+										<div class="filter-rating">
 											<?php
+											for ($i = 1; $i <= 5; $i++) {
+												$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
+												$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
+												?>
+												<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
+													</svg>
+												</span>
+												<?php
+											}
+											?>
+										</div>
+								</div>
+
+
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Hide Element</h3>
+									<ul class="zwsgr-widget-eleemt-list">
+										<li>
+											<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
+											<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
+											<label for="review-title" class="zwsgr-chechbox-label">Reviewer Name</label>
+										</li>
+										<li>
+											<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
+											<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
+											<label for="review-rating" class="zwsgr-chechbox-label">Rating</label>
+										</li>
+										<li>
+											<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
+											<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
+											<label for="review-days-ago" class="zwsgr-chechbox-label">Date</label>
+										</li>
+										<li>
+											<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
+											<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
+											<label for="review-content" class="zwsgr-chechbox-label">Review Content</label>
+										</li>
+										<li>
+											<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
+											<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
+											<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
+										</li>
+										<li>
+											<input type="checkbox" id="review-g-icon" class="zwsgr-checkbox" name="review-element" value="review-g-icon" 
+											<?php echo in_array('review-g-icon', $selected_elements) ? 'checked' : ''; ?>>
+											<label for="review-g-icon" class="zwsgr-chechbox-label">G Icon</label>
+										</li>
+										<!-- Add more elements as needed -->
+									</ul>
+								</div>
+
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Keywords</h3>
+									<input type="text" id="keywords-input" name="keywords-input" class="zwsgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
+									<p class="zwsgr-description">Type keywords separated by commas</p>
+
+									<!-- Hidden input field to store comma-separated keywords for submission -->
+									<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
+
+									<!-- Display the list of saved keywords -->
+									<?php
+									$keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
+									if (is_array($keywords) && !empty($keywords)) {
+										echo '<div id="keywords-list" class="keywords-list">';
+										foreach ($keywords as $keyword) {
+											echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
 										}
-										?>
-									</div>
-								<?php endif; // End of condition for 'badge' option ?>
-							</div>
-
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Hide Element</h3>
-								<ul class="zwsgr-widget-eleemt-list">
-									<li>
-										<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
-										<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-title" class="zwsgr-chechbox-label">Reviewer Name</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
-										<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-rating" class="zwsgr-chechbox-label">Rating</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
-										<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-days-ago" class="zwsgr-chechbox-label">Date</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
-										<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-content" class="zwsgr-chechbox-label">Review Content</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
-										<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
-									</li>
-									<li>
-										<input type="checkbox" id="review-g-icon" class="zwsgr-checkbox" name="review-element" value="review-g-icon" 
-										<?php echo in_array('review-g-icon', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-g-icon" class="zwsgr-chechbox-label">G Icon</label>
-									</li>
-									<!-- Add more elements as needed -->
-								</ul>
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Keywords</h3>
-								<input type="text" id="keywords-input" name="keywords-input" class="zwsgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
-								<p class="zwsgr-description">Type keywords separated by commas</p>
-
-								<!-- Hidden input field to store comma-separated keywords for submission -->
-								<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
-
-								<!-- Display the list of saved keywords -->
-								<?php
-								$keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
-								if (is_array($keywords) && !empty($keywords)) {
-									echo '<div id="keywords-list" class="keywords-list">';
-									foreach ($keywords as $keyword) {
-										echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
+										echo '</div>';
+									} else {
+										echo '<div id="keywords-list" class="keywords-list"></div>';
 									}
-									echo '</div>';
-								} else {
-									echo '<div id="keywords-list" class="keywords-list"></div>';
-								}
+									?>
+
+									<div id="error-message" class="error-message" style="display: none; color: red;">
+										You can only enter a maximum of 5 keywords.
+									</div> 
+								</div>
+
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Review us on Google</h3>
+									<label class="switch">
+										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
+										<span class="slider"></span>
+									</label>
+
+									<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwsgr-color-options">
+										<div class="zwsgr-color-picker">
+											<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
+											<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#3780ff'); ?>">
+										</div>
+										<div class="zwsgr-color-picker">
+											<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>
+											<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color ? $text_color : '#ffffff'); ?>">
+										</div>
+									</div>
+								</div>
+
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
+									<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>" oninput="this.value = Math.max(this.value, 0)">
+								</div>
+
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Language</h3>
+									<select id="language-select" name="language" class="zwsgr-input-text">
+										<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
+										<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
+										<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
+										<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
+										<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
+										<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
+										<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
+										<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
+										<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
+										<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
+										<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
+										<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
+										<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
+										<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
+										<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
+										<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
+										<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
+										<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
+										<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
+										<!-- Add more languages as needed -->
+									</select>
+								</div>
+
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Sort By</h3>
+									<select id="sort-by-select" name="sort_by" class="zwsgr-input-text">
+										<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
+										<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
+										<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+									</select>
+									<div class="zwsgr-sort-by-checkbox">
+											<input type="checkbox" class="zwsgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($enable_sort_by ? 'checked' : ''); ?> />
+											<label class="zwsgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
+									</div>
+								</div>
+		
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Date Format</h3>
+									<select id="date-format-select" name="date-format" class="zwsgr-input-text">
+										<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
+										<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
+										<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
+										<option value="full" <?php echo ($date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
+										<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
+									</select>
+								</div>
+								<?php
+
+									if ($current_tab2 == '' && $enable_load_more == '') {
+										$is_checked = 'checked';
+									} else if ($current_tab2 == 'tab-selected' && $enable_load_more === true) {
+										$is_checked = 'checked';
+									} else {
+										$enable_background_color = '';
+										$is_checked = '';
+									}
+
+									
 								?>
-
-								<div id="error-message" class="error-message" style="display: none; color: red;">
-									You can only enter a maximum of 5 keywords.
-								</div> 
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Review us on Google</h3>
-								<label class="switch">
-									<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
-									<span class="slider"></span>
-								</label>
-
-								<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwsgr-color-options">
-									<div class="zwsgr-color-picker">
-										<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
-										<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#3780ff'); ?>">
+								<div class="zwsgr-widget-setting">
+									<h3 class="zwsgr-label">Load More</h3>
+									<label class="switch">
+										<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo $is_checked;?> />
+										<span class="slider"></span>
+									</label>
+								<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
+										<div class="zwsgr-color-picker-load">
+											<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
+											<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
+										</div>
+										<div class="zwsgr-color-picker-load">
+											<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
+											<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
+										</div>
 									</div>
-									<div class="zwsgr-color-picker">
-										<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>
-										<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color ? $text_color : '#ffffff'); ?>">
-									</div>
+
+									<div id="load-more-settings" style="display:'block';">
+									<h3 class="zwsgr-label">Number Of Review:</h3>
+									<select id="posts-per-page" name="posts_per_page" class="zwsgr-input-text">
+										<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
+										<option value="2" <?php echo ($posts_per_page == 2) ? 'selected' : ''; ?>>2</option>
+										<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>
+										<option value="4" <?php echo ($posts_per_page == 4) ? 'selected' : ''; ?>>4</option>
+										<option value="5" <?php echo ($posts_per_page == 5) ? 'selected' : ''; ?>>5</option>
+										<option value="6" <?php echo ($posts_per_page == 6) ? 'selected' : ''; ?>>6</option>
+										<option value="7" <?php echo ($posts_per_page == 7) ? 'selected' : ''; ?>>7</option>
+										<option value="8" <?php echo ($posts_per_page == 8) ? 'selected' : ''; ?>>8</option>
+										<option value="9" <?php echo ($posts_per_page == 9) ? 'selected' : ''; ?>>9</option>
+										<option value="10" <?php echo ($posts_per_page == 10) ? 'selected' : ''; ?>>10</option>
+									</select>
 								</div>
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
-								<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>" oninput="this.value = Math.max(this.value, 0)">
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Language</h3>
-								<select id="language-select" name="language" class="zwsgr-input-text">
-									<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
-									<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
-									<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
-									<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
-									<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
-									<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
-									<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
-									<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
-									<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
-									<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
-									<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
-									<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
-									<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
-									<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
-									<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
-									<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
-									<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
-									<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
-									<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
-									<!-- Add more languages as needed -->
-								</select>
-							</div>
-
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Sort By</h3>
-								<select id="sort-by-select" name="sort_by" class="zwsgr-input-text">
-									<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-									<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-									<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
-								</select>
-								<div class="zwsgr-sort-by-checkbox">
-										<input type="checkbox" class="zwsgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($enable_sort_by ? 'checked' : ''); ?> />
-										<label class="zwsgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
-								</div>
-							</div>
-	
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Date Format</h3>
-								<select id="date-format-select" name="date-format" class="zwsgr-input-text">
-									<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
-									<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
-									<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
-									<option value="full" <?php echo ($date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
-									<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
-								</select>
-							</div>
-							<?php
-
-								if ($current_tab2 == '' && $enable_load_more == '') {
-									$is_checked = 'checked';
-								} else if ($current_tab2 == 'tab-selected' && $enable_load_more === true) {
-									$is_checked = 'checked';
-								} else {
-									$enable_background_color = '';
-									$is_checked = '';
-								}
-
-								
-							?>
-							<div class="zwsgr-widget-setting">
-								<h3 class="zwsgr-label">Load More</h3>
-								<label class="switch">
-									<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo $is_checked;?> />
-									<span class="slider"></span>
-								</label>
-							<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
-									<div class="zwsgr-color-picker-load">
-										<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
-										<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
-									</div>
-									<div class="zwsgr-color-picker-load">
-										<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
-										<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
-									</div>
-								</div>
-
-								<div id="load-more-settings" style="display:'block';">
-								<h3 class="zwsgr-label">Number Of Review:</h3>
-								<select id="posts-per-page" name="posts_per_page" class="zwsgr-input-text">
-									<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
-									<option value="2" <?php echo ($posts_per_page == 2) ? 'selected' : ''; ?>>2</option>
-									<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>
-									<option value="4" <?php echo ($posts_per_page == 4) ? 'selected' : ''; ?>>4</option>
-									<option value="5" <?php echo ($posts_per_page == 5) ? 'selected' : ''; ?>>5</option>
-									<option value="6" <?php echo ($posts_per_page == 6) ? 'selected' : ''; ?>>6</option>
-									<option value="7" <?php echo ($posts_per_page == 7) ? 'selected' : ''; ?>>7</option>
-									<option value="8" <?php echo ($posts_per_page == 8) ? 'selected' : ''; ?>>8</option>
-									<option value="9" <?php echo ($posts_per_page == 9) ? 'selected' : ''; ?>>9</option>
-									<option value="10" <?php echo ($posts_per_page == 10) ? 'selected' : ''; ?>>10</option>
-								</select>
 							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 				</div>
 				<div class="zwsgr-widget-settings">
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
@@ -2424,7 +2421,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_reviewer_name = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
 					$zwsgr_review_content = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
 					$zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
-					$zwsgr_attachment_id = get_post_thumbnail_id(get_the_ID());
+					$zwsgr_review_id= get_post_meta(get_the_ID(), 'zwsgr_review_id', true);
+					$zwsgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
+					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 					$published_date = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
@@ -2479,7 +2478,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-list-inner">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+										'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 									</div>
 									<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2510,7 +2509,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2530,7 +2529,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -2553,7 +2552,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '	
 								<div class="zwsgr-slide-wrap4">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -2572,7 +2571,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'	
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'	
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -2594,7 +2593,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 								<div class="zwsgr-slide-wrap">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+										'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 									</div>
 									<div class="zwsgr-review-info">
 										' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2617,7 +2616,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2640,7 +2639,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2669,7 +2668,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										: '') . '</p>' : '' ) . '	
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap3">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											<div class="zwsgr-google-icon">
 												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 											</div>
@@ -2688,7 +2687,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap4 zwsgr-list-wrap4">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											<div class="zwsgr-google-icon">
 												<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 											</div>
@@ -2712,7 +2711,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-list-wrap5">
 										<div class="zwsgr-prifile-wrap">
 											<div class="zwsgr-profile">
-													'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											</div>
 											<div class="zwsgr-data">
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2740,7 +2739,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2763,7 +2762,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2789,7 +2788,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-review-detail">
 											<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+												'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 											</div>
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
 												' . (!empty($published_date)
@@ -2812,7 +2811,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<div class="zwsgr-slide-item">
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-profile">
-											'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										<div class="zwsgr-google-icon">
 											<img src="' . $plugin_dir_path . 'assets/images/google-icon.png">
 										</div>
@@ -2832,7 +2831,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-grid-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 												' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2852,7 +2851,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
@@ -2872,7 +2871,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-list-inner">
 									<div class="zwsgr-slide-wrap">
 										<div class="zwsgr-profile">
-												'.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
+											'.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
 										</div>
 										<div class="zwsgr-review-info">
 											' . (!empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '') . '
