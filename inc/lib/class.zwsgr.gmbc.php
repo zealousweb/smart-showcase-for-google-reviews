@@ -148,12 +148,12 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 $zwsgr_fetch_jwt_token_response = $this->client->zwsgr_fetch_jwt_token($zwsgr_auth_code);
 
                 if (
-                    isset($zwsgr_fetch_jwt_token_response['success']) &&
-                    $zwsgr_fetch_jwt_token_response['success'] === true &&
-                    isset($zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'])
+                    isset($zwsgr_fetch_jwt_token_response['success']) && 
+                    $zwsgr_fetch_jwt_token_response['success'] === true && 
+                    isset($zwsgr_fetch_jwt_token_response['data']['zwsgr_jwt_token'])
                 ) {
 
-                    $zwsgr_jwt_token = $zwsgr_fetch_jwt_token_response['data']['data']['zwsgr_jwt_token'];
+                    $zwsgr_jwt_token = $zwsgr_fetch_jwt_token_response['data']['zwsgr_jwt_token'];
                     
                     // Save the JWT token in the database
                     update_option('zwsgr_jwt_token', $zwsgr_jwt_token);
@@ -175,9 +175,11 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                         // Redirect back to fetch gmb data page with the widget ID as a parameter
                         wp_redirect(admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
                         exit;
+
                     } else {
                         wp_redirect(admin_url('edit.php?post_type=zwsgr_data_widget'));
                         exit;
+
                     }
 
                 } else {
