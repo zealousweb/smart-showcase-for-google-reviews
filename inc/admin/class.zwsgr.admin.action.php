@@ -2199,8 +2199,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 						</div>
-					<?php endif; ?>
-				</div>
+					
+						</div>
+				<?php endif; ?>
 				<div class="zwsgr-widget-settings">
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
 					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($custom_css); ?></textarea>
