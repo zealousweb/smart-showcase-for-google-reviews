@@ -1519,34 +1519,36 @@ jQuery(document).ready(function($) {
 	
 
 
- 	$('.star-filter').on('click', function() {
-        var rating = $(this).data('rating');  // Get the rating of the clicked star
-        
-        // If the star is already selected, unselect it and all the stars to the right
-        if ($(this).hasClass('selected')) {
-            // Unselect this star and all stars to the right
-            $('.star-filter').each(function() {
-                if ($(this).data('rating') >= rating) {
-                    $(this).removeClass('selected');
-                    $(this).find('.star').css('fill', '#ccc'); // Reset color to unselected
-                }
-            });
-        } else {
-            // If the star is not selected, select this star and all stars to the left (including this one)
-            $('.star-filter').each(function() {
-                if ($(this).data('rating') <= rating) {
-                    $(this).addClass('selected');
-                    $(this).find('.star').css('fill', '#FFD700'); // Set color to gold
-                } else {
-                    $(this).removeClass('selected');
-                    $(this).find('.star').css('fill', '#ccc'); // Reset color for unselected
-                }
-            });
-        }
-
-        // Get the new rating value after the click
-        var ratingFilterValue = rating;
-    });
+	$('.star-filter').on('click', function () {
+		var rating = $(this).data('rating'); // Get the rating of the clicked star
+	
+		// Check if the clicked star is already selected and is the lowest rating
+		if ($(this).hasClass('selected') && rating === 1) {
+			// Unselect all stars
+			$('.star-filter').removeClass('selected');
+			$('.star-filter .star').css('fill', '#ccc'); // Reset color to unselected
+			return;
+		}
+	
+		// Toggle the 'selected' state of stars
+		$('.star-filter').each(function () {
+			var currentRating = $(this).data('rating');
+			if (currentRating <= rating) {
+				// Select this star
+				$(this).addClass('selected');
+				$(this).find('.star').css('fill', '#FFD700'); // Set color to gold
+			} else {
+				// Deselect this star
+				$(this).removeClass('selected');
+				$(this).find('.star').css('fill', '#ccc'); // Reset color to unselected
+			}
+		});
+	
+		// Handle the new rating value
+		var ratingFilterValue = rating;
+		console.log("Selected rating:", ratingFilterValue);
+	});
+	
 
 	// Event listener for clicking on a star filter
 	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
