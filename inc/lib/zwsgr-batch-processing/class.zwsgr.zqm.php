@@ -22,6 +22,10 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
         private $zwsgr_gmb_api;
 
+        private $zwsgr_gmb_response;
+
+        private $zwsgr_gmb_data;
+
         private $zwsgr_widget_id;
 
         private $zwsgr_current_index;
@@ -61,7 +65,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
         public function zwsgr_fetch_gmb_data($zwsgr_internal_call = false, $zwsgr_next_page_token = false, $zwsgr_gmb_data_type = null, $zwsgr_account_number = null, $zwsgr_location_number = null, $zwsgr_widget_id = null) {
 
             // Get the values from method parameters, $_POST, or options as fallback
-            $this->zwsgr_widget_id               = isset($zwsgr_widget_id)                ? sanitize_text_field($zwsgr_widget_id)       : (isset($_POST['zwsgr_widget_id'])               ? sanitize_text_field($_POST['zwsgr_widget_id'])       : $zwsgr_widget_id);
+            $this->zwsgr_widget_id               = isset($zwsgr_widget_id)                ? sanitize_text_field($zwsgr_widget_id)       : (isset($_POST['zwsgr_widget_id'])               ? sanitize_text_field($_POST['zwsgr_widget_id'])       : get_option('zwsgr_widget_id'));
             $this->zwsgr_gmb_data_type           = isset($zwsgr_gmb_data_type)            ? sanitize_text_field($zwsgr_gmb_data_type)   : (isset($_POST['zwsgr_gmb_data_type'])           ? sanitize_text_field($_POST['zwsgr_gmb_data_type'])   : get_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', true));
             $this->zwsgr_account_number          = isset($zwsgr_account_number)           ? sanitize_text_field($zwsgr_account_number)  : (isset($_POST['zwsgr_account_number'])          ? sanitize_text_field($_POST['zwsgr_account_number'])  : get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_number', true));
             $this->zwsgr_location_number         = isset($zwsgr_location_number)          ? sanitize_text_field($zwsgr_location_number) : (isset($_POST['zwsgr_location_number'])         ? sanitize_text_field($_POST['zwsgr_location_number']) : get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_number', true));
@@ -147,13 +151,13 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
             switch ($this->zwsgr_gmb_data_type) {
                 case 'zwsgr_gmb_accounts':
-                    $this->zwsgr_gmb_data = $this->zwsgr_gmb_api->zwsgr_get_accounts($zwsgr_next_page_token);
+                    $this->zwsgr_gmb_response = $this->zwsgr_gmb_api->zwsgr_get_accounts($zwsgr_next_page_token);
                     break;
                 case 'zwsgr_gmb_locations':
-                    $this->zwsgr_gmb_data = $this->zwsgr_gmb_api->zwsgr_get_locations($this->zwsgr_account_number, $zwsgr_next_page_token);
+                    $this->zwsgr_gmb_response = $this->zwsgr_gmb_api->zwsgr_get_locations($this->zwsgr_account_number, $zwsgr_next_page_token);
                     break;
                 case 'zwsgr_gmb_reviews':
-                    $this->zwsgr_gmb_data = $this->zwsgr_gmb_api->zwsgr_get_reviews($this->zwsgr_account_number, $this->zwsgr_location_number, $zwsgr_next_page_token);        
+                    $this->zwsgr_gmb_response = $this->zwsgr_gmb_api->zwsgr_get_reviews($this->zwsgr_account_number, $this->zwsgr_location_number, $zwsgr_next_page_token);        
                     break;
                 default:
                     
@@ -180,8 +184,11 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 );
 
             }
-            
-            if (!empty($this->zwsgr_gmb_data) && $this->zwsgr_gmb_data !== false) {
+
+
+            if (isset($this->zwsgr_gmb_response) && $this->zwsgr_gmb_response['success'] && !empty($this->zwsgr_gmb_response['data'])) {
+
+                $this->zwsgr_gmb_data = $this->zwsgr_gmb_response['data'];
 
                 // Prepare data to be pushed to the queue
                 $zwsgr_push_data_to_queue = [
@@ -280,31 +287,84 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     );
 
                 }
-
-            } else {
-
+            
+            } else if (isset($this->zwsgr_gmb_response) && $this->zwsgr_gmb_response['success'] && empty($this->zwsgr_gmb_response['data'])) {
+                
                 // Log the error before resetting the index and deleting options
                 error_log("ZQM: Batch processing error: Failed for" . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
 
+                // Define a default error message
+                $zwsgr_error_message = 'An unknown error occurred. Please try again.';
+
+                // Use a switch statement for better clarity
+                switch ($this->zwsgr_gmb_data_type) {
+                    case 'zwsgr_gmb_accounts':
+                        $zwsgr_error_message = 'No GMB Accounts found for your GMB account.';
+                        break;
+                    case 'zwsgr_gmb_locations':
+                        $zwsgr_error_message = 'No Locations present. Please try again with a different GMB account. Thanks.';
+                        break;
+                    case 'zwsgr_gmb_reviews':
+                        $zwsgr_error_message = 'No reviews found. Please try again with a different GMB account. Thanks.';
+                        break;
+                }
+                
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
-                    // For AJAX requests, send a JSON error response
-                    wp_send_json_error(
-                        array(
-                            'error' =>  'Sorry, there was an error while processing this batch.',
-                            'zwsgr_current_index'  => $this->zwsgr_current_index,
-                        ), 
-                    400);
+                    // For AJAX requests, send a JSON error response    
+                    wp_send_json_error([
+                        'error'  => 'empty_api_response',
+                        'message' => $zwsgr_error_message
+                    ], 200);
+                    
 
+                } else {
+
+                    return array(
+                        'success' => false,
+                        'data'    => array(
+                            'error'  => 'empty_api_response',
+                            'message' => $zwsgr_error_message
+                        ),
+                    );
+                    
                 }
 
-                return array(
-                    'success' => false,
-                    'data'    => array(
-                        'error'   => 'Sorry there was an error while processing this batch',
-                        'zwsgr_current_index' => $this->zwsgr_current_index
-                    ),
-                );
+            } {
+
+                echo '<pre>';
+                print_r($this->zwsgr_gmb_response['error']['status']);
+                echo '</pre>';
+
+                echo '<pre>';
+                print_r($this->zwsgr_gmb_response['error']['message']);
+                echo '</pre>';
+
+                die();
+
+                // Log the error before resetting the index and deleting options
+                error_log("ZQM: Batch processing" . 'error:' . $this->zwsgr_gmb_response['error']['status'] . 'message:' . $this->zwsgr_gmb_response['error']['message'] . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+
+                if (defined('DOING_AJAX') && DOING_AJAX) {
+
+                    // For AJAX requests, send a JSON error response    
+                    wp_send_json_error([
+                        'error'  => $this->zwsgr_gmb_response['error']['status'],
+                        'message' => $this->zwsgr_gmb_response['error']['message'],
+                    ], 400);
+                    
+
+                } else {
+
+                    return array(
+                        'success' => false,
+                        'data'    => array(
+                            'error'  => $this->zwsgr_gmb_response['error']['status'],
+                            'message' => $this->zwsgr_gmb_response['error']['message'],
+                        ),
+                    );
+                    
+                }
 
             }
 
