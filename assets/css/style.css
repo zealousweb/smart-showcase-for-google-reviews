@@ -24,6 +24,7 @@
     border: 1px solid #E8EBEF; 
     background-color: #FFFFFF; 
     border-radius: 8px;
+    box-sizing: border-box;
 }
 
 .zwsgr-slider .zwsgr-slide-wrap {
@@ -1094,6 +1095,17 @@
     margin: 0 auto;
 }
 
+.zwsgr-slider .slick-track {
+    display: flex;
+}
+
+.zwsgr-slider .slick-track .zwsgr-slide-item {
+    height: auto;
+}
+
+.zwsgr-slider .slick-track .zwsgr-list-inner {
+    height: 100%;;
+}
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
         width: 60%;
