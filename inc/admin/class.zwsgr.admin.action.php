@@ -367,12 +367,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'ZERO' => 0,
 			];
 
-			$zwsgr_rating_value = strtoupper($zwsgr_review_star_rating);
-			$numeric_rating = isset($zwsgr_rating_map[$zwsgr_rating_value]) ? $zwsgr_rating_map[$zwsgr_rating_value] : 0;
-			$zwsgr_filled_star = str_repeat($zwsgr_filled_star, $numeric_rating);
-			$zwsgr_empty_star = str_repeat($zwsgr_empty_star, 5 - $numeric_rating);
-
-			$zwsgr_attachment_id = get_post_thumbnail_id($zwsgr_review->ID);
+			$zwsgr_rating_value 	  	  = strtoupper($zwsgr_review_star_rating);
+			$numeric_rating 		  	  = isset($zwsgr_rating_map[$zwsgr_rating_value]) ? $zwsgr_rating_map[$zwsgr_rating_value] : 0;
+			$zwsgr_filled_star 		  	  = str_repeat($zwsgr_filled_star, $numeric_rating);
+			$zwsgr_empty_star 		  	  = str_repeat($zwsgr_empty_star, 5 - $numeric_rating);
+			$zwsgr_review_id 		  	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_id', true);
+			$zwsgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 
 			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="'.$zwsgr_review->ID.'">
 				<tr>
@@ -380,8 +380,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_reviewer_image">' . __('', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>';
-						if (!empty($zwsgr_attachment_id)) {
-							echo wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;'));
+						if (!empty($zwsgr_gmb_reviewer_image_uri)) {
+							echo '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">';
 						} else {
 							echo '<img src="' . ZWSGR_URL . '/assets/images/fallback-user-dp.svg" class="fallback-user-dp">';
 						}

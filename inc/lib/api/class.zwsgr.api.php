@@ -85,31 +85,32 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         
                 // Get the response body and decode it
                 $zwsgr_api_response_body = wp_remote_retrieve_body( $zwsgr_api_response );
-                return json_decode( $zwsgr_api_response_body, true );
+
+                return array(
+                    'success' => true,
+                    'data' => json_decode( $zwsgr_api_response_body, true )
+                );
         
-            } catch (Exception $e) {
+            } catch (Exception $e) {                
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
-                    
-                    // For AJAX requests, send a JSON error response
-                    wp_send_json_error(
-                        array(
-                            'status'  => 'error',
-                            'message' => $e->getMessage(),
-                        )
-                    );
 
-                } elseif (is_admin()) {
+                    // For AJAX requests, send a JSON error response
+                    wp_send_json_error([
+                        'error'  => 'api_response_error',
+                        'message' => $e->getMessage(),
+                    ], 400);
                     
-                    // For admin requests, display a WordPress admin notice
-                    add_action('admin_notices', function() use ($e) {
-                        echo "<div class='notice notice-error'><p>Error: {$e->getMessage()}</p></div>";
-                    });
 
                 } else {
 
-                    // For other contexts, log the error
-                    error_log("API Error: {$e->getMessage()}");
+                    return array(
+                        'success' => false,
+                        'data'    => array(
+                            'error'   => 'api_response_error',
+                            'message' => $e->getMessage(),
+                        ),
+                    );
                     
                 }
 
@@ -192,10 +193,10 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Make the API request to get oauth URl.
             $zwsgr_response = $this->zwsgr_api_request( 'zwsgr/v1/get-access-token', $zwsgr_payload_data, 'POST', '', 'https://plugintest.siteproofs.com/wp-json/');
 
-            // Check if the response is successful and contains the access token.
-            if (!empty($zwsgr_response['success']) && $zwsgr_response['success'] == 1 && !empty($zwsgr_response['data']['data']['access_token'])) {
+                // Check if the response is successful and contains the oauth URL
+                if (isset($zwsgr_response['success']) && $zwsgr_response['success'] === true && isset($zwsgr_response['data']['access_token'])) {
                 
-                $access_token = $zwsgr_response['data']['data']['access_token'];
+                $access_token = $zwsgr_response['data']['access_token'];
                 
                 // Store the new access token in a transient for future use.
                 set_transient('zwsgr_access_token', $access_token, 3600); // Store for 1 hour or as needed.
@@ -226,7 +227,20 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_api_params = $zwsgr_page_token ? [ 'pageToken' => $zwsgr_page_token ] : [];
             
             // Make the API request to the 'accounts' endpoint.
-            return $this->zwsgr_api_request( 'accounts', $zwsgr_api_params, 'GET', 'v1' );
+            $zwsgr_response = $this->zwsgr_api_request( 'accounts', $zwsgr_api_params, 'GET', 'v1' );
+
+            if (
+                isset($zwsgr_response['success']) && 
+                $zwsgr_response['success'] === true && 
+                isset($zwsgr_response['data'])
+            ) {
+                $zwsgr_gmb_data = $zwsgr_response['data'];
+            } else {
+                $zwsgr_gmb_data = false;
+            }
+
+            return $zwsgr_gmb_data;
+
         }
 
         /**
@@ -245,7 +259,19 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_api_params   = $zwsgr_page_token ? [ 'pageToken' => $zwsgr_page_token ] : [];
 
             // Make the API request to fetch locations.
-            return $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET', 'v1' );
+            $zwsgr_response = $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET', 'v1' );
+
+            if (
+                isset($zwsgr_response['success']) && 
+                $zwsgr_response['success'] === true && 
+                isset($zwsgr_response['data'])
+            ) {
+                $zwsgr_gmb_data = $zwsgr_response['data'];
+            } else {
+                $zwsgr_gmb_data = false;
+            }
+
+            return $zwsgr_gmb_data;
 
         }
 
@@ -271,7 +297,19 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             }
 
             // Make the API request to fetch reviews.
-            return $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET');
+            $zwsgr_response = $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET');
+
+            if (
+                isset($zwsgr_response['success']) && 
+                $zwsgr_response['success'] === true && 
+                isset($zwsgr_response['data'])
+            ) {
+                $zwsgr_gmb_data = $zwsgr_response['data'];
+            } else {
+                $zwsgr_gmb_data = false;
+            }
+
+            return $zwsgr_gmb_data;
         }
 
         /**
@@ -292,28 +330,33 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_wp_review_id    = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
             $zwsgr_reply_comment   = isset($_POST['zwsgr_reply_comment']) ? sanitize_text_field($_POST['zwsgr_reply_comment']) : '';
             $zwsgr_account_number  = get_post_meta($zwsgr_wp_review_id, 'zwsgr_account_number', true);
-            $zwsgr_location_code   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_code', true);
+            $zwsgr_location_number   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_number', true);
             $zwsgr_review_id       = get_post_meta($zwsgr_wp_review_id, 'zwsgr_review_id', true);
 
             // Check that all parameters are provided
-            if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_reply_comment ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
+            if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_reply_comment ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_number ) || empty( $zwsgr_review_id ) ) {
+
+                // For AJAX requests, send a JSON error response
                 wp_send_json_error(
                     array(
+                        'error'  => 'missing_required_fields',
                         'message' => 'Missing required fields: Review ID, reply comment, account number, location code, or review ID.',
-                        'status'  => 400
-                    )
-                );
+                    ), 
+                400);
+
             }
 
             $zwsgr_access_token = $this->zwsgr_get_access_token();
 
             if ($zwsgr_access_token == false) {
+
+                // For AJAX requests, send a JSON error response
                 wp_send_json_error(
                     array(
-                        'message' => 'No Valid access token found',
-                        'status'  => 400
-                    )
-                );
+                        'error'  => 'invalid_access_token',
+                        'message' => 'No Valid access token found.',
+                ), 400);
+
             }
 
             // Prepare the payload for the request
@@ -322,38 +365,34 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             ];
 
             // Construct the Google My Business endpoint URL using account, location, and review IDs
-            $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_code}/reviews/{$zwsgr_review_id}/reply";
+            $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_number}/reviews/{$zwsgr_review_id}/reply";
 
             // Make the API request to add/update the review reply on Google’s server
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, $zwsgr_payload_data, 'PUT', 'v4');
 
-            // Check if the API response was successful
-            if ( isset($zwsgr_response['error']) ) {
+            if (isset($zwsgr_response) && $zwsgr_response['success'] && isset($zwsgr_response['data']['comment']) && isset($zwsgr_response['data']['updateTime'])) {
 
-                // If there's an error in the response, send a JSON error response
-                wp_send_json_error( 
-                    array(
-                        'status'  => 'error',
-                        'message' => $zwsgr_response['error']['message'] ?? 'An Unknown error occurred.',
-                    )
-                );
-
-            }
-
-            if (isset($zwsgr_response) && isset($zwsgr_response['comment']) && isset($zwsgr_response['updateTime'])) {
-
-                $zwsgr_reply_comment     = $zwsgr_response['comment'];
-                $zwsgr_reply_update_time = $zwsgr_response['updateTime'];
+                $zwsgr_reply_comment     = $zwsgr_response['data']['comment'];
+                $zwsgr_reply_update_time = $zwsgr_response['data']['updateTime'];
 
                 update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_comment', $zwsgr_reply_comment);
                 update_post_meta($zwsgr_wp_review_id, 'zwsgr_reply_update_time', $zwsgr_reply_update_time);
 
                 wp_send_json_success(
                     array(
-                        'message' => __('Reply updated successfully', 'zw-smart-google-reviews'),
-                        'status'  => 200,
+                        'success' => true,
+                        'message' =>  __('Reply updated successfully', 'zw-smart-google-reviews'),
                     )
                 );
+
+            } else {
+
+                // If there's an error in the response, send a JSON error response
+                wp_send_json_error(
+                    array(
+                        'error'  => 'gmb_api_error',
+                        'message' => $zwsgr_response['error']['message'] ?? 'An Unknown error occurred.',
+                ), 400);
 
             }
             
@@ -375,62 +414,69 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Retrieve POST values
             $zwsgr_wp_review_id    = isset($_POST['zwsgr_wp_review_id']) ? sanitize_text_field($_POST['zwsgr_wp_review_id']) : '';
             $zwsgr_account_number  = get_post_meta($zwsgr_wp_review_id, 'zwsgr_account_number', true);
-            $zwsgr_location_code   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_code', true);
+            $zwsgr_location_number   = get_post_meta($zwsgr_wp_review_id, 'zwsgr_location_number', true);
             $zwsgr_review_id       = get_post_meta($zwsgr_wp_review_id, 'zwsgr_review_id', true);
 
             // Check that all parameters are provided
-            if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_code ) || empty( $zwsgr_review_id ) ) {
+            if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_number ) || empty( $zwsgr_review_id ) ) {
+               
+                // For AJAX requests, send a JSON error response
                 wp_send_json_error(
                     array(
+                        'error'  => 'missing_required_fields',
                         'message' => 'Missing required fields: Review ID, account number, location code, or review ID.',
-                        'status'  => 400
-                    )
-                );
+                    ), 
+                400);
+
             }
 
             // Get the access token required to authenticate with Google My Business API
             $zwsgr_access_token = $this->zwsgr_get_access_token();
 
             if ($zwsgr_access_token === false) {
+
+                // For AJAX requests, send a JSON error response
                 wp_send_json_error(
                     array(
-                    'message' => 'No valid access token found.',
-                    'status'  => 400,
-                    )
-                );
+                        'error'  => 'invalid_access_token',
+                        'message' => 'No valid access token found',
+                    ), 
+                400);
+
             }
 
             // Construct the Google My Business API endpoint URL for deleting the reply to the specified review
-            $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_code}/reviews/{$zwsgr_review_id}/reply";
+            $zwsgr_endpoint = "accounts/{$zwsgr_account_number}/locations/{$zwsgr_location_number}/reviews/{$zwsgr_review_id}/reply";
 
             // Send the DELETE request to the Google My Business API to delete the review reply
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_endpoint, [], 'DELETE', 'v4' );
 
-            // Check if the API response was unsuccessful
-            if ( isset($zwsgr_response['error']) ) {
+            if (isset($zwsgr_response) && $zwsgr_response['success']) {
 
-                wp_send_json_error( 
+                // Delete the reply comment from the postmeta table if it's associated with the review
+                if ( !empty( $zwsgr_wp_review_id ) ) {
+                    delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_comment' );
+                    delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_update_time' );
+                }
+
+                // Send a success response back to the client
+                wp_send_json_success(
                     array(
-                        'status'  => 'error',
-                        'message' => $zwsgr_response['error']['message'] ?? 'An Unknown error occurred.',
+                        'success' => true,
+                        'message' =>  __('Reply deleted successfully', 'zw-smart-google-reviews'),
                     )
                 );
 
-            }
+            } {
 
-            // Delete the reply comment from the postmeta table if it's associated with the review
-            if ( !empty( $zwsgr_wp_review_id ) ) {
-                delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_comment' );
-                delete_post_meta( $zwsgr_wp_review_id, 'zwsgr_reply_update_time' );
-            }
+                // If there's an error in the response, send a JSON error response
+                wp_send_json_error(
+                    array(
+                        'error'  => 'gmb_api_error',
+                        'message' => $zwsgr_response['error']['message'] ?? 'An Unknown error occurred.',
+                ), 400);
 
-            // Send a success response back to the client
-            wp_send_json_success( 
-                array(
-                    'message' => 'Reply deleted successfully.',
-                    'status'  => 200,
-                )
-            );
+            }
 
         }
 
@@ -450,8 +496,10 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             $zwsgr_response = $this->zwsgr_api_request( 'zwsgr/v1/auth', $zwsgr_payload_data, 'POST', '', 'https://plugintest.siteproofs.com/wp-json/');
 
             // Check if the response is successful and contains the oauth URL
-            if (isset($zwsgr_response['success']) && $zwsgr_response['success'] === true && isset($zwsgr_response['data']['data']['zwsgr_oauth_url'])) {
-                $zwsgr_oauth_url = $zwsgr_response['data']['data']['zwsgr_oauth_url'];
+            if (isset($zwsgr_response['success']) && $zwsgr_response['success'] === true && isset($zwsgr_response['data']['zwsgr_oauth_url'])) {
+                
+                $zwsgr_oauth_url = $zwsgr_response['data']['zwsgr_oauth_url'];
+
                 // Return a success response with the OAuth URL
                 wp_send_json_success(
                     array(
@@ -459,8 +507,9 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                         'zwsgr_oauth_url' => esc_url_raw($zwsgr_oauth_url)
                     )
                 );
-                exit;
+
             } else {
+
                 // Return a failure message
                 wp_send_json_error(
                     array(
@@ -468,6 +517,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                         'code' => 'oauth_url_error'
                     )
                 );
+
             }
 
             wp_die();
