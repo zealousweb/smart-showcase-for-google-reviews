@@ -73,43 +73,44 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         
                 // Check if there was an error with the request
                 if ( is_wp_error( $zwsgr_api_response ) ) {
-                    throw new Exception( 'Request failed: ' . $zwsgr_api_response->get_error_message() );
+                    throw new Exception( 'Request failed: ' . $zwsgr_api_response );
                 }
         
                 // Check the response status code
                 $zwsgr_api_status_code = wp_remote_retrieve_response_code( $zwsgr_api_response );
 
-                if ( $zwsgr_api_status_code !== 200 ) {
-                    throw new Exception( "API Request failed with response code: $zwsgr_api_status_code" );
-                }
-        
                 // Get the response body and decode it
                 $zwsgr_api_response_body = wp_remote_retrieve_body( $zwsgr_api_response );
+
+                if ($zwsgr_api_status_code !== 200) {
+                    // Throw the exception with the details array
+                    throw new Exception($zwsgr_api_response_body);
+                }
 
                 return array(
                     'success' => true,
                     'data' => json_decode( $zwsgr_api_response_body, true )
                 );
         
-            } catch (Exception $e) {                
+            } catch (Exception $zwsgr_response_error) {
+
+                 // Decode the JSON string back into an array for better handling
+                $zwsgr_response_error = json_decode($zwsgr_response_error->getMessage(), true);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
-                    // For AJAX requests, send a JSON error response
-                    wp_send_json_error([
-                        'error'  => 'api_response_error',
-                        'message' => $e->getMessage(),
-                    ], 400);
+                    // For AJAX requests, send a JSON error response    
+                    wp_send_json_error(array(
+                        'error'  => $zwsgr_response_error['error']['status'],
+                        'message' => $zwsgr_response_error['error']['message'],
+                    ), 400);
                     
 
                 } else {
 
                     return array(
-                        'success' => false,
-                        'data'    => array(
-                            'error'   => 'api_response_error',
-                            'message' => $e->getMessage(),
-                        ),
+                        'error'  => $zwsgr_response_error['error']['status'],
+                        'message' => $zwsgr_response_error['error']['message'],
                     );
                     
                 }
@@ -229,17 +230,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Make the API request to the 'accounts' endpoint.
             $zwsgr_response = $this->zwsgr_api_request( 'accounts', $zwsgr_api_params, 'GET', 'v1' );
 
-            if (
-                isset($zwsgr_response['success']) && 
-                $zwsgr_response['success'] === true && 
-                isset($zwsgr_response['data'])
-            ) {
-                $zwsgr_gmb_data = $zwsgr_response['data'];
-            } else {
-                $zwsgr_gmb_data = false;
-            }
-
-            return $zwsgr_gmb_data;
+            return $zwsgr_response;
 
         }
 
@@ -261,17 +252,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Make the API request to fetch locations.
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET', 'v1' );
 
-            if (
-                isset($zwsgr_response['success']) && 
-                $zwsgr_response['success'] === true && 
-                isset($zwsgr_response['data'])
-            ) {
-                $zwsgr_gmb_data = $zwsgr_response['data'];
-            } else {
-                $zwsgr_gmb_data = false;
-            }
-
-            return $zwsgr_gmb_data;
+            return $zwsgr_response;
 
         }
 
@@ -299,17 +280,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // Make the API request to fetch reviews.
             $zwsgr_response = $this->zwsgr_api_request( $zwsgr_api_endpoint, $zwsgr_api_params, 'GET');
 
-            if (
-                isset($zwsgr_response['success']) && 
-                $zwsgr_response['success'] === true && 
-                isset($zwsgr_response['data'])
-            ) {
-                $zwsgr_gmb_data = $zwsgr_response['data'];
-            } else {
-                $zwsgr_gmb_data = false;
-            }
-
-            return $zwsgr_gmb_data;
+            return $zwsgr_response;
         }
 
         /**

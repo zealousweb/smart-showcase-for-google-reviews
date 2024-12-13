@@ -46,11 +46,19 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         }
 
         public function zwsgr_gmbc_add_menu_items() {
-            
+
+            $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+
+            if (!empty($zwsgr_gmb_email)) {
+                $zwsgr_page_label = 'Disconnect Google';
+            } else {
+                $zwsgr_page_label = 'Connect Google';
+            }
+
             add_submenu_page (
                 'zwsgr_dashboard',
-                'Connect Google',
-                'Connect Google',
+                $zwsgr_page_label,
+                $zwsgr_page_label,
                 'manage_options',
                 'zwsgr_connect_google',
                 [$this, 'zwsgr_connect_google_callback'],
