@@ -19,6 +19,13 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Bind keydown event to close popup when ESC key is pressed
+	$(document).on('keydown', function (e) {
+		if (e.key === "Escape" || e.keyCode === 27) {
+			$('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+		}
+	});
+
 	$('.copy-shortcode-icon').on('click', function () {
         var targetId = $(this).data('target');
         var $input = $('#' + targetId);
@@ -1536,7 +1543,7 @@ jQuery(document).ready(function($) {
 			if (currentRating <= rating) {
 				// Select this star
 				$(this).addClass('selected');
-				$(this).find('.star').css('fill', '#FFD700'); // Set color to gold
+				$(this).find('.star').css('fill', '#f39c12'); // Set color to gold
 			} else {
 				// Deselect this star
 				$(this).removeClass('selected');
