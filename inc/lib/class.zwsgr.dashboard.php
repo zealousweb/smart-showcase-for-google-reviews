@@ -171,7 +171,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 // Add the location filter only if it exists
                 if (!empty($zwsgr_gmb_account_location)) {
                     $zwsgr_data_render_args['meta_query'][] = array(
-                        'key'     => 'zwsgr_location_code',
+                        'key'     => 'zwsgr_location_number',
                         'value'   => $zwsgr_gmb_account_location,
                         'compare' => '=',
                     );

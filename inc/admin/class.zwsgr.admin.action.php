@@ -342,11 +342,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		// Display all review details in one meta box
 		function zwsgr_display_review_details_meta_box($zwsgr_review) 
 		{
-			$zwsgr_review_comment	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_comment', true);
-			$zwsgr_reviewer_name 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reviewer_name', true);
-			$zwsgr_review_star_rating = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
-			$zwsgr_reply_comment 	  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
-			$zwsgr_reply_update_time  = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
+
+			$zwsgr_review_published_date = get_the_date( 'F j, Y g:i A', $zwsgr_review->ID );
+			$zwsgr_review_comment	  	 = get_post_meta($zwsgr_review->ID, 'zwsgr_review_comment', true);
+			$zwsgr_reviewer_name 	  	 = get_post_meta($zwsgr_review->ID, 'zwsgr_reviewer_name', true);
+			$zwsgr_review_star_rating 	 = get_post_meta($zwsgr_review->ID, 'zwsgr_review_star_rating', true);
+			$zwsgr_reply_comment 	  	 = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_comment', true);
+			$zwsgr_reply_update_time  	 = get_post_meta($zwsgr_review->ID, 'zwsgr_reply_update_time', true);
 
 			// Define the SVG for filled and empty stars
 			$zwsgr_filled_star = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="orange" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -389,10 +391,18 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_reviewer_name">' . __('Reviewer Name', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_reviewer_name">' . __('Reviewer', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<input type="text" value="' . esc_attr($zwsgr_reviewer_name) . '" readonly class="regular-text" style="width:100%;" />
+					</td>
+				</tr>
+								<tr>
+					<th>
+						<label for="zwsgr_review_published_date">' . __('Publish Date', 'zw-smart-google-reviews') . '</label>
+					</th>
+					<td>
+						<input type="text" value="' . esc_attr($zwsgr_review_published_date) . '" readonly class="regular-text" style="width:100%;" />
 					</td>
 				</tr>
 				<tr>
@@ -405,17 +415,21 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_review_star_rating">' . __('Star Rating', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_review_star_rating">' . __('Star Ratings', 'zw-smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
 					</td>
+					<td><div class="separator"></div></td>
+				</tr>
+				<tr>
+					<th class="separator-cell" colspan="2">
+						<hr class="separator">
+					</th>
 				</tr>';
 				if (!empty($zwsgr_reply_update_time)) {
-
 					$zwsgr_datetime = new DateTime($zwsgr_reply_update_time);
 					$zwsgr_formatted_time = $zwsgr_datetime->format('F j, Y g:i A');
-					
 					echo '<tr>
 						<th>
 							<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
@@ -428,7 +442,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				}
 				echo '<tr>
 					<th>
-						<label for="zwsgr_reply_comment"> ' . __('Reply Comment', 'zw-smart-google-reviews') . ' </label>
+						<label for="zwsgr_reply_comment"> ' . __('Reply Content', 'zw-smart-google-reviews') . ' </label>
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>

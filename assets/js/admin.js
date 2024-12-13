@@ -1061,8 +1061,6 @@ jQuery(document).ready(function($) {
 			},
 			success: function (response) {
 
-				console.log(response, 'response');
-
 				if (response.success) {
 					
 					$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
@@ -1190,6 +1188,7 @@ jQuery(document).ready(function($) {
 			null,
 			zwsgr_widget_id
 		  );
+
 		}
 	  });
 	
@@ -1216,20 +1215,40 @@ jQuery(document).ready(function($) {
 			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri
 		  },
 		  success: function (response) {
+
 			if (response.success) {
 				$('#fetch-gmb-data .progress-bar').fadeIn();
-			}
+			} else {
+				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
+				// Reload the page after a 1-second delay
+				setTimeout(function() {
+					location.reload();
+				}, 1500);
+            }
+
 		  },
 		  error: function (xhr, status, error) {
-			//console.error("Error:", error);
-			//console.error("Status:", status);
-			//console.error("Response:", xhr.responseText);
+			
+			// Catch errors sent using wp_send_json_error
+            let response = xhr.responseJSON;
+
+			console.log(response, 'response');
+
+            if (response && !response.success) {
+				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
+            }
+
+			// Reload the page after a 1-second delay
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
+
 		  },
 		});
 
-		batchInterval = setInterval(function() {
-			checkBatchStatus();
-		}, 1000);
+		// batchInterval = setInterval(function() {
+		// 	checkBatchStatus();
+		// }, 1000);
 
 	  }
 
@@ -1368,7 +1387,6 @@ jQuery(document).ready(function($) {
 				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(loader.clone());
 			},
 			success: function(response) {
-				console.log(response);
 				if (response.success) {
 					$("#gmb-review-data #json-response-message").html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
 					setTimeout(function() {

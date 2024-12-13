@@ -184,7 +184,6 @@ select.zwsgr-input-text{
     font-weight: 400;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    line-height: 1;
     background: #FCFCFC url('../images/down-arrow.png') no-repeat right 7px top 55%;
     background-size: 16px 10px;
     width: 100%;
@@ -647,7 +646,7 @@ input.zwsgr-radio:checked::before {
 }
 
 #fetch-gmb-data .zwsgr-input-text {
-    padding: 10px 26px 10px 16px;
+    padding: 8px 26px 10px 16px;
     max-width: 310px;
     margin-right: 10px;
     text-overflow: ellipsis;
@@ -725,6 +724,12 @@ input.zwsgr-radio:checked::before {
 }
 
 /* General button styles */
+
+#gmb-review-data .separator-cell .separator {
+    border-top: 2px dashed #0074A2;
+    margin: 0;
+}
+
 #gmb-review-data .cta-wrapper {
     position: relative;
     margin: 10px 0 0 0;
