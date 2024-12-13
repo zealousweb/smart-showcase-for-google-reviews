@@ -23,6 +23,13 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Bind keydown event to close popup when ESC key is pressed
+	$(document).on('keydown', function (e) {
+		if (e.key === "Escape" || e.keyCode === 27) {
+			$('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+		}
+	});
+
     $('body').on('click','.load-more-meta',function() {
         var button = $(this);
         var page = button.data('page');  // Get the current page number
