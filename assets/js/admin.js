@@ -1837,4 +1837,23 @@ jQuery(document).ready(function($) {
 	// Call this function to manually trigger the date range setting
 	setDateRange();
 	
+
+	// $("#gmb-data-filter #zwsgr-account-select").on("change", function (e) {
+	// 	e.preventDefault();
+	
+	// 	// Get the selected account number
+	// 	var zwsgr_account_number = $(this).val();
+	// 	$(this).addClass('disabled');
+	
+	// 	// Update the URL with the account filter parameter
+	// 	const urlParams = new URLSearchParams(window.location.search);
+	// 	urlParams.set('zwsgr_account', zwsgr_account_number); // Add or update the parameter
+	
+	// 	// Redirect to the updated URL with GET parameters
+	// 	window.location.href = window.location.pathname + "?" + urlParams.toString();
+	// });
+
+	$('#zwsgr-account-select, #zwsgr-location-select').on('change', function () {
+        $(this).closest('form').submit();
+    });
 });
