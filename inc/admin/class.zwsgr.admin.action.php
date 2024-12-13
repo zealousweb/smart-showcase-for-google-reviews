@@ -1992,7 +1992,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="zwsgr-toogle-display">
 							<a href="<?php echo esc_attr($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle">Review Us On G</a>
-						</div>
+					</div>
 					
 					<div class="zwsgr-widget-settings">
 						<h2 class="zwsgr-page-title">Widget Settings</h2>
@@ -2025,7 +2025,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<li>
 										<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
 										<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
-										<label for="review-title" class="zwsgr-chechbox-label">Title</label>
+										<label for="review-title" class="zwsgr-chechbox-label">Reviewer Name</label>
 									</li>
 									<li>
 										<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
@@ -2104,7 +2104,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 							<div class="zwsgr-widget-setting">
 								<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
-								<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
+								<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>" oninput="this.value = Math.max(this.value, 0)">
 							</div>
 
 							<div class="zwsgr-widget-setting">
@@ -2374,7 +2374,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Query reviews with the selected string-based filters
 			$args = array(
 				'post_type' => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
-				'posts_per_page' => -1,
+				'posts_per_page' => 5,
 				'meta_query' => array(
 					array(
 						'key' => 'zwsgr_review_star_rating',
