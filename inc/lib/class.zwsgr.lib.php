@@ -528,7 +528,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
 											? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
 											: '') .
-										((!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements))
+										((!in_array('review-content', $selected_elements)&& $zwsgr_review_content) || !in_array('review-days-ago', $selected_elements)
 											? '<div class="zwsgr-contnt-wrap">' .
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwsgr-content">' . esc_html($trimmed_content) .
@@ -1365,7 +1365,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				}
 				
 				if($google_review_toggle){
-					echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle">Review Us On G</a>';
+					echo '<div class="zwsgr-toogle-display zwsgr-toogle-display-front">';
+						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle">Review Us On G</a>';
+					echo '</div>';
 				}
 				
 			echo '</div>';
@@ -1746,7 +1748,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-rating', $selected_elements) && !empty($stars_html) 
 											? '<div class="zwsgr-rating">' . $stars_html . '</div>' 
 											: '') .
-										((!in_array('review-content', $selected_elements) || !in_array('review-days-ago', $selected_elements))
+										((!in_array('review-content', $selected_elements) && $zwsgr_review_content) || !in_array('review-days-ago', $selected_elements)
 											? '<div class="zwsgr-contnt-wrap">' .
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwsgr-content">' . esc_html($trimmed_content) .

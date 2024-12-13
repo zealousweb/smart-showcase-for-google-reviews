@@ -1088,6 +1088,11 @@
     font-size: 16px;
     text-decoration: none;
     border: none;
+    display: inline-block;
+}
+.zwsgr-toogle-display.zwsgr-toogle-display-front { 
+    background-color: transparent;
+    border: none
 }
 
 .zwsgr-popup-item {
