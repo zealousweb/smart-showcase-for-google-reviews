@@ -1855,4 +1855,9 @@ jQuery(document).ready(function($) {
 	// Call this function to manually trigger the date range setting
 	setDateRange();
 	
+
+	$('#zwsgr-account-select, #zwsgr-location-select').on('change', function () {
+        $(this).closest('form').submit();
+    });
+	
 });
