@@ -1184,8 +1184,6 @@ jQuery(document).ready(function($) {
 		const zwsgr_account_number = $(this).val();
 		const zwsgr_account_name = $(this).find("option:selected").text();
 		
-		alert(zwsgr_account_name, 'zwsgr_account_name');
-		
 		if (zwsgr_account_number) {
 
 		  // Add loading spinner and disable the dropdown to prevent multiple selections
