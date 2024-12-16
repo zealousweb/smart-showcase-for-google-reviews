@@ -1204,14 +1204,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>'
 					],
 					'badge' => [
-						'<div class="zwsgr-badge-item" id="zwsgr-badge1">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge2">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
 							<div class="zwsgr-badge-image">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
@@ -1220,17 +1220,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge3">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge3">
 							<div class="zwsgr-rating-wrap">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge4">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
 							<div class="zwsgr-badge4-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1240,9 +1240,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<p class="zwsgr-avg-note">Average Rating</p>
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
-						</div>',
-
-						'<div class="zwsgr-badge-item" id="zwsgr-badge5">
+						</div></a>',
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
 							<div class="zwsgr-badge5-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							</div>
@@ -1251,9 +1250,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<p class="zwsgr-avg-note">Average Rating</p>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge6">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge6">
 							<div class="zwsgr-badge6-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1262,17 +1261,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<h3 class="zwsgr-google">Google</h3>
 								<p class="zwsgr-avg-note">Average Rating</p>
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge7">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
 							<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 							<div class="zwsgr-badge7-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge8">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
 							<div class="zwsgr-logo-wrap">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 								<p class="zwsgr-avg-note">Google Reviews</p>
@@ -1280,8 +1279,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
-						</div>'
-						
+						</div></a>'
 					],
 					'popup' => [
 						'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
