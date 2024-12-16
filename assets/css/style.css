@@ -1117,6 +1117,11 @@
 .zwsgr-slider .slick-track .zwsgr-list-inner {
     height: 100%;;
 }
+
+.zwsgr-badge-link {
+    text-decoration: none;
+}
+
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
         width: 60%;
