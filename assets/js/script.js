@@ -56,6 +56,13 @@ jQuery(document).ready(function($) {
                 // console.log(response, 'response ');
                 if (response.success) {
                     // Append new post content to the #div-container
+					
+					var popupContentContainer = $('zwsgr-slider.zwsgr-grid-item.zwsgr-popup-list');
+
+					// Append new content to the popup
+					if (popupContentContainer.length >= 1) {
+						popupContentContainer.append(response.data.content);  // Append the new content to the popup
+					}
 
 					if($('#div-container .zwsgr-list').length >= 1){
 						$('#div-container .zwsgr-list').append(response.data.content);  // This will render the HTML on the screen 
