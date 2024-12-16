@@ -20,7 +20,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 	class ZWSGR_Admin_Action {
 
 		private $client;
-
+		
+		public $zwsgr_smtp_opt,$zwsgr_mail_notify_opt,$zwsgr_general_opt;
+		
 		private $zwsgr_gmbc;
 
 		private $zwsgr_dashboard;
@@ -54,7 +56,57 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// Initialize dashboard class
 			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
+
+			add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
+
+			$this->zwsgr_smtp_opt = get_option( 'zwsgr_smtp_option' );
+			$this->zwsgr_general_opt = get_option( 'zwsgr_general_option' );
+			$this->zwsgr_mail_notify_opt = get_option( 'zwsgr_mail_notify_option' );
 		
+		}
+
+		/**
+		 * Action: phpmailer_init
+		 *
+		 * Set SMTP parameters if SMTP mailer.
+		 *
+		 * @method action__init_smtp_mailer
+		 *
+		 * @param  mailer object  $phpmailer
+		 *
+		 */
+		function action__init_smtp_mailer(  $phpmailer ) {
+
+			$phpmailer->IsSMTP();
+
+			$from_email = $this->zwsgr_smtp_opt['zwsgr_from_email'];
+			$from_name = $this->zwsgr_smtp_opt['zwsgr_from_name'];
+
+			$phpmailer->From     = $from_email;
+			$phpmailer->FromName = $from_name;
+			$phpmailer->SetFrom( $phpmailer->From, $phpmailer->FromName );
+
+			/* Set the SMTP Secure value */
+			if ( 'none' !== $this->zwsgr_smtp_opt['zwsgr_smtp_ency_type'] ) {
+				$phpmailer->SMTPSecure = $this->zwsgr_smtp_opt['zwsgr_smtp_ency_type'];
+			}
+
+			/* Set the other options */
+			$phpmailer->Host = $this->zwsgr_smtp_opt['zwsgr_smtp_host'];
+			$phpmailer->Port = $this->zwsgr_smtp_opt['zwsgr_smtp_port'];
+
+			/* If we're using smtp auth, set the username & password */
+			if ( 'yes' == $this->zwsgr_smtp_opt['zwsgr_smtp_auth'] ) {
+				$phpmailer->SMTPAuth = true;
+				$phpmailer->Username = $this->zwsgr_smtp_opt['zwsgr_smtp_username'];
+				$phpmailer->Password = $this->zwsgr_smtp_opt['zwsgr_smtp_password'];
+			}
+			//PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
+			$phpmailer->SMTPAutoTLS = false;
+
+			//set reasonable timeout
+			$phpmailer->Timeout = 10;
+			$phpmailer->CharSet  = "utf-8";
 		}
 		
 		/**
@@ -895,6 +947,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<a href="?page=zwsgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
 							<?php _e('Advanced', 'zw-smart-google-reviews'); ?>
 						</a>
+						<a href="?page=zwsgr_settings&tab=smtp-settings" class="nav-tab <?php echo ($current_tab === 'smtp-settings') ? 'nav-tab-active' : ''; ?>">
+							<?php _e('SMTP Settings', 'zw-smart-google-reviews'); ?>
+						</a>
 					</h2>
 					<?php if ($current_tab === 'google'): ?>
 						<?php /* <form action="" method="post" class="zwsgr-setting-form">
@@ -937,7 +992,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 							?>
 						</form>
-					<?php endif; ?>
+						<?php elseif ($current_tab === 'smtp-settings'):
+							// SMTP settings
+							require_once( ZWSGR_DIR . '/inc/admin/' . ZWSGR_PREFIX . '.smtp.settings.template.php' );
+						endif; ?> 
 				</div>
 			</div>
 			<?php

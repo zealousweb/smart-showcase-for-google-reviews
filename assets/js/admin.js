@@ -1854,5 +1854,47 @@ jQuery(document).ready(function($) {
 	
 	// Call this function to manually trigger the date range setting
 	setDateRange();
+
+	// Start code SMTP
+	function zwsgr_update_Smtp_Port() {
+        var encryptionType = $('input[name="zwsgr_smtp_ency_type"]:checked').val();
+        switch(encryptionType) {
+            case 'none':
+                $('#zwsgr-smtp-port').val('25'); // Set port to 25 for 'None'
+                break;
+            case 'ssl':
+                $('#zwsgr-smtp-port').val('465'); // Set port to 465 for 'SSL'
+                break;
+            case 'tls':
+                $('#zwsgr-smtp-port').val('587'); // Set port to 587 for 'TLS'
+                break;
+            default:
+                $('#zwsgr-smtp-port').val('25'); // Default port
+        }
+    }
+	$('input[name="zwsgr_smtp_ency_type"]').change(function() {
+        zwsgr_update_Smtp_Port(); // Update the port when the encryption type is changed
+    });
+	if ($('#zwsgr_smtp_auth_1').is(':checked')) {
+        $('.zwsgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
+		$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+	} else {
+        $('.zwsgr-smtp-auth-enable').show(); // Show if 'Yes' is selected
+		$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
+    }
+    $('input[name="zwsgr_smtp_auth"]').change(function() {
+        if ($(this).val() == 'no') {
+            $('.zwsgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
+			$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+        } else {
+            $('.zwsgr-smtp-auth-enable').show(); // Show if 'Yes' is selected
+			$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
+        }
+    }); 
+	// End code SMTP
 	
 });
