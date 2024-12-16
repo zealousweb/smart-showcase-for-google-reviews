@@ -1160,7 +1160,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$bg_color_load = get_post_meta($post_id, 'bg_color_load', true);
 			$text_color_load = get_post_meta($post_id, 'text_color_load', true);
 			$posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
-
+			// Set default value to 10 if no value is found
+			if (empty($posts_per_page)) {
+				$posts_per_page = 10;
+			}
 			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
 			$selected_display_option = !empty($display_option) ? $display_option : 'all'; // Default to 'all'
 			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
@@ -2408,7 +2411,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
 				$bg_color_load = isset($_POST['bg_color_load']) ? sanitize_hex_color($_POST['bg_color_load']) : '';
 				$text_color_load = isset($_POST['text_color_load']) ? sanitize_hex_color($_POST['text_color_load']) : '';
-				$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 5; // default to 5
+				$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 10; // Default to 10
 				$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
 				$custom_css = sanitize_textarea_field($_POST['custom_css']);
 				$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
