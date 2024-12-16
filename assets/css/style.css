@@ -1102,6 +1102,10 @@
     margin: 0 auto;
 }
 
+.zwsgr-badge-item {
+    max-width: 300px;
+    margin: 0 auto;
+}
 .zwsgr-slider .slick-track {
     display: flex;
 }
