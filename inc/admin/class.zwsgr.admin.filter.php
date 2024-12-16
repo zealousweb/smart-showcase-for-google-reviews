@@ -26,6 +26,9 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			add_filter('get_edit_post_link', array($this, 'zwsgr_change_edit_post_link'), 10, 2);
 			add_filter('post_row_actions', array($this, 'zwsgr_remove_quick_edit_from_reviews_listings'), 10, 2);
 
+			add_filter('bulk_actions-edit-zwsgr_reviews', array($this, 'filter__remove_all_bulk_actions'));
+			add_filter('bulk_actions-edit-zwsgr_data_widget', array($this, 'filter__remove_all_bulk_actions'));
+			add_filter('months_dropdown_results', array($this,'my_remove_date_filter'));
 		}
 
 		/**
@@ -82,6 +85,25 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			return $zwsgr_actions;
 			
 		}
+
+		
+		function filter__remove_all_bulk_actions($actions) {
+			// Check if the current screen is the list table for your custom post type
+			if (get_current_screen()->post_type == 'zwsgr_reviews' || get_current_screen()->post_type == 'zwsgr_data_widget') {
+				// Remove all bulk actions
+				$actions = array();
+			}
+			return $actions;
+		
+		}
+		function my_remove_date_filter( $months ) {
+			global $typenow; // use this to restrict it to a particular post type
+			if ($typenow == 'zwsgr_reviews' || $typenow == 'zwsgr_data_widget') {
+				return array(); // return an empty array
+			}
+			return $months; // otherwise return the original for other post types
+		}
+		
 
 	}
 

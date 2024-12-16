@@ -844,7 +844,7 @@
     padding: 0; /* No padding here; apply padding to inner content */
     background: #fff;
     width: 40%;
-    max-height: 500px; /* Set the maximum height */
+    max-height: 590px; /* Set the maximum height */
     overflow: hidden; /* Ensures border-radius is respected */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -875,7 +875,7 @@
 #zwsgrpopup2 .scrollable-content {
     padding: 50px 
     30px; /* Add padding to the content */
-    max-height: 100vh; /* Adjust height to allow some margin for styling */
+    max-height: 90vh; /* Adjust height to allow some margin for styling */
     overflow-y: auto; /* Enable scrolling */
     scrollbar-width: thin; /* Firefox: Make scrollbar thin */
     scrollbar-color: #888 #f1f1f1; /* Firefox: Custom scrollbar color */
@@ -1097,11 +1097,15 @@
     margin-top: 30px;
 }
 
-.zwsgr-popup-item {
+#div-container .zwsgr-popup-item {
     max-width: 250px;
     margin: 0 auto;
 }
 
+#div-container .zwsgr-badge-item {
+    max-width: 300px;
+    margin: 0 auto;
+}
 .zwsgr-slider .slick-track {
     display: flex;
 }
@@ -1113,10 +1117,15 @@
 .zwsgr-slider .slick-track .zwsgr-list-inner {
     height: 100%;;
 }
+
+.zwsgr-badge-link {
+    text-decoration: none;
+}
+
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
         width: 60%;
-        max-height: 700px;
+        max-height: 750px;
     }
     .scrollable-content {
         max-height: 700px;
@@ -1129,7 +1138,7 @@
     }
     .zwsgr-popup-content {
         width: 60%;
-        max-height: 700px;
+        max-height: 750px;
     }
     .scrollable-content {
         max-height: 700px;
@@ -1213,7 +1222,7 @@
     }
 
     .zwsgr-popup-content {
-        max-height: 600px;
+        max-height: 750px;
     }
 }
 

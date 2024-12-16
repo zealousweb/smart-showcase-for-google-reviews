@@ -182,9 +182,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			// Retrieve dynamic 'posts_per_page' from post meta
 			$stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
 
-			// Determine the number of posts per page based on 'enable_load_more'
-			$posts_per_page = $enable_load_more ? ($stored_posts_per_page ? intval($stored_posts_per_page) : 2) : -1; 
-
 			// Retrieve the 'rating_filter' value from the post meta
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
 
@@ -228,7 +225,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			// Query for posts
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Your custom post type slug
-				'posts_per_page' => $posts_per_page,         // Use dynamic posts per page value
+				'posts_per_page' => $stored_posts_per_page,         // Use dynamic posts per page value
 				'paged'          => 1,                      // Initial page number
 				'meta_query'     => array(
 					array(
@@ -1207,14 +1204,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>'
 					],
 					'badge' => [
-						'<div class="zwsgr-badge-item" id="zwsgr-badge1">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge2">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
 							<div class="zwsgr-badge-image">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
@@ -1223,17 +1220,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 								<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge3">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge3">
 							<div class="zwsgr-rating-wrap">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge4">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
 							<div class="zwsgr-badge4-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1243,9 +1240,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<p class="zwsgr-avg-note">Average Rating</p>
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
-						</div>',
-
-						'<div class="zwsgr-badge-item" id="zwsgr-badge5">
+						</div></a>',
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
 							<div class="zwsgr-badge5-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							</div>
@@ -1254,9 +1250,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<p class="zwsgr-avg-note">Average Rating</p>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge6">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge6">
 							<div class="zwsgr-badge6-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1265,17 +1261,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<h3 class="zwsgr-google">Google</h3>
 								<p class="zwsgr-avg-note">Average Rating</p>
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge7">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
 							<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 							<div class="zwsgr-badge7-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
-						</div>',
+						</div></a>',
 
-						'<div class="zwsgr-badge-item" id="zwsgr-badge8">
+						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
 							<div class="zwsgr-logo-wrap">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 								<p class="zwsgr-avg-note">Google Reviews</p>
@@ -1283,8 +1279,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
-						</div>'
-						
+						</div></a>'
 					],
 					'popup' => [
 						'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
@@ -1306,15 +1301,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
 										</div>
 										<div class="zwsgr-profile-info">
-											<h3>'.$zwsgr_location_name.'</h3>
+											<h3>' . $zwsgr_location_name . '</h3>
 											' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
+											<p class="zwsgr-based-on">Based on <b>' . $zwsgr_reviews_ratings['reviews'] . ' Google reviews</b></p>
 										</div>
 									</div>
 									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
 										' . $zwsgr_popup_content1 . '
-									</div>
-								</div>
+									</div>' .
+									($enable_load_more && $query->max_num_pages >= 2 && $display_option === 'popup' ?
+										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
+										: '') .
+								'</div>
 							</div>
 						</div>',
 						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
@@ -1344,7 +1342,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
 									' . $zwsgr_popup_content2 . '
-								</div>
+								</div>' .
+									($enable_load_more && $query->max_num_pages >= 2 && $display_option === 'popup' ?
+										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
+										: '') .'
 							</div>
 						</div>
 					</div>'
@@ -1398,14 +1399,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				return;
 			}
 
-			// Retrieve the 'enable_load_more' setting from post meta
-			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
-
 			// Retrieve dynamic 'posts_per_page' from post meta
 			$stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
-
-			// Determine the number of posts per page based on 'enable_load_more'
-			$posts_per_page = $enable_load_more ? ($stored_posts_per_page ? intval($stored_posts_per_page) : 2) : -1;
 
 			// Retrieve the 'rating_filter' value from the post meta
 			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
@@ -1453,7 +1448,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			// Query for posts based on the current page
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Replace with your custom post type slug
-				'posts_per_page' => $posts_per_page,  // Use dynamic posts per page value
+				'posts_per_page' => $stored_posts_per_page,  // Use dynamic posts per page value
 				'paged'          => $page,
 				'meta_query'     => array(
 					'relation' => 'AND',
@@ -2404,67 +2399,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_grid_content5
 					],
 					'popup' => [
-						'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
-							<div class="zwsgr-profile-logo">
-								<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
-							</div>
-							<div class="zwsgr-profile-info">
-								<h3>'.$zwsgr_location_name.'</h3>
-								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
-							</div>
-						</div>
-						<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
-							<div class="zwsgr-popup-content">
-								<div class="scrollable-content">
-									<span class="zwsgr-close-popup">&times;</span>
-									<div class="zwsgr-popup-wrap">
-										<div class="zwsgr-profile-logo">
-											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
-										</div>
-										<div class="zwsgr-profile-info">
-											<h3>'.$zwsgr_location_name.'</h3>
-											' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
-										</div>
-									</div>
-									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-										' . $zwsgr_popup_content1 . '
-									</div>
-								</div>
-							</div>
-						</div>',
-						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
-							<div class="zwsgr-title-wrap">
-								<img src="' . $plugin_dir_path . 'assets/images/google.png">
-								<h3>Reviews</h3>
-							</div>
-							<div class="zwsgr-info-wrap">
-								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
-								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-								<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
-							</div>
-						</div>
-						<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
-							<div class="zwsgr-popup-content">
-								<div class="scrollable-content">
-									<span class="zwsgr-close-popup">&times;</span>
-									<div class="zwsgr-popup-wrap">
-										<div class="zwsgr-profile-logo">
-											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
-										</div>
-										<div class="zwsgr-profile-info">
-											<h3>'.$zwsgr_location_name.'</h3>
-											' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-											<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</b></p>
-										</div>
-									</div>
-									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-										' . $zwsgr_popup_content2 . '
-									</div>
-								</div>
-							</div>
-						</div>'
+						$zwsgr_popup_content1, 
+						$zwsgr_popup_content2 
 					]
 				];
 
