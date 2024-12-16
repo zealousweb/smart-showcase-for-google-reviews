@@ -1856,8 +1856,8 @@ jQuery(document).ready(function($) {
 	setDateRange();
 	
 
-	$('#zwsgr-account-select, #zwsgr-location-select').on('change', function () {
-        $(this).closest('form').submit();
-    });
+	$('#zwsgr-account-select').on('change', function () {
+		$(this).closest('form').submit();
+	});
 	
 });

@@ -321,6 +321,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			register_post_type(ZWSGR_POST_REVIEW_TYPE, $args);
+
 		}
 
 		// Register a single meta box to display all review details
@@ -517,105 +518,124 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			register_post_type('zwsgr_request_data', $args);  // Updated post type name to zwsgr_request_data
 		}
 
-		function zwsgr_add_custom_meta_filters() {
+		function zwsgr_add_custom_meta_filters() 
+		{
+			global $wpdb;
+
+			// Get current post type
+			$current_post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
+
+			// Check if we are on the correct post type pages
+			if (!in_array($current_post_type, [ZWSGR_POST_REVIEW_TYPE, ZWSGR_POST_WIDGET_TYPE])) {
+				return;
+			}
+
+			// Get saved email and selected filters from URL parameters
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
-			
-			// Get the selected values from GET parameters
 			$selected_account = isset($_GET['zwsgr_account']) ? sanitize_text_field($_GET['zwsgr_account']) : '';
 			$selected_location = isset($_GET['zwsgr_location']) ? sanitize_text_field($_GET['zwsgr_location']) : '';
-		
-			// Fetch accounts based on email
-			$zwsgr_request_data = get_posts(array(
-				'post_type'      => 'zwsgr_request_data',
-				'posts_per_page' => -1,
-				'post_status'    => 'publish',
-				'meta_query'     => array(
-					array(
-						'key'     => 'zwsgr_gmb_email',
-						'value'   => $zwsgr_gmb_email,
-						'compare' => '=',
-					),
-				),
-				'fields' => 'ids',
-			));
-		
-			// Begin form
+
+			// Fetch accounts using SQL query
+			$accounts_query = $wpdb->prepare("
+				SELECT pm.meta_value AS account_number, p.ID AS post_id, p.post_title AS account_name
+				FROM {$wpdb->postmeta} pm
+				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+				WHERE pm.meta_key = %s
+				AND p.post_type = %s
+				AND p.post_status = 'publish'
+				AND EXISTS (
+					SELECT 1 FROM {$wpdb->postmeta} pm2
+					WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwsgr_gmb_email' AND pm2.meta_value = %s
+				)
+			", 'zwsgr_account_number', 'zwsgr_request_data', $zwsgr_gmb_email);
+
+			$accounts = $wpdb->get_results($accounts_query);
+
+			// Begin the form
 			echo '<form method="GET">';
-			echo '<input type="hidden" name="post_type" value="zwsgr_request_data">';
-		
-			// Render Account Dropdown
-			echo '<select id="zwsgr-account-select" name="zwsgr_account">';
+			echo '<input type="hidden" name="post_type" value="' . esc_attr($current_post_type) . '">';
+
+			// Account dropdown
+			echo '<select id="zwsgr-account-select" name="zwsgr_account" style="margin-right: 10px;">';
 			echo '<option value="">Select an Account</option>';
-			foreach ($zwsgr_request_data as $zwsgr_widget_id) {
-				$zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
-				$zwsgr_account_name = get_the_title($zwsgr_widget_id);
-				$selected = ($zwsgr_account_number === $selected_account) ? ' selected' : '';
-				echo '<option value="' . esc_attr($zwsgr_account_number) . '"' . $selected . '>' . esc_html($zwsgr_account_name) . '</option>';
+			foreach ($accounts as $account) {
+				$selected = ($account->account_number === $selected_account) ? ' selected' : '';
+				echo '<option value="' . esc_attr($account->account_number) . '"' . $selected . '>' . esc_html($account->account_name) . '</option>';
 			}
 			echo '</select>';
-		
-			// Render Location Dropdown
+
+			// Location dropdown
 			echo '<select id="zwsgr-location-select" name="zwsgr_location">';
 			echo '<option value="">Select a Location</option>';
-			
+
 			if ($selected_account) {
-				$locations = get_posts(array(
-					'post_type'      => 'zwsgr_request_data',
-					'posts_per_page' => -1,
-					'post_status'    => 'publish',
-					'meta_key'       => 'zwsgr_account_number',
-					'meta_value'     => $selected_account,
-					'fields'         => 'ids',
-				));
-		
-				foreach ($locations as $location_id) {
-					$zwsgr_account_locations = get_post_meta($location_id, 'zwsgr_account_locations', true);
-					if ($zwsgr_account_locations) {
-						foreach ($zwsgr_account_locations as $location) {
-							$location_title = $location['title'] ?? '';
-							$location_value = ltrim(strrchr($location['name'], '/'), '/');
-							$selected = ($location_value === $selected_location) ? ' selected' : '';
-							echo '<option value="' . esc_attr($location_value) . '"' . $selected . '>' . esc_html($location_title) . '</option>';
+				// Fetch locations using SQL query
+				$locations_query = $wpdb->prepare("
+					SELECT pm.meta_value AS location_data, p.ID AS post_id
+					FROM {$wpdb->postmeta} pm
+					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+					WHERE pm.meta_key = %s
+					AND p.post_type = %s
+					AND p.post_status = 'publish'
+					AND EXISTS (
+						SELECT 1 FROM {$wpdb->postmeta} pm2
+						WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwsgr_account_number' AND pm2.meta_value = %s
+					)
+				", 'zwsgr_account_locations', 'zwsgr_request_data', $selected_account);
+
+				$locations = $wpdb->get_results($locations_query);
+
+				// Parse and output location options
+				foreach ($locations as $location) {
+					$location_data = maybe_unserialize($location->location_data);
+					if (is_array($location_data)) {
+						foreach ($location_data as $loc) {
+							$loc_title = $loc['title'] ?? '';
+							$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
+							$selected = ($loc_value === $selected_location) ? ' selected' : '';
+							echo '<option value="' . esc_attr($loc_value) . '"' . $selected . '>' . esc_html($loc_title) . '</option>';
 						}
 					}
 				}
 			}
-		
 			echo '</select>';
 			echo '</form>';
 		}
+		
 
-
-		function zwsgr_filter_posts_by_custom_meta($query) {
+		// Filter posts based on custom meta for ZWSGR_POST_REVIEW_TYPE
+		function zwsgr_filter_posts_by_custom_meta($query)
+		{
 			global $pagenow;
-		
-			if (is_admin() && $pagenow === 'edit.php' && isset($_GET['post_type']) && $_GET['post_type'] == ZWSGR_POST_REVIEW_TYPE) {
+
+			if (is_admin() && $pagenow === 'edit.php' && isset($_GET['post_type']) && in_array($_GET['post_type'], [ZWSGR_POST_REVIEW_TYPE, ZWSGR_POST_WIDGET_TYPE])) {
 				$meta_query = array();
-		
+
 				if (isset($_GET['zwsgr_account']) && !empty($_GET['zwsgr_account'])) {
-					$selected_account = sanitize_text_field($_GET['zwsgr_account']);
-					$meta_query[] = array(
+					$meta_query[] = [
 						'key'     => 'zwsgr_account_number',
-						'value'   => $selected_account,
-						'compare' => '=',
-					);
+						'value'   => (string) $_GET['zwsgr_account'],
+						'compare' => '='
+					];
 				}
-		
+
 				if (isset($_GET['zwsgr_location']) && !empty($_GET['zwsgr_location'])) {
-					$selected_location = sanitize_text_field($_GET['zwsgr_location']);
-					$meta_query[] = array(
-						'key'     => 'zwsgr_account_locations',
-						'value'   => $selected_location,
-						'compare' => 'LIKE',
-					);
+					$meta_query[] = [
+						'key'     => 'zwsgr_location_number',
+						'value'   => (string) $_GET['zwsgr_location'],
+						'compare' => '='
+					];
 				}
-		
+
 				if (!empty($meta_query)) {
-					$query->set('meta_query', $meta_query);
+					$query->set('meta_query', [
+						'relation' => 'AND',
+						...$meta_query
+					]);
 				}
 			}
 		}
-		
+
 		// Register the meta box
 		function zwsgr_add_account_number_meta_box() 
 		{
