@@ -30,9 +30,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_action( 'admin_init', array( $this, 'action__admin_init' ) );
 			add_action('admin_menu', array($this, 'zwsgr_admin_menu_registration'));
-			add_action('admin_init', array($this, 'zwsgr_register_settings')); // Register settings when admin initializes
-			add_action('init', array($this, 'zwsgr_register_widget_cpt'));  // Register Widget Custom Post Type
-			add_action('init', array($this, 'zwsgr_register_review_cpt'));  // Register Review Custom Post Type
+			add_action('admin_init', array($this, 'zwsgr_register_settings'));
+			add_action('init', array($this, 'zwsgr_register_widget_cpt'));
+			add_action('load-post-new.php', array($this, 'action__custom_widget_url_on_add_new'));
+			add_action('init', array($this, 'zwsgr_register_review_cpt'));
 
 			add_action('add_meta_boxes', array($this, 'zwsgr_add_review_meta_box'));
 			add_action('init', array($this, 'zwsgr_register_request_data_cpt'));
@@ -272,6 +273,31 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			register_post_type(ZWSGR_POST_WIDGET_TYPE, $args);
+		}
+
+		function action__custom_widget_url_on_add_new() {
+
+			$zwsgr_post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
+		
+			if ($zwsgr_post_type === 'zwsgr_data_widget') {
+		
+				$zwsgr_widget_id = wp_insert_post([
+					'post_type'   => 'zwsgr_data_widget',
+					'post_status' => 'publish',
+					'post_title'  => 'Auto-Created Widget ' . wp_generate_uuid4(),
+				]);
+			
+				if (!$zwsgr_widget_id || is_wp_error($zwsgr_widget_id)) {
+					error_log('Failed to create a new widget');
+					return;
+				}
+		
+				$zwsgr_redirect_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_widget_id);
+				wp_redirect($zwsgr_redirect_url);
+				exit;
+		
+			}
+		
 		}
 
 		function zwsgr_register_review_cpt()

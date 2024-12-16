@@ -1119,6 +1119,10 @@ jQuery(document).ready(function($) {
 		).val();
 		$("#fetch-gmb-data #zwsgr-account-select").addClass('disabled');
 
+		const zwsgr_account_name = $(
+			"#fetch-gmb-data #zwsgr-account-select option:selected"
+		).text();
+
 		const zwsgr_location_number = $(
 		  "#fetch-gmb-data #zwsgr-location-select"
 		).val();
@@ -1164,7 +1168,8 @@ jQuery(document).ready(function($) {
 		  zwsgr_location_number,
 		  zwsgr_widget_id,
 		  zwsgr_location_name,
-		  zwsgr_location_new_review_uri
+		  zwsgr_location_new_review_uri,
+		  zwsgr_account_name
 		);
 	  });
 	
@@ -1177,7 +1182,12 @@ jQuery(document).ready(function($) {
 	  // Listen for changes in the account dropdown and process batch if changed
 	  $("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
 		const zwsgr_account_number = $(this).val();
+		const zwsgr_account_name = $(this).find("option:selected").text();
+		
+		alert(zwsgr_account_name, 'zwsgr_account_name');
+		
 		if (zwsgr_account_number) {
+
 		  // Add loading spinner and disable the dropdown to prevent multiple selections
 		  $(this).prop("disabled", true);
 		  $("#fetch-gmb-data #zwsgr-location-select").remove();
@@ -1193,10 +1203,14 @@ jQuery(document).ready(function($) {
 			"zwsgr_gmb_locations",
 			zwsgr_account_number,
 			null,
-			zwsgr_widget_id
+			zwsgr_widget_id,
+			null,
+			null,
+			zwsgr_account_name
 		  );
 
-		}
+		}		
+
 	  });
 	
 	  function processBatch(
@@ -1205,7 +1219,8 @@ jQuery(document).ready(function($) {
 		zwsgr_location_number,
 		zwsgr_widget_id,
 		zwsgr_location_name,
-		zwsgr_location_new_review_uri
+		zwsgr_location_new_review_uri,
+		zwsgr_account_name
 	  ) {
 		$.ajax({
 		  url: zwsgr_admin.ajax_url,
@@ -1219,7 +1234,8 @@ jQuery(document).ready(function($) {
 			zwsgr_location_number: zwsgr_location_number,
 			zwsgr_widget_id: zwsgr_widget_id,
 			zwsgr_location_name: zwsgr_location_name,
-			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri
+			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri,
+			zwsgr_account_name: zwsgr_account_name
 		  },
 		  success: function (response) {
 
