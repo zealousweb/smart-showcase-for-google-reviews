@@ -1097,12 +1097,12 @@
     margin-top: 30px;
 }
 
-.zwsgr-popup-item {
+#div-container .zwsgr-popup-item {
     max-width: 250px;
     margin: 0 auto;
 }
 
-.zwsgr-badge-item {
+#div-container .zwsgr-badge-item {
     max-width: 300px;
     margin: 0 auto;
 }
