@@ -1120,7 +1120,7 @@
 @media only screen and (max-width: 1200px) {
     .zwsgr-popup-content {
         width: 60%;
-        max-height: 700px;
+        max-height: 750px;
     }
     .scrollable-content {
         max-height: 700px;
@@ -1133,7 +1133,7 @@
     }
     .zwsgr-popup-content {
         width: 60%;
-        max-height: 700px;
+        max-height: 750px;
     }
     .scrollable-content {
         max-height: 700px;
@@ -1217,7 +1217,7 @@
     }
 
     .zwsgr-popup-content {
-        max-height: 600px;
+        max-height: 750px;
     }
 }
 
