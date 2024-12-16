@@ -40,6 +40,8 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
         
         private $zwsgr_location_name;
 
+        private $zwsgr_account_name;
+
         private $zwsgr_access_token;
 
         public function __construct() {
@@ -69,8 +71,9 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             $this->zwsgr_gmb_data_type           = isset($zwsgr_gmb_data_type)            ? sanitize_text_field($zwsgr_gmb_data_type)   : (isset($_POST['zwsgr_gmb_data_type'])           ? sanitize_text_field($_POST['zwsgr_gmb_data_type'])   : get_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', true));
             $this->zwsgr_account_number          = isset($zwsgr_account_number)           ? sanitize_text_field($zwsgr_account_number)  : (isset($_POST['zwsgr_account_number'])          ? sanitize_text_field($_POST['zwsgr_account_number'])  : get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_number', true));
             $this->zwsgr_location_number         = isset($zwsgr_location_number)          ? sanitize_text_field($zwsgr_location_number) : (isset($_POST['zwsgr_location_number'])         ? sanitize_text_field($_POST['zwsgr_location_number']) : get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_number', true));
-            $this->zwsgr_location_new_review_uri = isset($zwsgr_location_new_review_uri)  ? esc_url($zwsgr_location_new_review_uri)     : (isset($_POST['zwsgr_location_new_review_uri']) ? esc_url($_POST['zwsgr_location_new_review_uri'])     : esc_url(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri')));
-            $this->zwsgr_location_name           = isset($zwsgr_location_name)            ? sanitize_text_field($zwsgr_location_name)   : (isset($_POST['zwsgr_location_name'])           ? sanitize_text_field($_POST['zwsgr_location_name'])   : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name')));
+            $this->zwsgr_location_new_review_uri = isset($zwsgr_location_new_review_uri)  ? esc_url($zwsgr_location_new_review_uri)     : (isset($_POST['zwsgr_location_new_review_uri']) ? esc_url($_POST['zwsgr_location_new_review_uri'])     : esc_url(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', true)));
+            $this->zwsgr_location_name           = isset($zwsgr_location_name)            ? sanitize_text_field($zwsgr_location_name)   : (isset($_POST['zwsgr_location_name'])           ? sanitize_text_field($_POST['zwsgr_location_name'])   : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', true)));
+            $this->zwsgr_account_name            = isset($zwsgr_account_name)             ? sanitize_text_field($zwsgr_account_name)    : (isset($_POST['zwsgr_account_name'])            ? sanitize_text_field($_POST['zwsgr_account_name'])    : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', true)));
 
             if (!$zwsgr_internal_call && defined('DOING_AJAX') && DOING_AJAX) {
 
@@ -249,7 +252,21 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 
                 }
 
-                if (defined('DOING_AJAX') && DOING_AJAX) {       
+                if (defined('DOING_AJAX') && DOING_AJAX) {
+
+                    $zwsgr_widget_title = $this->zwsgr_account_name;
+
+                    if (!empty($this->zwsgr_location_name)) {
+                        $zwsgr_widget_title .= ' - ' . $this->zwsgr_location_name;
+                    }
+                        
+                    // Prepare post data for updating the title
+                    $zwsgr_widget_data = [
+                        'ID'         => $this->zwsgr_widget_id,
+                        'post_title' => sanitize_text_field($zwsgr_widget_title),
+                    ];
+
+                    wp_update_post($zwsgr_widget_data);
 
                     if ($this->zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
 
