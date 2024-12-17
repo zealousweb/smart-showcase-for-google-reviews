@@ -1304,18 +1304,47 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$ratings_to_include = array('ONE');
 			}
 
+			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+			
 			$zwsgr_reviews_args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
 				'posts_per_page' => 5,
 				'meta_query'     => array(
+					'relation' => 'AND',  // Ensure all conditions are met
 					array(
 						'key'     => 'zwsgr_review_star_rating',
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => 'zwsgr_gmb_email',
+						'value'   => $zwsgr_gmb_email,
+						'compare' => '='
 					)
-				),
+				)
 			);
+			
+			// Add the account filter only if it exists
+			if (!empty($zwsgr_account_number)) {
+				$zwsgr_reviews_args['meta_query'][] = array(
+					'key'     => 'zwsgr_account_number',
+					'value'   => (string) $zwsgr_account_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
+
+			if (!empty($zwsgr_location_number)) {
+				$zwsgr_reviews_args['meta_query'][] = array(
+					'key'     => 'zwsgr_location_number',
+					'value'   => (string) $zwsgr_location_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}			
 
 			// Add sort_by filters
 			switch ($sort_by) {
@@ -2593,22 +2622,50 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				die();
 			}
 		
+			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
+
 			// Query reviews with the selected string-based filters
 			$args = array(
-				'post_type' => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
+				'post_type'      => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
 				'posts_per_page' => 5,
-				'meta_query' => array(
+				'meta_query'     => array(
+					'relation' => 'AND',  // Ensure all conditions are met
 					array(
-						'key' => 'zwsgr_review_star_rating',
-						'value' => $rating_strings,
+						'key'     => 'zwsgr_review_star_rating',
+						'value'   => $rating_strings,
 						'compare' => 'IN',
-						'type' => 'CHAR'
+						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => 'zwsgr_gmb_email',
+						'value'   => $zwsgr_gmb_email,
+						'compare' => '='
 					)
 				),
-				'orderby' => 'date', // Default order by date
-				'order' => 'DESC'    // Default order
+				'orderby'         => 'date', 
+				'order'           => 'DESC'
 			);
+			
+			// Add the account filter only if it exists
+			if (!empty($zwsgr_account_number)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_account_number',
+					'value'   => (string) $zwsgr_account_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
 
+			if (!empty($zwsgr_account_location)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_location_number',
+					'value'   => (string) $zwsgr_account_location,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}			
 			// Add sorting logic
 			switch ($sort_by) {
 				case 'newest':
