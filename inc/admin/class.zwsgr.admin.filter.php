@@ -24,7 +24,7 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		{
 
 			add_filter('get_edit_post_link', array($this, 'zwsgr_change_edit_post_link'), 10, 2);
-			add_filter('post_row_actions', array($this, 'zwsgr_remove_quick_edit_from_reviews_listings'), 10, 2);
+			add_filter('post_row_actions', array($this, 'zwsgr_remove_quick_edit_from_widget_listings'), 10, 2);
 
 			add_filter('bulk_actions-edit-zwsgr_reviews', array($this, 'filter__remove_all_bulk_actions'));
 			add_filter('bulk_actions-edit-zwsgr_data_widget', array($this, 'filter__remove_all_bulk_actions'));
@@ -67,16 +67,16 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		 * @param WP_Post $zwsgr_post The current post object being processed.
 		 * @return array Modified array of row actions.
 		 */
-		function zwsgr_remove_quick_edit_from_reviews_listings($zwsgr_actions, $zwsgr_post) {
+		function zwsgr_remove_quick_edit_from_widget_listings($zwsgr_actions, $zwsgr_post) {
 
 			// Check if the post type is 'zwsgr_reviews'
-			if ($zwsgr_post->post_type == 'zwsgr_reviews') {
+			if ($zwsgr_post->post_type == 'zwsgr_data_widget') {
 				
 				// Remove the 'View' link
 				unset($zwsgr_actions['view']);
 				
-				// Remove the 'Trash' link
-				unset($zwsgr_actions['trash']);
+				// // Remove the 'Trash' link
+				// unset($zwsgr_actions['trash']);
 				
 				// Remove the 'Quick Edit' link
 				unset($zwsgr_actions['inline hide-if-no-js']);
@@ -103,7 +103,6 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			}
 			return $months; // otherwise return the original for other post types
 		}
-		
 
 	}
 
