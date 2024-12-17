@@ -1098,15 +1098,27 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<?php _e('SMTP Settings', 'zw-smart-google-reviews'); ?>
 						</a>
 					</h2>
-					<?php if ($current_tab === 'google'): ?>
-						<?php /* <form action="" method="post" class="zwsgr-setting-form">
-							<?php
-							settings_fields('zwsgr_google_account_settings');
-							do_settings_sections('zwsgr_google_account_settings');
-							submit_button( 'Save Google Settings', 'zwsgr-submit-btn', 'submit_buttons' );
-							
-							?>
-						</form> */?>
+					<?php if ($current_tab === 'google'):
+
+					$zwsgr_disconnect_text = 'Disconnect'; // Default value
+
+					// Safely check for 'tab' and 'settings' in the query string
+					if (isset($_GET['tab'], $_GET['settings']) && $_GET['tab'] === 'google' && $_GET['settings'] === 'disconnect-auth') {
+						$zwsgr_disconnect_text = 'Disconnecting...';
+					}
+
+					// Check if the JWT token is present in the database
+					$zwsgr_jwt_token = get_option('zwsgr_jwt_token');
+
+					if (!empty($zwsgr_jwt_token)) { ?>
+						<a href="<?php echo esc_url(admin_url('admin.php?page=zwsgr_settings&tab=google&settings=disconnect-auth')); ?>" 
+						class="button zwsgr-submit-btn zwsgr-disconnect-btn">
+							<?php echo esc_attr($zwsgr_disconnect_text); ?>
+						</a>
+					<?php } else { ?>
+						<p>Please connect to Google!</p>
+					<?php } ?>
+
 					<?php elseif ($current_tab === 'notifications'): ?>
 						<form id="notification-form" action="" method="post" class="zwsgr-setting-form">
 							<?php
