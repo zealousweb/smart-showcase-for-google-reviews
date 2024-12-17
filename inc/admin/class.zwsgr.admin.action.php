@@ -642,42 +642,46 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 			echo '</select>';
 
-			// Location dropdown
-			echo '<select id="zwsgr-location-select" name="zwsgr_location">';
-			echo '<option value="">Select a Location</option>';
+			
+			// Fetch locations using SQL query
+			$locations_query = $wpdb->prepare("
+				SELECT pm.meta_value AS location_data, p.ID AS post_id
+				FROM {$wpdb->postmeta} pm
+				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+				WHERE pm.meta_key = %s
+				AND p.post_type = %s
+				AND p.post_status = 'publish'
+				AND EXISTS (
+					SELECT 1 FROM {$wpdb->postmeta} pm2
+					WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwsgr_account_number' AND pm2.meta_value = %s
+				)
+			", 'zwsgr_account_locations', 'zwsgr_request_data', $selected_account);
 
-			if ($selected_account) {
-				// Fetch locations using SQL query
-				$locations_query = $wpdb->prepare("
-					SELECT pm.meta_value AS location_data, p.ID AS post_id
-					FROM {$wpdb->postmeta} pm
-					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-					WHERE pm.meta_key = %s
-					AND p.post_type = %s
-					AND p.post_status = 'publish'
-					AND EXISTS (
-						SELECT 1 FROM {$wpdb->postmeta} pm2
-						WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwsgr_account_number' AND pm2.meta_value = %s
-					)
-				", 'zwsgr_account_locations', 'zwsgr_request_data', $selected_account);
+			$locations = $wpdb->get_results($locations_query);
 
-				$locations = $wpdb->get_results($locations_query);
+			if (!empty($locations)){
 
-				// Parse and output location options
-				foreach ($locations as $location) {
-					$location_data = maybe_unserialize($location->location_data);
-					if (is_array($location_data)) {
-						foreach ($location_data as $loc) {
-							$loc_title = $loc['title'] ?? '';
-							$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
-							$selected = ($loc_value === $selected_location) ? ' selected' : '';
-							echo '<option value="' . esc_attr($loc_value) . '"' . $selected . '>' . esc_html($loc_title) . '</option>';
+				// Location dropdown
+				echo '<select id="zwsgr-location-select" name="zwsgr_location">';
+				echo '<option value="">Select a Location</option>';
+
+					// Parse and output location options
+					foreach ($locations as $location) {
+						$location_data = maybe_unserialize($location->location_data);
+						if (is_array($location_data)) {
+							foreach ($location_data as $loc) {
+								$loc_title = $loc['title'] ?? '';
+								$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
+								$selected = ($loc_value === $selected_location) ? ' selected' : '';
+								echo '<option value="' . esc_attr($loc_value) . '"' . $selected . '>' . esc_html($loc_title) . '</option>';
+							}
 						}
 					}
-				}
+
+				echo '</select>';
+				echo '</form>';
 			}
-			echo '</select>';
-			echo '</form>';
+			
 		}
 		
 
