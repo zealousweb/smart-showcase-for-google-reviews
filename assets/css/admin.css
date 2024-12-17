@@ -1164,3 +1164,18 @@ input.zwsgr-radio:checked::before {
   @-webkit-keyframes spin {
     to { -webkit-transform: rotate(360deg); }
   }
+
+
+
+
+  /* 17-12-24 */
+.zwsgr-disconnect-btn{
+    margin-top: 20px !important;
+}
+.zwsgr-google-tab-text{
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: red;
+}
