@@ -1494,7 +1494,7 @@ jQuery(document).ready(function($) {
 	
 	});
 
-	$(".zwgr-dashboard").on("change", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button", function (e) {
+	$(".zwgr-dashboard").on("change click", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button", function (e) {
 
 		e.preventDefault();
 	
@@ -1535,11 +1535,13 @@ jQuery(document).ready(function($) {
 			beforeSend: function() {
 				// Add the loader before the request is sent
 				$('.zwgr-dashboard #render-dynamic').remove();
+				$('.zwgr-dashboard .loader').remove();
 				$('.zwgr-dashboard').append('<div class="loader"></div>');
 			},
 			success: function(response) {
 				if (response.success) {
-					$('.zwgr-dashboard ').append(response.data.html);
+					$('.zwgr-dashboard #render-dynamic').remove(); // Clear previous content
+        			$('.zwgr-dashboard').append(response.data.html);
 				} else {
 					$('.zwgr-dashboard ').html('<p>Error loading data.</p>');
 				}
@@ -1854,15 +1856,10 @@ jQuery(document).ready(function($) {
 		var firstDayPrevMonthYear = firstDayPrevMonth.getFullYear();
 		var formattedPrevMonth = firstDayPrevMonthDate + '-' + firstDayPrevMonthMonth + '-' + firstDayPrevMonthYear; // Format as DD-MM-YYYY
 	
-		// Check if the date picker element exists
-		var dateRangePicker = $('#zwsgr-date-range-picker');
-		if (dateRangePicker.length) {
-			// Set the value of the date range picker input field (From date - To date)
-			dateRangePicker.val(formattedPrevMonth + ' - ' + formattedToday);
-	
-			// If your date picker requires reinitialization, trigger the update
-			// Assuming a date range picker like jQuery UI datepicker
-			dateRangePicker.datepicker("setDate", formattedPrevMonth + ' - ' + formattedToday);
+		// Set the value of the date range picker input field (From date - To date)
+		var dateRangePicker = document.getElementById('zwsgr-date-range-picker');
+		if (dateRangePicker) {
+			dateRangePicker.value = formattedPrevMonth + ' - ' + formattedToday;
 		}
 	}
 	
