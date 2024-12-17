@@ -1116,7 +1116,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<?php echo esc_attr($zwsgr_disconnect_text); ?>
 						</a>
 					<?php } else { ?>
-						<p>Please connect to Google!</p>
+						<p class="zwsgr-google-tab-text">Please connect to Google!</p>
 					<?php } ?>
 
 					<?php elseif ($current_tab === 'notifications'): ?>
