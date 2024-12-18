@@ -24,7 +24,7 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		{
 
 			add_filter('get_edit_post_link', array($this, 'zwsgr_change_edit_post_link'), 10, 2);
-			add_filter('post_row_actions', array($this, 'zwsgr_remove_quick_edit_from_reviews_listings'), 10, 2);
+			add_filter('post_row_actions', array($this, 'zwsgr_remove_quick_edit_from_widget_listings'), 10, 2);
 
 			add_filter('bulk_actions-edit-zwsgr_reviews', array($this, 'filter__remove_all_bulk_actions'));
 			add_filter('bulk_actions-edit-zwsgr_data_widget', array($this, 'filter__remove_all_bulk_actions'));
@@ -39,22 +39,31 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		 * 
 		 * @return string Modified URL for the post edit link.
 		 */
-		function zwsgr_change_edit_post_link($url, $post) 
+		function zwsgr_change_edit_post_link($zwsgr_url, $zwsgr_post) 
 		{
 			// Fetch the full post object using the post ID
-			$post = get_post($post);
+			$zwsgr_post = get_post($zwsgr_post);
 		
 			// Check if the post type is 'zwsgr_data_widget'
-			if ($post && 'zwsgr_data_widget' === $post->post_type) {
+			if ($zwsgr_post && 'zwsgr_data_widget' === $zwsgr_post->post_type) {
+
 				// Get the account number from the custom post meta
-				$account_number = get_post_meta($post->ID, 'zwsgr_account_number', true);
-				$layout_option = get_post_meta($post->ID, 'layout_option', true);
-				
-				// Modify the edit URL to redirect to the widget configurator page
-				$url = admin_url('admin.php?page=zwsgr_widget_configurator&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $post->ID);
+				$zwsgr_account_number = get_post_meta($zwsgr_post->ID, 'zwsgr_account_number', true);
+				$zwsgr_location_number = get_post_meta($zwsgr_post->ID, 'zwsgr_location_number', true);
+				$layout_option = get_post_meta($zwsgr_post->ID, 'layout_option', true);
+
+				// Check if both account and location numbers are empty
+				if (empty($zwsgr_account_number) || empty($zwsgr_location_number)) {
+					// Redirect to the 'fetch data' page if both account and location numbers are empty
+					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_post->ID);
+				} else {
+					// Redirect to the widget configurator page with the selected layout option if account and location numbers are not empty
+					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $zwsgr_post->ID);
+				}
+			
 			}
 		
-			return $url;
+			return $zwsgr_url;
 		}
 
 		/**
@@ -67,16 +76,16 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		 * @param WP_Post $zwsgr_post The current post object being processed.
 		 * @return array Modified array of row actions.
 		 */
-		function zwsgr_remove_quick_edit_from_reviews_listings($zwsgr_actions, $zwsgr_post) {
+		function zwsgr_remove_quick_edit_from_widget_listings($zwsgr_actions, $zwsgr_post) {
 
 			// Check if the post type is 'zwsgr_reviews'
-			if ($zwsgr_post->post_type == 'zwsgr_reviews') {
+			if ($zwsgr_post->post_type == 'zwsgr_data_widget') {
 				
 				// Remove the 'View' link
 				unset($zwsgr_actions['view']);
 				
-				// Remove the 'Trash' link
-				unset($zwsgr_actions['trash']);
+				// // Remove the 'Trash' link
+				// unset($zwsgr_actions['trash']);
 				
 				// Remove the 'Quick Edit' link
 				unset($zwsgr_actions['inline hide-if-no-js']);
@@ -103,7 +112,6 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			}
 			return $months; // otherwise return the original for other post types
 		}
-		
 
 	}
 

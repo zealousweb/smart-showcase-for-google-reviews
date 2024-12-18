@@ -125,8 +125,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
 			wp_enqueue_script( ZWSGR_PREFIX . '-admin-js', ZWSGR_URL . 'assets/js/admin.js', array( 'jquery-core' ), ZWSGR_VERSION );
 
-			// Enqueue Moment.js (required by daterangepicker)
+			// Google chart JS
+			wp_enqueue_script( ZWSGR_PREFIX . '-google-chart-js', ZWSGR_URL . 'assets/js/google-chart.js', array( 'jquery-core' ), ZWSGR_VERSION );
 
+			// Enqueue Moment.js (required by daterangepicker)
 			wp_enqueue_script( ZWSGR_PREFIX . '-moment-min-js', ZWSGR_URL . 'assets/js/moment.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
 
 			// Enqueue Daterangepicker JS
@@ -642,42 +644,46 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 			echo '</select>';
 
-			// Location dropdown
-			echo '<select id="zwsgr-location-select" name="zwsgr_location">';
-			echo '<option value="">Select a Location</option>';
+			
+			// Fetch locations using SQL query
+			$locations_query = $wpdb->prepare("
+				SELECT pm.meta_value AS location_data, p.ID AS post_id
+				FROM {$wpdb->postmeta} pm
+				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+				WHERE pm.meta_key = %s
+				AND p.post_type = %s
+				AND p.post_status = 'publish'
+				AND EXISTS (
+					SELECT 1 FROM {$wpdb->postmeta} pm2
+					WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwsgr_account_number' AND pm2.meta_value = %s
+				)
+			", 'zwsgr_account_locations', 'zwsgr_request_data', $selected_account);
 
-			if ($selected_account) {
-				// Fetch locations using SQL query
-				$locations_query = $wpdb->prepare("
-					SELECT pm.meta_value AS location_data, p.ID AS post_id
-					FROM {$wpdb->postmeta} pm
-					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-					WHERE pm.meta_key = %s
-					AND p.post_type = %s
-					AND p.post_status = 'publish'
-					AND EXISTS (
-						SELECT 1 FROM {$wpdb->postmeta} pm2
-						WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwsgr_account_number' AND pm2.meta_value = %s
-					)
-				", 'zwsgr_account_locations', 'zwsgr_request_data', $selected_account);
+			$locations = $wpdb->get_results($locations_query);
 
-				$locations = $wpdb->get_results($locations_query);
+			if (!empty($locations)){
 
-				// Parse and output location options
-				foreach ($locations as $location) {
-					$location_data = maybe_unserialize($location->location_data);
-					if (is_array($location_data)) {
-						foreach ($location_data as $loc) {
-							$loc_title = $loc['title'] ?? '';
-							$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
-							$selected = ($loc_value === $selected_location) ? ' selected' : '';
-							echo '<option value="' . esc_attr($loc_value) . '"' . $selected . '>' . esc_html($loc_title) . '</option>';
+				// Location dropdown
+				echo '<select id="zwsgr-location-select" name="zwsgr_location">';
+				echo '<option value="">Select a Location</option>';
+
+					// Parse and output location options
+					foreach ($locations as $location) {
+						$location_data = maybe_unserialize($location->location_data);
+						if (is_array($location_data)) {
+							foreach ($location_data as $loc) {
+								$loc_title = $loc['title'] ?? '';
+								$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
+								$selected = ($loc_value === $selected_location) ? ' selected' : '';
+								echo '<option value="' . esc_attr($loc_value) . '"' . $selected . '>' . esc_html($loc_title) . '</option>';
+							}
 						}
 					}
-				}
+
+				echo '</select>';
+				echo '</form>';
 			}
-			echo '</select>';
-			echo '</form>';
+			
 		}
 		
 
@@ -846,17 +852,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_settings()
 		{
 
-			//Google account settings
-			register_setting('zwsgr_google_account_settings', 'zwsgr_google_business_api_key');
-			register_setting('zwsgr_google_account_settings', 'zwsgr_google_business_place_id');
-
 			// SEO & Notifications Settings
 			register_setting('zwsgr_notification_settings', 'zwsgr_admin_notification_enabled');
-			register_setting('zwsgr_notification_settings', 'zwsgr_google_analytics_tracking_id');
 
 			//Advance Setting
 			register_setting('zwsgr_advanced_account_settings', 'zwsgr_sync_reviews');
-			register_setting('zwsgr_advanced_account_settings', 'zwsgr_google_analytics_tracking_id');
 
 			// Google setting section & fields
 			add_settings_section(
@@ -864,22 +864,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				__('Google Settings', 'zw-smart-google-reviews'),
 				null,
 				'zwsgr_google_account_settings'
-			);
-
-			add_settings_field(
-				'zwsgr_google_api_key',
-				__('Google Business API Key', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_api_key_callback'),
-				'zwsgr_google_account_settings',
-				'zwsgr_google_section'
-			);
-
-			add_settings_field(
-				'zwsgr_google_place_id',
-				__('Google Place ID', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_place_id_callback'),
-				'zwsgr_google_account_settings',
-				'zwsgr_google_section'
 			);
 
 			// Notification section & fields
@@ -914,29 +898,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_advanced_section'
 			);
 
-			add_settings_field(
-				'zwsgr_google_analytics_tracking_id',
-				__('Google Analytics Tracking ID', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_analytics_tracking_id_callback'),
-				'zwsgr_advanced_account_settings',
-				'zwsgr_advanced_section'
-			);
-
-		}
-
-	
-
-		// Google API Key callback
-		function zwsgr_google_api_key_callback()
-		{
-			$value = get_option('zwsgr_google_business_api_key', '');
-			echo '<input type="text" id="zwsgr_google_business_api_key" name="zwsgr_google_business_api_key" class="zwsgr-input-text" value="' . esc_attr($value) . '" />';
-		}
-
-		function zwsgr_google_place_id_callback()
-		{
-			$value = get_option('zwsgr_google_business_place_id', '');
-			echo '<input type="text" id="zwsgr_google_business_place_id" name="zwsgr_google_business_place_id" class="zwsgr-input-text" value="' . esc_attr($value) . '" />';
 		}
 
 		// Notifications callback
@@ -1012,13 +973,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<option value="weekly" ' . selected($value, 'weekly', false) . '>Weekly</option>
 					<option value="monthly" ' . selected($value, 'monthly', false) . '>Monthly</option>
 				</select>';
-		}
-
-		function zwsgr_google_analytics_tracking_id_callback()
-		{
-			$value = get_option('zwsgr_google_analytics_tracking_id', '');
-			echo '<input type="text" id="zwsgr_google_analytics_tracking_id" class="zwsgr-input-text" name="zwsgr_google_analytics_tracking_id" value="' . esc_attr($value) . '" />';
-			echo '<p class="zwsgr-description">' . __('Enter your Google Analytics Tracking ID (e.g., UA-XXXXXXXXX-Y).', 'zw-smart-google-reviews') . '</p>';
 		}
 
 		/**
@@ -1098,15 +1052,27 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<?php _e('SMTP Settings', 'zw-smart-google-reviews'); ?>
 						</a>
 					</h2>
-					<?php if ($current_tab === 'google'): ?>
-						<?php /* <form action="" method="post" class="zwsgr-setting-form">
-							<?php
-							settings_fields('zwsgr_google_account_settings');
-							do_settings_sections('zwsgr_google_account_settings');
-							submit_button( 'Save Google Settings', 'zwsgr-submit-btn', 'submit_buttons' );
-							
-							?>
-						</form> */?>
+					<?php if ($current_tab === 'google'):
+
+					$zwsgr_disconnect_text = 'Disconnect'; // Default value
+
+					// Safely check for 'tab' and 'settings' in the query string
+					if (isset($_GET['tab'], $_GET['settings']) && $_GET['tab'] === 'google' && $_GET['settings'] === 'disconnect-auth') {
+						$zwsgr_disconnect_text = 'Disconnecting...';
+					}
+
+					// Check if the JWT token is present in the database
+					$zwsgr_jwt_token = get_option('zwsgr_jwt_token');
+
+					if (!empty($zwsgr_jwt_token)) { ?>
+						<a href="<?php echo esc_url(admin_url('admin.php?page=zwsgr_settings&tab=google&settings=disconnect-auth')); ?>" 
+						class="button zwsgr-submit-btn zwsgr-disconnect-btn">
+							<?php echo esc_attr($zwsgr_disconnect_text); ?>
+						</a>
+					<?php } else { ?>
+						<p class="zwsgr-google-tab-text">Please connect to Google!</p>
+					<?php } ?>
+
 					<?php elseif ($current_tab === 'notifications'): ?>
 						<form id="notification-form" action="" method="post" class="zwsgr-setting-form">
 							<?php
@@ -1288,18 +1254,47 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$ratings_to_include = array('ONE');
 			}
 
+			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+			
 			$zwsgr_reviews_args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,
 				'posts_per_page' => 5,
 				'meta_query'     => array(
+					'relation' => 'AND',  // Ensure all conditions are met
 					array(
 						'key'     => 'zwsgr_review_star_rating',
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => 'zwsgr_gmb_email',
+						'value'   => $zwsgr_gmb_email,
+						'compare' => '='
 					)
-				),
+				)
 			);
+			
+			// Add the account filter only if it exists
+			if (!empty($zwsgr_account_number)) {
+				$zwsgr_reviews_args['meta_query'][] = array(
+					'key'     => 'zwsgr_account_number',
+					'value'   => (string) $zwsgr_account_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
+
+			if (!empty($zwsgr_location_number)) {
+				$zwsgr_reviews_args['meta_query'][] = array(
+					'key'     => 'zwsgr_location_number',
+					'value'   => (string) $zwsgr_location_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}			
 
 			// Add sort_by filters
 			switch ($sort_by) {
@@ -2577,22 +2572,50 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				die();
 			}
 		
+			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
+
 			// Query reviews with the selected string-based filters
 			$args = array(
-				'post_type' => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
+				'post_type'      => ZWSGR_POST_REVIEW_TYPE, // Replace with your custom post type
 				'posts_per_page' => 5,
-				'meta_query' => array(
+				'meta_query'     => array(
+					'relation' => 'AND',  // Ensure all conditions are met
 					array(
-						'key' => 'zwsgr_review_star_rating',
-						'value' => $rating_strings,
+						'key'     => 'zwsgr_review_star_rating',
+						'value'   => $rating_strings,
 						'compare' => 'IN',
-						'type' => 'CHAR'
+						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => 'zwsgr_gmb_email',
+						'value'   => $zwsgr_gmb_email,
+						'compare' => '='
 					)
 				),
-				'orderby' => 'date', // Default order by date
-				'order' => 'DESC'    // Default order
+				'orderby'         => 'date', 
+				'order'           => 'DESC'
 			);
+			
+			// Add the account filter only if it exists
+			if (!empty($zwsgr_account_number)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_account_number',
+					'value'   => (string) $zwsgr_account_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
 
+			if (!empty($zwsgr_account_location)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_location_number',
+					'value'   => (string) $zwsgr_account_location,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}			
 			// Add sorting logic
 			switch ($sort_by) {
 				case 'newest':

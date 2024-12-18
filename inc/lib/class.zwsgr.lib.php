@@ -222,12 +222,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			$badge_layout_option = preg_match('/^badge-\d+$/', $layout_option) ? substr($layout_option, 0, -2) : $layout_option;
 			
+			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+
 			// Query for posts
 			$args = array(
-				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Your custom post type slug
-				'posts_per_page' => $stored_posts_per_page,         // Use dynamic posts per page value
+				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Custom post type slug
+				'posts_per_page' => $stored_posts_per_page,  // Dynamic posts per page value
 				'paged'          => 1,                      // Initial page number
 				'meta_query'     => array(
+					'relation' => 'AND',  // Ensure all conditions are matched
 					array(
 						'key'     => 'zwsgr_review_star_rating',
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
@@ -236,10 +241,37 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					),
 					array(
 						'key'     => '_is_hidden',
-						'compare' => 'NOT EXISTS',           // Ensure only visible posts
+						'compare' => 'NOT EXISTS',  // Ensure only visible posts
+					),
+					array(
+						'key'     => 'zwsgr_gmb_email',
+						'value'   => $zwsgr_gmb_email,
+						'compare' => '='
 					)
 				),
+				'orderby' => 'date',
+				'order'   => 'DESC'
 			);
+			
+			// Add the account filter only if it exists
+			if (!empty($zwsgr_account_number)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_account_number',
+					'value'   => (string) $zwsgr_account_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
+
+			if (!empty($zwsgr_location_number)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_location_number',
+					'value'   => (string) $zwsgr_location_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}		
+			
 			// Adjust sorting based on the 'sort_by' value
 			switch ($sort_by) {
 				case 'newest':
@@ -1309,7 +1341,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
 										' . $zwsgr_popup_content1 . '
 									</div>' .
-									($enable_load_more && $query->max_num_pages >= 2 && $display_option === 'popup' ?
+									($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['popup-1', 'popup-2']) ?
 										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
 										: '') .
 								'</div>
@@ -1343,7 +1375,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
 									' . $zwsgr_popup_content2 . '
 								</div>' .
-									($enable_load_more && $query->max_num_pages >= 2 && $display_option === 'popup' ?
+									($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['popup-1', 'popup-2']) ?
 										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
 										: '') .'
 							</div>
@@ -1363,7 +1395,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				
 				
 				// Add the Load More button only if 'enable_load_more' is true
-				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($display_option, ['list', 'grid'])) {
+				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['list-1','list-2','','list-3','list-4','list-5','grid-1','grid-2','grid-3','grid-4','grid-5'])) {
 					echo '<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
 				}
 				
@@ -1445,6 +1477,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$months = $this->translate_months($language);
 
+			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
+			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
+			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+
 			// Query for posts based on the current page
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Replace with your custom post type slug
@@ -1457,9 +1493,33 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => 'zwsgr_gmb_email',
+						'value'   => $zwsgr_gmb_email,
+						'compare' => '='
 					)
 				),
 			);
+
+			// Add the account filter only if it exists
+			if (!empty($zwsgr_account_number)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_account_number',
+					'value'   => (string) $zwsgr_account_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
+
+			if (!empty($zwsgr_location_number)) {
+				$args['meta_query'][] = array(
+					'key'     => 'zwsgr_location_number',
+					'value'   => (string) $zwsgr_location_number,
+					'compare' => '=',
+					'type'    => 'CHAR'
+				);
+			}
 
 			// Add the LIKE condition if front_keyword is present
 			if ($front_keyword && $front_keyword !== 'all') {

@@ -49,22 +49,18 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
-            if (!empty($zwsgr_gmb_email)) {
-                $zwsgr_page_label = 'Disconnect Google';
-            } else {
-                $zwsgr_page_label = 'Connect Google';
+            if (empty($zwsgr_gmb_email)) {
+                add_submenu_page (
+                    'zwsgr_dashboard',
+                    'Connect Google',
+                    'Connect Google',
+                    'manage_options',
+                    'zwsgr_connect_google',
+                    [$this, 'zwsgr_connect_google_callback'],
+                    1
+                );
             }
 
-            add_submenu_page (
-                'zwsgr_dashboard',
-                $zwsgr_page_label,
-                $zwsgr_page_label,
-                'manage_options',
-                'zwsgr_connect_google',
-                [$this, 'zwsgr_connect_google_callback'],
-                1
-            );
-            
         }
         
         // Display the "Connect with Google" button and process oAuth connection request
@@ -124,7 +120,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 
                 $zwsgr_valid_post_types = array(
                     'zwsgr_reviews',
-                    'zwsgr_data_widget'
+                    'zwsgr_data_widget',
+                    'zwsgr_request_data'
                 );
 
                 // Check if the current page is a valid page or if it's a valid post type edit page
@@ -138,6 +135,12 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     }
 
                 }
+
+                // Safely check for 'tab' and 'settings' in the query string
+                if (isset($_GET['tab'], $_GET['settings']) && $_GET['tab'] === 'google' && $_GET['settings'] === 'disconnect-auth') {
+                    $this->zwsgr_connect_google_callback();
+                }
+
             }
 
         }       

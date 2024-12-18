@@ -349,16 +349,6 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
             } {
 
-                echo '<pre>';
-                print_r($this->zwsgr_gmb_response['error']['status']);
-                echo '</pre>';
-
-                echo '<pre>';
-                print_r($this->zwsgr_gmb_response['error']['message']);
-                echo '</pre>';
-
-                die();
-
                 // Log the error before resetting the index and deleting options
                 error_log("ZQM: Batch processing" . 'error:' . $this->zwsgr_gmb_response['error']['status'] . 'message:' . $this->zwsgr_gmb_response['error']['message'] . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
 
