@@ -319,8 +319,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				}
 			echo '</div>';
 
-			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="' . esc_attr( $post_id ) . '" data-rating-filter="' . esc_attr( $rating_filter ) . '" data-layout-type="' . esc_attr( $layout_option ) . '" data-bg-color="' . esc_attr( $bg_color_load ) . '" data-text-color="' . esc_attr( $text_color_load ) . '">';
-					if ($query->have_posts()) {
+			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$layout_option.'" data-bg-color="'.esc_attr($bg_color_load).'" data-text-color="'.esc_attr($text_color_load).'">';
+			if ($query->have_posts()) {
 
 				// Fetch selected elements from post meta
 				$reviews_html = '';
@@ -1391,7 +1391,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$reviews_html .= $options[$layout_option_key][$layout_option_value-1];
 				$reviews_html .= '</div>';
 				
-				echo wp_kses_post( $reviews_html );
+				echo $reviews_html;
 				
 				
 				// Add the Load More button only if 'enable_load_more' is true

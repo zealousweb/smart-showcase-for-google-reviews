@@ -230,9 +230,9 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
         
             echo '<div id="fetch-gmb-data">
                 <div class="response"></div>
-                <div class="progress-bar '.esc_attr($zwgr_data_processing_init).'">
-                    <progress id="progress" value="'.esc_attr($zwsgr_batch_progress).'" max="100"></progress>
-                    <span id="progress-percentage"> '.esc_attr($zwsgr_batch_progress).'% </span>
+                <div class="progress-bar '.$zwgr_data_processing_init.'">
+                    <progress id="progress" value="'.$zwsgr_batch_progress.'" max="100"></progress>
+                    <span id="progress-percentage"> '.$zwsgr_batch_progress.'% </span>
                 </div>
                 <div class="fetch-gmb-inner-data">';
                     // Check if the widget ID is not empty
@@ -261,7 +261,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                         if ($zwsgr_request_data) {
 
                             // Display the select dropdown if accounts are found
-                            echo '<select id="zwsgr-account-select" name="zwsgr_account" class="zwsgr-input-text '.esc_attr($zwsgr_disabled_class).'">
+                            echo '<select id="zwsgr-account-select" name="zwsgr_account" class="zwsgr-input-text '.$zwsgr_disabled_class.'">
                                 <option value="">Select an Account</option>';
                             // Loop through each post
                             foreach ($zwsgr_request_data as $post_id) {
@@ -273,7 +273,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                                 $selected = ($account_number === $zwsgr_account_number) ? 'selected' : '';
 
                                 // Output each account option, with the selected attribute if matching
-                                echo '<option value="' . esc_attr( $account_number ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $account_name ) . '</option>';
+                                echo '<option value="' . esc_attr($account_number) . '" ' . $selected . '>' . esc_html($account_name) . '</option>';
                             }
 
                             echo '</select>';
@@ -300,21 +300,21 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
             
                             // Check if the custom field has a value
                             if ( $zwsgr_account_locations ) {
-                                echo '<select id="zwsgr-location-select" name="zwsgr_location" class="zwsgr-input-text  '.esc_attr($zwsgr_disabled_class).'">
+                                echo '<select id="zwsgr-location-select" name="zwsgr_location" class="zwsgr-input-text  '.$zwsgr_disabled_class.'">
                                     <option value="">Select a Location</option>';
                                     foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
                                         $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
                                         $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
-                                        echo '<option value="' . esc_attr( $zwsgr_account_location_id ) . '" ' . esc_attr( $selected ) . ' data-new-review-url="' . esc_attr( $zwsgr_account_location['metadata']['newReviewUri'] ) . '">' . esc_html( $zwsgr_account_location['title'] ) . '</option>';
+                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . ' data-new-review-url="'.$zwsgr_account_location['metadata']['newReviewUri'].'">' . esc_html($zwsgr_account_location['title']) . '</option>';
                                     }              
                                 echo '</select>
-                                <a href="#" class="button button-secondary zwsgr-submit-btn '.esc_attr($zwsgr_disabled_class).'" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
-                                    '.esc_html($zwsgr_button_text).'
+                                <a href="#" class="button button-secondary zwsgr-submit-btn '.$zwsgr_disabled_class.'" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
+                                    '.$zwsgr_button_text.'
                                 </a>';
                             }
 
                         } else {
-                            echo ' <a href="#" class="button button-secondary zwsgr-submit-btn '.esc_attr($zwsgr_disabled_class).'" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
+                            echo ' <a href="#" class="button button-secondary zwsgr-submit-btn '.$zwsgr_disabled_class.'" id="fetch-gmd-accounts" data-fetch-type="zwsgr_gmb_accounts">
                                 Fetch Accounts
                             </a>';
                         }

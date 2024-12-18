@@ -283,8 +283,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_widget_cpt()
 		{
 			$labels = array(
-				'name' => _x('Widgets', '', 'smart-google-reviews'),
-				'singular_name' => _x('Widget', '', 'smart-google-reviews'),
+				'name' => _x('Widgets', null, 'smart-google-reviews'),
+				'singular_name' => _x('Widget', null, 'smart-google-reviews'),
 				'menu_name' => _x('Widgets', 'admin menu', 'smart-google-reviews'),
 				'name_admin_bar' => _x('Widget', 'add new on admin bar', 'smart-google-reviews'),
 				'add_new' => _x('Add New', 'widget', 'smart-google-reviews'),
@@ -357,8 +357,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_review_cpt()
 		{
 			$labels = array(
-				'name' => _x('Reviews', '', 'smart-google-reviews'),
-				'singular_name' => _x('Review', '', 'smart-google-reviews'),
+				'name' => _x('Reviews', 'smart-google-reviews'),
+				'singular_name' => _x('Review', 'smart-google-reviews'),
 				'menu_name' => _x('Reviews', 'admin menu', 'smart-google-reviews'),
 				'name_admin_bar' => _x('Review', 'add new on admin bar', 'smart-google-reviews'),
 				'add_new' => _x('Add New', 'review', 'smart-google-reviews'),
@@ -459,7 +459,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_review_id 		  	  = get_post_meta($zwsgr_review->ID, 'zwsgr_review_id', true);
 			$zwsgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 
-			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="' . esc_attr( $zwsgr_review->ID ) . '">
+			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="'.$zwsgr_review->ID.'">
 				<tr>
 					<th>
 						<label for="zwsgr_reviewer_image">' . esc_html('', 'smart-google-reviews') . '</label>
@@ -468,7 +468,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						if (!empty($zwsgr_gmb_reviewer_image_uri)) {
 							echo '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">';
 						} else {
-							echo '<img src="' . esc_url( ZWSGR_URL . '/assets/images/fallback-user-dp.svg' ) . '" class="fallback-user-dp">';
+							echo '<img src="' . ZWSGR_URL . '/assets/images/fallback-user-dp.svg" class="fallback-user-dp">';
 						}
 					echo '</td>
 				</tr>
@@ -501,7 +501,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_review_star_rating">' . esc_html('Star Ratings', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<div class="zwsgr-star-ratings">' . esc_html( $zwsgr_filled_star ) . esc_html( $zwsgr_empty_star ) . '</div>
+						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
 					</td>
 					<td><div class="separator"></div></td>
 				</tr>
@@ -640,7 +640,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<option value="">Select an Account</option>';
 			foreach ($accounts as $account) {
 				$selected = ($account->account_number === $selected_account) ? ' selected' : '';
-				echo '<option value="' . esc_attr( $account->account_number ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $account->account_name ) . '</option>';
+				echo '<option value="' . esc_attr($account->account_number) . '"' . $selected . '>' . esc_html($account->account_name) . '</option>';
 			}
 			echo '</select>';
 
@@ -675,7 +675,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								$loc_title = $loc['title'] ?? '';
 								$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
 								$selected = ($loc_value === $selected_location) ? ' selected' : '';
-								echo '<option value="' . esc_attr( $loc_value ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $loc_title ) . '</option>';
+								echo '<option value="' . esc_attr($loc_value) . '"' . $selected . '>' . esc_html($loc_title) . '</option>';
 							}
 						}
 					}
@@ -761,8 +761,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					
 					// Display the shortcode and copy icon
 					echo '<div style="display: flex; align-items: center;">';
-					echo '<input type="text" value="' . esc_attr( $shortcode ) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . esc_attr( $post_id ) . '">';
-					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . esc_attr( $post_id ) . '" style="cursor: pointer;" title="' . esc_attr__( 'Copy Shortcode', 'smart-google-reviews' ) . '"></span>';
+					echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . $post_id . '">';
+					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . esc_html('Copy Shortcode', 'smart-google-reviews') . '"></span>';
 					echo '</div>';
 				} else {
 					// Optionally, you can display a message or leave it blank if the condition is not met
@@ -1040,16 +1040,16 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="zwsgr-section-wrap">
 					<h2 class="nav-tab-wrapper zwsgr-nav-tab-wrapper">
 						<a href="?page=zwsgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
-							<?php esc_html_e('Google', 'smart-google-reviews'); ?>
+							<?php _e('Google', 'smart-google-reviews'); ?>
 						</a>
 						<a href="?page=zwsgr_settings&tab=notifications" class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
-							<?php esc_html_e('SEO & Notifications', 'smart-google-reviews'); ?>
+							<?php _e('SEO & Notifications', 'smart-google-reviews'); ?>
 						</a>
 						<a href="?page=zwsgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
-							<?php esc_html_e('Advanced', 'smart-google-reviews'); ?>
+							<?php _e('Advanced', 'smart-google-reviews'); ?>
 						</a>
 						<a href="?page=zwsgr_settings&tab=smtp-settings" class="nav-tab <?php echo ($current_tab === 'smtp-settings') ? 'nav-tab-active' : ''; ?>">
-							<?php esc_html_e('SMTP Settings', 'smart-google-reviews'); ?>
+							<?php _e('SMTP Settings', 'smart-google-reviews'); ?>
 						</a>
 					</h2>
 					<?php if ($current_tab === 'google'):
@@ -1173,9 +1173,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{	
 			echo '<div class="zwgr-dashboard">
 				<div class="zwgr-dashboard-header">'
-					. esc_html( $this->zwsgr_dashboard->zwsgr_date_range_filter() ) .
+					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
 				'</div>'
-				. esc_html( $this->zwsgr_dashboard->zwsgr_data_render() ) .
+				. $this->zwsgr_dashboard->zwsgr_data_render() .
 			'</div>';
 		}
 		
@@ -2143,8 +2143,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-layout-radio"> 
 						<label><input type="radio" name="display_option" class="zwsgr-radio" value="all" checked> <span>All</span></label>
 						<?php foreach ($options as $key => $layouts) : ?>
-							<label><input type="radio" name="display_option" class="zwsgr-radio" value="<?php echo esc_attr( $key ); ?>"><span> <?php echo esc_html( ucfirst( $key ) ); ?></span></label>
-							<?php endforeach; ?>
+							<label><input type="radio" name="display_option" class="zwsgr-radio" value="<?php echo esc_attr($key); ?>"><span> <?php echo ucfirst($key); ?></span></label>
+						<?php endforeach; ?>
 					</div>
 
 					<!-- Dynamically Render Layout Options Based on Selected Display Option -->
@@ -2165,12 +2165,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								$display_style = ($selected_display_option === $option_type || $selected_display_option === 'all') ? 'block' : 'block';
 								$selected_class = ($element_id === $layout_option) ? ' selected' : ''; // Check if this layout is selected
 								
-								echo '<div id="' . esc_attr( $element_id ) . '" class="zwsgr-option-item' . esc_attr( $selected_class ) . '" data-type="' . esc_attr( $option_type ) . '" style="display: ' . esc_attr( $display_style ) . ';">';
+								echo '<div id="' . esc_attr($element_id) . '" class="zwsgr-option-item' . $selected_class . '" data-type="' . esc_attr($option_type) . '" style="display: ' . $display_style . ';">';
 									echo '<div class="zwsgr-layout-title-wrap">';
-										echo '<h3 class="zwsgr-layout-title">Layout: ' . esc_html( $option_type ) . ' ' . esc_html( $layout_count ) . '</h3>';
+										echo '<h3 class="zwsgr-layout-title">Layout: '. $option_type .' '.$layout_count.'</h3>';
 										echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
 									echo '</div>';
-									echo esc_html( $layout_content );
+									echo $layout_content;
 								echo '</div>';
 								
 
@@ -2205,9 +2205,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 												$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
 												$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
 												?>
-												<span class="star-filter <?php echo esc_attr( $selected ); ?>" data-rating="<?php echo esc_attr( $i ); ?>" title="<?php echo esc_attr( $i ); ?> Star">
+												<span class="star-filter <?php echo $selected; ?>" data-rating="<?php echo $i; ?>" title="<?php echo $i; ?> Star">
 													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-														<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo esc_attr( $fillColor ); ?>" />
+														<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo $fillColor; ?>" />
 													</svg>
 												</span>
 												<?php
@@ -2370,7 +2370,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-widget-setting">
 									<h3 class="zwsgr-label">Load More</h3>
 									<label class="switch">
-										<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo esc_attr( $enable_load_more ? 'checked' : '' ); ?> <?php echo esc_attr( $is_checked ); ?> />
+										<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo $is_checked;?> />
 										<span class="slider"></span>
 									</label>
 								<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
@@ -3439,7 +3439,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// }
 		
 			// Return the filtered reviews HTML as the response
-			echo esc_html( $reviews_html );
+			echo $reviews_html;
 			die();
 		}		
 	}
