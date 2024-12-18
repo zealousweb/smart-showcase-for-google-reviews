@@ -302,7 +302,7 @@
 							type="password"
 							class="zwsgr-input-text"
 							required
-							value="<?php echo isset( $zwsgr_smtp_option['zwsgr_smtp_password'] ) ? esc_attr_e( $zwsgr_smtp_option['zwsgr_smtp_password'] ) : ''; ?>"
+							value="<?php echo isset( $zwsgr_smtp_option['zwsgr_smtp_password'] ) ? esc_attr( $zwsgr_smtp_option['zwsgr_smtp_password'] ) : ''; ?>"
 						/>
 					</td>
 				</tr>
