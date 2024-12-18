@@ -71,13 +71,13 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
             // Add a custom 'monthly' interval with a 30-day frequency
             $zwsgr_cron_schedules['monthly'] = array(
                 'interval' => 30 * DAY_IN_SECONDS,
-                'display'  => __( 'Once Monthly' ), 
+                'display'  => __( 'Once Monthly', 'smart-google-reviews' ), 
             );
 
             // Add a custom 'weekly' interval with a 7-day frequency
             $zwsgr_cron_schedules['weekly'] = array(
                 'interval' => 7 * DAY_IN_SECONDS,
-                'display'  => __( 'Once Weekly' ),
+                'display'  => __( 'Once Weekly', 'smart-google-reviews'),
             );
 
             // Return the modified list of schedules
