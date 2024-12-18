@@ -168,7 +168,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Check if a post ID is provided and it exists
 			if (empty($post_id) || !get_post($post_id)) {
-				return esc_html__('Invalid post ID.', 'zw-smart-google-reviews');
+				return esc_html__('Invalid post ID.', 'smart-google-reviews');
 			}
 
 			// Retrieve the 'enable_load_more' setting from post meta
@@ -319,7 +319,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				}
 			echo '</div>';
 
-			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'" data-bg-color="'.esc_attr($bg_color_load).'" data-text-color="'.esc_attr($text_color_load).'">';
+			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$layout_option.'" data-bg-color="'.esc_attr($bg_color_load).'" data-text-color="'.esc_attr($text_color_load).'">';
 			if ($query->have_posts()) {
 
 				// Fetch selected elements from post meta
@@ -1342,7 +1342,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										' . $zwsgr_popup_content1 . '
 									</div>' .
 									($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['popup-1', 'popup-2']) ?
-										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
+										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'smart-google-reviews') . '</button>'
 										: '') .
 								'</div>
 							</div>
@@ -1376,7 +1376,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									' . $zwsgr_popup_content2 . '
 								</div>' .
 									($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['popup-1', 'popup-2']) ?
-										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
+										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'smart-google-reviews') . '</button>'
 										: '') .'
 							</div>
 						</div>
@@ -1396,18 +1396,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['list-1','list-2','','list-3','list-4','list-5','grid-1','grid-2','grid-3','grid-4','grid-5'])) {
-					echo '<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
+					echo '<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'smart-google-reviews') . '</button>';
 				}
 				
+			echo '</div>';
 				if($google_review_toggle){
 					echo '<div class="zwsgr-toogle-display zwsgr-toogle-display-front">';
 						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle">Review Us On G</a>';
 					echo '</div>';
 				}
-				
-			echo '</div>';
 			} else {
-				echo '<p>' . esc_html__('No posts found.', 'zw-smart-google-reviews') . '</p>';
+				echo '<p>' . esc_html__('No posts found.', 'smart-google-reviews') . '</p>';
 			}
 
 			return ob_get_clean();  // Return the buffered content
@@ -1417,7 +1416,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		{
 			// Verify nonce for security
 			if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'zwsgr_load_more_nonce')) {
-				wp_send_json_error(esc_html__('Nonce verification failed.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
 				return;
 			}
 
@@ -1427,7 +1426,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Ensure the post_id exists
 			if (empty($post_id) || !get_post($post_id)) {
-				wp_send_json_error(esc_html__('Invalid post ID.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Invalid post ID.', 'smart-google-reviews'));
 				return;
 			}
 
@@ -2479,7 +2478,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				wp_reset_postdata();
 			} else {
 				// No more posts available
-				$response['err_msg'] = esc_html__('No Review Founds.', 'zw-smart-google-reviews');
+				$response['err_msg'] = esc_html__('No Review Founds.', 'smart-google-reviews');
 			}
 			$response['disable_button'] = ( $query->max_num_pages <= $page ) ? true : false;
 			wp_send_json_success($response);

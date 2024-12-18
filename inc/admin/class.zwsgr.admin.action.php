@@ -192,8 +192,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 
 			add_menu_page(
-				__('Smart Google Reviews', 'zw-smart-google-reviews'),
-				__('Smart Google Reviews', 'zw-smart-google-reviews'),
+				__('Smart Google Reviews', 'smart-google-reviews'),
+				__('Smart Google Reviews', 'smart-google-reviews'),
 				'manage_options',
 				'zwsgr_dashboard',
 				array($this, 'zwsgr_dashboard_callback'),
@@ -244,8 +244,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_submenu_page(
 				'zwsgr_dashboard',
-				__('Widget', 'zw-smart-google-reviews'),
-				__('Widgets', 'zw-smart-google-reviews'),
+				__('Widget', 'smart-google-reviews'),
+				__('Widgets', 'smart-google-reviews'),
 				'manage_options',
 				'edit.php?post_type=' . ZWSGR_POST_WIDGET_TYPE,
 				null
@@ -253,8 +253,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_submenu_page(
 				'zwsgr_dashboard',
-				__('Review', 'zw-smart-google-reviews'),
-				__('Reviews', 'zw-smart-google-reviews'),
+				__('Review', 'smart-google-reviews'),
+				__('Reviews', 'smart-google-reviews'),
 				'manage_options',
 				'edit.php?post_type=' . ZWSGR_POST_REVIEW_TYPE,
 				null
@@ -271,8 +271,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			add_submenu_page(
 				'zwsgr_dashboard',
-				__('Settings', 'zw-smart-google-reviews'),
-				__('Settings', 'zw-smart-google-reviews'),
+				__('Settings', 'smart-google-reviews'),
+				__('Settings', 'smart-google-reviews'),
 				'manage_options',
 				'zwsgr_settings',
 				array($this, 'zwsgr_settings_callback')
@@ -283,23 +283,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_widget_cpt()
 		{
 			$labels = array(
-				'name' => _x('Widgets', null, 'zw-smart-google-reviews'),
-				'singular_name' => _x('Widget', null, 'zw-smart-google-reviews'),
-				'menu_name' => _x('Widgets', 'admin menu', 'zw-smart-google-reviews'),
-				'name_admin_bar' => _x('Widget', 'add new on admin bar', 'zw-smart-google-reviews'),
-				'add_new' => _x('Add New', 'widget', 'zw-smart-google-reviews'),
-				'add_new_item' => __('Add New Widget', 'zw-smart-google-reviews'),
-				'new_item' => __('New Widget', 'zw-smart-google-reviews'),
-				'edit_item' => __('Edit Widget', 'zw-smart-google-reviews'),
-				'view_item' => __('View Widget', 'zw-smart-google-reviews'),
-				'all_items' => __('All Widgets', 'zw-smart-google-reviews'),
-				'search_items' => __('Search Widgets', 'zw-smart-google-reviews'),
-				'not_found' => __('No widgets found.', 'zw-smart-google-reviews'),
-				'not_found_in_trash' => __('No widgets found in Trash.', 'zw-smart-google-reviews')
+				'name' => _x('Widgets', null, 'smart-google-reviews'),
+				'singular_name' => _x('Widget', null, 'smart-google-reviews'),
+				'menu_name' => _x('Widgets', 'admin menu', 'smart-google-reviews'),
+				'name_admin_bar' => _x('Widget', 'add new on admin bar', 'smart-google-reviews'),
+				'add_new' => _x('Add New', 'widget', 'smart-google-reviews'),
+				'add_new_item' => __('Add New Widget', 'smart-google-reviews'),
+				'new_item' => __('New Widget', 'smart-google-reviews'),
+				'edit_item' => __('Edit Widget', 'smart-google-reviews'),
+				'view_item' => __('View Widget', 'smart-google-reviews'),
+				'all_items' => __('All Widgets', 'smart-google-reviews'),
+				'search_items' => __('Search Widgets', 'smart-google-reviews'),
+				'not_found' => __('No widgets found.', 'smart-google-reviews'),
+				'not_found_in_trash' => __('No widgets found in Trash.', 'smart-google-reviews')
 			);
 
 			$args = array(
-				'label' => __('Widgets', 'zw-smart-google-reviews'),
+				'label' => __('Widgets', 'smart-google-reviews'),
 				'labels' => $labels,
 				'description' => '',
 				'public' => true,
@@ -357,23 +357,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_review_cpt()
 		{
 			$labels = array(
-				'name' => _x('Reviews', 'zw-smart-google-reviews'),
-				'singular_name' => _x('Review', 'zw-smart-google-reviews'),
-				'menu_name' => _x('Reviews', 'admin menu', 'zw-smart-google-reviews'),
-				'name_admin_bar' => _x('Review', 'add new on admin bar', 'zw-smart-google-reviews'),
-				'add_new' => _x('Add New', 'review', 'zw-smart-google-reviews'),
-				'add_new_item' => __('Add New Review', 'zw-smart-google-reviews'),
-				'new_item' => __('New Review', 'zw-smart-google-reviews'),
-				'edit_item' => __('Edit Review', 'zw-smart-google-reviews'),
-				'view_item' => __('View Review', 'zw-smart-google-reviews'),
-				'all_items' => __('All Reviews', 'zw-smart-google-reviews'),
-				'search_items' => __('Search Reviews', 'zw-smart-google-reviews'),
-				'not_found' => __('No Reviews found.', 'zw-smart-google-reviews'),
-				'not_found_in_trash' => __('No Reviews found in Trash.', 'zw-smart-google-reviews')
+				'name' => _x('Reviews', 'smart-google-reviews'),
+				'singular_name' => _x('Review', 'smart-google-reviews'),
+				'menu_name' => _x('Reviews', 'admin menu', 'smart-google-reviews'),
+				'name_admin_bar' => _x('Review', 'add new on admin bar', 'smart-google-reviews'),
+				'add_new' => _x('Add New', 'review', 'smart-google-reviews'),
+				'add_new_item' => __('Add New Review', 'smart-google-reviews'),
+				'new_item' => __('New Review', 'smart-google-reviews'),
+				'edit_item' => __('Edit Review', 'smart-google-reviews'),
+				'view_item' => __('View Review', 'smart-google-reviews'),
+				'all_items' => __('All Reviews', 'smart-google-reviews'),
+				'search_items' => __('Search Reviews', 'smart-google-reviews'),
+				'not_found' => __('No Reviews found.', 'smart-google-reviews'),
+				'not_found_in_trash' => __('No Reviews found in Trash.', 'smart-google-reviews')
 			);
 
 			$args = array(
-				'label' => __('Reviews', 'zw-smart-google-reviews'),
+				'label' => __('Reviews', 'smart-google-reviews'),
 				'labels' => $labels,
 				'description' => '',
 				'public' => true,
@@ -414,7 +414,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 			add_meta_box(
 				'zwsgr_review_details_meta_box',
-				__('Review Details', 'zw-smart-google-reviews'),
+				__('Review Details', 'smart-google-reviews'),
 				array($this, 'zwsgr_display_review_details_meta_box'),
 				'zwsgr_reviews',
 				'normal',
@@ -462,7 +462,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="'.$zwsgr_review->ID.'">
 				<tr>
 					<th>
-						<label for="zwsgr_reviewer_image">' . __('', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_reviewer_image">' . esc_html('', 'smart-google-reviews') . '</label>
 					</th>
 					<td>';
 						if (!empty($zwsgr_gmb_reviewer_image_uri)) {
@@ -474,7 +474,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_reviewer_name">' . __('Reviewer', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_reviewer_name">' . esc_html('Reviewer', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<input type="text" value="' . esc_attr($zwsgr_reviewer_name) . '" readonly class="regular-text" style="width:100%;" />
@@ -482,7 +482,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 								<tr>
 					<th>
-						<label for="zwsgr_review_published_date">' . __('Publish Date', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_review_published_date">' . esc_html('Publish Date', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<input type="text" value="' . esc_attr($zwsgr_review_published_date) . '" readonly class="regular-text" style="width:100%;" />
@@ -490,7 +490,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_review_comment">' . __('Review Content', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_review_comment">' . esc_html('Review Content', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<textarea readonly class="regular-text" rows="5" style="width:100%;">' . esc_textarea($zwsgr_review_comment) . '</textarea>
@@ -498,7 +498,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_review_star_rating">' . __('Star Ratings', 'zw-smart-google-reviews') . '</label>
+						<label for="zwsgr_review_star_rating">' . esc_html('Star Ratings', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
@@ -515,7 +515,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_formatted_time = $zwsgr_datetime->format('F j, Y g:i A');
 					echo '<tr>
 						<th>
-							<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'zw-smart-google-reviews') . '</label>
+							<label for="zwsgr_reply_update_time">' . esc_html('Reply Update Time', 'smart-google-reviews') . '</label>
 						</th>
 						<td>
 							<input type="text" value="' . esc_attr($zwsgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
@@ -525,19 +525,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				}
 				echo '<tr>
 					<th>
-						<label for="zwsgr_reply_comment"> ' . __('Reply Content', 'zw-smart-google-reviews') . ' </label>
+						<label for="zwsgr_reply_comment"> ' . esc_html('Reply Content', 'smart-google-reviews') . ' </label>
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width: 100%;">'. esc_textarea($zwsgr_reply_comment) .'</textarea>
 						<div class="cta-wrapper">';
 							if (!empty($zwsgr_reply_comment)) {
-								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-reply"> ' . __('Update', 'zw-smart-google-reviews') . ' </button>';
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-reply"> ' . esc_html('Update', 'smart-google-reviews') . ' </button>';
 							} else {
-								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-reply"> ' . __('Add Reply', 'zw-smart-google-reviews') . ' </button>';
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-reply"> ' . esc_html('Add Reply', 'smart-google-reviews') . ' </button>';
 							}
 							if (!empty($zwsgr_reply_comment)) {
-								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-reply">' . __('Delete', 'zw-smart-google-reviews') . '</button>';
+								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-reply">' . esc_html('Delete', 'smart-google-reviews') . '</button>';
 							}
 						echo '</div>
 					</td>
@@ -549,23 +549,23 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_request_data_cpt()
 		{
 			$labels = array(
-				'name'               => __('Request Data', 'zw-smart-google-reviews'),
-				'singular_name'      => __('Request Data', 'zw-smart-google-reviews'),
-				'menu_name'          => __('Request Data', 'zw-smart-google-reviews'),
-				'name_admin_bar'     => __('Request Data', 'zw-smart-google-reviews'),
-				'add_new'            => __('Add New', 'zw-smart-google-reviews'),
-				'add_new_item'       => __('Add New Request Data', 'zw-smart-google-reviews'),
-				'new_item'           => __('New Request Data', 'zw-smart-google-reviews'),
-				'edit_item'          => __('Edit Request Data', 'zw-smart-google-reviews'),
-				'view_item'          => __('View Request Data', 'zw-smart-google-reviews'),
-				'all_items'          => __('All Request Data', 'zw-smart-google-reviews'),
-				'search_items'       => __('Search Request Data', 'zw-smart-google-reviews'),
-				'not_found'          => __('No Request Data found.', 'zw-smart-google-reviews'),
-				'not_found_in_trash' => __('No Request Data found in Trash.', 'zw-smart-google-reviews')
+				'name'               => __('Request Data', 'smart-google-reviews'),
+				'singular_name'      => __('Request Data', 'smart-google-reviews'),
+				'menu_name'          => __('Request Data', 'smart-google-reviews'),
+				'name_admin_bar'     => __('Request Data', 'smart-google-reviews'),
+				'add_new'            => __('Add New', 'smart-google-reviews'),
+				'add_new_item'       => __('Add New Request Data', 'smart-google-reviews'),
+				'new_item'           => __('New Request Data', 'smart-google-reviews'),
+				'edit_item'          => __('Edit Request Data', 'smart-google-reviews'),
+				'view_item'          => __('View Request Data', 'smart-google-reviews'),
+				'all_items'          => __('All Request Data', 'smart-google-reviews'),
+				'search_items'       => __('Search Request Data', 'smart-google-reviews'),
+				'not_found'          => __('No Request Data found.', 'smart-google-reviews'),
+				'not_found_in_trash' => __('No Request Data found in Trash.', 'smart-google-reviews')
 			);
 
 			$args = array(
-				'label'               => __('Request Data', 'zw-smart-google-reviews'),
+				'label'               => __('Request Data', 'smart-google-reviews'),
 				'labels'              => $labels,
 				'description'         => '',
 				'public'              => true,
@@ -725,7 +725,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			add_meta_box(
 				'zwsgr_account_number_meta_box', // Meta box ID
-				__('Account Number', 'zw-smart-google-reviews'), // Title
+				__('Account Number', 'smart-google-reviews'), // Title
 				array($this, 'zwsgr_display_account_number_meta_box'), // Callback function to display the meta box content
 				'zwsgr_request_data', // Post type
 				'normal', // Context (where to display: 'normal', 'side', 'advanced')
@@ -740,7 +740,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			foreach ($columns as $key => $title) {
 				if ($key === 'title') {
 					$new_columns[$key] = $title; // Keep the Title column
-					$new_columns['shortcode'] = __('Shortcode', 'zw-smart-google-reviews'); // Add Shortcode column after Title
+					$new_columns['shortcode'] = __('Shortcode', 'smart-google-reviews'); // Add Shortcode column after Title
 				} else {
 					$new_columns[$key] = $title; // Add other columns
 				}
@@ -762,11 +762,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					// Display the shortcode and copy icon
 					echo '<div style="display: flex; align-items: center;">';
 					echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . $post_id . '">';
-					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . __('Copy Shortcode', 'zw-smart-google-reviews') . '"></span>';
+					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . esc_html('Copy Shortcode', 'smart-google-reviews') . '"></span>';
 					echo '</div>';
 				} else {
 					// Optionally, you can display a message or leave it blank if the condition is not met
-					echo '<span>' . __('Please select the appropriate options', 'zw-smart-google-reviews') . '</span>';
+					echo '<span>' . esc_html('Please select the appropriate options', 'smart-google-reviews') . '</span>';
 				}
 			}
 		}
@@ -786,9 +786,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			unset($columns['date']);
 			unset($columns['title']);
-			$columns['title'] = __('Review', 'zw-smart-google-reviews');
-			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'zw-smart-google-reviews');
-			$columns['date'] = __('Date', 'zw-smart-google-reviews');
+			$columns['title'] = __('Review', 'smart-google-reviews');
+			$columns[ZWSGR_META_PREFIX . 'user_login'] = __('Hide', 'smart-google-reviews');
+			$columns['date'] = __('Date', 'smart-google-reviews');
 			return $columns;
 		}
 
@@ -861,7 +861,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Google setting section & fields
 			add_settings_section(
 				'zwsgr_google_section',
-				__('Google Settings', 'zw-smart-google-reviews'),
+				__('Google Settings', 'smart-google-reviews'),
 				null,
 				'zwsgr_google_account_settings'
 			);
@@ -869,14 +869,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Notification section & fields
 			add_settings_section(
 				'zwsgr_notification_section',
-				__('SEO & Notifications', 'zw-smart-google-reviews'),
+				__('SEO & Notifications', 'smart-google-reviews'),
 				null,
 				'zwsgr_notification_settings'
 			);
 
 			add_settings_field(
 				'zwsgr_admin_notification_enabled',
-				__('Enable Admin Notifications', 'zw-smart-google-reviews'),
+				__('Enable Admin Notifications', 'smart-google-reviews'),
 				array($this, 'zwsgr_admin_notification_enabled_callback'),
 				'zwsgr_notification_settings',
 				'zwsgr_notification_section'
@@ -885,14 +885,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Add settings for the Advanced tab
 			add_settings_section(
 				'zwsgr_advanced_section',
-				__('Advanced Settings', 'zw-smart-google-reviews'),
+				__('Advanced Settings', 'smart-google-reviews'),
 				null,
 				'zwsgr_advanced_account_settings'
 			);
 
 			add_settings_field(
 				'zwsgr_sync_reviews',
-				__('Sync Reviews', 'zw-smart-google-reviews'),
+				__('Sync Reviews', 'smart-google-reviews'),
 				array($this, 'zwsgr_sync_reviews_callback'),
 				'zwsgr_advanced_account_settings',
 				'zwsgr_advanced_section'
@@ -919,7 +919,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '</div>';
 			echo '<div class="zwsgr-field">';
 			echo '<input type="text" id="zwsgr_admin_notification_emails" name="zwsgr_admin_notification_emails" class="zwsgr-input-text" rows="5" cols="50" value="' . esc_attr($value) . '" />';
-			echo '<p class="zwsgr-description">' . __('Enter email addresses separated by commas.', 'zw-smart-google-reviews') . '</p>';
+			echo '<p class="zwsgr-description">' . esc_html('Enter email addresses separated by commas.', 'smart-google-reviews') . '</p>';
 			echo '</div>';
 			echo '</div>';
 		}
@@ -955,11 +955,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			
 			echo '<div class="zwsgr-editor-wrapper">';
 				echo '<div class="zwsgr-th-label">';
-				echo '<label for="zwsgr_admin_notification_email_body" class="zwsgr-th">' . __('Email Body', 'zw-smart-google-reviews') . '</label>';
+				echo '<label for="zwsgr_admin_notification_email_body" class="zwsgr-th">' . esc_html('Email Body', 'smart-google-reviews') . '</label>';
 				echo '</div>';
 				echo '<div class="zwsgr-field">';
 				wp_editor($value, 'zwsgr_admin_notification_email_body', $settings);
-				echo '<p class="zwsgr-description">' . __('Enter your custom email body content here.', 'zw-smart-google-reviews') . '</p>';
+				echo '<p class="zwsgr-description">' . esc_html('Enter your custom email body content here.', 'smart-google-reviews') . '</p>';
 				echo '</div>';
 			echo '</div>';
 		}
@@ -1040,16 +1040,16 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="zwsgr-section-wrap">
 					<h2 class="nav-tab-wrapper zwsgr-nav-tab-wrapper">
 						<a href="?page=zwsgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
-							<?php _e('Google', 'zw-smart-google-reviews'); ?>
+							<?php _e('Google', 'smart-google-reviews'); ?>
 						</a>
 						<a href="?page=zwsgr_settings&tab=notifications" class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
-							<?php _e('SEO & Notifications', 'zw-smart-google-reviews'); ?>
+							<?php _e('SEO & Notifications', 'smart-google-reviews'); ?>
 						</a>
 						<a href="?page=zwsgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
-							<?php _e('Advanced', 'zw-smart-google-reviews'); ?>
+							<?php _e('Advanced', 'smart-google-reviews'); ?>
 						</a>
 						<a href="?page=zwsgr_settings&tab=smtp-settings" class="nav-tab <?php echo ($current_tab === 'smtp-settings') ? 'nav-tab-active' : ''; ?>">
-							<?php _e('SMTP Settings', 'zw-smart-google-reviews'); ?>
+							<?php _e('SMTP Settings', 'smart-google-reviews'); ?>
 						</a>
 					</h2>
 					<?php if ($current_tab === 'google'):
@@ -2432,7 +2432,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Check security nonce
 			if (!check_ajax_referer('my_widget_nonce', 'security', false)) {
 				error_log('Nonce verification failed.');
-				wp_send_json_error(esc_html__('Nonce verification failed.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
 				return;
 			}
 			error_log('Nonce verified successfully.');
@@ -2441,7 +2441,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$post_id = intval($_POST['post_id']);
 			if (!$post_id) {
 				error_log('Invalid post ID');
-				wp_send_json_error(esc_html__('Invalid post ID.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Invalid post ID.', 'smart-google-reviews'));
 				return;
 			}
 			error_log('Post ID: ' . $post_id);
@@ -2449,7 +2449,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Check if the post exists
 			if (get_post_status($post_id) === false) {
 				error_log('Post does not exist: ' . $post_id);
-				wp_send_json_error(esc_html__('Post does not exist.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Post does not exist.', 'smart-google-reviews'));
 				return;
 			}
 			error_log('Post exists, ID: ' . $post_id);
@@ -2457,7 +2457,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Ensure user has permission to edit the post
 			if (!current_user_can('edit_post', $post_id)) {
 				error_log('User does not have permission to edit post: ' . $post_id);
-				wp_send_json_error(esc_html__('You do not have permission to edit this post.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('You do not have permission to edit this post.', 'smart-google-reviews'));
 				return;
 			}
 			

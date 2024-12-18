@@ -8,7 +8,7 @@
  * Author URI: https://www.zealousweb.com/
  * Developer: The ZealousWeb Team
  * Developer E-Mail: support@zealousweb.com
- * Text Domain: zw-smart-google-reviews
+ * Text Domain: smart-google-reviews
  * Domain Path: /languages
  *
  * Copyright: © 2009-2020 ZealousWeb.

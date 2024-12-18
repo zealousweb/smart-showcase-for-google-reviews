@@ -246,7 +246,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 </svg>
                 </div>
                 <div class="zwsgr-card-content">
-                    <h3 class="zwsgr-card-title">' . esc_html__( 'Total Reviews', 'zw-smart-google-reviews' ) . '</h3>
+                    <h3 class="zwsgr-card-title">' . esc_html__( 'Total Reviews', 'smart-google-reviews' ) . '</h3>
                     <p class="zwsgr-card-value">' . esc_html( number_format( $zwsgr_reviews_ratings['reviews'] ) ) . '</p>
                 </div>
             </div>';
@@ -267,7 +267,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 </svg>
                 </div>
                 <div class="zwsgr-card-content">
-                    <h3 class="zwsgr-card-title">' . esc_html__( 'Average Rating', 'zw-smart-google-reviews' ) . '</h3>
+                    <h3 class="zwsgr-card-title">' . esc_html__( 'Average Rating', 'smart-google-reviews' ) . '</h3>
                     <p class="zwsgr-card-value">' . esc_html( $zwsgr_reviews_ratings['ratings'] ) . '</p> <!-- Ensure to define $average_rating in your function -->
                 </div>
             </div>';
@@ -281,7 +281,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 <!-- Title Section -->
                 <div class="zwsgr-title-wrapper">
                     <h1 class="zwsgr-range-filter-title">
-                        ' . esc_html__( 'Date Range Filter', 'zw-smart-google-reviews' ) . '
+                        ' . esc_html__( 'Date Range Filter', 'smart-google-reviews' ) . '
                     </h1>
                 </div>
 
@@ -290,17 +290,17 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                     <ul class="zwsgr-filters-list">
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="daily" data-type="rangeofdays">
-                                ' . esc_html__( 'Daily', 'zw-smart-google-reviews' ) . '
+                                ' . esc_html__( 'Daily', 'smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="weekly" data-type="rangeofdays">
-                                ' . esc_html__( 'Weekly', 'zw-smart-google-reviews' ) . '
+                                ' . esc_html__( 'Weekly', 'smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="monthly" data-type="rangeofdays">
-                                ' . esc_html__( 'Monthly', 'zw-smart-google-reviews' ) . '
+                                ' . esc_html__( 'Monthly', 'smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
@@ -396,7 +396,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             
             // Start the output for top reviews
             $output .= '<div class="zwsgr-header-container">
-                <h4>' . esc_html__('Top Reviews', 'zw-smart-google-reviews') . '</h4>
+                <h4>' . esc_html__('Top Reviews', 'smart-google-reviews') . '</h4>
             </div>';
             $plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
             // Check if there are reviews to display
@@ -479,7 +479,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
             } else {
 
-                $output .= '<p>' . esc_html__('No reviews available.', 'zw-smart-google-reviews') . '</p>';
+                $output .= '<p>' . esc_html__('No reviews available.', 'smart-google-reviews') . '</p>';
 
             }
 
@@ -494,7 +494,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             return '<div class="zwsgr-flex-container zwsgr-flex-column">
                 <div class="zwsgr-flex-inner-container">
                     <h4>' . 
-                        esc_html__( 'Review Statistics Chart', 'zw-smart-google-reviews' ) . 
+                        esc_html__( 'Review Statistics Chart', 'smart-google-reviews' ) . 
                     '</h4>
                     <div class="zwsgr_outer_wrapper">
                         <div id="zwsgr_chart_wrapper">
