@@ -474,7 +474,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return a success response with the OAuth URL
                 wp_send_json_success(
                     array(
-                        'message' => __('Redirecting to OAuth for authentication...', 'your-text-domain'),
+                        'message' => __('Redirecting to OAuth for authentication...', 'smart-google-reviews'),
                         'zwsgr_oauth_url' => esc_url_raw($zwsgr_oauth_url)
                     )
                 );
@@ -484,7 +484,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return a failure message
                 wp_send_json_error(
                     array(
-                        'message' => __('Failed to generate OAuth URL or invalid response.', 'your-text-domain'),
+                        'message' => __('Failed to generate OAuth URL or invalid response.', 'smart-google-reviews'),
                         'code' => 'oauth_url_error'
                     )
                 );
@@ -570,6 +570,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                             )
                         );
                     }
+                    
                 }
                 
             }
