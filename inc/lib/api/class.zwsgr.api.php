@@ -474,7 +474,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return a success response with the OAuth URL
                 wp_send_json_success(
                     array(
-                        'message' => __('Redirecting to OAuth for authentication...', 'smart-google-reviews'),
+                        'message' => __('Redirecting to OAuth for authentication...', 'your-text-domain'),
                         'zwsgr_oauth_url' => esc_url_raw($zwsgr_oauth_url)
                     )
                 );
@@ -484,7 +484,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return a failure message
                 wp_send_json_error(
                     array(
-                        'message' => __('Failed to generate OAuth URL or invalid response.', 'smart-google-reviews'),
+                        'message' => __('Failed to generate OAuth URL or invalid response.', 'your-text-domain'),
                         'code' => 'oauth_url_error'
                     )
                 );
@@ -562,17 +562,14 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                     if ($result === false) {
                         wp_send_json_error(
                             array(
-                                // Translators: %s is the name of the custom post type that failed to be deleted.
                                 'message' => sprintf(
-                                    esc_html('Failed to delete data for custom post type: %s.', 'smart-google-reviews'),
+                                    __('Failed to delete data for custom post type: %s.', 'smart-google-reviews'),
                                     $zwsgr_post_type
                                 ),
                                 'code'    => 'delete_request_error'
                             )
                         );
                     }
-                    
-                    
                 }
                 
             }
