@@ -206,6 +206,11 @@
 }
 
 .zwsgr-slider .slick-arrow.slick-next {
+    right: -3%;
+    left: auto;
+}
+
+#div-container .zwsgr-slider .slick-arrow.slick-next {
     right: -4%;
     left: auto;
 }
