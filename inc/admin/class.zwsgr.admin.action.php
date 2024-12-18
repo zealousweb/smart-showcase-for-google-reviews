@@ -2170,7 +2170,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										echo '<h3 class="zwsgr-layout-title">Layout: '. esc_html($option_type) .' '.esc_html($layout_count).'</h3>';
 										echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
 									echo '</div>';
-									echo wp_kses_post($layout_content);
+									echo $layout_content;
 								echo '</div>';
 								
 
