@@ -314,7 +314,8 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-popup-item').append(response.data.content);
 				
 				
-				if (layoutType === 'list' || layoutType === 'grid') {
+				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
+					layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5'||layoutType === 'popup-1'||layoutType === 'popup-2') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
 					}
@@ -421,7 +422,8 @@ jQuery(document).ready(function($) {
 				// Append the 'Load More' button before making the AJAX request
 				$('.zwsgr-popup-item').append(response.data.content);
 				
-				if (layoutType === 'list' || layoutType === 'grid') {
+				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
+				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5'||layoutType === 'popup-1'||layoutType === 'popup-2') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
 					}

@@ -352,7 +352,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 wp_send_json_success(
                     array(
                         'success' => true,
-                        'message' =>  __('Reply updated successfully', 'zw-smart-google-reviews'),
+                        'message' =>  __('Reply updated successfully', 'smart-google-reviews'),
                     )
                 );
 
@@ -434,7 +434,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 wp_send_json_success(
                     array(
                         'success' => true,
-                        'message' =>  __('Reply deleted successfully', 'zw-smart-google-reviews'),
+                        'message' =>  __('Reply deleted successfully', 'smart-google-reviews'),
                     )
                 );
 
@@ -536,7 +536,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             ) {
                 wp_send_json_error(
                     array(
-                        'message' => __('Failed to delete JWT token.', 'zw-smart-google-reviews'),
+                        'message' => __('Failed to delete JWT token.', 'smart-google-reviews'),
                         'code'    => 'delete_jwt_error'
                     )
                 );
@@ -563,7 +563,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                         wp_send_json_error(
                             array(
                                 'message' => sprintf(
-                                    __('Failed to delete data for custom post type: %s.', 'zw-smart-google-reviews'),
+                                    __('Failed to delete data for custom post type: %s.', 'smart-google-reviews'),
                                     $zwsgr_post_type
                                 ),
                                 'code'    => 'delete_request_error'
@@ -613,7 +613,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 if ($zwsgr_delete_request_data === false || $zwsgr_delete_reviews === false || $zwsgr_data_widget === false) {
                     wp_send_json_error(
                         array(
-                            'message' => __('Failed to delete plugin data.', 'zw-smart-google-reviews'),
+                            'message' => __('Failed to delete plugin data.', 'smart-google-reviews'),
                             'code' => 'delete_request_error'
                         )
                     );
@@ -624,7 +624,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // If all operations succeeded, send success message
             wp_send_json_success(
                 array(
-                    'message' => __('Plugin data successfully deleted.', 'zw-smart-google-reviews'),
+                    'message' => __('Plugin data successfully deleted.', 'smart-google-reviews'),
                     'code' => 'delete_request_success'
                 )
             );
