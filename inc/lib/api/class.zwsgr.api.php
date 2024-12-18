@@ -562,6 +562,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                     if ($result === false) {
                         wp_send_json_error(
                             array(
+                                // Translators: %s is the name of the custom post type that failed to be deleted.
                                 'message' => sprintf(
                                     __('Failed to delete data for custom post type: %s.', 'smart-google-reviews'),
                                     $zwsgr_post_type
@@ -569,7 +570,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                                 'code'    => 'delete_request_error'
                             )
                         );
-                    }
+                    }                    
                     
                 }
                 
