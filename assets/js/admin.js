@@ -1494,17 +1494,95 @@ jQuery(document).ready(function($) {
 	
 	});
 
-	$(".zwgr-dashboard").on("change", "#zwsgr-location-select, .zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button", function (e) {
+	$(".zwgr-dashboard").on("change", "#zwsgr-account-select, #zwsgr-location-select", function (e) {
+
+		// Declare variables globally or in the appropriate scope
+		let zwsgr_range_filter_data = null;
+		let zwsgr_range_filter_type = null;
+
+		if ($('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').length > 0) {
+			zwsgr_range_filter_type = 'rangeofdays';
+			zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').text().trim().toLowerCase();
+		} else if ($('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"].active').length > 0) {
+			zwsgr_range_filter_type = 'rangeofdate';
+			zwsgr_range_filter_data = $('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').val().trim();
+		}
+
+		zwsgr_render_data_callback(e, zwsgr_range_filter_data, zwsgr_range_filter_type);
+
+	});
+
+	$(".zwgr-dashboard").on("click", ".zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button", function (e) {
+		var zwsgr_range_filter_data = $(this).text().trim().toLowerCase();
+		zwsgr_render_data_callback(e, zwsgr_range_filter_data, 'rangeofdays');
+	});
+
+	$('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+		
+		$('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button').removeClass('active');
+		$('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').addClass('active');
+		
+		var zwsgr_start_date = picker.startDate ? picker.startDate.format('DD-MM-YYYY') : null;
+		var zwsgr_end_date = picker.endDate ? picker.endDate.format('DD-MM-YYYY') : null;
+
+		var zwsgr_range_filter_data = zwsgr_start_date && zwsgr_end_date ? zwsgr_start_date + ' - ' + zwsgr_end_date : null;
+
+		zwsgr_render_data_callback(ev, zwsgr_range_filter_data, 'rangeofdate');
+	});
+
+	// Declare chart variable globally
+	var zwsgr_chart;
+	var zwsgr_data;
+	var zwsgr_options;
+
+	// Load the Visualization API and the corechart package
+	google.charts.load('current', {'packages':['corechart']});
+
+	// Set a callback to run when the API is loaded
+	google.charts.setOnLoadCallback(drawChart);
+	
+	function drawChart() {
+	
+		// Example review ratings data
+		var zwsgr_data = google.visualization.arrayToDataTable([
+			['Rating', 'Number of Reviews'],
+			['5 Stars', 120],
+			['4 Stars', 85],
+			['3 Stars', 40],
+			['2 Stars', 20],
+			['1 Star', 10]
+		]);
+
+		// Set chart options
+		var zwsgr_options = {
+			pieHole: 0.4,
+			width: 276,
+			height: 276,
+			legend: 'none',
+			chartArea: {
+			width: '100%', // Make chartArea responsive
+			height: '100%'
+			},
+			colors: ['#F08C3C', '#3CAAB4', '#A9C6CC', '#285064', '#F44336'],
+			backgroundColor: 'transparent'
+		};
+
+		// Draw the chart
+		var zwsgr_chart = new google.visualization.PieChart(document.getElementById('zwsgr_chart_wrapper'));
+		zwsgr_chart.draw(zwsgr_data, zwsgr_options);
+
+	}
+	
+	// Redraw chart on window resize
+	window.addEventListener('resize', function() {
+		if (zwsgr_chart) {
+			zwsgr_chart.draw(zwsgr_data, zwsgr_options);
+		}
+	});
+
+	function zwsgr_render_data_callback(e, zwsgr_range_filter_data, zwsgr_range_filter_type) {
 
 		e.preventDefault();
-	
-		var zwsgr_range_filter_type = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-type');
-		
-		if (zwsgr_range_filter_type == 'rangeofdays') {
-			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').attr('data-filter');
-		} else if (zwsgr_range_filter_type == 'rangeofdate') {
-			var zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').val();
-		}
 
 		var zwsgr_gmb_account_div = $("#gmb-data-filter #zwsgr-account-select");
 		var zwsgr_gmb_location_div = $("#gmb-data-filter #zwsgr-location-select");
@@ -1523,6 +1601,8 @@ jQuery(document).ready(function($) {
 			zwsgr_range_filter_type: zwsgr_range_filter_type,
 			zwsgr_range_filter_data: zwsgr_range_filter_data
 		};
+
+		console.log(zwsgr_filter_data, 'zwsgr_filter_data');
 	
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -1548,13 +1628,15 @@ jQuery(document).ready(function($) {
 				$('.loader').remove();
 				zwsgr_gmb_account_div.removeClass('disabled');
 				zwsgr_gmb_location_div.removeClass('disabled');
+				if (zwsgr_chart) {
+					zwsgr_chart.draw(zwsgr_data, zwsgr_options);
+				}
 			},
 			error: function() {
 				$('#render-dynamic').html('<p>An error occurred while fetching data.</p>');
 			}
 		});
-	
-	});
+	}
 	
 
 
@@ -1816,18 +1898,29 @@ jQuery(document).ready(function($) {
 
 
 	// Handle filter button clicks
-    $('.zwsgr-filter-button').on('click', function () {
+    $('.zwgr-dashboard .zwsgr-filters-wrapper .zwsgr-filter-button').on('click', function () {
         // Remove active class from all buttons and add it to the clicked button
-        $('.zwsgr-filter-button').removeClass('active');
+		$('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').removeClass('active');
+		$('.zwgr-dashboard .zwsgr-filters-wrapper .zwsgr-filter-button').removeClass('active');
         $(this).addClass('active');		
     });
 	
-	$('input[name="dates"]').daterangepicker({
-		opens: 'center', // optional, to center the picker
+	$('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').daterangepicker({
+		opens: 'center',
 		locale: {
-			format: 'DD-MM-YYYY' // Change the format to match your needs
-		}
+			format: 'DD-MM-YYYY'
+		},
+		autoUpdateInput: false,
+		minDate: moment('1995-01-01', 'YYYY-MM-DD'),
+		maxDate: moment(),
+	}, function(start, end, label) {
+		$('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').val(
+			start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY')
+		);
 	});
+	
+	// Set custom placeholder for gmb-dashboard-filter
+	$('.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]').attr('placeholder', 'Custom');
 
 	$(document).on('click', '.toggle-content', function () {
         var $link = $(this);
@@ -1838,36 +1931,6 @@ jQuery(document).ready(function($) {
         // Replace the trimmed content with the full content
         $parentParagraph.html(fullText);
     });
-
-	function setDateRange() {
-		// Get today's date
-		var today = new Date();
-		var currentDate = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
-		var currentMonth = today.getMonth() + 1; // Month is 0-based
-		var currentYear = today.getFullYear();
-		var formattedToday = currentDate + '-' + currentMonth + '-' + currentYear; // Format as DD-MM-YYYY
-	
-		// Get the first day of the previous month
-		var firstDayPrevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-		var firstDayPrevMonthDate = firstDayPrevMonth.getDate() < 10 ? '0' + firstDayPrevMonth.getDate() : firstDayPrevMonth.getDate();
-		var firstDayPrevMonthMonth = firstDayPrevMonth.getMonth() + 1; // Month is 0-based
-		var firstDayPrevMonthYear = firstDayPrevMonth.getFullYear();
-		var formattedPrevMonth = firstDayPrevMonthDate + '-' + firstDayPrevMonthMonth + '-' + firstDayPrevMonthYear; // Format as DD-MM-YYYY
-	
-		// Check if the date picker element exists
-		var dateRangePicker = $('#zwsgr-date-range-picker');
-		if (dateRangePicker.length) {
-			// Set the value of the date range picker input field (From date - To date)
-			dateRangePicker.val(formattedPrevMonth + ' - ' + formattedToday);
-	
-			// If your date picker requires reinitialization, trigger the update
-			// Assuming a date range picker like jQuery UI datepicker
-			dateRangePicker.datepicker("setDate", formattedPrevMonth + ' - ' + formattedToday);
-		}
-	}
-	
-	// Call this function to manually trigger the date range setting
-	setDateRange();
 
 	// Start code SMTP
 	function zwsgr_update_Smtp_Port() {
@@ -1915,5 +1978,7 @@ jQuery(document).ready(function($) {
 	$('#zwsgr-account-select').on('change', function () {
 		$(this).closest('form').submit();
 	});
+
+
 	
 });

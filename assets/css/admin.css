@@ -914,7 +914,8 @@ input.zwsgr-radio:checked::before {
     margin: 0;
 }
 
-.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button, .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
+.zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button, 
+.zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
     background-color: #EDF4F5;
     color: #1B1B1B;
     padding: 10px 24px;
@@ -956,6 +957,67 @@ input.zwsgr-radio:checked::before {
 .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-location-select.disabled {
     pointer-events: none;
 }
+
+@media only screen and (max-width: 767px) {
+
+    .zwgr-dashboard-header {
+        padding-bottom: 16px !important;
+    }
+
+    .zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
+        flex-direction: column;
+        margin: 0 !important;
+    }
+
+    .zwgr-dashboard #render-dynamic .zwsgr-data-card {
+        margin: 0 0 24px 0 !important;
+        max-width: -webkit-fill-available !important;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header .zwsgr-date-range-filter-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 0 0 16px 0 !important;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item {
+        margin: 0 12px 12px 0 !important;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item:last-child {
+        margin: 0 !important;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filters-list {
+        flex-wrap: wrap;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header .zwsgr-date-range-filter-wrapper .zwsgr-title-wrapper {
+        margin-bottom: 16px !important;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select, 
+    .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-location-select {
+        max-width: 100%;
+        margin: 0 0 16px 0;
+    }
+    .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter .zwsgr-input-text:last-child {
+        margin: 0;
+    }
+
+    .zwgr-dashboard #render-dynamic .zwgr-dashboard-footer {
+        flex-direction: column !important;
+        margin: 0 !important;
+    }
+
+    .zwgr-dashboard #render-dynamic .zwsgr-flex-column {
+        width: 100% !important;
+        margin: 0 0 24px 0;
+        padding: 0 !important;
+    }
+
+}
+
 
 .zwgr-dashboard #render-dynamic {
     padding: 32px 0 0 0;
@@ -1030,11 +1092,55 @@ input.zwsgr-radio:checked::before {
     padding: 0 12px;
 }
 
+.zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend {
+    margin: 0 0 32px 0;
+}
+
+.zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend:last-child {
+    margin: 0;
+}
+
+.zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend .marker {
+    width: 40px;
+    height: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend .guide {
+    font-family: 'Poppins';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+}
+
+
+.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"] {
+    font-weight: 600 !important;
+    max-width: 100px !important;
+}
+
+.zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"].active::placeholder {
+    color: white;
+    opacity: 1;
+}
+
 .zwsgr-flex-inner-container {
     height: 100%;
     padding: 24px;
     box-shadow: 0px 0.5px 2px 0px rgba(37, 42, 59, 0.11);
     border-radius: 12px;
+}
+
+.zwsgr-flex-inner-container .zwsgr_outer_wrapper {
+    display: flex;
+    align-items: center;
+    margin: 32px 0 0 0;
+}
+
+.zwsgr-flex-inner-container .zwsgr_outer_wrapper #zwsgr_chart_wrapper {
+    margin-right: 108px;
 }
 
 .zwsgr-flex-inner-container .zwsgr-header-container {
@@ -1065,14 +1171,14 @@ input.zwsgr-radio:checked::before {
 }
 
 .zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-item {
-    margin: 0 0 16px 0;
+    margin: 0 20px 16px 0;
     border-radius: 8px 0px 0px 0px;
     background-color: #F6F6F6;
     padding: 16px;
 }
 
 .zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-item:last-child {
-    margin: 0;
+    margin: 0 20px 0 0;
 }
 
 .zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-header {
@@ -1086,6 +1192,10 @@ input.zwsgr-radio:checked::before {
     border-radius: 50px;
     width: 32px;
     height: 32px;
+}
+
+.zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-header .zwsgr-profile img { 
+    max-width: 32px;
 }
 
 .zwsgr-flex-inner-container .zwsgr-reviews-container .zwsgr-review-header .zwsgr-title {
