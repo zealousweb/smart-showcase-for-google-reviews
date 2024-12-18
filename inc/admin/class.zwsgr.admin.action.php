@@ -852,17 +852,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_register_settings()
 		{
 
-			//Google account settings
-			register_setting('zwsgr_google_account_settings', 'zwsgr_google_business_api_key');
-			register_setting('zwsgr_google_account_settings', 'zwsgr_google_business_place_id');
-
 			// SEO & Notifications Settings
 			register_setting('zwsgr_notification_settings', 'zwsgr_admin_notification_enabled');
-			register_setting('zwsgr_notification_settings', 'zwsgr_google_analytics_tracking_id');
 
 			//Advance Setting
 			register_setting('zwsgr_advanced_account_settings', 'zwsgr_sync_reviews');
-			register_setting('zwsgr_advanced_account_settings', 'zwsgr_google_analytics_tracking_id');
 
 			// Google setting section & fields
 			add_settings_section(
@@ -870,22 +864,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				__('Google Settings', 'zw-smart-google-reviews'),
 				null,
 				'zwsgr_google_account_settings'
-			);
-
-			add_settings_field(
-				'zwsgr_google_api_key',
-				__('Google Business API Key', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_api_key_callback'),
-				'zwsgr_google_account_settings',
-				'zwsgr_google_section'
-			);
-
-			add_settings_field(
-				'zwsgr_google_place_id',
-				__('Google Place ID', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_place_id_callback'),
-				'zwsgr_google_account_settings',
-				'zwsgr_google_section'
 			);
 
 			// Notification section & fields
@@ -920,29 +898,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_advanced_section'
 			);
 
-			add_settings_field(
-				'zwsgr_google_analytics_tracking_id',
-				__('Google Analytics Tracking ID', 'zw-smart-google-reviews'),
-				array($this, 'zwsgr_google_analytics_tracking_id_callback'),
-				'zwsgr_advanced_account_settings',
-				'zwsgr_advanced_section'
-			);
-
-		}
-
-	
-
-		// Google API Key callback
-		function zwsgr_google_api_key_callback()
-		{
-			$value = get_option('zwsgr_google_business_api_key', '');
-			echo '<input type="text" id="zwsgr_google_business_api_key" name="zwsgr_google_business_api_key" class="zwsgr-input-text" value="' . esc_attr($value) . '" />';
-		}
-
-		function zwsgr_google_place_id_callback()
-		{
-			$value = get_option('zwsgr_google_business_place_id', '');
-			echo '<input type="text" id="zwsgr_google_business_place_id" name="zwsgr_google_business_place_id" class="zwsgr-input-text" value="' . esc_attr($value) . '" />';
 		}
 
 		// Notifications callback
@@ -1018,13 +973,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<option value="weekly" ' . selected($value, 'weekly', false) . '>Weekly</option>
 					<option value="monthly" ' . selected($value, 'monthly', false) . '>Monthly</option>
 				</select>';
-		}
-
-		function zwsgr_google_analytics_tracking_id_callback()
-		{
-			$value = get_option('zwsgr_google_analytics_tracking_id', '');
-			echo '<input type="text" id="zwsgr_google_analytics_tracking_id" class="zwsgr-input-text" name="zwsgr_google_analytics_tracking_id" value="' . esc_attr($value) . '" />';
-			echo '<p class="zwsgr-description">' . __('Enter your Google Analytics Tracking ID (e.g., UA-XXXXXXXXX-Y).', 'zw-smart-google-reviews') . '</p>';
 		}
 
 		/**
