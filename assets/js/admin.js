@@ -1540,10 +1540,18 @@ jQuery(document).ready(function($) {
 	
 	function zwsgr_draw_chart(zwsgr_chart_data) {
 
+		// Check if zwsgr_chart_data is a valid array
+		if (!Array.isArray(zwsgr_chart_data)) {
+			document.getElementById('zwsgr_chart_wrapper').innerHTML = 
+				'<div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>';
+			return;
+		}
+
+		// Check if all second elements in rows are zero
 		var zwsgr_all_zero = zwsgr_chart_data.every(function(row) {
-			return row[1] === 0;
+			return Array.isArray(row) && row[1] === 0; // Ensure row is an array and row[1] exists
 		});
-	
+
 		if (zwsgr_all_zero) {
 			document.getElementById('zwsgr_chart_wrapper').innerHTML = 
 				'<div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>';
@@ -1613,29 +1621,17 @@ jQuery(document).ready(function($) {
 			},
 			beforeSend: function() {
 				var minHeight = $('.zwgr-dashboard #render-dynamic').outerHeight(true) || 200;
-				
-				// Fade out existing content smoothly before appending the loader
-				$('.zwgr-dashboard #render-dynamic').fadeOut(300, function() {
-					$(this).remove();
-					// Fade in the loader smoothly
-					$('.zwgr-dashboard').append('<div class="loader-outer-wrapper" style="height:' + minHeight + 'px;"><div class="loader"></div></div>');	
-				});
-
+				$('.zwgr-dashboard #render-dynamic').remove();
+				$('.zwgr-dashboard').append('<div class="loader-outer-wrapper" style="height:' + minHeight + 'px;"><div class="loader"></div></div>');	
 			},
 			success: function(response) {
 				if (response.success) {
-					
-					
 					$('.zwgr-dashboard').append(response.data.html);
-
-					// Fade in the newly appended content smoothly
 					$('.zwgr-dashboard').children(':last').hide().fadeIn(300);
-
 					if (response.data.zwsgr_chart_data) {
 						setTimeout(function() {
 							google.charts.setOnLoadCallback(zwsgr_draw_chart(response.data.zwsgr_chart_data));
 						}, 500);
-					} else {
 					}
 
 				} else {
@@ -1643,12 +1639,7 @@ jQuery(document).ready(function($) {
 				}
 			},
 			complete: function() {
-
-				// Fade out existing content smoothly before appending the loader
-				$('.zwgr-dashboard .loader-outer-wrapper').fadeOut(300, function() {
-					$('.zwgr-dashboard .loader-outer-wrapper').remove();
-				});
-
+				$('.zwgr-dashboard .loader-outer-wrapper').remove();
 				zwsgr_gmb_account_div.removeClass('disabled');
 				zwsgr_gmb_location_div.removeClass('disabled');
 			},
