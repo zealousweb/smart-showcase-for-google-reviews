@@ -73,8 +73,15 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 '</div>
             </div>';
 
+            $zwsgr_chart_data = $this->zwsgr_dynamic_chart_data($zwsgr_data_render_args);
+
             if (defined('DOING_AJAX') && DOING_AJAX) {
-                wp_send_json_success(['html' => $zwsgr_data_render_output]);
+
+                wp_send_json_success([
+                    'html' => $zwsgr_data_render_output, 
+                    'zwsgr_chart_data' => $zwsgr_chart_data
+                ]);
+
             } else {
                 return $zwsgr_data_render_output;
             }
@@ -569,6 +576,41 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
         
             die();
         }
+
+        public function zwsgr_dynamic_chart_data($zwsgr_data_render_args) {
+        
+            // Query the posts
+            $zwsgr_query = new WP_Query($zwsgr_data_render_args);
+        
+            // Initialize ratings count array
+            $zwsgr_ratings_count = [
+                'FIVE' => 0,
+                'FOUR' => 0,
+                'THREE' => 0,
+                'TWO' => 0,
+                'ONE' => 0
+            ];
+        
+            // Loop through the posts to count the ratings
+            foreach ($zwsgr_query->posts as $post_id) {
+                $zwsgr_rating = get_post_meta($post_id, 'zwsgr_review_star_rating', true);
+                if (array_key_exists($zwsgr_rating, $zwsgr_ratings_count)) {
+                    $zwsgr_ratings_count[$zwsgr_rating]++;
+                }
+            }
+        
+            // Return the chart data
+            $zwsgr_chart_data = [
+                ['5 Stars', $zwsgr_ratings_count['FIVE']],
+                ['4 Stars', $zwsgr_ratings_count['FOUR']],
+                ['3 Stars', $zwsgr_ratings_count['THREE']],
+                ['2 Stars', $zwsgr_ratings_count['TWO']],
+                ['1 Star', $zwsgr_ratings_count['ONE']],
+            ];
+        
+            return $zwsgr_chart_data;
+        }
+                
 
 	}
 
