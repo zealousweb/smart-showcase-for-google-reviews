@@ -1173,9 +1173,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{	
 			echo '<div class="zwgr-dashboard">
 				<div class="zwgr-dashboard-header">'
-					. esc_html ( $this->zwsgr_dashboard->zwsgr_date_range_filter() ) .
+					. esc_html( $this->zwsgr_dashboard->zwsgr_date_range_filter() ) .
 				'</div>'
-				. esc_html ( $this->zwsgr_dashboard->zwsgr_data_render() ) .
+				. esc_html( $this->zwsgr_dashboard->zwsgr_data_render() ) .
 			'</div>';
 		}
 		
