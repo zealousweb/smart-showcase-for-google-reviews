@@ -343,7 +343,7 @@
 		</div>
 		<?php } ?>
 
-		<h2 class="zwsgr-h2"><?php esc_html_e( 'Test Mail', 'smart-google-reviews' ); ?></h2>
+		<h2 class="zwsgr-page-title"><?php esc_html_e( 'Test Mail', 'smart-google-reviews' ); ?></h2>
 
 		<form class="zwsgr-setting-form" method="post" action="">
 			<table class="form-table tooltip-table">
