@@ -52,8 +52,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 $zwsgr_filter_data = [
 					'zwsgr_gmb_account_number'   => null,
 					'zwsgr_gmb_account_location' => null,
-					'zwsgr_range_filter_type'    => 'rangeofdays',
-					'zwsgr_range_filter_data'    => 'monthly'
+					'zwsgr_range_filter_type'    => null,
+					'zwsgr_range_filter_data'    => null
 				];
 
             }
@@ -292,12 +292,12 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
-                            <button class="zwsgr-filter-button active" data-filter="monthly" data-type="rangeofdays">
+                            <button class="zwsgr-filter-button" data-filter="monthly" data-type="rangeofdays">
                                 ' . esc_html__( 'Monthly', 'zw-smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
-                            <input type="text" name="dates" value="" id="zwsgr-date-range-picker" class="zwsgr-filter-button" data-type="rangeofdate">
+                            <input type="text" name="dates" value="" id="zwsgr-date-range-picker" class="" data-type="rangeofdate">
                         </li>
                     </ul>
                 </div> 
@@ -345,7 +345,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             // Ensure the query limits the number of posts to 5
             $zwsgr_data_render_args['posts_per_page'] = 5;
 
-            $zwsgr_data_render_args['meta_query'] = array(
+            // Add star rating filters without overwriting existing meta_query
+            $zwsgr_star_rating_query = array(
                 'relation' => 'OR',
                 array(
                     'key'     => 'zwsgr_review_star_rating',
@@ -374,6 +375,13 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 ),
             );
 
+            // Merge the existing meta_query with the new star rating query
+            if (isset($zwsgr_data_render_args['meta_query']) && is_array($zwsgr_data_render_args['meta_query'])) {
+                $zwsgr_data_render_args['meta_query'][] = $zwsgr_star_rating_query;
+            } else {
+                $zwsgr_data_render_args['meta_query'] = array($zwsgr_star_rating_query);
+            }
+
             $zwsgr_data_render_query = new WP_Query($zwsgr_data_render_args);
 
             $output = '<div class="zwsgr-reviews-wrapper zwsgr-flex-column">
@@ -390,11 +398,11 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
                     while ($zwsgr_data_render_query->have_posts()) {
                         $zwsgr_data_render_query->the_post();
-
+                        $zwsgr_review_id          = get_post_meta(get_the_ID(), 'zwsgr_review_id', true);
                         $zwsgr_reviewer_name      = get_post_meta(get_the_ID(), 'zwsgr_reviewer_name', true);
                         $zwsgr_review_content     = get_post_meta(get_the_ID(), 'zwsgr_review_comment', true);
                         $zwsgr_review_star_rating = get_post_meta(get_the_ID(), 'zwsgr_review_star_rating', true);
-                        $zwsgr_attachment_id = get_post_thumbnail_id(get_the_ID());
+                        $zwsgr_attachment_id      = get_post_thumbnail_id(get_the_ID());
                         $zwsgr_published_date     = get_the_date('F j, Y');
                         $zwsgr_post_date          = get_the_date('U');
                         $zwsgr_days_ago = floor((time() - $zwsgr_post_date) / (60 * 60 * 24));
@@ -409,6 +417,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
                         $zwsgr_numeric_rating = isset($zwsgr_rating_map[$zwsgr_review_star_rating]) ? $zwsgr_rating_map[$zwsgr_review_star_rating] : 0;
 
+                        $zwsgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
+
                         // Generate stars HTML
                         $zwsgr_stars_html = '';
                         for ($i = 0; $i < 5; $i++) {
@@ -421,31 +431,36 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                                 </svg>';
                         }
 
-                        $output .= '<div class="zwsgr-review-item">
-                            
+                        $output .= '<div class="zwsgr-review-item">    
                             <div class="zwsgr-review-header">
-                                <div class="zwsgr-profile">
-                                    '.($zwsgr_attachment_id?''.wp_get_attachment_image($zwsgr_attachment_id, 'thumbnail', false, array('style' => 'max-width:50px; height:auto;')).'':'<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'
-                                </div>
-                                <div class="zwsgr-review-info">
-                                    <h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
-                                    <h5 class="zwsgr-date">
-                                        <span>' . esc_html($zwsgr_published_date) . ' (' . esc_html($zwsgr_days_ago) . ' days ago)</span>
-                                    </h5>
-                                </div>
+                                <div class="zwsgr-profile">';
+
+                        if (!empty($zwsgr_gmb_reviewer_image_uri)) {
+                            $output .= '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
+                        } else {
+                            $output .= '<img src="' . ZWSGR_URL . '/assets/images/fallback-user-dp.svg" class="fallback-user-dp">';
+                        }
+
+                        $output .= '</div>
+                            <div class="zwsgr-review-info">
+                                <h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>
+                                <h5 class="zwsgr-date">
+                                    <span>' . esc_html($zwsgr_published_date) . ' (' . esc_html($zwsgr_days_ago) . ' days ago)</span>
+                                </h5>
+                            </div>
+                        </div>';
+            
+                        // Add stars if available
+                        if (!empty($zwsgr_stars_html)) {
+                            $output .= '<div class="zwsgr-rating">
+                                '.$zwsgr_stars_html.'
                             </div>';
-            
-                            // Add stars if available
-                            if (!empty($zwsgr_stars_html)) {
-                                $output .= '<div class="zwsgr-rating">
-                                    '.$zwsgr_stars_html.'
-                                </div>';
-                            }
-            
-                            // Review content
-                            if (!empty($zwsgr_review_content)) {
-                                $output .= '<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>';
-                            }
+                        }
+        
+                        // Review content
+                        if (!empty($zwsgr_review_content)) {
+                            $output .= '<p class="zwsgr-content">' . esc_html($zwsgr_review_content) . '</p>';
+                        }
 
                         $output .= '</div>';
 
@@ -474,6 +489,31 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                     <h4>' . 
                         esc_html__( 'Review Statistics Chart', 'zw-smart-google-reviews' ) . 
                     '</h4>
+                    <div class="zwsgr_outer_wrapper">
+                        <div id="zwsgr_chart_wrapper"></div>
+                        <div id="zwsr_chart_legend_wrapper">
+                            <div class="zwsgr_chart_legend">
+                                <div class="marker" style="background-color: #f08c3c;"></div>
+                                <div class="guide">5 Star</div>
+                            </div>
+                            <div class="zwsgr_chart_legend">
+                                <div class="marker" style="background-color: #3caab4"></div>
+                                <div class="guide">4 Star</div>
+                            </div>
+                            <div class="zwsgr_chart_legend">
+                                <div class="marker" style="background-color: #a9c6cc"></div>
+                                <div class="guide">3 Star</div>
+                            </div>
+                            <div class="zwsgr_chart_legend">
+                                <div class="marker" style="background-color: #285064"></div>
+                                <div class="guide">2 Star</div>
+                            </div>
+                            <div class="zwsgr_chart_legend">
+                                <div class="marker" style="background-color: #f44336"></div>
+                                <div class="guide">1 Star</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>';
         }
