@@ -497,7 +497,9 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                         esc_html__( 'Review Statistics Chart', 'zw-smart-google-reviews' ) . 
                     '</h4>
                     <div class="zwsgr_outer_wrapper">
-                        <div id="zwsgr_chart_wrapper"></div>
+                        <div id="zwsgr_chart_wrapper">
+                            <div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>
+                        </div>
                         <div id="zwsr_chart_legend_wrapper">
                             <div class="zwsgr_chart_legend">
                                 <div class="marker" style="background-color: #f08c3c;"></div>

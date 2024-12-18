@@ -1159,7 +1159,6 @@ input.zwsgr-radio:checked::before {
 }
 
 .zwsgr-flex-inner-container .zwsgr_outer_wrapper #zwsr_chart_legend_wrapper {
-    display: flex;
     justify-content: space-between;
     margin: 32px 0 0 0;
 }
