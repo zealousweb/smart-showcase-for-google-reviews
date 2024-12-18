@@ -462,7 +462,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '<table class="form-table test" id="gmb-review-data" zwsgr-review-id="'.$zwsgr_review->ID.'">
 				<tr>
 					<th>
-						<label for="zwsgr_reviewer_image">' . __('', 'smart-google-reviews') . '</label>
+						<label for="zwsgr_reviewer_image">' . esc_html('', 'smart-google-reviews') . '</label>
 					</th>
 					<td>';
 						if (!empty($zwsgr_gmb_reviewer_image_uri)) {
@@ -474,7 +474,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_reviewer_name">' . __('Reviewer', 'smart-google-reviews') . '</label>
+						<label for="zwsgr_reviewer_name">' . esc_html('Reviewer', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<input type="text" value="' . esc_attr($zwsgr_reviewer_name) . '" readonly class="regular-text" style="width:100%;" />
@@ -482,7 +482,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 								<tr>
 					<th>
-						<label for="zwsgr_review_published_date">' . __('Publish Date', 'smart-google-reviews') . '</label>
+						<label for="zwsgr_review_published_date">' . esc_html('Publish Date', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<input type="text" value="' . esc_attr($zwsgr_review_published_date) . '" readonly class="regular-text" style="width:100%;" />
@@ -490,7 +490,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_review_comment">' . __('Review Content', 'smart-google-reviews') . '</label>
+						<label for="zwsgr_review_comment">' . esc_html('Review Content', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<textarea readonly class="regular-text" rows="5" style="width:100%;">' . esc_textarea($zwsgr_review_comment) . '</textarea>
@@ -498,7 +498,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</tr>
 				<tr>
 					<th>
-						<label for="zwsgr_review_star_rating">' . __('Star Ratings', 'smart-google-reviews') . '</label>
+						<label for="zwsgr_review_star_rating">' . esc_html('Star Ratings', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
 						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
@@ -515,7 +515,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_formatted_time = $zwsgr_datetime->format('F j, Y g:i A');
 					echo '<tr>
 						<th>
-							<label for="zwsgr_reply_update_time">' . __('Reply Update Time', 'smart-google-reviews') . '</label>
+							<label for="zwsgr_reply_update_time">' . esc_html('Reply Update Time', 'smart-google-reviews') . '</label>
 						</th>
 						<td>
 							<input type="text" value="' . esc_attr($zwsgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
@@ -525,19 +525,19 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				}
 				echo '<tr>
 					<th>
-						<label for="zwsgr_reply_comment"> ' . __('Reply Content', 'smart-google-reviews') . ' </label>
+						<label for="zwsgr_reply_comment"> ' . esc_html('Reply Content', 'smart-google-reviews') . ' </label>
 					</th>
 					<td>
 						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
 						<textarea name="zwsgr_reply_comment" class="regular-text" rows="5" style="width: 100%;">'. esc_textarea($zwsgr_reply_comment) .'</textarea>
 						<div class="cta-wrapper">';
 							if (!empty($zwsgr_reply_comment)) {
-								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-reply"> ' . __('Update', 'smart-google-reviews') . ' </button>';
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="update-reply"> ' . esc_html('Update', 'smart-google-reviews') . ' </button>';
 							} else {
-								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-reply"> ' . __('Add Reply', 'smart-google-reviews') . ' </button>';
+								echo '<button class="button button-primary button-large zwsgr-submit-btn" id="add-reply"> ' . esc_html('Add Reply', 'smart-google-reviews') . ' </button>';
 							}
 							if (!empty($zwsgr_reply_comment)) {
-								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-reply">' . __('Delete', 'smart-google-reviews') . '</button>';
+								echo '<button class="button button-danger button-large zwsgr-submit-btn" id="delete-reply">' . esc_html('Delete', 'smart-google-reviews') . '</button>';
 							}
 						echo '</div>
 					</td>
@@ -762,11 +762,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					// Display the shortcode and copy icon
 					echo '<div style="display: flex; align-items: center;">';
 					echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . $post_id . '">';
-					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . __('Copy Shortcode', 'smart-google-reviews') . '"></span>';
+					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . $post_id . '" style="cursor: pointer;" title="' . esc_html('Copy Shortcode', 'smart-google-reviews') . '"></span>';
 					echo '</div>';
 				} else {
 					// Optionally, you can display a message or leave it blank if the condition is not met
-					echo '<span>' . __('Please select the appropriate options', 'smart-google-reviews') . '</span>';
+					echo '<span>' . esc_html('Please select the appropriate options', 'smart-google-reviews') . '</span>';
 				}
 			}
 		}
@@ -919,7 +919,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			echo '</div>';
 			echo '<div class="zwsgr-field">';
 			echo '<input type="text" id="zwsgr_admin_notification_emails" name="zwsgr_admin_notification_emails" class="zwsgr-input-text" rows="5" cols="50" value="' . esc_attr($value) . '" />';
-			echo '<p class="zwsgr-description">' . __('Enter email addresses separated by commas.', 'smart-google-reviews') . '</p>';
+			echo '<p class="zwsgr-description">' . esc_html('Enter email addresses separated by commas.', 'smart-google-reviews') . '</p>';
 			echo '</div>';
 			echo '</div>';
 		}
@@ -955,11 +955,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			
 			echo '<div class="zwsgr-editor-wrapper">';
 				echo '<div class="zwsgr-th-label">';
-				echo '<label for="zwsgr_admin_notification_email_body" class="zwsgr-th">' . __('Email Body', 'smart-google-reviews') . '</label>';
+				echo '<label for="zwsgr_admin_notification_email_body" class="zwsgr-th">' . esc_html('Email Body', 'smart-google-reviews') . '</label>';
 				echo '</div>';
 				echo '<div class="zwsgr-field">';
 				wp_editor($value, 'zwsgr_admin_notification_email_body', $settings);
-				echo '<p class="zwsgr-description">' . __('Enter your custom email body content here.', 'smart-google-reviews') . '</p>';
+				echo '<p class="zwsgr-description">' . esc_html('Enter your custom email body content here.', 'smart-google-reviews') . '</p>';
 				echo '</div>';
 			echo '</div>';
 		}
