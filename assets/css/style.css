@@ -201,13 +201,17 @@ body .zwsgr-slider .slick-arrow {
     transform: translate(0, -50%);
     transition: border-color ease 0.3s;
     font-size: 0;
-    left: -3%;
+    left: -2%;
     cursor: pointer;
 }
 
 body .zwsgr-slider .slick-arrow.slick-next {
-    right: -3%;
+    right: -2%;
     left: auto;
+}
+
+body #div-container .zwsgr-slider .slick-arrow {
+    left: -3%;
 }
 
 body #div-container .zwsgr-slider .slick-arrow.slick-next {
