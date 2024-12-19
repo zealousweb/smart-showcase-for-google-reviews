@@ -1178,12 +1178,28 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 */
 		function zwsgr_dashboard_callback()
 		{	
+
+			$zwsgr_allowed_html = wp_kses_allowed_html( 'post' );
+
+			// Merge your custom allowed tags and attributes
+			$zwsgr_allowed_html = array_merge( $zwsgr_allowed_html, array(
+				'input' => array( 'type' => true, 'name' => true, 'value' => true, 'id' => true, 'class' => true, 'data-type' => true ),
+				'select' => array( 'name' => true, 'id' => true, 'class' => true ),
+				'option' => array( 'value' => true ),
+				'button' => array( 'class' => true, 'data-filter' => true, 'data-type' => true ),
+				'ul' => array( 'class' => true ),
+				'li' => array( 'class' => true ),
+				'h1' => array( 'class' => true )
+			) );
+
+			// Use wp_kses instead of wp_kses_post
 			echo '<div class="zwgr-dashboard">
 				<div class="zwgr-dashboard-header">'
-					. $this->zwsgr_dashboard->zwsgr_date_range_filter() .
+				. wp_kses($this->zwsgr_dashboard->zwsgr_date_range_filter(), $zwsgr_allowed_html) .
 				'</div>'
-				. $this->zwsgr_dashboard->zwsgr_data_render() .
+				. wp_kses($this->zwsgr_dashboard->zwsgr_data_render(), $zwsgr_allowed_html) .
 			'</div>';
+			
 		}
 		
 		/**
