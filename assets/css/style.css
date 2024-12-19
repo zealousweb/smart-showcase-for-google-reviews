@@ -619,7 +619,6 @@
     background-color: #fff;
     border-radius: 16px;
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -630,11 +629,15 @@
     width: 40%;
     box-sizing: border-box;
     text-align: center;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .zwsgr-badge-item#zwsgr-badge5 .zwsgr-badge5-info {
     width: 60%;
-    padding-left: 20px;
+    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -702,6 +705,7 @@
     font-size: 20px;
     color: #000000;
     font-family: 'Poppins', sans-serif;
+    padding-right: 5px;
 }
 
 .zwsgr-badge-item#zwsgr-badge8{
