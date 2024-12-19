@@ -2178,7 +2178,36 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 										echo '<h3 class="zwsgr-layout-title">Layout: '. esc_html($option_type) .' '.esc_html($layout_count).'</h3>';
 										echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
 									echo '</div>';
-									echo $layout_content;
+									$allowed_html = wp_kses_allowed_html('post');
+
+									// Add SVG support
+									$allowed_html['svg'] = [
+										'xmlns' => true,
+										'width' => true,
+										'height' => true,
+										'viewBox' => true,
+										'fill' => true,
+										'stroke' => true,
+										'stroke-width' => true,
+										'class' => true,
+										'id' => true,
+										'style' => true,
+									];
+
+									$allowed_html['path'] = [
+										'd' => true,
+										'fill' => true,
+										'class' => true,
+									];
+
+									$allowed_html['g'] = [
+										'fill' => true,
+										'stroke' => true,
+										'stroke-width' => true,
+										'class' => true,
+									];
+
+									echo wp_kses($layout_content, $allowed_html);
 								echo '</div>';
 								
 
