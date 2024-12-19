@@ -1175,7 +1175,7 @@ input.zwsgr-radio:checked::before {
 }
 
 .zwsgr-flex-inner-container .zwsgr-reviews-container {
-    height: 254px;
+    max-height: 400px;
     overflow: auto;
 }
 
