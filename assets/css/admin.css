@@ -52,7 +52,7 @@ body .zwsgr-option-item {
     border-radius: 16px;
 }
 
-.selected-option-display,
+body .selected-option-display,
 body .generated-shortcode-display {
     margin-top: 20px;
     padding: 10px;
@@ -143,7 +143,7 @@ body .nav-tab.nav-tab-active {
 }
 
 
-input.zwsgr-input-text{
+body input.zwsgr-input-text{
     padding: 10px 16px;
     border: 1px solid #C1CFDE;
     background: #FCFCFC;
@@ -174,7 +174,7 @@ body .zwsgr-textarea {
     width: 100%;
 
 }
-select.zwsgr-input-text{
+body select.zwsgr-input-text{
     padding: 10px 16px;
     border: 1px solid #C1CFDE;
     height: 48px;
@@ -198,13 +198,13 @@ body select.zwsgr-input-text option {
     padding: 10px;
 }
 
-select.zwsgr-input-text:focus,
+body select.zwsgr-input-text:focus,
 body input.zwsgr-input-text:focus {
    box-shadow: none;
    border: 1px solid #C1CFDE;
 }
 
-body .zwsgr-slider .zwsgr-star, .zwsgr-badge-wrap .zwsgr-badge-item .zwsgr-star {
+body .zwsgr-slider .zwsgr-star, body .zwsgr-badge-wrap .zwsgr-badge-item .zwsgr-star {
     font-size: 20px;
 }
 
@@ -291,8 +291,8 @@ body .zwsgr-section-wrap form h2 {
 }
 
 
-.zwsgr-setting-form th,
-.zwsgr-th,
+body .zwsgr-setting-form th,
+body .zwsgr-th,
 body .zwsgr-label {
     font-size: 16px;
     font-weight: 500;
@@ -354,20 +354,20 @@ body .zwsgr-widget-wrap .zwsgr-widget-eleemt-list li {
     width: 33.33%;
 }
 
-.zwsgr-color-options,
+body .zwsgr-color-options,
 body .zwsgr-color-options_load {
     display: flex;
     margin-top: 10px;
 }
 
-.zwsgr-color-options .zwsgr-color-picker,
+body .zwsgr-color-options .zwsgr-color-picker,
 .zwsgr-color-options_load .zwsgr-color-picker-load{
     margin-right: 25px;
     display: flex;
     align-items: center;
 }
 
-.zwsgr-color-options .zwsgr-color-picker label,
+body .zwsgr-color-options .zwsgr-color-picker label,
 body .zwsgr-color-options_load .zwsgr-color-picker-load label {
     padding-right: 10px;
 }
@@ -437,7 +437,7 @@ body .zwsgr-custom-tab .zwsgr-step-arrow {
     margin: 0px 20px;
 }
 
-body .zwsgr-custom-tab .zwsgr-step-arrow:before, .zwsgr-custom-tab .zwsgr-step-arrow:after {
+body .zwsgr-custom-tab .zwsgr-step-arrow:before, body .zwsgr-custom-tab .zwsgr-step-arrow:after {
     content: "";
     background: #4A494B;
     position: relative;
@@ -538,7 +538,7 @@ body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper {
     align-items: center;
 }
 
-.zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper span, 
+body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper span, 
 body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper input {
     font-size: 16px;
     font-weight: 500;
