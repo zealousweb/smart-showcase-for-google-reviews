@@ -921,7 +921,8 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item:last-child {
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button, 
 body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
-    background-color: #EDF4F5;
+    color: white !important;
+    background-color: #3caab4;
     color: #1B1B1B;
     padding: 10px 24px;
     border-radius: 50px;
@@ -945,11 +946,6 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
     line-height: 30px;
     font-family: 'Poppins';
     color: #1B1B1B;
-}
-
-body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker.active {
-    background-color: #0074A2;
-    color: #FCFCFC;    
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select, 
@@ -1152,6 +1148,10 @@ body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"] {
     font-weight: 600 !important;
     max-width: 210px !important;
     text-align: center;
+}
+
+body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]::placeholder {
+    color: white !important;
 }
 
 body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"].active::placeholder {
