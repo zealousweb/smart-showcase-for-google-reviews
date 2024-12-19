@@ -1134,6 +1134,10 @@ jQuery(document).ready(function($) {
 		const zwsgr_location_new_review_uri = $(
 			"#fetch-gmb-data #zwsgr-location-select option:selected"
 		).attr("data-new-review-url");
+
+		const zwsgr_location_all_review_uri = $(
+			"#fetch-gmb-data #zwsgr-location-select option:selected"
+		).attr("data-all-reviews-url");
 		
 		$("#fetch-gmb-data #zwsgr-location-select").addClass('disabled');
 
@@ -1169,7 +1173,8 @@ jQuery(document).ready(function($) {
 		  zwsgr_widget_id,
 		  zwsgr_location_name,
 		  zwsgr_location_new_review_uri,
-		  zwsgr_account_name
+		  zwsgr_account_name,
+		  zwsgr_location_all_review_uri
 		);
 	  });
 	
@@ -1218,7 +1223,8 @@ jQuery(document).ready(function($) {
 		zwsgr_widget_id,
 		zwsgr_location_name,
 		zwsgr_location_new_review_uri,
-		zwsgr_account_name
+		zwsgr_account_name,
+		zwsgr_location_all_review_uri
 	  ) {
 		$.ajax({
 		  url: zwsgr_admin.ajax_url,
@@ -1233,7 +1239,8 @@ jQuery(document).ready(function($) {
 			zwsgr_widget_id: zwsgr_widget_id,
 			zwsgr_location_name: zwsgr_location_name,
 			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri,
-			zwsgr_account_name: zwsgr_account_name
+			zwsgr_account_name: zwsgr_account_name,
+			zwsgr_location_all_review_uri: zwsgr_location_all_review_uri
 		  },
 		  success: function (response) {
 
@@ -1530,44 +1537,53 @@ jQuery(document).ready(function($) {
 		zwsgr_render_data_callback(ev, zwsgr_range_filter_data, 'rangeofdate');
 	});
 
-	// Declare chart variable globally
 	var zwsgr_chart;
 	var zwsgr_data;
 	var zwsgr_options;
+	var zwsgr_chart_data = zwsgr_admin.zwsgr_dynamic_chart_data;
 
-	// Load the Visualization API and the corechart package
 	google.charts.load('current', {'packages':['corechart']});
-
-	// Set a callback to run when the API is loaded
-	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(() => zwsgr_draw_chart(zwsgr_chart_data));
 	
-	function drawChart() {
-	
-		// Example review ratings data
-		var zwsgr_data = google.visualization.arrayToDataTable([
-			['Rating', 'Number of Reviews'],
-			['5 Stars', 120],
-			['4 Stars', 85],
-			['3 Stars', 40],
-			['2 Stars', 20],
-			['1 Star', 10]
-		]);
+	function zwsgr_draw_chart(zwsgr_chart_data) {
 
-		// Set chart options
+		// Check if zwsgr_chart_data is a valid array
+		if (!Array.isArray(zwsgr_chart_data)) {
+			document.getElementById('zwsgr_chart_wrapper').innerHTML = 
+				'<div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>';
+			return;
+		}
+
+		// Check if all second elements in rows are zero
+		var zwsgr_all_zero = zwsgr_chart_data.every(function(row) {
+			return Array.isArray(row) && row[1] === 0;
+		});
+
+		if (zwsgr_all_zero) {
+			document.getElementById('zwsgr_chart_wrapper').innerHTML = 
+				'<div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>';
+			return;
+		}
+
+		zwsgr_chart_data.unshift(['Rating', 'Number of Reviews']);
+
+		console.log(zwsgr_chart_data, 'zwsgr_chart_data');
+
+		var zwsgr_data = google.visualization.arrayToDataTable(zwsgr_chart_data);
+
 		var zwsgr_options = {
 			pieHole: 0.4,
 			width: 276,
 			height: 276,
 			legend: 'none',
 			chartArea: {
-			width: '100%', // Make chartArea responsive
-			height: '100%'
+				width: '90%',
+				height: '90%'
 			},
 			colors: ['#F08C3C', '#3CAAB4', '#A9C6CC', '#285064', '#F44336'],
 			backgroundColor: 'transparent'
 		};
 
-		// Draw the chart
 		var zwsgr_chart = new google.visualization.PieChart(document.getElementById('zwsgr_chart_wrapper'));
 		zwsgr_chart.draw(zwsgr_data, zwsgr_options);
 
@@ -1583,6 +1599,8 @@ jQuery(document).ready(function($) {
 	function zwsgr_render_data_callback(e, zwsgr_range_filter_data, zwsgr_range_filter_type) {
 
 		e.preventDefault();
+
+		$zwsgr_chart_wrapper = $('#zwsgr_chart_wrapper').outerHeight(true);
 
 		var zwsgr_gmb_account_div = $("#gmb-data-filter #zwsgr-account-select");
 		var zwsgr_gmb_location_div = $("#gmb-data-filter #zwsgr-location-select");
@@ -1601,8 +1619,6 @@ jQuery(document).ready(function($) {
 			zwsgr_range_filter_type: zwsgr_range_filter_type,
 			zwsgr_range_filter_data: zwsgr_range_filter_data
 		};
-
-		console.log(zwsgr_filter_data, 'zwsgr_filter_data');
 	
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -1613,32 +1629,34 @@ jQuery(document).ready(function($) {
 				security: zwsgr_admin.zwsgr_data_render
 			},
 			beforeSend: function() {
-				// Add the loader before the request is sent
+				var minHeight = $('.zwgr-dashboard #render-dynamic').outerHeight(true) || 200;
 				$('.zwgr-dashboard #render-dynamic').remove();
-				$('.zwgr-dashboard').append('<div class="loader"></div>');
+				$('.zwgr-dashboard').append('<div class="loader-outer-wrapper" style="height:' + minHeight + 'px;"><div class="loader"></div></div>');	
 			},
 			success: function(response) {
 				if (response.success) {
-					$('.zwgr-dashboard ').append(response.data.html);
+					$('.zwgr-dashboard').append(response.data.html);
+					$('.zwgr-dashboard').children(':last').hide().fadeIn(300);
+					if (response.data.zwsgr_chart_data) {
+						setTimeout(function() {
+							google.charts.setOnLoadCallback(zwsgr_draw_chart(response.data.zwsgr_chart_data));
+						}, 500);
+					}
+
 				} else {
 					$('.zwgr-dashboard ').html('<p>Error loading data.</p>');
 				}
 			},
 			complete: function() {
-				$('.loader').remove();
+				$('.zwgr-dashboard .loader-outer-wrapper').remove();
 				zwsgr_gmb_account_div.removeClass('disabled');
 				zwsgr_gmb_location_div.removeClass('disabled');
-				if (zwsgr_chart) {
-					zwsgr_chart.draw(zwsgr_data, zwsgr_options);
-				}
 			},
 			error: function() {
 				$('#render-dynamic').html('<p>An error occurred while fetching data.</p>');
 			}
 		});
 	}
-	
-
 
 	$('.star-filter').on('click', function () {
 		var rating = $(this).data('rating'); // Get the rating of the clicked star

@@ -256,6 +256,25 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
         }
 
+       /**
+         * Fetches the profile media thumbnail for a specific location.
+         *
+         * @param string $zwsgr_account_id Google My Business account ID.
+         * @param string $zwsgr_location_id Location ID for the desired profile thumbnail.
+         * @return mixed API response with profile media data or an error.
+         */
+        public function zwsgr_get_location_thumbnail($zwsgr_account_id, $zwsgr_location_id) {
+
+            // Construct the API endpoint for profile media.
+            $zwsgr_api_endpoint = "accounts/{$zwsgr_account_id}/locations/{$zwsgr_location_id}/media/profile";
+
+            // Prepare optional query parameters (e.g., page token).
+            $zwsgr_api_params = $zwsgr_page_token ? [ 'pageToken' => $zwsgr_page_token ] : [];
+
+            // Execute the API request and return the response.
+            return $this->zwsgr_api_request($zwsgr_api_endpoint, $zwsgr_api_params, 'GET', 'v4');
+        }
+
         /**
          * Retrieves reviews for a specific location in a Google My Business account.
          *
@@ -352,7 +371,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 wp_send_json_success(
                     array(
                         'success' => true,
-                        'message' =>  __('Reply updated successfully', 'zw-smart-google-reviews'),
+                        'message' =>  __('Reply updated successfully', 'smart-google-reviews'),
                     )
                 );
 
@@ -434,7 +453,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 wp_send_json_success(
                     array(
                         'success' => true,
-                        'message' =>  __('Reply deleted successfully', 'zw-smart-google-reviews'),
+                        'message' =>  __('Reply deleted successfully', 'smart-google-reviews'),
                     )
                 );
 
@@ -474,7 +493,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return a success response with the OAuth URL
                 wp_send_json_success(
                     array(
-                        'message' => __('Redirecting to OAuth for authentication...', 'your-text-domain'),
+                        'message' => __('Redirecting to OAuth for authentication...', 'smart-google-reviews'),
                         'zwsgr_oauth_url' => esc_url_raw($zwsgr_oauth_url)
                     )
                 );
@@ -484,7 +503,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 // Return a failure message
                 wp_send_json_error(
                     array(
-                        'message' => __('Failed to generate OAuth URL or invalid response.', 'your-text-domain'),
+                        'message' => __('Failed to generate OAuth URL or invalid response.', 'smart-google-reviews'),
                         'code' => 'oauth_url_error'
                     )
                 );
@@ -536,7 +555,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             ) {
                 wp_send_json_error(
                     array(
-                        'message' => __('Failed to delete JWT token.', 'zw-smart-google-reviews'),
+                        'message' => __('Failed to delete JWT token.', 'smart-google-reviews'),
                         'code'    => 'delete_jwt_error'
                     )
                 );
@@ -563,7 +582,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                         wp_send_json_error(
                             array(
                                 'message' => sprintf(
-                                    __('Failed to delete data for custom post type: %s.', 'zw-smart-google-reviews'),
+                                    esc_html('Failed to delete data for custom post type: %s.', 'smart-google-reviews'),
                                     $zwsgr_post_type
                                 ),
                                 'code'    => 'delete_request_error'
@@ -613,7 +632,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                 if ($zwsgr_delete_request_data === false || $zwsgr_delete_reviews === false || $zwsgr_data_widget === false) {
                     wp_send_json_error(
                         array(
-                            'message' => __('Failed to delete plugin data.', 'zw-smart-google-reviews'),
+                            'message' => __('Failed to delete plugin data.', 'smart-google-reviews'),
                             'code' => 'delete_request_error'
                         )
                     );
@@ -624,7 +643,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
             // If all operations succeeded, send success message
             wp_send_json_success(
                 array(
-                    'message' => __('Plugin data successfully deleted.', 'zw-smart-google-reviews'),
+                    'message' => __('Plugin data successfully deleted.', 'smart-google-reviews'),
                     'code' => 'delete_request_success'
                 )
             );

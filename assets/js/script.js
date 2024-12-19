@@ -255,10 +255,11 @@ jQuery(document).ready(function($) {
 					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message" style="width:100%;">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('#zwsgr-slider3').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					$('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					// $('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -288,6 +289,13 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-2').append(response.data.content);
 
 				setTimeout(function() {
+					reinitializeSlickSlider($('#zwsgr-slider3'));
+				}, 100);
+				$('#zwsgr-slider3').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('#zwsgr-slider3').append(response.data.content);
+
+				setTimeout(function() {
 					reinitializeSlickSlider($('.zwsgr-slider-4'));
 				}, 100);
 				$('.zwsgr-slider-4').empty('');
@@ -307,14 +315,9 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-6').empty('');
 				// Append the 'Load More' button before making the AJAX request
 				$('.zwsgr-slider-6').append(response.data.content);
-
-				// Popup
-				$('.zwsgr-popup-item').empty('');
-				// Append the 'Load More' button before making the AJAX request
-				$('.zwsgr-popup-item').append(response.data.content);
 				
-				
-				if (layoutType === 'list' || layoutType === 'grid') {
+				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
+					layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
 					}
@@ -363,10 +366,11 @@ jQuery(document).ready(function($) {
 					$('.zwsgr-slider.zwsgr-grid-item').html('<p class="zwsgr-no-found-message" style="width:100%;">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					$('#zwsgr-slider3').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					$('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					// $('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -396,6 +400,13 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-2').append(response.data.content);
 
 				setTimeout(function() {
+					reinitializeSlickSlider($('#zwsgr-slider3'));
+				}, 100);
+				$('#zwsgr-slider3').empty('');
+				// Append the 'Load More' button before making the AJAX request
+				$('#zwsgr-slider3').append(response.data.content);
+
+				setTimeout(function() {
 					reinitializeSlickSlider($('.zwsgr-slider-4'));
 				}, 100);
 				$('.zwsgr-slider-4').empty('');
@@ -415,13 +426,9 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-6').empty('');
 				// Append the 'Load More' button before making the AJAX request
 				$('.zwsgr-slider-6').append(response.data.content);
-
-				// Popup
-				$('.zwsgr-popup-item').empty('');
-				// Append the 'Load More' button before making the AJAX request
-				$('.zwsgr-popup-item').append(response.data.content);
 				
-				if (layoutType === 'list' || layoutType === 'grid') {
+				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
+				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
 					}
@@ -435,6 +442,7 @@ jQuery(document).ready(function($) {
 		// Find and reinitialize Slick sliders
 		var slider1 = $(container).find('.zwsgr-slider-1');
 		var slider2 = $(container).find('.zwsgr-slider-2');
+		var slider3 = $(container).find('.zwsgr-slider-3');
 		var slider4 = $(container).find('.zwsgr-slider-4');
 		var slider5 = $(container).find('.zwsgr-slider-5');
 		var slider6 = $(container).find('.zwsgr-slider-6');
@@ -508,6 +516,25 @@ jQuery(document).ready(function($) {
 						settings: {
 						  slidesToShow: 1,
 						  slidesToScroll: 1
+						}
+					}
+				]
+			});
+		}
+
+		if (slider3.length) {
+			slider3.slick({
+				infinite: true,
+				slidesToShow: 2,
+				slidesToScroll: 2,
+				arrows: true,
+				dots: false,
+				responsive: [
+					{
+						breakpoint: 1180,
+						settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]

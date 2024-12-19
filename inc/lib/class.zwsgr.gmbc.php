@@ -49,7 +49,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
-            if (empty($zwsgr_gmb_email)) {
+            if (empty($zwsgr_gmb_email) || (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true')) {
                 add_submenu_page (
                     'zwsgr_dashboard',
                     'Connect Google',
@@ -297,15 +297,22 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                         
                             // Retrieve existing locations or initialize an empty array
                             $zwsgr_account_locations = get_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', true);
+
+                            
             
                             // Check if the custom field has a value
                             if ( $zwsgr_account_locations ) {
                                 echo '<select id="zwsgr-location-select" name="zwsgr_location" class="zwsgr-input-text  '.$zwsgr_disabled_class.'">
                                     <option value="">Select a Location</option>';
                                     foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
+
+                                        echo '<pre>';
+                                        print_r($zwsgr_account_location);
+                                        echo '</pre>';
+
                                         $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
                                         $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
-                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . ' data-new-review-url="'.$zwsgr_account_location['metadata']['newReviewUri'].'">' . esc_html($zwsgr_account_location['title']) . '</option>';
+                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . $selected . ' data-new-review-url="'.$zwsgr_account_location['metadata']['newReviewUri'].'" data-all-reviews-url="http://search.google.com/local/reviews?placeid='.$zwsgr_account_location['metadata']['placeId'].'">' . esc_html($zwsgr_account_location['title']) . '</option>';
                                     }              
                                 echo '</select>
                                 <a href="#" class="button button-secondary zwsgr-submit-btn '.$zwsgr_disabled_class.'" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">

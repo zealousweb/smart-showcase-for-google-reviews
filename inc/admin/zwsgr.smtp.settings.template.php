@@ -9,7 +9,7 @@
 
 		// check nounce
 		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ) ) {
-			$error[] =  __( 'Nonce check failed.', 'zw-smart-google-reviews' );
+			$error[] =  __( 'Nonce check failed.', 'smart-google-reviews' );
 		}
 		global $wp_version;
 		if ( version_compare( $wp_version, '5.5.1', '>=' ) ) {
@@ -96,13 +96,13 @@
 		$ret['debug_log'] = $debug_msg;
 
 		if( $success == 0 ) {
-			$error[] = __( 'Error on send mail.', 'zw-smart-google-reviews' );
+			$error[] = __( 'Error on send mail.', 'smart-google-reviews' );
 			$error[] = $ret['error'];
 			$error[] = $ret['debug_log'];
 		}
 
 		if ( empty( $error ) ) {
-			$message .= __( 'Test email was successfully sent.', 'zw-smart-google-reviews' );
+			$message .= __( 'Test email was successfully sent.', 'smart-google-reviews' );
 		}
 
 	}
@@ -110,14 +110,14 @@
 	if ( isset( $_POST['zwsgr_smtp_submit'] ) ) {
 		// check nounce
 		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtp_nonce_name' ) ) {
-			$error .= ' ' . __( 'Nonce check failed.', 'zw-smart-google-reviews' );
+			$error .= ' ' . __( 'Nonce check failed.', 'smart-google-reviews' );
 		}
 
 		if ( isset( $_POST['zwsgr_from_email'] ) ) {
 			if ( is_email( $_POST['zwsgr_from_email'] ) ) {
 				$zwsgr_smtp_option['zwsgr_from_email'] = sanitize_email( $_POST['zwsgr_from_email'] );
 			} else {
-				$error .= ' ' . __( "Please enter a valid email address in the 'From Email Address' field.", 'zw-smart-google-reviews' );
+				$error .= ' ' . __( "Please enter a valid email address in the 'From Email Address' field.", 'smart-google-reviews' );
 			}
 		}
 		$zwsgr_smtp_option['zwsgr_from_name'] = sanitize_text_field( $_POST['zwsgr_from_name'] );
@@ -131,7 +131,7 @@
 		if ( isset( $_POST['zwsgr_smtp_port'] ) ) {
 			if ( empty( $_POST['zwsgr_smtp_port'] ) || 1 > intval( $_POST['zwsgr_smtp_port'] ) || ( ! preg_match( '/^\d+$/', $_POST['zwsgr_smtp_port'] ) ) ) {
 				$zwsgr_smtp_option['zwsgr_smtp_port']	= '25';
-				$error                                   .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'zw-smart-google-reviews' );
+				$error                                   .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'smart-google-reviews' );
 			} else {
 				$zwsgr_smtp_option['zwsgr_smtp_port'] = sanitize_text_field( $_POST['zwsgr_smtp_port'] );
 			}
@@ -142,9 +142,9 @@
 		/* Update settings in the database */
 		if ( empty( $error ) ) {
 			update_option( 'zwsgr_smtp_option', $zwsgr_smtp_option );
-			$message_smtp .= __( 'SMTP Settings saved.', 'zw-smart-google-reviews' );
+			$message_smtp .= __( 'SMTP Settings saved.', 'smart-google-reviews' );
 		} else {
-			$error .= ' ' . __( 'SMTP Settings are not saved.', 'zw-smart-google-reviews' );
+			$error .= ' ' . __( 'SMTP Settings are not saved.', 'smart-google-reviews' );
 		}
 
 	}
@@ -160,7 +160,7 @@
 
 				<tr valign="top">
 					<th scope="row">
-						<?php _e( 'From Email Address', 'zw-smart-google-reviews' ); ?>
+						<?php esc_html_e( 'From Email Address', 'smart-google-reviews' ); ?>
 					</th>
 					<td>
 						<input
@@ -177,7 +177,7 @@
 				<tr valign="top">
 					<th scope="row" valign="top">
 						<label for="zwsgr-from-name">
-							<?php _e( 'From Name', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'From Name', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -194,7 +194,7 @@
 				<tr valign="top">
 					<th scope="row" valign="top">
 						<label for="zwsgr-smtp-host">
-							<?php _e( 'SMTP Host', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'SMTP Host', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -212,7 +212,7 @@
 				<tr valign="top">
 					<th scope="row" valign="top">
 						<label for="zwsgr-smtp-ency-type">
-							<?php _e( 'Type of Encryption', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'Type of Encryption', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -220,15 +220,15 @@
 					$zwsgr_smtp_option['zwsgr_smtp_ency_type'] = isset( $zwsgr_smtp_option['zwsgr_smtp_ency_type'] ) ? $zwsgr_smtp_option['zwsgr_smtp_ency_type'] : 'none';
 					?>
 						<label for="zwsgr_smtp_ency_type_1">
-							<input id="zwsgr_smtp_ency_type_1" name="zwsgr_smtp_ency_type" type="radio" value="none"  <?php checked( $zwsgr_smtp_option['zwsgr_smtp_ency_type'], 'none' ); ?> ><?php _e( 'None', 'zw-smart-google-reviews' ); ?>
+							<input id="zwsgr_smtp_ency_type_1" name="zwsgr_smtp_ency_type" type="radio" value="none"  <?php checked( $zwsgr_smtp_option['zwsgr_smtp_ency_type'], 'none' ); ?> ><?php esc_html_e( 'None', 'smart-google-reviews' ); ?>
 						</label>
 
 						<label for="zwsgr_smtp_ency_type_2">
-							<input id="zwsgr_smtp_ency_type_2" name="zwsgr_smtp_ency_type" type="radio" value="ssl"  <?php checked( $zwsgr_smtp_option['zwsgr_smtp_ency_type'], 'ssl' ); ?> ><?php _e( 'SSL', 'zw-smart-google-reviews' ); ?>
+							<input id="zwsgr_smtp_ency_type_2" name="zwsgr_smtp_ency_type" type="radio" value="ssl"  <?php checked( $zwsgr_smtp_option['zwsgr_smtp_ency_type'], 'ssl' ); ?> ><?php esc_html_e( 'SSL', 'smart-google-reviews' ); ?>
 						</label>
 
 						<label for="zwsgr_smtp_ency_type_3">
-							<input id="zwsgr_smtp_ency_type_3" name="zwsgr_smtp_ency_type" type="radio" value="tls"  <?php checked( $zwsgr_smtp_option['zwsgr_smtp_ency_type'], 'tls' ); ?> ><?php _e( 'TLS', 'zw-smart-google-reviews' ); ?>
+							<input id="zwsgr_smtp_ency_type_3" name="zwsgr_smtp_ency_type" type="radio" value="tls"  <?php checked( $zwsgr_smtp_option['zwsgr_smtp_ency_type'], 'tls' ); ?> ><?php esc_html_e( 'TLS', 'smart-google-reviews' ); ?>
 						</label>
 					</td>
 				</tr>
@@ -236,7 +236,7 @@
 				<tr valign="top">
 					<th scope="row" valign="top">
 						<label for="zwsgr-smtp-port">
-							<?php _e( 'Port', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'Port', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -254,7 +254,7 @@
 				<tr valign="top">
 					<th scope="row" valign="top">
 						<label for="zwsgr-smtp-auth">
-							<?php _e( 'SMTP Authentication', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'SMTP Authentication', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -262,11 +262,11 @@
 					$zwsgr_smtp_option['zwsgr_smtp_auth'] = isset( $zwsgr_smtp_option['zwsgr_smtp_auth'] ) ? $zwsgr_smtp_option['zwsgr_smtp_auth'] : 'yes';
 					?>
 						<label for="zwsgr_smtp_auth_1">
-							<input id="zwsgr_smtp_auth_1" name="zwsgr_smtp_auth" type="radio" value="no" <?php checked( $zwsgr_smtp_option['zwsgr_smtp_auth'], 'no' ); ?> ><?php _e( 'No', 'zw-smart-google-reviews' ); ?>
+							<input id="zwsgr_smtp_auth_1" name="zwsgr_smtp_auth" type="radio" value="no" <?php checked( $zwsgr_smtp_option['zwsgr_smtp_auth'], 'no' ); ?> ><?php esc_html_e( 'No', 'smart-google-reviews' ); ?>
 						</label>
 
 						<label for="zwsgr_smtp_auth_2">
-							<input id="zwsgr_smtp_auth_2" name="zwsgr_smtp_auth" type="radio" value="yes" <?php checked( $zwsgr_smtp_option['zwsgr_smtp_auth'], 'yes' ); ?> ><?php _e( 'Yes', 'zw-smart-google-reviews' ); ?>
+							<input id="zwsgr_smtp_auth_2" name="zwsgr_smtp_auth" type="radio" value="yes" <?php checked( $zwsgr_smtp_option['zwsgr_smtp_auth'], 'yes' ); ?> ><?php esc_html_e( 'Yes', 'smart-google-reviews' ); ?>
 						</label>
 					</td>
 				</tr>
@@ -274,7 +274,7 @@
 				<tr valign="top" class="zwsgr-smtp-auth-enable">
 					<th scope="row" valign="top">
 						<label for="zwsgr-smtp-username">
-							<?php _e( 'SMTP Username', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'SMTP Username', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -292,7 +292,7 @@
 				<tr valign="top" class="zwsgr-smtp-auth-enable">
 					<th scope="row" valign="top">
 						<label for="zwsgr-smtp-password">
-							<?php _e( 'SMTP Password', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'SMTP Password', 'smart-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
@@ -302,7 +302,7 @@
 							type="password"
 							class="zwsgr-input-text"
 							required
-							value="<?php echo isset( $zwsgr_smtp_option['zwsgr_smtp_password'] ) ? esc_attr_e( $zwsgr_smtp_option['zwsgr_smtp_password'] ) : ''; ?>"
+							value="<?php echo isset( $zwsgr_smtp_option['zwsgr_smtp_password'] ) ? esc_attr( $zwsgr_smtp_option['zwsgr_smtp_password'] ) : ''; ?>"
 						/>
 					</td>
 				</tr>
@@ -315,7 +315,7 @@
 							name="zwsgr_smtp_submit"
 							type="submit"
 							class="button zwsgr-submit-btn"
-							value="<?php _e( 'Save SMTP Settings', 'zw-smart-google-reviews' ); ?>"
+							value="<?php esc_html_e( 'Save SMTP Settings', 'smart-google-reviews' ); ?>"
 						/>
 						<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtp_nonce_name' ); ?>
 					</td>
@@ -337,13 +337,13 @@
 		<div id="setting-error-settings_updated" class="notice notice-error settings-error is-dismissible">
 			<?php
 			foreach( $error as $key=>$val) {
-				echo '<p><strong>'.  ( $val ) .'</strong></p>';
+				echo '<p><strong>'.  esc_html( $val ) .'</strong></p>';
 			}
 			?>
 		</div>
 		<?php } ?>
 
-		<h2 class="zwsgr-h2"><?php _e( 'Test Mail', 'zw-smart-google-reviews' ); ?></h2>
+		<h2 class="zwsgr-page-title"><?php esc_html_e( 'Test Mail', 'smart-google-reviews' ); ?></h2>
 
 		<form class="zwsgr-setting-form" method="post" action="">
 			<table class="form-table tooltip-table">
@@ -351,7 +351,7 @@
 
 					<tr valign="top">
 						<th scope="row" valign="top">
-							<?php _e( 'To Email', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'To Email', 'smart-google-reviews' ); ?>
 						</th>
 						<td>
 							<input
@@ -367,7 +367,7 @@
 
 					<tr valign="top">
 						<th scope="row" valign="top">
-							<?php _e( 'Subject', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'Subject', 'smart-google-reviews' ); ?>
 						</th>
 						<td>
 							<input
@@ -382,7 +382,7 @@
 					</tr>
 					<tr valign="top">
 						<th scope="row" valign="top">
-							<?php _e( 'Message', 'zw-smart-google-reviews' ); ?>
+							<?php esc_html_e( 'Message', 'smart-google-reviews' ); ?>
 						</th>
 						<td>
 							<textarea
@@ -403,7 +403,7 @@
 								name="zwsgr_smtp_test_submit"
 								type="submit"
 								class="button zwsgr-submit-btn"
-								value="<?php _e( 'Send Test Email', 'zw-smart-google-reviews' ); ?>"
+								value="<?php esc_html_e( 'Send Test Email', 'smart-google-reviews' ); ?>"
 							/>
 							<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ); ?>
 						</td>
@@ -412,4 +412,3 @@
 				</tbody>
 			</table>
 		</form>
-<?php

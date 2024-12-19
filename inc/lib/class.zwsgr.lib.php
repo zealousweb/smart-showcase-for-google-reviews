@@ -168,7 +168,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Check if a post ID is provided and it exists
 			if (empty($post_id) || !get_post($post_id)) {
-				return esc_html__('Invalid post ID.', 'zw-smart-google-reviews');
+				return esc_html__('Invalid post ID.', 'smart-google-reviews');
 			}
 
 			// Retrieve the 'enable_load_more' setting from post meta
@@ -319,7 +319,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				}
 			echo '</div>';
 
-			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="'.$post_id.'" data-rating-filter="'.$rating_filter.'"  data-layout-type="'.$display_option.'" data-bg-color="'.esc_attr($bg_color_load).'" data-text-color="'.esc_attr($text_color_load).'">';
+			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="' . esc_attr( $post_id ) . '" data-rating-filter="' . esc_attr( $rating_filter ) . '" data-layout-type="' . esc_attr( $layout_option ) . '" data-bg-color="' . esc_attr( $bg_color_load ) . '" data-text-color="' . esc_attr( $text_color_load ) . '">';
 			if ($query->have_posts()) {
 
 				// Fetch selected elements from post meta
@@ -342,8 +342,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 						$published_date  = get_the_date('F j, Y');
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
 						$char_limit = (int) $char_limit ; 
 						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+						$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
+						$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 						// Determine if content is trimmed based on character limit
 						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
@@ -1174,12 +1177,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-slider" id="zwsgr-slider3">
 							<div class="zwsgr-slider-badge">
-								<div class="zwsgr-badge-item" id="zwsgr-badge1">
-									<h3 class="zwsgr-average">Good</h3>
-									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-									<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-									<img src="' . $plugin_dir_path . 'assets/images/google.png">
-								</div>
+								<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link">
+									<div class="zwsgr-badge-item" id="zwsgr-badge1">
+										<h3 class="zwsgr-average">Good</h3>
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+										<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+										<img src="' . $plugin_dir_path . 'assets/images/google.png">
+									</div>
+								</a>
 							</div>
 							<div class="zwsgr-slider-3">
 								' . $zwsgr_slider_content3 . '
@@ -1236,14 +1241,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>'
 					],
 					'badge' => [
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge1">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
 							<div class="zwsgr-badge-image">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
@@ -1254,7 +1259,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge3">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge3">
 							<div class="zwsgr-rating-wrap">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1262,7 +1267,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
 							<div class="zwsgr-badge4-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1273,7 +1278,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
 						</div></a>',
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
 							<div class="zwsgr-badge5-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							</div>
@@ -1284,7 +1289,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge6">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge6">
 							<div class="zwsgr-badge6-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1295,7 +1300,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
 							<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 							<div class="zwsgr-badge7-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
@@ -1303,7 +1308,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
 							<div class="zwsgr-logo-wrap">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 								<p class="zwsgr-avg-note">Google Reviews</p>
@@ -1321,7 +1326,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-profile-info">
 								<h3>'.$zwsgr_location_name.'</h3>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
+								<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 							</div>
 						</div>
 						<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
@@ -1330,7 +1335,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<span class="zwsgr-close-popup">&times;</span>
 									<div class="zwsgr-popup-wrap">
 										<div class="zwsgr-profile-logo">
-											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+											 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>' . $zwsgr_location_name . '</h3>
@@ -1342,14 +1347,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										' . $zwsgr_popup_content1 . '
 									</div>' .
 									($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['popup-1', 'popup-2']) ?
-										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
+										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'smart-google-reviews') . '</button>'
 										: '') .
 								'</div>
 							</div>
 						</div>',
 						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 						<div class="zwsgr-title-wrap">
-							<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 							<h3>Reviews</h3>
 						</div>
 						<div class="zwsgr-info-wrap">
@@ -1364,7 +1369,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+										 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -1376,7 +1381,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									' . $zwsgr_popup_content2 . '
 								</div>' .
 									($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['popup-1', 'popup-2']) ?
-										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>'
+										'<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'smart-google-reviews') . '</button>'
 										: '') .'
 							</div>
 						</div>
@@ -1391,23 +1396,52 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$reviews_html .= $options[$layout_option_key][$layout_option_value-1];
 				$reviews_html .= '</div>';
 				
-				echo $reviews_html;
+				$allowed_html = wp_kses_allowed_html('post');
+
+				// Add SVG support
+				$allowed_html['svg'] = [
+					'xmlns' => true,
+					'width' => true,
+					'height' => true,
+					'viewBox' => true,
+					'fill' => true,
+					'stroke' => true,
+					'stroke-width' => true,
+					'class' => true,
+					'id' => true,
+					'style' => true,
+				];
+
+				$allowed_html['path'] = [
+					'd' => true,
+					'fill' => true,
+					'class' => true,
+				];
+
+				$allowed_html['g'] = [
+					'fill' => true,
+					'stroke' => true,
+					'stroke-width' => true,
+					'class' => true,
+				];
+
+				echo wp_kses($reviews_html, $allowed_html);
+				// echo wp_kses_post($reviews_html);
 				
 				
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['list-1','list-2','','list-3','list-4','list-5','grid-1','grid-2','grid-3','grid-4','grid-5'])) {
-					echo '<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'zw-smart-google-reviews') . '</button>';
-				}
-				
-				if($google_review_toggle){
-					echo '<div class="zwsgr-toogle-display zwsgr-toogle-display-front">';
-						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle">Review Us On G</a>';
-					echo '</div>';
+					echo '<button class="load-more-meta zwsgr-load-more-btn" style="background-color:' . esc_attr($bg_color_load) . '; color:' . esc_attr($text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($rating_filter) . '">' . esc_html__('Load More', 'smart-google-reviews') . '</button>';
 				}
 				
 			echo '</div>';
+				if($google_review_toggle){
+					echo '<div class="zwsgr-toogle-display zwsgr-toogle-display-front">';
+						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>';
+					echo '</div>';
+				}
 			} else {
-				echo '<p>' . esc_html__('No posts found.', 'zw-smart-google-reviews') . '</p>';
+				echo '<p>' . esc_html__('No posts found.', 'smart-google-reviews') . '</p>';
 			}
 
 			return ob_get_clean();  // Return the buffered content
@@ -1417,7 +1451,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		{
 			// Verify nonce for security
 			if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'zwsgr_load_more_nonce')) {
-				wp_send_json_error(esc_html__('Nonce verification failed.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
 				return;
 			}
 
@@ -1427,7 +1461,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			// Ensure the post_id exists
 			if (empty($post_id) || !get_post($post_id)) {
-				wp_send_json_error(esc_html__('Invalid post ID.', 'zw-smart-google-reviews'));
+				wp_send_json_error(esc_html__('Invalid post ID.', 'smart-google-reviews'));
 				return;
 			}
 
@@ -1480,6 +1514,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
 			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+			$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
 
 			// Query for posts based on the current page
 			$args = array(
@@ -1594,6 +1629,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 						$char_limit = (int) $char_limit ;
 						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+						$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
+						$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
 						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
@@ -2417,12 +2454,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-slider" id="zwsgr-slider3">
 							<div class="zwsgr-slider-badge">
-								<div class="zwsgr-badge-item" id="zwsgr-badge1">
-									<h3 class="zwsgr-average">Good</h3>
-									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-									<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-									<img src="' . $plugin_dir_path . 'assets/images/google.png">
-								</div>
+								<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link">
+									<div class="zwsgr-badge-item" id="zwsgr-badge1">
+										<h3 class="zwsgr-average">Good</h3>
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+										<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+										<img src="' . $plugin_dir_path . 'assets/images/google.png">
+									</div>
+								</a>
 							</div>
 							<div class="zwsgr-slider-3">
 								' . $zwsgr_slider_content3 . '
@@ -2479,7 +2518,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				wp_reset_postdata();
 			} else {
 				// No more posts available
-				$response['err_msg'] = esc_html__('No Review Founds.', 'zw-smart-google-reviews');
+				$response['err_msg'] = esc_html__('No Review Founds.', 'smart-google-reviews');
 			}
 			$response['disable_button'] = ( $query->max_num_pages <= $page ) ? true : false;
 			wp_send_json_success($response);

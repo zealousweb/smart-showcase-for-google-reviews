@@ -62,19 +62,26 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
             $zwsgr_data_render_output = '';
 
+            $zwsgr_chart_data = $this->zwsgr_dynamic_chart_data($zwsgr_data_render_args);
+
             $zwsgr_data_render_output .= '<div id="render-dynamic">
                 <div class="zwgr-dashboard-body">'
                     . $this->zwsgr_total_reviews($zwsgr_data_render_args) .
                     $this->zwsgr_average_ratings($zwsgr_data_render_args) . 
                 '</div>
                 <div class="zwgr-dashboard-footer">'
-                    . $this->zwsgr_reviews_statics_chart($zwsgr_data_render_args) .
+                    . $this->zwsgr_reviews_statics_chart($zwsgr_chart_data) .
                     $this->zwsgr_top_reviews($zwsgr_data_render_args) .
                 '</div>
             </div>';
 
             if (defined('DOING_AJAX') && DOING_AJAX) {
-                wp_send_json_success(['html' => $zwsgr_data_render_output]);
+
+                wp_send_json_success([
+                    'html' => $zwsgr_data_render_output, 
+                    'zwsgr_chart_data' => $zwsgr_chart_data
+                ]);
+
             } else {
                 return $zwsgr_data_render_output;
             }
@@ -92,7 +99,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             $zwsgr_range_filter_data    = isset($zwsgr_filter_data['zwsgr_range_filter_data'])    ? sanitize_text_field($zwsgr_filter_data['zwsgr_range_filter_data']) : '';
 
             if (!isset($zwsgr_gmb_email) || empty($zwsgr_gmb_email)) {
-                return 'No GMB Email Found.';
+                return $zwsgr_data_render_args;
             }
 
             if (!empty($zwsgr_gmb_email)) {
@@ -239,7 +246,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 </svg>
                 </div>
                 <div class="zwsgr-card-content">
-                    <h3 class="zwsgr-card-title">' . esc_html__( 'Total Reviews', 'zw-smart-google-reviews' ) . '</h3>
+                    <h3 class="zwsgr-card-title">' . esc_html__( 'Total Reviews', 'smart-google-reviews' ) . '</h3>
                     <p class="zwsgr-card-value">' . esc_html( number_format( $zwsgr_reviews_ratings['reviews'] ) ) . '</p>
                 </div>
             </div>';
@@ -260,7 +267,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 </svg>
                 </div>
                 <div class="zwsgr-card-content">
-                    <h3 class="zwsgr-card-title">' . esc_html__( 'Average Rating', 'zw-smart-google-reviews' ) . '</h3>
+                    <h3 class="zwsgr-card-title">' . esc_html__( 'Average Rating', 'smart-google-reviews' ) . '</h3>
                     <p class="zwsgr-card-value">' . esc_html( $zwsgr_reviews_ratings['ratings'] ) . '</p> <!-- Ensure to define $average_rating in your function -->
                 </div>
             </div>';
@@ -274,7 +281,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 <!-- Title Section -->
                 <div class="zwsgr-title-wrapper">
                     <h1 class="zwsgr-range-filter-title">
-                        ' . esc_html__( 'Date Range Filter', 'zw-smart-google-reviews' ) . '
+                        ' . esc_html__( 'Date Range Filter', 'smart-google-reviews' ) . '
                     </h1>
                 </div>
 
@@ -283,17 +290,17 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                     <ul class="zwsgr-filters-list">
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="daily" data-type="rangeofdays">
-                                ' . esc_html__( 'Daily', 'zw-smart-google-reviews' ) . '
+                                ' . esc_html__( 'Daily', 'smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="weekly" data-type="rangeofdays">
-                                ' . esc_html__( 'Weekly', 'zw-smart-google-reviews' ) . '
+                                ' . esc_html__( 'Weekly', 'smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="monthly" data-type="rangeofdays">
-                                ' . esc_html__( 'Monthly', 'zw-smart-google-reviews' ) . '
+                                ' . esc_html__( 'Monthly', 'smart-google-reviews' ) . '
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
@@ -389,7 +396,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             
             // Start the output for top reviews
             $output .= '<div class="zwsgr-header-container">
-                <h4>' . esc_html__('Top Reviews', 'zw-smart-google-reviews') . '</h4>
+                <h4>' . esc_html__('Top Reviews', 'smart-google-reviews') . '</h4>
             </div>';
             $plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
             // Check if there are reviews to display
@@ -472,7 +479,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
             } else {
 
-                $output .= '<p>' . esc_html__('No reviews available.', 'zw-smart-google-reviews') . '</p>';
+                $output .= '<p>' . esc_html__('No reviews available.', 'smart-google-reviews') . '</p>';
 
             }
 
@@ -483,14 +490,16 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
         }        
         
-        public function zwsgr_reviews_statics_chart() {
+        public function zwsgr_reviews_statics_chart($zwsgr_chart_data) {
             return '<div class="zwsgr-flex-container zwsgr-flex-column">
                 <div class="zwsgr-flex-inner-container">
                     <h4>' . 
-                        esc_html__( 'Review Statistics Chart', 'zw-smart-google-reviews' ) . 
+                        esc_html__( 'Review Statistics Chart', 'smart-google-reviews' ) . 
                     '</h4>
                     <div class="zwsgr_outer_wrapper">
-                        <div id="zwsgr_chart_wrapper"></div>
+                        <div id="zwsgr_chart_wrapper">
+                            <div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>
+                        </div>
                         <div id="zwsr_chart_legend_wrapper">
                             <div class="zwsgr_chart_legend">
                                 <div class="marker" style="background-color: #f08c3c;"></div>
@@ -569,6 +578,41 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
         
             die();
         }
+
+        public function zwsgr_dynamic_chart_data($zwsgr_data_render_args) {
+        
+            // Query the posts
+            $zwsgr_query = new WP_Query($zwsgr_data_render_args);
+        
+            // Initialize ratings count array
+            $zwsgr_ratings_count = [
+                'FIVE' => 0,
+                'FOUR' => 0,
+                'THREE' => 0,
+                'TWO' => 0,
+                'ONE' => 0
+            ];
+        
+            // Loop through the posts to count the ratings
+            foreach ($zwsgr_query->posts as $post_id) {
+                $zwsgr_rating = get_post_meta($post_id, 'zwsgr_review_star_rating', true);
+                if (array_key_exists($zwsgr_rating, $zwsgr_ratings_count)) {
+                    $zwsgr_ratings_count[$zwsgr_rating]++;
+                }
+            }
+        
+            // Return the chart data
+            $zwsgr_chart_data = [
+                ['5 Stars', $zwsgr_ratings_count['FIVE']],
+                ['4 Stars', $zwsgr_ratings_count['FOUR']],
+                ['3 Stars', $zwsgr_ratings_count['THREE']],
+                ['2 Stars', $zwsgr_ratings_count['TWO']],
+                ['1 Star', $zwsgr_ratings_count['ONE']],
+            ];
+        
+            return $zwsgr_chart_data;
+        }
+                
 
 	}
 
