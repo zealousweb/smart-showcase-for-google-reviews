@@ -90,6 +90,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
         public function zwsgr_data_render_query($zwsgr_filter_data) {
 
+            $zwsgr_data_render_args = array();
+
             $zwsgr_gmb_email            = get_option('zwsgr_gmb_email');
 
             // Sanitize data from user input
