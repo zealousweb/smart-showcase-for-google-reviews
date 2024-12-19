@@ -818,6 +818,7 @@ body .zwsgr-total-review {
 body .zwsgr-profile-info {
     text-align: left;
     padding-left: 20px;
+    pointer-events: none;
 }
 
 body .zwsgr-profile-info h3 {
@@ -833,6 +834,7 @@ body .zwsgr-profile-info .zwsgr-total-review {
     font-weight: 400;
     text-decoration: underline;
     font-family: 'Poppins', sans-serif;
+    pointer-events: auto;
 }
 
 body .zwsgr-profile-info .zwsgr-rating {
