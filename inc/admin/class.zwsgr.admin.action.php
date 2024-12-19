@@ -1343,7 +1343,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
-
+			$image_url = '';
 			if ($latest_zwsgr_reviews->have_posts()) {
 				while($latest_zwsgr_reviews->have_posts()) {
 					$latest_zwsgr_reviews->the_post();
@@ -1910,7 +1910,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Define your options and layouts with corresponding HTML content
 			$options = [
 				'slider' => [
-					'<div class="zwsgr-slider" id="zwsgr-slider1">
+					'<div class="zwsgr-slider" id="zwsgr-slider1"> 
 						<div class="zwsgr-slider-1">
 							' . $zwsgr_slider_content1 . '
 						</div>
@@ -2066,7 +2066,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 						<div class="zwsgr-profile-logo">
-							<img src="' . esc_url($image_url) . '">
+							 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 						</div>
 						<div class="zwsgr-profile -info">
 							<h3>'.$zwsgr_location_name.'</h3>
@@ -2080,7 +2080,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . esc_url($image_url) . '">
+										 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -2111,7 +2111,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . esc_url($image_url) . '">
+										 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -3335,7 +3335,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 					<div class="zwsgr-profile-logo">
-						<img src="' . $image_url . '">
+						 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 					</div>
 					<div class="zwsgr-profile-info">
 						<h3>'.$zwsgr_location_name.'</h3>
@@ -3349,7 +3349,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<span class="zwsgr-close-popup">&times;</span>
 							<div class="zwsgr-popup-wrap">
 								<div class="zwsgr-profile-logo">
-									<img src="' . $image_url . '">
+									 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 								</div>
 								<div class="zwsgr-profile-info">
 									<h3>'.$zwsgr_location_name.'</h3>
@@ -3365,7 +3365,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</div>',
 				'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 					<div class="zwsgr-title-wrap">
-						<img src="' . $image_url . '">
+						 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 						<h3>Reviews</h3>
 					</div>
 					<div class="zwsgr-info-wrap">
@@ -3380,7 +3380,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<span class="zwsgr-close-popup">&times;</span>
 							<div class="zwsgr-popup-wrap">
 								<div class="zwsgr-profile-logo">
-									<img src="' . $image_url . '">
+									 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 								</div>
 								<div class="zwsgr-profile-info">
 									<h3>'.$zwsgr_location_name.'</h3>
