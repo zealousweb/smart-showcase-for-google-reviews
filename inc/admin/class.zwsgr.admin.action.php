@@ -1236,6 +1236,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_location_new_review_uri = get_post_meta($post_id, 'zwsgr_location_new_review_uri', true);
 			$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 			$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
+			$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
 
 
 			// Define the mapping from numeric values to words.
@@ -1355,6 +1356,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$published_date  = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
+					$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 					// Determine if content is trimmed based on character limit
 					$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_comment) > $char_limit; // Check if the content length exceeds the character limit
@@ -2064,12 +2066,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 						<div class="zwsgr-profile-logo">
-							<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+							<img src="' . esc_url($image_url) . '">
 						</div>
-						<div class="zwsgr-profile-info">
+						<div class="zwsgr-profile -info">
 							<h3>'.$zwsgr_location_name.'</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-							<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
+							<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 						</div>
 					</div>
 					<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
@@ -2078,7 +2080,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+										<img src="' . esc_url($image_url) . '">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -2109,7 +2111,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+										<img src="' . esc_url($image_url) . '">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -2591,6 +2593,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$language = get_post_meta($post_id, 'language', true);
 			$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 			$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
+			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+			$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
+			$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 		
 			$rating_mapping = array(
 				1 => 'ONE',
@@ -2687,7 +2692,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$reviews_query = new WP_Query($args);
 
 			$reviews_html ='';    
-			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+			
 			if ($reviews_query->have_posts()) {
 				while ($reviews_query->have_posts()) {
 					$reviews_query->the_post();
@@ -3330,12 +3335,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 					<div class="zwsgr-profile-logo">
-						<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+						<img src="' . $image_url . '">
 					</div>
 					<div class="zwsgr-profile-info">
 						<h3>'.$zwsgr_location_name.'</h3>
 						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-						<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
+						<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 					</div>
 				</div>
 				<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
@@ -3344,7 +3349,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<span class="zwsgr-close-popup">&times;</span>
 							<div class="zwsgr-popup-wrap">
 								<div class="zwsgr-profile-logo">
-									<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+									<img src="' . $image_url . '">
 								</div>
 								<div class="zwsgr-profile-info">
 									<h3>'.$zwsgr_location_name.'</h3>
@@ -3360,7 +3365,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</div>',
 				'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 					<div class="zwsgr-title-wrap">
-						<img src="' . $plugin_dir_path . 'assets/images/google.png">
+						<img src="' . $image_url . '">
 						<h3>Reviews</h3>
 					</div>
 					<div class="zwsgr-info-wrap">
@@ -3375,7 +3380,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<span class="zwsgr-close-popup">&times;</span>
 							<div class="zwsgr-popup-wrap">
 								<div class="zwsgr-profile-logo">
-									<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+									<img src="' . $image_url . '">
 								</div>
 								<div class="zwsgr-profile-info">
 									<h3>'.$zwsgr_location_name.'</h3>
@@ -3398,11 +3403,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$layout_option_key = $layout_option_divide[0]; 
 			$layout_option_value = $layout_option_divide[1];
 			$reviews_html = $filter_layout[$layout_option_key][$layout_option_value-1];
-			
-			// if (isset($filter_layout[$layout_option_key][$layout_option_value])) {
-			// 	$reviews_html = $filter_layout[$layout_option_key][$layout_option_value-1];
-			// }
-		
+
 			// Return the filtered reviews HTML as the response
 			echo wp_kses_post($reviews_html);
 			die();
