@@ -291,18 +291,12 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                             error_log("ZQM: Missing data for widget ID: " . $this->zwsgr_widget_id . " - Missing: " . implode(', ', $missing_data));
                             return; // Optionally return to stop further execution.
                         }
-
-                        $zwsgr_get_location_thumbnail_response = $this->zwsgr_gmb_api->zwsgr_get_location_thumbnail($this->zwsgr_account_number, $this->zwsgr_location_number);
-
-                        if (isset($zwsgr_get_location_thumbnail_response) && $zwsgr_get_location_thumbnail_response['success'] && !empty($zwsgr_get_location_thumbnail_response['data'])) {
-                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_thumbnail_url', $zwsgr_get_location_thumbnail_response['data']['sourceUrl']);
-                        }
                     
                         // Update post meta if values are not empty
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_all_review_uri', $this->zwsgr_location_all_review_uri);
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', $this->zwsgr_location_new_review_uri);
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $this->zwsgr_location_name);
-                    }                    
+                    }
 
                     // For AJAX requests, send a JSON error response
                     wp_send_json_success(
@@ -314,6 +308,12 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 }
 
                 if ( !isset($this->zwsgr_gmb_data['nextPageToken']) || empty($this->zwsgr_gmb_data['nextPageToken']) ) {
+
+                    $zwsgr_get_location_thumbnail_response = $this->zwsgr_gmb_api->zwsgr_get_location_thumbnail($this->zwsgr_account_number, $this->zwsgr_location_number);
+
+                    if (isset($zwsgr_get_location_thumbnail_response) && $zwsgr_get_location_thumbnail_response['success'] && !empty($zwsgr_get_location_thumbnail_response['data'])) {
+                        update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_thumbnail_url', $zwsgr_get_location_thumbnail_response['data']['sourceUrl']);
+                    }
 
                     return array(
                         'success' => true,
