@@ -1560,7 +1560,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			if ($front_keyword && $front_keyword !== 'all') {
 				$args['meta_query'][]= array(
 					'key'     => 'zwsgr_review_comment', // Replace with the actual meta key for the keyword
-					'value'   => $front_keyword,
+					'value'   => stripslashes($front_keyword),
 					'compare' => 'LIKE',
 				);
 			}else{
