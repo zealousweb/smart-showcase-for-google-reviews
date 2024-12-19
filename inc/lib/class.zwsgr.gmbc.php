@@ -49,7 +49,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
-            if (empty($zwsgr_gmb_email)) {
+            if (empty($zwsgr_gmb_email) && isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
                 add_submenu_page (
                     'zwsgr_dashboard',
                     'Connect Google',
