@@ -342,6 +342,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 						$published_date  = get_the_date('F j, Y');
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
 						$char_limit = (int) $char_limit ; 
 						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 
@@ -1174,12 +1175,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-slider" id="zwsgr-slider3">
 							<div class="zwsgr-slider-badge">
-								<div class="zwsgr-badge-item" id="zwsgr-badge1">
-									<h3 class="zwsgr-average">Good</h3>
-									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-									<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-									<img src="' . $plugin_dir_path . 'assets/images/google.png">
-								</div>
+								<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link">
+									<div class="zwsgr-badge-item" id="zwsgr-badge1">
+										<h3 class="zwsgr-average">Good</h3>
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+										<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+										<img src="' . $plugin_dir_path . 'assets/images/google.png">
+									</div>
+								</a>
 							</div>
 							<div class="zwsgr-slider-3">
 								' . $zwsgr_slider_content3 . '
@@ -1236,14 +1239,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>'
 					],
 					'badge' => [
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge1">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge1">
 							<h3 class="zwsgr-average">Good</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
 							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
 							<div class="zwsgr-badge-image">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
@@ -1254,7 +1257,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge3">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge3">
 							<div class="zwsgr-rating-wrap">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1262,7 +1265,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
 							<div class="zwsgr-badge4-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1273,7 +1276,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 							</div>
 						</div></a>',
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
 							<div class="zwsgr-badge5-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							</div>
@@ -1284,7 +1287,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge6">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge6">
 							<div class="zwsgr-badge6-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1295,7 +1298,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
 							<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
 							<div class="zwsgr-badge7-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
@@ -1303,7 +1306,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							</div>
 						</div></a>',
 
-						'<a href="#" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
 							<div class="zwsgr-logo-wrap">
 								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
 								<p class="zwsgr-avg-note">Google Reviews</p>
@@ -1321,7 +1324,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-profile-info">
 								<h3>'.$zwsgr_location_name.'</h3>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-								<a href="#" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
+								<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
 							</div>
 						</div>
 						<div id="zwsgrpopup1" class="zwsgr-popup-overlay">
@@ -1391,7 +1394,37 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$reviews_html .= $options[$layout_option_key][$layout_option_value-1];
 				$reviews_html .= '</div>';
 				
-				echo wp_kses_post($reviews_html);
+				$allowed_html = wp_kses_allowed_html('post');
+
+				// Add SVG support
+				$allowed_html['svg'] = [
+					'xmlns' => true,
+					'width' => true,
+					'height' => true,
+					'viewBox' => true,
+					'fill' => true,
+					'stroke' => true,
+					'stroke-width' => true,
+					'class' => true,
+					'id' => true,
+					'style' => true,
+				];
+
+				$allowed_html['path'] = [
+					'd' => true,
+					'fill' => true,
+					'class' => true,
+				];
+
+				$allowed_html['g'] = [
+					'fill' => true,
+					'stroke' => true,
+					'stroke-width' => true,
+					'class' => true,
+				];
+
+				echo wp_kses($reviews_html, $allowed_html);
+				// echo wp_kses_post($reviews_html);
 				
 				
 				// Add the Load More button only if 'enable_load_more' is true
@@ -1479,6 +1512,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
 			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+			$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
 
 			// Query for posts based on the current page
 			$args = array(
@@ -2416,12 +2450,14 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-slider" id="zwsgr-slider3">
 							<div class="zwsgr-slider-badge">
-								<div class="zwsgr-badge-item" id="zwsgr-badge1">
-									<h3 class="zwsgr-average">Good</h3>
-									' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-									<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-									<img src="' . $plugin_dir_path . 'assets/images/google.png">
-								</div>
+								<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link">
+									<div class="zwsgr-badge-item" id="zwsgr-badge1">
+										<h3 class="zwsgr-average">Good</h3>
+										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+										<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
+										<img src="' . $plugin_dir_path . 'assets/images/google.png">
+									</div>
+								</a>
 							</div>
 							<div class="zwsgr-slider-3">
 								' . $zwsgr_slider_content3 . '
