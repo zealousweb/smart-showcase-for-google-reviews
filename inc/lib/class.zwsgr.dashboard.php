@@ -283,7 +283,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 <!-- Title Section -->
                 <div class="zwsgr-title-wrapper">
                     <h1 class="zwsgr-range-filter-title">
-                        ' . esc_html__( 'Date Range Filter', 'smart-google-reviews' ) . '
+                        ' . esc_html__( 'Smart Google Reviews', 'smart-google-reviews' ) . '
                     </h1>
                 </div>
 
