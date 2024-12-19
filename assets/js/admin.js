@@ -1134,6 +1134,10 @@ jQuery(document).ready(function($) {
 		const zwsgr_location_new_review_uri = $(
 			"#fetch-gmb-data #zwsgr-location-select option:selected"
 		).attr("data-new-review-url");
+
+		const zwsgr_location_all_review_uri = $(
+			"#fetch-gmb-data #zwsgr-location-select option:selected"
+		).attr("data-all-reviews-url");
 		
 		$("#fetch-gmb-data #zwsgr-location-select").addClass('disabled');
 
@@ -1169,7 +1173,8 @@ jQuery(document).ready(function($) {
 		  zwsgr_widget_id,
 		  zwsgr_location_name,
 		  zwsgr_location_new_review_uri,
-		  zwsgr_account_name
+		  zwsgr_account_name,
+		  zwsgr_location_all_review_uri
 		);
 	  });
 	
@@ -1218,7 +1223,8 @@ jQuery(document).ready(function($) {
 		zwsgr_widget_id,
 		zwsgr_location_name,
 		zwsgr_location_new_review_uri,
-		zwsgr_account_name
+		zwsgr_account_name,
+		zwsgr_location_all_review_uri
 	  ) {
 		$.ajax({
 		  url: zwsgr_admin.ajax_url,
@@ -1233,7 +1239,8 @@ jQuery(document).ready(function($) {
 			zwsgr_widget_id: zwsgr_widget_id,
 			zwsgr_location_name: zwsgr_location_name,
 			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri,
-			zwsgr_account_name: zwsgr_account_name
+			zwsgr_account_name: zwsgr_account_name,
+			zwsgr_location_all_review_uri: zwsgr_location_all_review_uri
 		  },
 		  success: function (response) {
 
