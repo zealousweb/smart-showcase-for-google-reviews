@@ -345,6 +345,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
 						$char_limit = (int) $char_limit ; 
 						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+						$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
+						$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 						// Determine if content is trimmed based on character limit
 						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
@@ -1333,7 +1335,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									<span class="zwsgr-close-popup">&times;</span>
 									<div class="zwsgr-popup-wrap">
 										<div class="zwsgr-profile-logo">
-											<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+											<img src="' . esc_url($image_url) . '">
 										</div>
 										<div class="zwsgr-profile-info">
 											<h3>' . $zwsgr_location_name . '</h3>
@@ -1352,7 +1354,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 						<div class="zwsgr-title-wrap">
-							<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							<img src="' . esc_url($image_url) . '">
 							<h3>Reviews</h3>
 						</div>
 						<div class="zwsgr-info-wrap">
@@ -1367,7 +1369,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+										<img src="' . esc_url($image_url) . '">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -1627,6 +1629,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 						$char_limit = (int) $char_limit ;
 						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+						$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
+						$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 						$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
 						$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
