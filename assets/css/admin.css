@@ -887,6 +887,11 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-date-range-filter-wrapper {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 32px 0;
+    width: 100%;
+}
+
+body .zwgr-dashboard {
+    padding: 20px;
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
