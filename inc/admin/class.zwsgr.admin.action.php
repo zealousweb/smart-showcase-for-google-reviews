@@ -2232,7 +2232,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h3>Selected Option</h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="zwsgr-toogle-display">
-							<a href="<?php echo esc_attr($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle">Review Us On G</a>
+							<a href="<?php echo esc_attr($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>
 					</div>
 					<?php if ($display_option !== 'badge') : ?>
 						<div class="zwsgr-widget-settings">

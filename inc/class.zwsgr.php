@@ -19,6 +19,7 @@ if ( !class_exists( 'ZWSGR' ) ) {
 	 */
 	class ZWSGR {
 		
+		public $admin,$lib,$front = null;
 		private static $_instance = null;
 
 		public static function instance() {
