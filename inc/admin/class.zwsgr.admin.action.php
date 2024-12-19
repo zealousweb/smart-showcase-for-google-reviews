@@ -1103,7 +1103,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							?>
 						</form>
 					<?php elseif ($current_tab === 'advanced'): ?>
-						<form action="" method="post" class="zwsgr-setting-form">
+						<form action="options.php" method="post" class="zwsgr-setting-form">
 							<?php
 							settings_errors('zwsgr_advanced_account_settings');
 							settings_fields('zwsgr_advanced_account_settings');
