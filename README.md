@@ -76,7 +76,149 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 5. Click ‘Activate Plugin’ to activate it.
 
 # How To Use
+How to Configure the Smart Google Reviews Plugin
 
+**1. Install and Activate the Plugin**
+- Step 1: From your WordPress admin dashboard, navigate to Plugins > Add New.
+- Step 2: Search for Smart Google Reviews.
+- Step 3: Click Install Now, then Activate to activate the plug
+
+**For Smart Google Reviews > Connect with your Google**
+
+![Screenshot](assets/images/sgr-image-1.png)
+
+- After activating the plugin, you'll need to connect your Google Reviews business account to fetch and display reviews on your site.
+- Click on the Connect with Google button to authorize the plugin with your Google account. You may be prompted to sign in to your Google account and grant the necessary permissions.
+- Once connected, the plugin will be able to fetch reviews from your business profile.
+
+**For Smart Google Reviews > Smart Google Reviews**
+
+![Screenshot](assets/images/sgr-image-2.png)
+
+-This section provides an overview of your Google reviews and the following statistics
+ 
+- **Total Reviews:** Displays the total number of reviews for your business.
+- **Average Review:** Shows the average rating from all reviews.
+- **Statistics Chart:** Visualizes your reviews, providing insights into the overall rating distribution.
+- **Rating Top Reviews:** Highlights your highest-rated reviews for better engagement and social proof.
+
+**For Smart Google Reviews > Widgets**
+
+![Screenshot](assets/images/sgr-image-3.png)
+
+- In this section, you can configure the display settings for the Google Reviews widget on your site.
+**Configuration Steps**
+- **Fetch Data:**
+- Fetch the latest Google reviews from your business profile.
+
+![Screenshot](assets/images/sgr-image-4.png)
+
+**Select Display Options:**
+- Choose how the reviews will appear on your site. Available display options include:
+
+**Slider:** 
+- Show reviews in a scrolling slider format.
+
+![Screenshot](assets/images/slider-1.png)
+
+**Grid:** 
+- Display reviews in a grid layout.
+
+![Screenshot](assets/images/grid.png)
+
+**List:** 
+- Show reviews in a simple list format.
+
+![Screenshot](assets/images/list.png)
+
+**Badge:** 
+- Display a badge-style widget with reviews.
+
+![Screenshot](assets/images/badge.png)
+
+**Popup:** 
+- Show reviews in a popup window.
+
+![Screenshot](assets/images/sgr-image-9.png)
+
+**Widget Settings:**
+
+- **Filter Rating:** Filter reviews based on a specific rating (e.g., 5-star reviews).
+- **Hide Element:** Show or hide specific elements (e.g., reviewer name, rating, date, review content, reviewer photo, Google icon).
+- **Keywords:** Filter reviews by entering keywords separated by commas.
+- **Review Us on Google:** Enable or disable a call-to-action for visitors to leave a review.
+- **Trim Long Reviews:** Set a character limit with a "Read More" link for longer reviews.
+- **Language:** Choose the language for displaying reviews.
+- **Date Format:** Select the preferred date format.
+- **Sort By:** Sort reviews by Newest, Highest Rating, or Lowest Rating.
+- **Show Sort By Filter:** Enable or disable the "Sort By" filter on the front end.
+- **Load More:** Enable or disable the "Load More" button for additional reviews.
+- **Number of Reviews:** Set the number of reviews to display.
+- **Custom CSS:** Add custom CSS for further widget styling.
+
+![Screenshot](assets/images/sgr-image-10.png)
+
+**Generated Shortcode:**
+
+- Once the widget is configured, a shortcode will be generated. You can insert this shortcode into any page, post, or widget area to display the reviews.
+
+![Screenshot](assets/images/sgr-image-11.png)
+
+**For Smart Google Reviews > Reviews**
+
+![Screenshot](assets/images/sgr-image-12.png)
+
+- This section allows you to view and manage the reviews collected from Google. You can list all reviews and choose to show or hide specific reviews based on your preferences.
+
+**For Smart Google Reviews > settings**
+
+![Screenshot](assets/images/sgr-image-13.png)
+
+- This section allows you to configure advanced settings for the plugin:
+
+**Google Settings:** 
+- Set your Google business account details and manage Google review settings.
+
+
+**SEO & Notifications:**
+
+![Screenshot](assets/images/sgr-image-14.png)
+
+- **Enable Admin Notifications:** Enable email notifications to be sent to the admin when a new review is posted.
+- **Custom Email Addresses:** Set custom email addresses for receiving notifications.
+- **Custom Email Subject:** Customize the subject line for email notifications.
+- **Email Body:** Customize the content of the notification email.
+
+**Advanced:**
+
+![Screenshot](assets/images/sgr-image-15.png)
+
+- **Sync Reviews:** 
+- Choose whether to automatically or manually sync new reviews from Google.
+- Google Analytics Tracking ID: Enter your Google Analytics Tracking ID for review tracking.
+
+**SMTP Settings:**
+
+![Screenshot](assets/images/sgr-image-16.png)
+
+- Configure SMTP for sending email notifications.
+
+- **From Email Address:** Set the email address that will appear as the sender.
+- **From Name:** Set the sender's name.
+- **SMTP Host:** Specify the SMTP server host.
+- **Type of Encryption:** Choose the type of encryption for your SMTP server (None, SSL, TLS).
+- **Port:** Specify the SMTP server port.
+- **SMTP Authentication:** Toggle on/off SMTP authentication. If enabled, provide the SMTP username and password.
+
+**Test Mail:**
+
+![Screenshot](assets/images/sgr-image-17.png)
+
+- Send a test email to verify the configuration.
+
+- **To Email:** Enter the recipient's email address.
+- **Subject:** Set the subject for the test email.
+- **Message:** Enter a message to send in the test email.
 
 # Getting Help
 
