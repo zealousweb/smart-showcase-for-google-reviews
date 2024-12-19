@@ -157,6 +157,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'nonce' => wp_create_nonce('toggle-visibility-nonce')
 			));
 
+			$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query([
+				'zwsgr_gmb_account_number'   => null,
+				'zwsgr_gmb_account_location' => null,
+				'zwsgr_range_filter_type'    => null,
+				'zwsgr_range_filter_data'    => null
+			]);
+
 			//Toggle Ajax
 			wp_localize_script(ZWSGR_PREFIX . '-admin-js', 'zwsgr_admin', array(
 				'ajax_url' 					    => admin_url('admin-ajax.php'),
@@ -168,6 +175,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_gmb_dashboard_filter'	=> wp_create_nonce('zwsgr_gmb_dashboard_filter'),
 				'zwsgr_data_render'				=> wp_create_nonce('zwsgr_data_render'),
 				'zwsgr_wp_review_id' 		    => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
+				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args)
 			));
 
 			//Save Widget Ajax
