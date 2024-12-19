@@ -45,6 +45,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			add_action('manage_' . ZWSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
 			add_action('wp_ajax_toggle_visibility', array($this, 'zwsgr_toggle_visibility'));
 
+			add_filter('wp_kses_allowed_html', array($this, 'zwsgr_action_allow_svg_in_post_content'));;
+
 			add_action('wp_ajax_save_widget_data',array($this, 'save_widget_data'));
 			add_action('wp_ajax_nopriv_save_widget_data', array($this, 'save_widget_data'));
 
@@ -430,6 +432,29 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 		}
 
+		function zwsgr_action_allow_svg_in_post_content($allowed_tags) {
+
+			$allowed_tags['svg'] = array(
+				'xmlns' => true,
+				'width' => true,
+				'height' => true,
+				'fill' => true,
+				'viewBox' => true,
+				'class' => true,
+				'stroke' => true,
+				'stroke-width' => true,
+			);
+			$allowed_tags['path'] = array(
+				'd' => true,
+				'fill' => true,
+				'stroke' => true,
+				'stroke-width' => true,
+			);
+
+			return $allowed_tags;
+			
+		}
+
 		// Display all review details in one meta box
 		function zwsgr_display_review_details_meta_box($zwsgr_review) 
 		{
@@ -509,7 +534,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<label for="zwsgr_review_star_rating">' . esc_html('Star Ratings', 'smart-google-reviews') . '</label>
 					</th>
 					<td>
-						<div class="zwsgr-star-ratings"> ' . $zwsgr_filled_star . $zwsgr_empty_star . ' </div>
+						<div class="zwsgr-star-ratings"> ' . wp_kses_post($zwsgr_filled_star . $zwsgr_empty_star) . ' </div>
 					</td>
 					<td><div class="separator"></div></td>
 				</tr>
