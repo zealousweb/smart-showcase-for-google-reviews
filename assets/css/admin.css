@@ -642,12 +642,12 @@ input.zwsgr-radio:checked::before {
 
 #fetch-gmb-data .progress-bar #progress::-webkit-progress-value {
     background-color: green;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-radius: 10px;
 }
 
 #fetch-gmb-data .progress-bar #progress::-moz-progress-bar {
     background-color: green;
+    border-radius: 10px;
 }
 
 #fetch-gmb-data .zwsgr-input-text {
