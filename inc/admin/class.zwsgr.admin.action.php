@@ -2067,7 +2067,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-profile-logo">
 							 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
 						</div>
-						<div class="zwsgr-profile -info">
+						<div class="zwsgr-profile-info">
 							<h3>'.$zwsgr_location_name.'</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-total-review"> '.$zwsgr_reviews_ratings['reviews'].' Google reviews</a>
