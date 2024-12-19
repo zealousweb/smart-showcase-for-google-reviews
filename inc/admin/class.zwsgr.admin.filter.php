@@ -29,6 +29,10 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			add_filter('bulk_actions-edit-zwsgr_reviews', array($this, 'filter__remove_all_bulk_actions'));
 			add_filter('bulk_actions-edit-zwsgr_data_widget', array($this, 'filter__remove_all_bulk_actions'));
 			add_filter('months_dropdown_results', array($this,'my_remove_date_filter'));
+
+			add_filter('manage_edit-zwsgr_reviews_columns', array($this, 'remove_bulk_actions_checkbox'));
+			add_filter('manage_edit-zwsgr_data_widget_columns', array($this, 'remove_bulk_actions_checkbox'));
+
 		}
 
 		/**
@@ -112,6 +116,25 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 			}
 			return $months; // otherwise return the original for other post types
 		}
+		
+		/**
+		 * Remove the bulk actions column (checkbox) from admin table for specific post types.
+		 *
+		 * @param array $columns The columns for the admin list table.
+		 * @return array Updated columns without the checkbox column.
+		 */
+		function remove_bulk_actions_checkbox($columns) {
+			// Check if the current screen is for the custom post types
+			$screen = get_current_screen();
+			if ($screen->post_type == 'zwsgr_reviews' || $screen->post_type == 'zwsgr_data_widget') {
+				// Remove the checkbox column
+				if (isset($columns['cb'])) {
+					unset($columns['cb']);
+				}
+			}
+			return $columns;
+		}
+
 
 	}
 
