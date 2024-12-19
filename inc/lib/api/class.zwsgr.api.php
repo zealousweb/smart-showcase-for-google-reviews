@@ -256,6 +256,25 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
         }
 
+       /**
+         * Fetches the profile media thumbnail for a specific location.
+         *
+         * @param string $zwsgr_account_id Google My Business account ID.
+         * @param string $zwsgr_location_id Location ID for the desired profile thumbnail.
+         * @return mixed API response with profile media data or an error.
+         */
+        public function zwsgr_get_location_thumbnail($zwsgr_account_id, $zwsgr_location_id) {
+
+            // Construct the API endpoint for profile media.
+            $zwsgr_api_endpoint = "accounts/{$zwsgr_account_id}/locations/{$zwsgr_location_id}/media/profile";
+
+            // Prepare optional query parameters (e.g., page token).
+            $zwsgr_api_params = $zwsgr_page_token ? [ 'pageToken' => $zwsgr_page_token ] : [];
+
+            // Execute the API request and return the response.
+            return $this->zwsgr_api_request($zwsgr_api_endpoint, $zwsgr_api_params, 'GET', 'v4');
+        }
+
         /**
          * Retrieves reviews for a specific location in a Google My Business account.
          *
