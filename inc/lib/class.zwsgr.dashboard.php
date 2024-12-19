@@ -62,18 +62,18 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
             $zwsgr_data_render_output = '';
 
+            $zwsgr_chart_data = $this->zwsgr_dynamic_chart_data($zwsgr_data_render_args);
+
             $zwsgr_data_render_output .= '<div id="render-dynamic">
                 <div class="zwgr-dashboard-body">'
                     . $this->zwsgr_total_reviews($zwsgr_data_render_args) .
                     $this->zwsgr_average_ratings($zwsgr_data_render_args) . 
                 '</div>
                 <div class="zwgr-dashboard-footer">'
-                    . $this->zwsgr_reviews_statics_chart($zwsgr_data_render_args) .
+                    . $this->zwsgr_reviews_statics_chart($zwsgr_chart_data) .
                     $this->zwsgr_top_reviews($zwsgr_data_render_args) .
                 '</div>
             </div>';
-
-            $zwsgr_chart_data = $this->zwsgr_dynamic_chart_data($zwsgr_data_render_args);
 
             if (defined('DOING_AJAX') && DOING_AJAX) {
 
@@ -490,7 +490,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
         }        
         
-        public function zwsgr_reviews_statics_chart() {
+        public function zwsgr_reviews_statics_chart($zwsgr_chart_data) {
             return '<div class="zwsgr-flex-container zwsgr-flex-column">
                 <div class="zwsgr-flex-inner-container">
                     <h4>' . 

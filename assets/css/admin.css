@@ -964,25 +964,6 @@ input.zwsgr-radio:checked::before {
         padding-bottom: 16px !important;
     }
 
-    .zwsgr-flex-inner-container .zwsgr_outer_wrapper {
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .zwsgr-flex-inner-container .zwsgr_outer_wrapper #zwsgr_chart_wrapper {
-        margin: 0 20px 0 0 !important;
-    }
-
-    .zwsgr-flex-inner-container .zwsgr_outer_wrapper #zwsr_chart_legend_wrapper {
-        display: flex;
-        justify-content: space-between;
-        margin: 32px 0 0 0;
-    }
-
-    .zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend {
-        margin: 0 14px 0 0 !important;
-    }
-
     .zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
         flex-direction: column;
         margin: 0 !important;
@@ -1024,6 +1005,29 @@ input.zwsgr-radio:checked::before {
         margin: 0;
     }
 
+}
+
+@media only screen and (max-width: 1024px) {
+
+    .zwsgr-flex-inner-container .zwsgr_outer_wrapper {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend {
+        margin: 0 14px 0 0 !important;
+    }
+
+    .zwsgr-flex-inner-container .zwsgr_outer_wrapper #zwsgr_chart_wrapper {
+        margin: 0 20px 0 0 !important;
+    }
+
+    .zwsgr-flex-inner-container .zwsgr_outer_wrapper #zwsr_chart_legend_wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin: 32px 0 0 0;
+    }
+
     .zwgr-dashboard #render-dynamic .zwgr-dashboard-footer {
         flex-direction: column !important;
         margin: 0 !important;
@@ -1034,7 +1038,6 @@ input.zwsgr-radio:checked::before {
         margin: 0 0 24px 0;
         padding: 0 !important;
     }
-
 }
 
 

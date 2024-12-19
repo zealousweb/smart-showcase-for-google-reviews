@@ -1540,10 +1540,10 @@ jQuery(document).ready(function($) {
 	var zwsgr_chart;
 	var zwsgr_data;
 	var zwsgr_options;
+	var zwsgr_chart_data = zwsgr_admin.zwsgr_dynamic_chart_data;
 
 	google.charts.load('current', {'packages':['corechart']});
-
-	google.charts.setOnLoadCallback(zwsgr_draw_chart);
+	google.charts.setOnLoadCallback(() => zwsgr_draw_chart(zwsgr_chart_data));
 	
 	function zwsgr_draw_chart(zwsgr_chart_data) {
 
@@ -1556,7 +1556,7 @@ jQuery(document).ready(function($) {
 
 		// Check if all second elements in rows are zero
 		var zwsgr_all_zero = zwsgr_chart_data.every(function(row) {
-			return Array.isArray(row) && row[1] === 0; // Ensure row is an array and row[1] exists
+			return Array.isArray(row) && row[1] === 0;
 		});
 
 		if (zwsgr_all_zero) {
@@ -1566,6 +1566,8 @@ jQuery(document).ready(function($) {
 		}
 
 		zwsgr_chart_data.unshift(['Rating', 'Number of Reviews']);
+
+		console.log(zwsgr_chart_data, 'zwsgr_chart_data');
 
 		var zwsgr_data = google.visualization.arrayToDataTable(zwsgr_chart_data);
 
