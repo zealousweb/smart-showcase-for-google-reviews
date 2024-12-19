@@ -78,17 +78,19 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 # How To Use
 How to Configure the Smart Google Reviews Plugin
 
-1. Install and Activate the Plugin
+** 1. Install and Activate the Plugin **
 Step 1: From your WordPress admin dashboard, navigate to Plugins > Add New.
 Step 2: Search for Smart Google Reviews.
 Step 3: Click Install Now, then Activate to activate the plug
-For Smart Google Reviews > Connect with your Google
+
+** For Smart Google Reviews > Connect with your Google **
 
 
 After activating the plugin, you'll need to connect your Google Reviews business account to fetch and display reviews on your site.
 Click on the Connect with Google button to authorize the plugin with your Google account. You may be prompted to sign in to your Google account and grant the necessary permissions.
 Once connected, the plugin will be able to fetch reviews from your business profile.
-For Smart Google Reviews > Smart Google Reviews
+
+** For Smart Google Reviews > Smart Google Reviews **
 
 
 This section provides an overview of your Google reviews and the following statistics 
@@ -96,13 +98,13 @@ Total Reviews: Displays the total number of reviews for your business.
 Average Review: Shows the average rating from all reviews.
 Statistics Chart: Visualizes your reviews, providing insights into the overall rating distribution.
 Rating Top Reviews: Highlights your highest-rated reviews for better engagement and social proof.
-For Smart Google Reviews > Widgets
+
+** For Smart Google Reviews > Widgets **
 
 
 In this section, you can configure the display settings for the Google Reviews widget on your site.
-Configuration Steps
-
-Fetch Data:
+** Configuration Steps **
+**Fetch Data:**
 Fetch the latest Google reviews from your business profile.
 
 Fetch Data
