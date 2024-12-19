@@ -1437,7 +1437,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			echo '</div>';
 				if($google_review_toggle){
 					echo '<div class="zwsgr-toogle-display zwsgr-toogle-display-front">';
-						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle">Review Us On G</a>';
+						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>';
 					echo '</div>';
 				}
 			} else {
