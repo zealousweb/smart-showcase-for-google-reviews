@@ -1140,7 +1140,7 @@ body .zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend .gui
 
 body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"] {
     font-weight: 600 !important;
-    max-width: 100px !important;
+    max-width: 210px !important;
 }
 
 body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"].active::placeholder {
