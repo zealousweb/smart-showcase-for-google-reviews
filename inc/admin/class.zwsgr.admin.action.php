@@ -2066,7 +2066,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 						<div class="zwsgr-profile-logo">
-							<img src="' . $image_url . '">
+							<img src="' . esc_url($image_url) . '">
 						</div>
 						<div class="zwsgr-profile -info">
 							<h3>'.$zwsgr_location_name.'</h3>
@@ -2080,7 +2080,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . $image_url . '">
+										<img src="' . esc_url($image_url) . '">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
@@ -2111,7 +2111,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<span class="zwsgr-close-popup">&times;</span>
 								<div class="zwsgr-popup-wrap">
 									<div class="zwsgr-profile-logo">
-										<img src="' . $image_url . '">
+										<img src="' . esc_url($image_url) . '">
 									</div>
 									<div class="zwsgr-profile-info">
 										<h3>'.$zwsgr_location_name.'</h3>
