@@ -1014,6 +1014,10 @@ body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-location-sel
 
 @media only screen and (max-width: 1024px) {
 
+    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select {
+        max-width: 100% !important;
+    }
+
     body .zwsgr-flex-inner-container .zwsgr_outer_wrapper {
         flex-direction: column;
         justify-content: center;
@@ -1055,6 +1059,7 @@ body .zwgr-dashboard #render-dynamic .zwsgr-data-card {
     max-width: 286px;
     margin: 0 24px 0 0;
     padding: 24px 27px;
+    background-color: white !important;
     display: flex;
     justify-content: flex-start;
     align-items: center;
