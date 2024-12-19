@@ -229,6 +229,10 @@ body .zwsgr-slider .slick-arrow.slick-prev::before {
     transform: rotate(-45deg); 
 }
 
+body .toggle-content {
+    cursor: pointer;
+}
+
 body .zwsgr-slider .slick-arrow.slick-next::before {
     content: '';
     display: block;
