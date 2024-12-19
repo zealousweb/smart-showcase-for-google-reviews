@@ -720,10 +720,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				}
 
 				if (!empty($meta_query)) {
-					$query->set('meta_query', [
+					$query->set('meta_query', array_merge([
 						'relation' => 'AND',
-						...$meta_query
-					]);
+					], $meta_query));
 				}
 			}
 		}
