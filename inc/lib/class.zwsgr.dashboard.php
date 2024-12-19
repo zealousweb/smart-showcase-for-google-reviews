@@ -99,7 +99,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             $zwsgr_range_filter_data    = isset($zwsgr_filter_data['zwsgr_range_filter_data'])    ? sanitize_text_field($zwsgr_filter_data['zwsgr_range_filter_data']) : '';
 
             if (!isset($zwsgr_gmb_email) || empty($zwsgr_gmb_email)) {
-                return 'No GMB Email Found.';
+                return $zwsgr_data_render_args;
             }
 
             if (!empty($zwsgr_gmb_email)) {
