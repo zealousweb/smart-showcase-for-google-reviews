@@ -851,65 +851,75 @@ jQuery(document).ready(function($) {
     }
 
 	// Function to update the hidden input field with the keywords in a comma-separated format
-    const updateInputField = () => {
-        const keywords = [];
-        $('#keywords-list .keyword-item').each(function () {
-            keywords.push($(this).text().trim().replace(' ✖', ''));
-        });
-        $('#keywords-input-hidden').val(keywords.join(', ')); // Store the keywords in a hidden input
-    };
+	const updateInputField = () => {
+		const keywords = [];
+		$('#keywords-list .keyword-item').each(function () {
+			keywords.push($(this).text().trim().replace(' ✖', ''));
+		});
+		$('#keywords-input-hidden').val(keywords.join(', ')); // Store the keywords in a hidden input
+	};
 
-    // Initialize the hidden input field based on the existing keywords
-    updateInputField();
+	// Initialize the hidden input field based on the existing keywords
+	updateInputField();
 
-    // Handle the enter key press to add keywords
-    $('#keywords-input').on('keypress', function (e) {
-        if (e.which === 13) { // Check for Enter key
-            e.preventDefault(); // Prevent default form submission
+	// Function to handle adding new keywords
+	const handleAddKeywords = (inputValue) => {
+		// Get the input value and split it into keywords
+		const newKeywords = inputValue.split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
 
-            // Get the input value and split it into keywords
-            const newKeywords = $(this).val().split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
+		// Get the current number of keywords in the list
+		const currentKeywordsCount = $('#keywords-list .keyword-item').length;
 
-            // Get the current number of keywords in the list
-            const currentKeywordsCount = $('#keywords-list .keyword-item').length;
+		// Check if adding new keywords exceeds the limit of 5
+		if (currentKeywordsCount + newKeywords.length > 5) {
+			$('#error-message').show(); // Show the error message
+			return; // Stop further execution
+		} else {
+			$('#error-message').hide(); // Hide the error message if under limit
+		}
 
-            // Check if adding new keywords exceeds the limit of 5
-            if (currentKeywordsCount + newKeywords.length > 5) {
-                $('#error-message').show(); // Show the error message
-                return; // Stop further execution
-            } else {
-                $('#error-message').hide(); // Hide the error message if under limit
-            }
+		$('#keywords-input').val(''); // Clear input field
 
-            $(this).val(''); // Clear input field
+		newKeywords.forEach(function (keyword) {
+			// Check if the keyword is already in the list
+			if ($('#keywords-list .keyword-item').filter(function () {
+				return $(this).text().trim() === keyword;
+			}).length === 0) {
+				// Create a new keyword item
+				const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
+				const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
 
-            newKeywords.forEach(function (keyword) {
-                // Check if the keyword is already in the list
-                if ($('#keywords-list .keyword-item').filter(function () {
-                    return $(this).text().trim() === keyword;
-                }).length === 0) {
-                    // Create a new keyword item
-                    const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
-                    const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
+				// Append remove button to the keyword item
+				keywordItem.append(removeButton);
 
-                    // Append remove button to the keyword item
-                    keywordItem.append(removeButton);
+				// Append the keyword item to the keywords list
+				$('#keywords-list').append(keywordItem);
 
-                    // Append the keyword item to the keywords list
-                    $('#keywords-list').append(keywordItem);
+				// Update hidden input field
+				updateInputField();
 
-                    // Update hidden input field
-                    updateInputField();
+				// Set up click event to remove keyword
+				removeButton.on('click', function () {
+					keywordItem.remove(); // Remove keyword from list
+					updateInputField(); // Update input field after removal
+				});
+			}
+		});
+	};
 
-                    // Set up click event to remove keyword
-                    removeButton.on('click', function () {
-                        keywordItem.remove(); // Remove keyword from list
-                        updateInputField(); // Update input field after removal
-                    });
-                }
-            });
-        }
-    });
+	// Handle the Enter key press to add keywords
+	$('#keywords-input').on('keypress', function (e) {
+		if (e.which === 13) { // Check for Enter key
+			e.preventDefault(); // Prevent default form submission
+			handleAddKeywords($(this).val());
+		}
+	});
+
+	// Handle the blur event to add keywords
+	$('#keywords-input').on('blur', function () {
+		handleAddKeywords($(this).val());
+	});
+
 
     // Set up click event to remove existing keywords (on page load)
     $('#keywords-list').on('click', '.remove-keyword', function () {
