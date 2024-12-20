@@ -349,10 +349,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				]);
 			
 				if (!$zwsgr_widget_id || is_wp_error($zwsgr_widget_id)) {
-					if (defined('WP_DEBUG') && WP_DEBUG) {
-						custom_debug_log('Failed to create a new widget: ' . ($zwsgr_widget_id ? $zwsgr_widget_id->get_error_message() : 'Unknown error'));
-					}
-					wp_die(esc_html__('An error occurred while creating a new widget. Please try again or contact support.', 'smart-google-reviews'));
+					error_log('Failed to create a new widget');
 					return;
 				}
 		
@@ -794,7 +791,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					// Display the shortcode and copy icon
 					echo '<div style="display: flex; align-items: center;">';
 					echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly style="margin-right: 10px; width: auto;" id="shortcode-' . esc_attr($post_id) . '">';
-					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . esc_attr($post_id) . '" style="cursor: pointer;" title="' . esc_attr(__('Copy Shortcode', 'smart-google-reviews')) . '"></span>';
+					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . esc_attr($post_id) . '" style="cursor: pointer;" title="' . esc_html('Copy Shortcode', 'smart-google-reviews') . '"></span>';
 					echo '</div>';
 				} else {
 					// Optionally, you can display a message or leave it blank if the condition is not met
@@ -850,8 +847,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			check_ajax_referer( 'toggle-visibility-nonce', 'nonce' );
 		
-			$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-
+			$post_id = intval( $_POST['post_id'] );
 		
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				wp_send_json_error( array( 'message' => 'Not authorized' ) );
@@ -1026,14 +1022,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		
 			// Handle form submission (send email)
-			if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
-				
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				if (isset($_POST['zwsgr_admin_notification_emails'])) {
 					// Sanitize and save the form values
-					$emails = isset($_POST['zwsgr_admin_notification_emails']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails']) : '';
-					$subject = isset($_POST['zwsgr_admin_notification_emails_subject']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']) : '';
-					$body = isset($_POST['zwsgr_admin_notification_email_body']) ? wp_kses_post($_POST['zwsgr_admin_notification_email_body']) : '';
-
+					$emails = sanitize_text_field($_POST['zwsgr_admin_notification_emails']);
+					$subject = sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']);
+					$body = wp_kses_post($_POST['zwsgr_admin_notification_email_body']); // Use wp_kses_post for rich text
 		
 					// Update the options (only update the subject and body; leave email field empty after submission)
 					update_option('zwsgr_admin_notification_emails_subject', $subject);
@@ -1239,7 +1233,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_widget_configurator_callback() 
 		{
 
-			$post_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
+			$post_id = $_GET['zwsgr_widget_id'];
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
 				wp_die( 'Invalid post ID.' ) ;
@@ -1407,19 +1401,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 
 					$formatted_date = '';
-						$timestamp = strtotime($published_date); // Calculate timestamp once
-
 						if ($date_format === 'DD/MM/YYYY') {
-							$formatted_date = gmdate('d/m/Y', $timestamp);
+							$formatted_date = date('d/m/Y', strtotime($published_date));
 						} elseif ($date_format === 'MM-DD-YYYY') {
-							$formatted_date = gmdate('m-d-Y', $timestamp);
+							$formatted_date = date('m-d-Y', strtotime($published_date));
 						} elseif ($date_format === 'YYYY/MM/DD') {
-							$formatted_date = gmdate('Y/m/d', $timestamp);
+							$formatted_date = date('Y/m/d', strtotime($published_date));
 						} elseif ($date_format === 'full') {
-							$day = gmdate('j', $timestamp);
-							$month = $months[(int)gmdate('n', $timestamp) - 1];
-							$year = gmdate('Y', $timestamp);
-
+							$day = date('j', strtotime($published_date));
+							$month = $months[(int)date('n', strtotime($published_date)) - 1];
+							$year = date('Y', strtotime($published_date));
+						
 							// Construct the full date
 							$formatted_date = "$month $day, $year";
 						} elseif ($date_format === 'hide') {
@@ -2278,7 +2270,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h3>Selected Option</h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="zwsgr-toogle-display">
-							<a href="<?php echo esc_url($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>
+							<a href="<?php echo esc_attr($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>
 					</div>
 					<?php if ($display_option !== 'badge') : ?>
 						<div class="zwsgr-widget-settings">
@@ -2518,34 +2510,32 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// Check security nonce
 			if (!check_ajax_referer('my_widget_nonce', 'security', false)) {
-				if (defined('WP_DEBUG') && WP_DEBUG) {
-					custom_debug_log('Nonce verification failed.');
-				}
+				error_log('Nonce verification failed.');
 				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
 				return;
 			}
-			custom_debug_log('Nonce verified successfully.');
+			error_log('Nonce verified successfully.');
 
 			// Get and sanitize post ID
-			$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+			$post_id = intval($_POST['post_id']);
 			if (!$post_id) {
-				custom_debug_log('Invalid post ID');
+				error_log('Invalid post ID');
 				wp_send_json_error(esc_html__('Invalid post ID.', 'smart-google-reviews'));
 				return;
 			}
-			custom_debug_log('Post ID: ' . $post_id);
+			error_log('Post ID: ' . $post_id);
 
 			// Check if the post exists
 			if (get_post_status($post_id) === false) {
-				custom_debug_log('Post does not exist: ' . $post_id);
+				error_log('Post does not exist: ' . $post_id);
 				wp_send_json_error(esc_html__('Post does not exist.', 'smart-google-reviews'));
 				return;
 			}
-			custom_debug_log('Post exists, ID: ' . $post_id);
+			error_log('Post exists, ID: ' . $post_id);
 
 			// Ensure user has permission to edit the post
 			if (!current_user_can('edit_post', $post_id)) {
-				custom_debug_log('User does not have permission to edit post: ' . $post_id);
+				error_log('User does not have permission to edit post: ' . $post_id);
 				wp_send_json_error(esc_html__('You do not have permission to edit this post.', 'smart-google-reviews'));
 				return;
 			}
@@ -2559,7 +2549,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
 			update_post_meta($post_id, 'layout_option', $layout_option);
 			
-			$current_tab = isset($_POST['current_tab']) ? sanitize_text_field($_POST['current_tab']) : '';
+			$current_tab = sanitize_text_field($_POST['current_tab']); // The active tab
 			update_post_meta($post_id, 'tab-options', $current_tab); // Save the active tab state
 
 			}
@@ -2580,7 +2570,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$text_color_load = isset($_POST['text_color_load']) ? sanitize_hex_color($_POST['text_color_load']) : '';
 				$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 10; // Default to 10
 				$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
-				$custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : '';
+				$custom_css = sanitize_textarea_field($_POST['custom_css']);
 				$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
 				$enable_sort_by = isset($_POST['enable_sort_by']) ? intval($_POST['enable_sort_by']) : 0;
 
@@ -2617,7 +2607,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		function filter_reviews_ajax_handler() {
 			
-			$post_id = isset($_POST['zwsgr_widget_id']) ? sanitize_text_field($_POST['zwsgr_widget_id']) : '';
+			$post_id = $_POST['zwsgr_widget_id'];
 
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
@@ -2758,19 +2748,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
 
 					$formatted_date = '';
-						$timestamp = strtotime($published_date); // Calculate timestamp once
-
 						if ($date_format === 'DD/MM/YYYY') {
-							$formatted_date = gmdate('d/m/Y', $timestamp);
+							$formatted_date = date('d/m/Y', strtotime($published_date));
 						} elseif ($date_format === 'MM-DD-YYYY') {
-							$formatted_date = gmdate('m-d-Y', $timestamp);
+							$formatted_date = date('m-d-Y', strtotime($published_date));
 						} elseif ($date_format === 'YYYY/MM/DD') {
-							$formatted_date = gmdate('Y/m/d', $timestamp);
+							$formatted_date = date('Y/m/d', strtotime($published_date));
 						} elseif ($date_format === 'full') {
-							$day = gmdate('j', $timestamp);
-							$month = $months[(int)gmdate('n', $timestamp) - 1];
-							$year = gmdate('Y', $timestamp);
-
+							$day = date('j', strtotime($published_date));
+							$month = $months[(int)date('n', strtotime($published_date)) - 1];
+							$year = date('Y', strtotime($published_date));
+						
 							// Construct the full date
 							$formatted_date = "$month $day, $year";
 						} elseif ($date_format === 'hide') {
