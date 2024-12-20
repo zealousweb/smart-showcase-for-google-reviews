@@ -430,32 +430,25 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		}
 
 		function zwsgr_debug_function($message = null) {
-			$debug_log_file = WP_PLUGIN_DIR . '/smart-google-reviews/debug.log';
-			
+			// Use the temporary directory for debug logs
+			$debug_log_file = trailingslashit(get_temp_dir()) . 'smart-google-reviews-debug.log';
 		
-			// If a message is provided, log it to the file
+			// Check if a message is provided
 			if ($message) {
-				// Ensure the log file is writable
-				if (is_writable(WP_PLUGIN_DIR . '/smart-google-reviews')) {
+				// Ensure the temporary directory is writable
+				if (is_writable(get_temp_dir())) {
 					file_put_contents(
 						$debug_log_file,
 						'[' . gmdate('Y-m-d H:i:s') . '] ' . $message . PHP_EOL,
 						FILE_APPEND
 					);
 				}
-			} else {
-				// If no message is provided, clear the log
-				if (file_exists($debug_log_file)) {
-					$fp = fopen($debug_log_file, "r+");
-					ftruncate($fp, 0);
-					fclose($fp);
-		
-					$msg = __('Error log cleared', 'smart-google-reviews');
-				} else {
-					$msg = __('Error clearing log file', 'smart-google-reviews');
-				}
 			}
 		}
+		
+		
+		
+		
 		
 
 		function zwsgr_action_allow_svg_in_post_content($allowed_tags) {
@@ -2556,6 +2549,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') 
 				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
 				return;
 			}
+			
 			$this->zwsgr_debug_function('Nonce verified successfully.');
 
 			// Get and sanitize post ID
