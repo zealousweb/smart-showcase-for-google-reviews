@@ -1507,6 +1507,9 @@ jQuery(document).ready(function($) {
 		let zwsgr_range_filter_data = null;
 		let zwsgr_range_filter_type = null;
 
+		// Disable select inputs while processing
+		$('#zwsgr-account-select, #zwsgr-location-select').addClass('disabled').prop('disabled', true);
+
 		if ($('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').length > 0) {
 			zwsgr_range_filter_type = 'rangeofdays';
 			zwsgr_range_filter_data = $('.zwsgr-filters-wrapper .zwsgr-filter-item .zwsgr-filter-button.active').text().trim().toLowerCase();
@@ -1651,6 +1654,8 @@ jQuery(document).ready(function($) {
 				$('.zwgr-dashboard .loader-outer-wrapper').remove();
 				zwsgr_gmb_account_div.removeClass('disabled');
 				zwsgr_gmb_location_div.removeClass('disabled');
+				// Disable select inputs while processing
+				$('#zwsgr-account-select, #zwsgr-location-select').removeClass('disabled').prop('disabled', false);
 			},
 			error: function() {
 				$('#render-dynamic').html('<p>An error occurred while fetching data.</p>');
