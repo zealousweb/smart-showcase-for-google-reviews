@@ -130,11 +130,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Google chart JS
 			wp_enqueue_script( ZWSGR_PREFIX . '-google-chart-js', ZWSGR_URL . 'assets/js/google-chart.js', array( 'jquery-core' ), ZWSGR_VERSION );
 
-			// Enqueue Moment.js (required by daterangepicker)
-			wp_enqueue_script( ZWSGR_PREFIX . '-moment-min-js', ZWSGR_URL . 'assets/js/moment.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
-
 			// Enqueue Daterangepicker JS
-			wp_enqueue_script( ZWSGR_PREFIX . '-daterangepicker-min-js', ZWSGR_URL . 'assets/js/daterangepicker.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-daterangepicker-min-js', ZWSGR_URL . 'assets/js/daterangepicker.min.js', array( 'jquery-core', 'moment' ), ZWSGR_VERSION );
 
 			// admin css
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
