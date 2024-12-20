@@ -1048,53 +1048,44 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		
 			// Handle form submission (send email)
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verify nonce for security
-    if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'zwsgr_admin_settings_nonce')) {
-        add_settings_error('zwsgr_notification_settings', 'settings_error', esc_html__('Security check failed.', 'smart-google-reviews'), 'error');
-        return;
-    }
-
-    // Handle admin notification emails
-			if (isset($_POST['zwsgr_admin_notification_emails'])) {
-				// Sanitize form inputs
-				$emails = sanitize_text_field($_POST['zwsgr_admin_notification_emails']);
-				$subject = isset($_POST['zwsgr_admin_notification_emails_subject']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']) : '';
-				$body = isset($_POST['zwsgr_admin_notification_email_body']) ? wp_kses_post($_POST['zwsgr_admin_notification_email_body']) : '';
-
-				// Update options
-				update_option('zwsgr_admin_notification_emails_subject', $subject);
-				update_option('zwsgr_admin_notification_email_body', $body);
-
-				// Prepare email
-				$to = array_filter(array_map('sanitize_email', explode(',', $emails))); // Sanitize each email
-				$message = $body;
-				$headers = array('Content-Type: text/html; charset=UTF-8');
-
-				// Send the email
-				if (!empty($to)) {
-					$mail_sent = wp_mail($to, $subject, $message, $headers);
-
-					// Check if email was sent successfully
-					if ($mail_sent) {
-						add_settings_error('zwsgr_notification_settings', 'settings_updated', esc_html__('Emails sent successfully.', 'smart-google-reviews'), 'updated');
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if (isset($_POST['zwsgr_admin_notification_emails'])) {
+					// Sanitize and save the form values
+					$emails = sanitize_text_field($_POST['zwsgr_admin_notification_emails']);
+					$subject = sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']);
+					$body = wp_kses_post($_POST['zwsgr_admin_notification_email_body']); // Use wp_kses_post for rich text
+		
+					// Update the options (only update the subject and body; leave email field empty after submission)
+					update_option('zwsgr_admin_notification_emails_subject', $subject);
+					update_option('zwsgr_admin_notification_email_body', $body);
+		
+					// Prepare email
+					$to = explode(',', $emails); // Assume emails are comma-separated
+					$message = $body;
+					$headers = array('Content-Type: text/html; charset=UTF-8');
+		
+					// Send the email using wp_mail()
+					if (!empty($emails)) {
+						$mail_sent = wp_mail($to, $subject, $message, $headers);
+		
+						// Check if email was sent successfully
+						if ($mail_sent) {
+							add_settings_error('zwsgr_notification_settings', 'settings_updated', 'Emails sent successfully.', 'updated');
+						} else {
+							add_settings_error('zwsgr_notification_settings', 'settings_error', 'Failed to send email.', 'error');
+						}
 					} else {
-						add_settings_error('zwsgr_notification_settings', 'settings_error', esc_html__('Failed to send email.', 'smart-google-reviews'), 'error');
+						add_settings_error('zwsgr_notification_settings', 'settings_error', 'No email addresses provided.', 'error');
 					}
-				} else {
-					add_settings_error('zwsgr_notification_settings', 'settings_error', esc_html__('No valid email addresses provided.', 'smart-google-reviews'), 'error');
+		
+					// Clear only the email field after submission
+					update_option('zwsgr_admin_notification_emails', '');
 				}
-
-				// Clear the email field after submission
-				update_option('zwsgr_admin_notification_emails', '');
+				if (isset($_POST['advance_submit_buttons'])){
+					add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
+				}
+				
 			}
-
-			// Handle advanced submit buttons
-			if (isset($_POST['advance_submit_buttons'])) {
-				add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', esc_html__('Advanced settings saved successfully!', 'smart-google-reviews'), 'updated');
-			}
-		}
-
 			
 			// Now render the form and tabs
 			$current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'google';
