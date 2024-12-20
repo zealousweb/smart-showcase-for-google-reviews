@@ -73,7 +73,7 @@ if ( !class_exists( 'ZWSGR' ) ) {
 			if ( is_plugin_active( 'smart-google-reviews/smart-google-reviews.php' )  )
 			{
 				$support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'smart-google-reviews' ). '</a>';
-				$document_link = '<a href="https://store.zealousweb.com/" target="_blank">' .__( 'Document', 'smart-google-reviews' ). '</a>';
+				$document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-google-review/" target="_blank">' .__( 'Document', 'smart-google-reviews' ). '</a>';
 				$donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'smart-google-reviews' ) . '</a>';
 
 				array_unshift( $links , $support_link, $document_link, $donateLink );
