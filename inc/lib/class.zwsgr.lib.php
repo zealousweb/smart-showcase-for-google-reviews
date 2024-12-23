@@ -1449,8 +1449,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		function load_more_meta_data() 
 		{
 			// Verify nonce for security
-			if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'zwsgr_load_more_nonce')) {
-				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'zwsgr_load_more_nonce' ) ) {
+				wp_send_json_error( esc_html__( 'Nonce verification failed.', 'smart-google-reviews' ) );
 				return;
 			}
 
