@@ -1449,7 +1449,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		function load_more_meta_data() 
 		{
 			// Verify nonce for security
-			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['nonce'] ), 'zwsgr_load_more_nonce' ) ) {
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'zwsgr_load_more_nonce' ) ) {
 				wp_send_json_error( esc_html__( 'Nonce verification failed.', 'smart-google-reviews' ) );
 				return;
 			}
@@ -1496,12 +1496,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			$sort_by = isset($_POST['front_sort_by']) 
-			? sanitize_text_field($_POST['front_sort_by']) 
-			: (get_post_meta($post_id, 'sort_by', true) ?: 'newest');
-				  
-			
-			$front_keyword = isset($_POST['front_keyword']) ? sanitize_text_field($_POST['front_keyword']) : '';
+			$sort_by = isset($_POST['front_sort_by']) ? sanitize_text_field(wp_unslash($_POST['front_sort_by'])) : (get_post_meta($post_id, 'sort_by', true) ?: 'newest');
+			$front_keyword = isset($_POST['front_keyword']) ? sanitize_text_field(wp_unslash($_POST['front_keyword'])) : '';
 
 			
 			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 

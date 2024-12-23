@@ -338,7 +338,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		function action__custom_widget_url_on_add_new() {
 
-			$zwsgr_post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
+			$zwsgr_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
 		
 			if ($zwsgr_post_type === 'zwsgr_data_widget') {
 		
@@ -655,7 +655,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			global $wpdb;
 
 			// Get current post type
-			$current_post_type = isset($_GET['post_type']) ? sanitize_text_field($_GET['post_type']) : '';
+			$current_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
 
 			// Check if we are on the correct post type pages
 			if (!in_array($current_post_type, [ZWSGR_POST_REVIEW_TYPE, ZWSGR_POST_WIDGET_TYPE])) {
@@ -664,7 +664,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// Get saved email and selected filters from URL parameters
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
-			$selected_account = isset($_GET['zwsgr_account']) ? sanitize_text_field($_GET['zwsgr_account']) : '';
+			$selected_account = isset($_GET['zwsgr_account']) ? sanitize_text_field(wp_unslash($_GET['zwsgr_account'])) : '';
 			$selected_location = isset($_GET['zwsgr_location']) ? sanitize_text_field($_GET['zwsgr_location']) : '';
 
 			// Fetch accounts using SQL query
@@ -748,7 +748,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$meta_query = array();
 				
 				if (isset($_GET['zwsgr_account']) && !empty($_GET['zwsgr_account'])) {
-					$zwsgr_account = sanitize_text_field($_GET['zwsgr_account']); // Sanitize the input
+					$zwsgr_account = isset($_GET['zwsgr_account']) ? sanitize_text_field(wp_unslash($_GET['zwsgr_account'])) : '';
 					$meta_query[] = [
 						'key'     => 'zwsgr_account_number',
 						'value'   => $zwsgr_account,
@@ -758,7 +758,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				
 
 				if (isset($_GET['zwsgr_location']) && !empty($_GET['zwsgr_location'])) {
-					$zwsgr_location = sanitize_text_field($_GET['zwsgr_location']); // Sanitize the input
+					$zwsgr_location = isset($_GET['zwsgr_location']) ? sanitize_text_field(wp_unslash($_GET['zwsgr_location'])) : '';
 					$meta_query[] = [
 						'key'     => 'zwsgr_location_number',
 						'value'   => $zwsgr_location,
@@ -1050,15 +1050,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 				if (isset($_POST['zwsgr_notification_nonce_field'])) {
-					$nonce = sanitize_text_field($_POST['zwsgr_notification_nonce_field']);
+					$nonce = isset($_POST['zwsgr_notification_nonce_field']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_notification_nonce_field'])) : '';
 				
 					if (wp_verify_nonce($nonce, 'zwsgr_notification_nonce')) {
 					// Handle notification emails submission
 						if (isset($_POST['zwsgr_admin_notification_emails'])) {
 							// Sanitize and save the form values
-							$emails = isset($_POST['zwsgr_admin_notification_emails']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails']) : '';
-							$subject = isset($_POST['zwsgr_admin_notification_emails_subject']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']) : '';
-							$body = isset($_POST['zwsgr_admin_notification_email_body']) ? wp_kses_post($_POST['zwsgr_admin_notification_email_body']) : '';
+							$emails = isset($_POST['zwsgr_admin_notification_emails']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_admin_notification_emails'])) : '';
+							$subject = isset($_POST['zwsgr_admin_notification_emails_subject']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_admin_notification_emails_subject'])) : '';
+							$body = isset($_POST['zwsgr_admin_notification_email_body']) ? wp_kses_post(wp_unslash($_POST['zwsgr_admin_notification_email_body'])) : '';
 				
 							// Update the options (only update the subject and body; leave email field empty after submission)
 							update_option('zwsgr_admin_notification_emails_subject', $subject);
@@ -1096,7 +1096,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 		
 			// Now render the form and tabs
-			$current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'google';
+			$current_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'google';
 			?>
 			<div class="wrap">
 				<h1 class="zwsgr-page-title"><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -1266,7 +1266,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_widget_configurator_callback() 
 		{
 
-			$post_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field($_GET['zwsgr_widget_id']) : '';
+			$post_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field(wp_unslash($_GET['zwsgr_widget_id'])) : '';
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
 				wp_die( 'Invalid post ID.' ) ;
@@ -2575,38 +2575,38 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				return;
 			}
 			
-			$setting_tb = ( isset( $_POST['settings'] ) && ! empty( $_POST['settings'] ) ) ? sanitize_text_field( $_POST['settings'] ) : '';
+			$setting_tb = ( isset( $_POST['settings'] ) && ! empty( $_POST['settings'] ) ) ? sanitize_text_field( wp_unslash( $_POST['settings'] ) ) : '';
 
 			if(  $setting_tb == 'tab-options' ){
-			$display_option = isset($_POST['display_option']) ? sanitize_text_field($_POST['display_option']) : get_post_meta($post_id, 'display_option', true);
+			$display_option = isset( $_POST['display_option'] ) ? sanitize_text_field( wp_unslash( $_POST['display_option'] ) ) : get_post_meta( $post_id, 'display_option', true );
 			update_post_meta($post_id, 'display_option', $display_option);	
 
-			$layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : get_post_meta($post_id, 'layout_option', true);
+			$layout_option = isset( $_POST['layout_option'] ) ? sanitize_text_field( wp_unslash( $_POST['layout_option'] ) ) : get_post_meta( $post_id, 'layout_option', true );
 			update_post_meta($post_id, 'layout_option', $layout_option);
 			
-			$current_tab = isset($_POST['current_tab']) ? sanitize_text_field($_POST['current_tab']) : '';
+			$current_tab = isset( $_POST['current_tab'] ) ? sanitize_text_field( wp_unslash( $_POST['current_tab'] ) ) : '';
 			update_post_meta($post_id, 'tab-options', $current_tab); // Save the active tab state
 
 			}
 
 			else if(  $setting_tb == 'tab-selected' ){
-				$selected_elements = isset($_POST['selected_elements']) ? array_map('sanitize_text_field', $_POST['selected_elements']) : array();
-				$keywords = isset($_POST['keywords']) ? array_map('sanitize_text_field', $_POST['keywords']) : [];
-				$date_format = isset($_POST['date_format']) ? sanitize_text_field($_POST['date_format']) : '';
-				$char_limit = isset($_POST['char_limit']) ? intval($_POST['char_limit']) : 0;
-				$language = isset($_POST['language']) ? sanitize_text_field($_POST['language']) : '';
-				$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : '';
-				$enable_load_more = isset($_POST['enable_load_more']) ? intval($_POST['enable_load_more']) : 0;
-				$google_review_toggle = isset($_POST['google_review_toggle']) ? intval($_POST['google_review_toggle']) : 0;
-				$bg_color = isset($_POST['bg_color']) ? sanitize_hex_color($_POST['bg_color']) : '';
-				$text_color = isset($_POST['text_color']) ? sanitize_hex_color($_POST['text_color']) : '';
-				$bg_color_load = isset($_POST['bg_color_load']) ? sanitize_hex_color($_POST['bg_color_load']) : '';
-				$text_color_load = isset($_POST['text_color_load']) ? sanitize_hex_color($_POST['text_color_load']) : '';
-				$posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 10; // Default to 10
-				$rating_filter = isset($_POST['rating_filter']) ? intval($_POST['rating_filter']) : 0;
-				$custom_css = isset($_POST['custom_css']) ? sanitize_textarea_field($_POST['custom_css']) : '';
-				$current_tab2 = sanitize_text_field( $_POST['settings'] ); // The active tab
-				$enable_sort_by = isset($_POST['enable_sort_by']) ? intval($_POST['enable_sort_by']) : 0;
+				$selected_elements = isset( $_POST['selected_elements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['selected_elements'] ) ) : array();
+				$keywords = isset( $_POST['keywords'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['keywords'] ) ) : [];
+				$date_format = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
+				$char_limit = isset( $_POST['char_limit'] ) ? intval( wp_unslash( $_POST['char_limit'] ) ) : 0;
+				$language = isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : '';
+				$sort_by = isset( $_POST['sort_by'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_by'] ) ) : '';
+				$enable_load_more = isset( $_POST['enable_load_more'] ) ? intval( wp_unslash( $_POST['enable_load_more'] ) ) : 0;
+				$google_review_toggle = isset( $_POST['google_review_toggle'] ) ? intval( wp_unslash( $_POST['google_review_toggle'] ) ) : 0;
+				$bg_color = isset( $_POST['bg_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['bg_color'] ) ) : '';
+				$text_color = isset( $_POST['text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color'] ) ) : '';
+				$bg_color_load = isset( $_POST['bg_color_load'] ) ? sanitize_hex_color( wp_unslash( $_POST['bg_color_load'] ) ) : '';
+				$text_color_load = isset( $_POST['text_color_load'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color_load'] ) ) : '';
+				$posts_per_page = isset( $_POST['posts_per_page'] ) ? intval( wp_unslash( $_POST['posts_per_page'] ) ) : 10; // Default to 10
+				$rating_filter = isset( $_POST['rating_filter'] ) ? intval( wp_unslash( $_POST['rating_filter'] ) ) : 0;
+				$custom_css = isset( $_POST['custom_css'] ) ? sanitize_textarea_field( wp_unslash( $_POST['custom_css'] ) ) : '';
+				$current_tab2 = sanitize_text_field( wp_unslash( $_POST['settings'] ) ); // The active tab
+				$enable_sort_by = isset( $_POST['enable_sort_by'] ) ? intval( wp_unslash( $_POST['enable_sort_by'] ) ) : 0;
 
 				update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
 				update_post_meta($post_id, 'selected_elements', $selected_elements);
@@ -2641,7 +2641,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		function filter_reviews_ajax_handler() {
 			
-			$post_id = isset($_POST['zwsgr_widget_id']) ? sanitize_text_field($_POST['zwsgr_widget_id']) : '';
+			$post_id = isset($_POST['zwsgr_widget_id']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_widget_id'])) : '';
 
 			$post_objct = get_post($post_id);
 			if (!isset($post_id) || !$post_objct ) {
@@ -2649,7 +2649,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 
 			// Verify nonce for security
-			if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'filter_reviews_nonce')) {
+			if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'filter_reviews_nonce')) {
 				die(esc_html__('Permission Denied', 'smart-google-reviews'));
 			}
 			
@@ -2660,7 +2660,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 		
 			$rating_filter = array_map('intval', $_POST['rating_filter']); // Ensure all values are integers
-			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : 'newest';
+			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field(wp_unslash($_POST['sort_by'])) : 'newest';
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$language = get_post_meta($post_id, 'language', true);
 			$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
