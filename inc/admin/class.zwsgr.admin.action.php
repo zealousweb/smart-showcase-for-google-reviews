@@ -1046,47 +1046,55 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			settings_errors('zwsgr_advanced_account_settings');
 			settings_errors('zwsgr_settings&tab=notifications');
 
-		
 			// Handle form submission (send email)
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				if (isset($_POST['zwsgr_admin_notification_emails'])) {
-					// Sanitize and save the form values
-					$emails = sanitize_text_field($_POST['zwsgr_admin_notification_emails']);
-					$subject = sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']);
-					$body = wp_kses_post($_POST['zwsgr_admin_notification_email_body']); // Use wp_kses_post for rich text
-		
-					// Update the options (only update the subject and body; leave email field empty after submission)
-					update_option('zwsgr_admin_notification_emails_subject', $subject);
-					update_option('zwsgr_admin_notification_email_body', $body);
-		
-					// Prepare email
-					$to = explode(',', $emails); // Assume emails are comma-separated
-					$message = $body;
-					$headers = array('Content-Type: text/html; charset=UTF-8');
-		
-					// Send the email using wp_mail()
-					if (!empty($emails)) {
-						$mail_sent = wp_mail($to, $subject, $message, $headers);
-		
-						// Check if email was sent successfully
-						if ($mail_sent) {
-							add_settings_error('zwsgr_notification_settings', 'settings_updated', 'Emails sent successfully.', 'updated');
-						} else {
-							add_settings_error('zwsgr_notification_settings', 'settings_error', 'Failed to send email.', 'error');
+			if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+
+				if (isset($_POST['zwsgr_notification_nonce_field'])) {
+					$nonce = sanitize_text_field($_POST['zwsgr_notification_nonce_field']);
+				
+					if (wp_verify_nonce($nonce, 'zwsgr_notification_nonce')) {
+					// Handle notification emails submission
+						if (isset($_POST['zwsgr_admin_notification_emails'])) {
+							// Sanitize and save the form values
+							$emails = isset($_POST['zwsgr_admin_notification_emails']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails']) : '';
+							$subject = isset($_POST['zwsgr_admin_notification_emails_subject']) ? sanitize_text_field($_POST['zwsgr_admin_notification_emails_subject']) : '';
+							$body = isset($_POST['zwsgr_admin_notification_email_body']) ? wp_kses_post($_POST['zwsgr_admin_notification_email_body']) : '';
+				
+							// Update the options (only update the subject and body; leave email field empty after submission)
+							update_option('zwsgr_admin_notification_emails_subject', $subject);
+							update_option('zwsgr_admin_notification_email_body', $body);
+				
+							// Prepare email
+							if (!empty($emails)) {
+								$to = explode(',', $emails); // Assume emails are comma-separated
+								$message = $body;
+								$headers = array('Content-Type: text/html; charset=UTF-8');
+				
+								// Send the email using wp_mail()
+								$mail_sent = wp_mail($to, $subject, $message, $headers);
+				
+								// Check if email was sent successfully
+								if ($mail_sent) {
+									add_settings_error('zwsgr_notification_settings', 'settings_updated', 'Emails sent successfully.', 'updated');
+								} else {
+									add_settings_error('zwsgr_notification_settings', 'settings_error', 'Failed to send email.', 'error');
+								}
+							} else {
+								add_settings_error('zwsgr_notification_settings', 'settings_error', 'No email addresses provided.', 'error');
+							}
+				
+							// Clear only the email field after submission
+							update_option('zwsgr_admin_notification_emails', '');
 						}
-					} else {
-						add_settings_error('zwsgr_notification_settings', 'settings_error', 'No email addresses provided.', 'error');
 					}
-		
-					// Clear only the email field after submission
-					update_option('zwsgr_admin_notification_emails', '');
 				}
-				if (isset($_POST['advance_submit_buttons'])){
+		
+				// Handle advanced settings form submission
+				if (isset($_POST['advance_submit_buttons'])) {
 					add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
 				}
-				
 			}
-			
+		
 			// Now render the form and tabs
 			$current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'google';
 			?>
@@ -1131,6 +1139,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<?php elseif ($current_tab === 'notifications'): ?>
 						<form id="notification-form" action="" method="post" class="zwsgr-setting-form">
 							<?php
+							 wp_nonce_field('zwsgr_notification_nonce', 'zwsgr_notification_nonce_field');
 							// Display WordPress admin notices
     						settings_errors('zwsgr_notification_settings');
 							settings_fields('zwsgr_notification_settings');
@@ -1147,7 +1156,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<span id="email-success" style="color: green; display: none;"></span>
 							<?php 
 							submit_button( 'Send Notification Emails', 'zwsgr-submit-btn', 'submit_buttons' );
-
 							?>
 						</form>
 					<?php elseif ($current_tab === 'advanced'): ?>
@@ -1157,7 +1165,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							settings_fields('zwsgr_advanced_account_settings');
 							do_settings_sections('zwsgr_advanced_account_settings');
 							submit_button( 'Save Advanced Settings', 'zwsgr-submit-btn', 'advance_submit_buttons' );
-
 							?>
 						</form>
 						<?php elseif ($current_tab === 'smtp-settings'):
