@@ -1114,11 +1114,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				if (isset($_POST['zwsgr_advanced_nonce_field'])) {
 					$nonce = isset($_POST['zwsgr_advanced_nonce_field']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_advanced_nonce_field'])) : '';
+					$value = isset($_POST['zwsgr_sync_reviews']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_sync_reviews'])) : 'daily'; // Default to 'daily' if not set
 					if (wp_verify_nonce($nonce, 'zwsgr_advanced_nonce')) {
 						// Handle advanced settings form submission
 						if (isset($_POST['advance_submit_buttons'])) {
+							update_option('zwsgr_sync_reviews', $value);
 							add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
-							update_option('zwsgr_sync_reviews', 'daily');
 						}
 					}
 				}
