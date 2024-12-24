@@ -57,6 +57,31 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
         }
 
         /**
+		 * Custom log function for debugging.
+		 *
+		 * @param string $message The message to log.
+		 */
+		function zwsgr_debug_function( $message ) {
+			// Define the custom log directory path.
+			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews';  // wp-content/plugins/smart-google-reviews
+		
+			// Define the log file path.
+			$log_file = $log_dir . '/smart-google-reviews-debug.log';
+		
+			// Check if the directory exists, if not create it
+			if ( ! file_exists( $log_dir ) ) {
+				// Try creating the directory using wp_mkdir_p()
+				wp_mkdir_p( $log_dir );
+			}
+		
+			// Format the log entry with UTC timestamp using gmdate().
+			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
+		
+			// Write the log entry to the file.
+			file_put_contents( $log_file, $log_entry, FILE_APPEND | LOCK_EX );
+		}
+
+        /**
          * Adds custom 'monthly' and 'weekly' cron schedule intervals to WordPress.
          *
          * This function hooks into the 'cron_schedules' filter to add custom
@@ -116,7 +141,7 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
 
             // Ensure the new frequency is valid
             if ( !in_array( $zwsgr_new_frequency, ['daily', 'weekly', 'monthly'], true ) ) {
-                error_log( "Invalid frequency: $zwsgr_new_frequency" );
+                $this->zwsgr_debug_function( "Invalid frequency: $zwsgr_new_frequency" );
                 return;
             }
 
@@ -124,7 +149,7 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
             if ( wp_next_scheduled( 'zwsgr_data_sync' ) ) {
                 // If the old frequency exists, clear the existing cron event
                 wp_clear_scheduled_hook( 'zwsgr_data_sync' );
-                error_log( "Existing cron cleared with old frequency: $zwsgr_old_frequency" );
+                $this->zwsgr_debug_function( "Existing cron cleared with old frequency: $zwsgr_old_frequency" );
             }
 
              // Calculate the start time based on the selected frequency
@@ -138,7 +163,7 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
 
             // Schedule a new cron event with the new frequency
             wp_schedule_event( $zwsgr_start_time, $zwsgr_new_frequency, 'zwsgr_data_sync' );
-            error_log( "New cron scheduled with frequency: $zwsgr_new_frequency, starting at: " . date( 'Y-m-d H:i:s', $zwsgr_start_time ) );
+            $this->zwsgr_debug_function( "New cron scheduled with frequency: $zwsgr_new_frequency, starting at: " . gmdate( 'Y-m-d H:i:s', $zwsgr_start_time ) );
 
         }
 
@@ -185,9 +210,9 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
                     $is_data_sync = $this->client->zwsgr_fetch_gmb_data(false, false, 'zwsgr_gmb_reviews', $zwsgr_account_number, $zwsgr_location_number);
 
                     if (!$is_data_sync) {
-                        error_log('Data sync for widget:' . $zwsgr_widget_id . 'has been successfully processed');
+                        $this->zwsgr_debug_function('Data sync for widget:' . $zwsgr_widget_id . 'has been successfully processed');
                     } else {
-                        error_log('There was an error while Data sync for widget:' . $zwsgr_widget_id);
+                        $this->zwsgr_debug_function('There was an error while Data sync for widget:' . $zwsgr_widget_id);
                     }
                     
                 }

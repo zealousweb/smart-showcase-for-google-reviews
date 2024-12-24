@@ -173,7 +173,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_delete_review_reply'	    => wp_create_nonce('zwsgr_delete_review_reply'),
 				'zwsgr_gmb_dashboard_filter'	=> wp_create_nonce('zwsgr_gmb_dashboard_filter'),
 				'zwsgr_data_render'				=> wp_create_nonce('zwsgr_data_render'),
-				'zwsgr_wp_review_id' 		    => ( is_admin() && isset( $_GET['post'] ) ) ? $_GET['post'] : 0,
+				'zwsgr_wp_review_id'            => ( is_admin() && isset( $_GET['post'] ) ) ? intval( $_GET['post'] ) : 0,
 				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args)
 			));
 
@@ -336,11 +336,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			register_post_type(ZWSGR_POST_WIDGET_TYPE, $args);
 		}
 
-		function action__custom_widget_url_on_add_new() {
+		function action__custom_widget_url_on_add_new() 
+		{
 
 			$zwsgr_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
 		
-			if ($zwsgr_post_type === 'zwsgr_data_widget') {
+			if ($zwsgr_post_type === 'zwsgr_data_widget' || isset($_POST['security-zwsgr-widget-url']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwsgr-widget-url'])), 'zwsgr_send_widget_url')) {
 		
 				$zwsgr_widget_id = wp_insert_post([
 					'post_type'   => 'zwsgr_data_widget',
@@ -429,28 +430,32 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 		}
 
-		function zwsgr_debug_function($message = null) {
-			// Use the temporary directory for debug logs
-			$debug_log_file = trailingslashit(get_temp_dir()) . 'smart-google-reviews-debug.log';
+
+		/**
+		 * Custom log function for debugging.
+		 *
+		 * @param string $message The message to log.
+		 */
+		function zwsgr_debug_function( $message ) {
+			// Define the custom log directory path.
+			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews';  // wp-content/plugins/smart-google-reviews
 		
-			// Check if a message is provided
-			if ($message) {
-				// Ensure the temporary directory is writable
-				if (is_writable(get_temp_dir())) {
-					file_put_contents(
-						$debug_log_file,
-						'[' . gmdate('Y-m-d H:i:s') . '] ' . $message . PHP_EOL,
-						FILE_APPEND
-					);
-				}
+			// Define the log file path.
+			$log_file = $log_dir . '/smart-google-reviews-debug.log';
+		
+			// Check if the directory exists, if not create it
+			if ( ! file_exists( $log_dir ) ) {
+				// Try creating the directory using wp_mkdir_p()
+				wp_mkdir_p( $log_dir );
 			}
+		
+			// Format the log entry with UTC timestamp using gmdate().
+			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
+		
+			// Write the log entry to the file.
+			file_put_contents( $log_file, $log_entry, FILE_APPEND | LOCK_EX );
 		}
 		
-		
-		
-		
-		
-
 		function zwsgr_action_allow_svg_in_post_content($allowed_tags) {
 
 			$allowed_tags['svg'] = array(

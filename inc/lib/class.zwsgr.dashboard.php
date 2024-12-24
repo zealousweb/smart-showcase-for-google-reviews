@@ -45,7 +45,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             if (defined('DOING_AJAX') && DOING_AJAX) {
 
                 check_ajax_referer( 'zwsgr_data_render', 'security' );
-                $zwsgr_filter_data = isset($_POST['zwsgr_filter_data']) ? $_POST['zwsgr_filter_data'] : [];
+                $zwsgr_filter_data = isset($_POST['zwsgr_filter_data']) && is_array($_POST['zwsgr_filter_data']) ? array_map('sanitize_text_field', $_POST['zwsgr_filter_data']) : [];
                 
             } else {
 
@@ -151,9 +151,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                     $zwsgr_range_dates = explode(' - ', $zwsgr_range_filter_data);
                     $zwsgr_start_date  = $zwsgr_range_dates[0]; 
                     $zwsgr_end_date    = isset($zwsgr_range_dates[1]) ? $zwsgr_range_dates[1] : ''; 
-                    $zwsgr_start_date  = date('Y-m-d', strtotime($zwsgr_start_date));
-                    $zwsgr_end_date    = date('Y-m-d', strtotime($zwsgr_end_date));
-
+                    $zwsgr_start_date = gmdate('Y-m-d', strtotime($zwsgr_start_date));
+                    $zwsgr_end_date = gmdate('Y-m-d', strtotime($zwsgr_end_date));
                     $zwsgr_data_render_args['date_query'] = array(
                         'relation' => 'AND',
                         array(
@@ -536,7 +535,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 check_ajax_referer('zwsgr_gmb_dashboard_filter', 'security');
             }
 
-            $zwsgr_account_number  = $_POST['zwsgr_account_number'];
+            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
         
             if (empty($zwsgr_account_number)) {
                 wp_send_json_error('An account number is required to retrieve location data.');
