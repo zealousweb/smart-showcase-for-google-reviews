@@ -1111,10 +1111,16 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						}
 					}
 				}
-		
-				// Handle advanced settings form submission
-				if (isset($_POST['advance_submit_buttons'])) {
-					add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
+
+				if (isset($_POST['zwsgr_advanced_nonce_field'])) {
+					$nonce = isset($_POST['zwsgr_advanced_nonce_field']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_advanced_nonce_field'])) : '';
+					if (wp_verify_nonce($nonce, 'zwsgr_advanced_nonce')) {
+						// Handle advanced settings form submission
+						if (isset($_POST['advance_submit_buttons'])) {
+							add_settings_error('zwsgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
+							update_option('zwsgr_sync_reviews', 'daily');
+						}
+					}
 				}
 			}
 		
@@ -1182,8 +1188,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							?>
 						</form>
 					<?php elseif ($current_tab === 'advanced'): ?>
-						<form action="options.php" method="post" class="zwsgr-setting-form">
+						<form action="" method="post" class="zwsgr-setting-form">
 							<?php
+							wp_nonce_field('zwsgr_advanced_nonce', 'zwsgr_advanced_nonce_field');
 							settings_errors('zwsgr_advanced_account_settings');
 							settings_fields('zwsgr_advanced_account_settings');
 							do_settings_sections('zwsgr_advanced_account_settings');
