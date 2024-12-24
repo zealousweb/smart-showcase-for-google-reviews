@@ -1,7 +1,7 @@
 <?php
 
 	$message = $message_smtp = '';
-	$error = array();
+	$custom_error  = array();
 	$zwsgr_smtp_option = get_option( 'zwsgr_smtp_option' );
 	$zwsgr_general_option = get_option( 'zwsgr_general_option' );
 
@@ -9,7 +9,7 @@
 
 		// check nounce
 		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ) ) {
-			$error[] =  __( 'Nonce check failed.', 'smart-google-reviews' );
+			$custom_error [] =  __( 'Nonce check failed.', 'smart-google-reviews' );
 		}
 		global $wp_version;
 		if ( version_compare( $wp_version, '5.5.1', '>=' ) ) {
@@ -24,9 +24,9 @@
 			$mail = new PHPMailer( true );
 		}
 
-		$to_email = sanitize_email( $_POST['zwsgr_test_to_email'] );
-		$subject = sanitize_text_field( $_POST['zwsgr_test_subject'] );
-		$body = sanitize_textarea_field( $_POST['zwsgr_test_message'] );
+		$to_email = isset( $_POST['zwsgr_test_to_email'] ) ? sanitize_email( wp_unslash( $_POST['zwsgr_test_to_email'] ) ) : '';
+		$subject = isset( $_POST['zwsgr_test_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_test_subject'] ) ) : '';
+		$body = isset( $_POST['zwsgr_test_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['zwsgr_test_message'] ) ) : '';
 		$ret = array();
 
 		try {
@@ -81,7 +81,6 @@
 			$mail->Send();
 			$mail->ClearAddresses();
 			$mail->ClearAllRecipients();
-            //print_r($mail->ErrorInfo)
 			if ( $mail->ErrorInfo != ""){
 				$success = 0;
 				$ret['error'] = $mail->ErrorInfo;
@@ -96,12 +95,12 @@
 		$ret['debug_log'] = $debug_msg;
 
 		if( $success == 0 ) {
-			$error[] = __( 'Error on send mail.', 'smart-google-reviews' );
-			$error[] = $ret['error'];
-			$error[] = $ret['debug_log'];
+			$custom_error [] = __( 'Error on send mail.', 'smart-google-reviews' );
+			$custom_error [] = $ret['error'];
+			$custom_error [] = $ret['debug_log'];
 		}
 
-		if ( empty( $error ) ) {
+		if ( empty( $custom_error  ) ) {
 			$message .= __( 'Test email was successfully sent.', 'smart-google-reviews' );
 		}
 
@@ -110,41 +109,48 @@
 	if ( isset( $_POST['zwsgr_smtp_submit'] ) ) {
 		// check nounce
 		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtp_nonce_name' ) ) {
-			$error .= ' ' . __( 'Nonce check failed.', 'smart-google-reviews' );
+			$custom_error  .= ' ' . __( 'Nonce check failed.', 'smart-google-reviews' );
 		}
 
 		if ( isset( $_POST['zwsgr_from_email'] ) ) {
-			if ( is_email( $_POST['zwsgr_from_email'] ) ) {
-				$zwsgr_smtp_option['zwsgr_from_email'] = sanitize_email( $_POST['zwsgr_from_email'] );
+			$email = sanitize_email(wp_unslash( $_POST['zwsgr_from_email'] )); 
+			if ( is_email( $email ) ) {
+				$zwsgr_smtp_option['zwsgr_from_email'] = sanitize_email( $email );
 			} else {
-				$error .= ' ' . __( "Please enter a valid email address in the 'From Email Address' field.", 'smart-google-reviews' );
+				$custom_error .= ' ' . __( "Please enter a valid email address in the 'From Email Address' field.", 'smart-google-reviews' );
 			}
-		}
-		$zwsgr_smtp_option['zwsgr_from_name'] = sanitize_text_field( $_POST['zwsgr_from_name'] );
-		$zwsgr_smtp_option['zwsgr_smtp_host'] = stripslashes( $_POST['zwsgr_smtp_host'] );
-		$zwsgr_smtp_option['zwsgr_smtp_ency_type'] = isset( $_POST['zwsgr_smtp_ency_type'] ) ? sanitize_text_field($_POST['zwsgr_smtp_ency_type']) : 'none';
-		$zwsgr_smtp_option['zwsgr_smtp_auth'] = isset( $_POST['zwsgr_smtp_auth'] ) ? sanitize_text_field($_POST['zwsgr_smtp_auth']) : 'no';
+		}		
+
+		$zwsgr_smtp_option['zwsgr_from_name'] = isset( $_POST['zwsgr_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_from_name'] ) ) : '';
+		$zwsgr_smtp_option['zwsgr_smtp_host'] = isset( $_POST['zwsgr_smtp_host'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_smtp_host'] ) ) : '';
+		$zwsgr_smtp_option['zwsgr_smtp_ency_type'] = isset( $_POST['zwsgr_smtp_ency_type'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_smtp_ency_type'] ) ) : 'none';
+		$zwsgr_smtp_option['zwsgr_smtp_auth'] = isset( $_POST['zwsgr_smtp_auth'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_smtp_auth'] ) ) : 'no';
+
 
 
 		$zwsgr_smtp_option['zwsgr_smtp_port']	= '25';
 		/* Check value from "SMTP port" option */
 		if ( isset( $_POST['zwsgr_smtp_port'] ) ) {
-			if ( empty( $_POST['zwsgr_smtp_port'] ) || 1 > intval( $_POST['zwsgr_smtp_port'] ) || ( ! preg_match( '/^\d+$/', $_POST['zwsgr_smtp_port'] ) ) ) {
-				$zwsgr_smtp_option['zwsgr_smtp_port']	= '25';
-				$error                                   .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'smart-google-reviews' );
+			$smtp_port = sanitize_text_field( wp_unslash( $_POST['zwsgr_smtp_port'] ) );
+		
+			// Validate that the port is a number and greater than zero
+			if ( empty( $smtp_port ) || 1 > intval( $smtp_port ) || ! preg_match( '/^\d+$/', $smtp_port ) ) {
+				$zwsgr_smtp_option['zwsgr_smtp_port'] = '25';
+				$custom_error .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'smart-google-reviews' );
 			} else {
-				$zwsgr_smtp_option['zwsgr_smtp_port'] = sanitize_text_field( $_POST['zwsgr_smtp_port'] );
+				$zwsgr_smtp_option['zwsgr_smtp_port'] = $smtp_port;
 			}
 		}
-		$zwsgr_smtp_option['zwsgr_smtp_username']       = stripslashes( $_POST['zwsgr_smtp_username'] );
-		$zwsgr_smtp_option['zwsgr_smtp_password'] = sanitize_text_field($_POST['zwsgr_smtp_password']);
+		
+		$zwsgr_smtp_option['zwsgr_smtp_username'] = isset( $_POST['zwsgr_smtp_username'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_smtp_username'] ) ) : '';
+		$zwsgr_smtp_option['zwsgr_smtp_password'] = isset( $_POST['zwsgr_smtp_password'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_smtp_password'] ) ) : '';
 
 		/* Update settings in the database */
-		if ( empty( $error ) ) {
+		if ( empty( $custom_error  ) ) {
 			update_option( 'zwsgr_smtp_option', $zwsgr_smtp_option );
 			$message_smtp .= __( 'SMTP Settings saved.', 'smart-google-reviews' );
 		} else {
-			$error .= ' ' . __( 'SMTP Settings are not saved.', 'smart-google-reviews' );
+			$custom_error  .= ' ' . __( 'SMTP Settings are not saved.', 'smart-google-reviews' );
 		}
 
 	}
@@ -315,7 +321,7 @@
 							name="zwsgr_smtp_submit"
 							type="submit"
 							class="button zwsgr-submit-btn"
-							value="<?php esc_html_e( 'Save SMTP Settings', 'smart-google-reviews' ); ?>"
+							value="<?php esc_attr_e( 'Save SMTP Settings', 'smart-google-reviews' ); ?>"
 						/>
 						<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtp_nonce_name' ); ?>
 					</td>
@@ -333,10 +339,10 @@
 		</div>
 		<?php } ?>
 
-		<?php if( !empty( $error ) )  { ?>
+		<?php if( !empty( $custom_error  ) )  { ?>
 		<div id="setting-error-settings_updated" class="notice notice-error settings-error is-dismissible">
 			<?php
-			foreach( $error as $key=>$val) {
+			foreach( $custom_error  as $key=>$val) {
 				echo '<p><strong>'.  esc_html( $val ) .'</strong></p>';
 			}
 			?>
@@ -403,7 +409,7 @@
 								name="zwsgr_smtp_test_submit"
 								type="submit"
 								class="button zwsgr-submit-btn"
-								value="<?php esc_html_e( 'Send Test Email', 'smart-google-reviews' ); ?>"
+								value="<?php esc_attr_e( 'Send Test Email', 'smart-google-reviews' ); ?>"
 							/>
 							<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ); ?>
 						</td>

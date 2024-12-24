@@ -64,8 +64,6 @@ body .generated-shortcode-display {
 body .tab-content {
     display: none;
     padding-right: 1rem;
-    /*  border: 1px solid #ccc;
-    background-color: #fff; */
 }
 
 body .tab-content.active {
@@ -921,7 +919,8 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item:last-child {
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button, 
 body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
-    background-color: #EDF4F5;
+    color: white !important;
+    background-color: #3caab4;
     color: #1B1B1B;
     padding: 10px 24px;
     border-radius: 50px;
@@ -945,11 +944,6 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
     line-height: 30px;
     font-family: 'Poppins';
     color: #1B1B1B;
-}
-
-body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker.active {
-    background-color: #0074A2;
-    color: #FCFCFC;    
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select, 
@@ -1014,6 +1008,10 @@ body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-location-sel
 
 @media only screen and (max-width: 1024px) {
 
+    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select {
+        max-width: 100% !important;
+    }
+
     body .zwsgr-flex-inner-container .zwsgr_outer_wrapper {
         flex-direction: column;
         justify-content: center;
@@ -1055,6 +1053,7 @@ body .zwgr-dashboard #render-dynamic .zwsgr-data-card {
     max-width: 286px;
     margin: 0 24px 0 0;
     padding: 24px 27px;
+    background-color: white !important;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1147,6 +1146,10 @@ body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"] {
     font-weight: 600 !important;
     max-width: 210px !important;
     text-align: center;
+}
+
+body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]::placeholder {
+    color: white !important;
 }
 
 body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"].active::placeholder {
