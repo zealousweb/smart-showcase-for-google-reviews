@@ -45,7 +45,9 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             if (defined('DOING_AJAX') && DOING_AJAX) {
 
                 check_ajax_referer( 'zwsgr_data_render', 'security' );
-                $zwsgr_filter_data = isset($_POST['zwsgr_filter_data']) && is_array($_POST['zwsgr_filter_data']) ? array_map('sanitize_text_field', $_POST['zwsgr_filter_data']) : [];
+
+                $zwsgr_filter_data = isset( $_POST['zwsgr_filter_data'] ) && is_array( $_POST['zwsgr_filter_data'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['zwsgr_filter_data'] ) ) : [];
+
                 
             } else {
 
@@ -535,7 +537,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 check_ajax_referer('zwsgr_gmb_dashboard_filter', 'security');
             }
 
-            $zwsgr_account_number = isset($_POST['zwsgr_account_number']) ? sanitize_text_field($_POST['zwsgr_account_number']) : '';
+            $zwsgr_account_number = isset( $_POST['zwsgr_account_number'] ) ? sanitize_text_field( wp_unslash( $_POST['zwsgr_account_number'] ) ) : '';
         
             if (empty($zwsgr_account_number)) {
                 wp_send_json_error('An account number is required to retrieve location data.');

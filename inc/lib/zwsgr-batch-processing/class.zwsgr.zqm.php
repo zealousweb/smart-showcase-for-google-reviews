@@ -56,6 +56,40 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
         }
 
+        /**
+		 * Custom log function for debugging.
+		 *
+		 * @param string $message The message to log.
+		 */
+		function zwsgr_debug_function( $message ) {
+			// Define the custom log directory path.
+			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews'; // wp-content/plugins/smart-google-reviews
+		
+			// Define the log file path.
+			$log_file = $log_dir . '/smart-google-reviews-debug.log';
+		
+			// Check if the directory exists, if not create it.
+			if ( ! file_exists( $log_dir ) ) {
+				wp_mkdir_p( $log_dir );
+			}
+		
+			// Initialize the WP_Filesystem.
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+			}
+			WP_Filesystem();
+		
+			global $wp_filesystem;
+		
+			// Format the log entry with UTC timestamp using gmdate().
+			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
+		
+			// Write the log entry to the file using WP_Filesystem.
+			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
+				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
+			}
+		}
+
         // Method to get the single instance of the class
         public static function get_instance() {
             if ( self::$instance === null ) {
@@ -82,7 +116,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 if (empty($this->zwsgr_widget_id)) {
 
-                    error_log('ZQM: Invalid Widget ID for' . $this->zwsgr_gmb_data_type);
+                    $this->zwsgr_debug_function('ZQM: Invalid Widget ID for' . $this->zwsgr_gmb_data_type);
 
                     wp_send_json_error(
                         array(
@@ -97,7 +131,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 if ($zwsgr_reset_current_batch_index_status) {
 
-                    error_log('ZQM: There was an error while resetting batch index for' . $this->zwsgr_gmb_data_type .' & Widget ID '.$this->zwsgr_widget_id);
+                    $this->zwsgr_debug_function('ZQM: There was an error while resetting batch index for' . $this->zwsgr_gmb_data_type .' & Widget ID '.$this->zwsgr_widget_id);
 
                     wp_send_json_error(
                         array(
@@ -130,7 +164,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
             } else {
 
-                error_log('ZQM: Invalid Access Token for' . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function('ZQM: Invalid Access Token for' . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
@@ -165,7 +199,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     break;
                 default:
                     
-                error_log("ZQM: Invalid GMB data type: " . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function("ZQM: Invalid GMB data type: " . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
                 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
                     
@@ -207,7 +241,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 if (!$zwsgr_data_pushed) {
 
-                    error_log("ZQM: Failed to push data to the queue: " . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+                    $this->zwsgr_debug_function("ZQM: Failed to push data to the queue: " . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
                 
                     if (defined('DOING_AJAX') && DOING_AJAX) {
                         wp_send_json_error(
@@ -232,7 +266,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 if (!$zwsgr_data_saved) {
 
-                    error_log("ZQM: Failed to save data to the queue: " . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+                    $this->zwsgr_debug_function("ZQM: Failed to save data to the queue: " . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
                 
                     if (defined('DOING_AJAX') && DOING_AJAX) {
                         wp_send_json_error(
@@ -288,7 +322,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                     
                         // If any data is missing, log an error and skip the update.
                         if (!empty($missing_data)) {
-                            error_log("ZQM: Missing data for widget ID: " . $this->zwsgr_widget_id . " - Missing: " . implode(', ', $missing_data));
+                            $this->zwsgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwsgr_widget_id . " - Missing: " . implode(', ', $missing_data));
                             return; // Optionally return to stop further execution.
                         }
                     
@@ -327,7 +361,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             } else if (isset($this->zwsgr_gmb_response) && $this->zwsgr_gmb_response['success'] && empty($this->zwsgr_gmb_response['data'])) {
                 
                 // Log the error before resetting the index and deleting options
-                error_log("ZQM: Batch processing error: Failed for" . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function("ZQM: Batch processing error: Failed for" . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
 
                 // Define a default error message
                 $zwsgr_error_message = 'An unknown error occurred. Please try again.';
@@ -369,7 +403,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
             } {
 
                 // Log the error before resetting the index and deleting options
-                error_log("ZQM: Batch processing" . 'error:' . $this->zwsgr_gmb_response['error']['status'] . 'message:' . $this->zwsgr_gmb_response['error']['message'] . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function("ZQM: Batch processing" . 'error:' . $this->zwsgr_gmb_response['error']['status'] . 'message:' . $this->zwsgr_gmb_response['error']['message'] . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 

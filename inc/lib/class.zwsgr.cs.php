@@ -63,22 +63,31 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
 		 */
 		function zwsgr_debug_function( $message ) {
 			// Define the custom log directory path.
-			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews';  // wp-content/plugins/smart-google-reviews
+			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews'; // wp-content/plugins/smart-google-reviews
 		
 			// Define the log file path.
 			$log_file = $log_dir . '/smart-google-reviews-debug.log';
 		
-			// Check if the directory exists, if not create it
+			// Check if the directory exists, if not create it.
 			if ( ! file_exists( $log_dir ) ) {
-				// Try creating the directory using wp_mkdir_p()
 				wp_mkdir_p( $log_dir );
 			}
+		
+			// Initialize the WP_Filesystem.
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+			}
+			WP_Filesystem();
+		
+			global $wp_filesystem;
 		
 			// Format the log entry with UTC timestamp using gmdate().
 			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
 		
-			// Write the log entry to the file.
-			file_put_contents( $log_file, $log_entry, FILE_APPEND | LOCK_EX );
+			// Write the log entry to the file using WP_Filesystem.
+			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
+				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
+			}
 		}
 
         /**

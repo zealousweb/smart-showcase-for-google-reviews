@@ -124,14 +124,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 
 			// admin js
-			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
-			wp_enqueue_script( ZWSGR_PREFIX . '-admin-js', ZWSGR_URL . 'assets/js/admin.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-admin-min-js', ZWSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSGR_VERSION, true );
+			wp_enqueue_script( ZWSGR_PREFIX . '-admin-js', ZWSGR_URL . 'assets/js/admin.js', array( 'jquery-core' ), ZWSGR_VERSION ,true);
 
 			// Google chart JS
-			wp_enqueue_script( ZWSGR_PREFIX . '-google-chart-js', ZWSGR_URL . 'assets/js/google-chart.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-google-chart-js', ZWSGR_URL . 'assets/js/google-chart.js', array( 'jquery-core' ), ZWSGR_VERSION ,true);
 
 			// Enqueue Daterangepicker JS
-			wp_enqueue_script( ZWSGR_PREFIX . '-daterangepicker-min-js', ZWSGR_URL . 'assets/js/daterangepicker.min.js', array( 'jquery-core', 'moment' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-daterangepicker-min-js', ZWSGR_URL . 'assets/js/daterangepicker.min.js', array( 'jquery-core', 'moment' ), ZWSGR_VERSION ,true);
 
 			// admin css
 			wp_enqueue_style( ZWSGR_PREFIX . '-admin-min-css', ZWSGR_URL . 'assets/css/admin.min.css', array(), ZWSGR_VERSION );
@@ -145,7 +145,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			wp_enqueue_style( ZWSGR_PREFIX . '-daterangepicker-css', ZWSGR_URL . 'assets/css/daterangepicker.css', array(), ZWSGR_VERSION );
 		
 			// Slick js
-			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION ,true);
 			
 			// Slick css
 			wp_enqueue_style( ZWSGR_PREFIX . '-slick-css', ZWSGR_URL . 'assets/css/slick.css', array(), ZWSGR_VERSION );
@@ -438,22 +438,31 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		 */
 		function zwsgr_debug_function( $message ) {
 			// Define the custom log directory path.
-			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews';  // wp-content/plugins/smart-google-reviews
+			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews'; // wp-content/plugins/smart-google-reviews
 		
 			// Define the log file path.
 			$log_file = $log_dir . '/smart-google-reviews-debug.log';
 		
-			// Check if the directory exists, if not create it
+			// Check if the directory exists, if not create it.
 			if ( ! file_exists( $log_dir ) ) {
-				// Try creating the directory using wp_mkdir_p()
 				wp_mkdir_p( $log_dir );
 			}
+		
+			// Initialize the WP_Filesystem.
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+			}
+			WP_Filesystem();
+		
+			global $wp_filesystem;
 		
 			// Format the log entry with UTC timestamp using gmdate().
 			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
 		
-			// Write the log entry to the file.
-			file_put_contents( $log_file, $log_entry, FILE_APPEND | LOCK_EX );
+			// Write the log entry to the file using WP_Filesystem.
+			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
+				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
+			}
 		}
 		
 		function zwsgr_action_allow_svg_in_post_content($allowed_tags) {
@@ -667,10 +676,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				return;
 			}
 
+			if(isset($_POST['security-zwsgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwsgr-get-form'])), 'zwsgr_get_form')){
+				return;
+			}
+
 			// Get saved email and selected filters from URL parameters
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 			$selected_account = isset($_GET['zwsgr_account']) ? sanitize_text_field(wp_unslash($_GET['zwsgr_account'])) : '';
-			$selected_location = isset($_GET['zwsgr_location']) ? sanitize_text_field($_GET['zwsgr_location']) : '';
+			$selected_location = isset( $_GET['zwsgr_location'] ) ? sanitize_text_field( wp_unslash( $_GET['zwsgr_location'] ) ) : '';
 
 			// Fetch accounts using SQL query
 			$accounts_query = $wpdb->prepare("
@@ -690,6 +703,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			// Begin the form
 			echo '<form method="GET">';
+			wp_nonce_field('zwsgr_get_form', 'security-zwsgr-get-form');
 			echo '<input type="hidden" name="post_type" value="' . esc_attr($current_post_type) . '">';
 
 			// Account dropdown
@@ -748,6 +762,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		function zwsgr_filter_posts_by_custom_meta($query)
 		{
 			global $pagenow;
+
+			if(isset($_POST['security-zwsgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwsgr-get-form'])), 'zwsgr_get_form')){
+				return;
+			}
 
 			if (is_admin() && $pagenow === 'edit.php' && isset($_GET['post_type']) && in_array($_GET['post_type'], [ZWSGR_POST_REVIEW_TYPE, ZWSGR_POST_WIDGET_TYPE])) {
 				$meta_query = array();
@@ -1270,6 +1288,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		function zwsgr_widget_configurator_callback() 
 		{
+
+			if(isset($_POST['security-zwsgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwsgr-get-form'])), 'zwsgr_get_form')){
+				return;
+			}
 
 			$post_id = isset($_GET['zwsgr_widget_id']) ? sanitize_text_field(wp_unslash($_GET['zwsgr_widget_id'])) : '';
 			$post_objct = get_post($post_id);
