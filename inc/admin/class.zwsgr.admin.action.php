@@ -2449,7 +2449,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 								<div class="zwsgr-widget-setting">
 									<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
-									<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>" oninput="this.value = Math.max(this.value, 0)">
+									<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
+									<p id="char-limit-error" class="error-message"></p>
 								</div>
 
 								<div class="zwsgr-widget-setting">
@@ -2628,7 +2629,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				$selected_elements = isset( $_POST['selected_elements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['selected_elements'] ) ) : array();
 				$keywords = isset( $_POST['keywords'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['keywords'] ) ) : [];
 				$date_format = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
-				$char_limit = isset( $_POST['char_limit'] ) ? intval( wp_unslash( $_POST['char_limit'] ) ) : 0;
+				$char_limit = isset($_POST['char_limit']) ? intval(wp_unslash($_POST['char_limit'])) : '';
 				$language = isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : '';
 				$sort_by = isset( $_POST['sort_by'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_by'] ) ) : '';
 				$enable_load_more = isset( $_POST['enable_load_more'] ) ? intval( wp_unslash( $_POST['enable_load_more'] ) ) : 0;
