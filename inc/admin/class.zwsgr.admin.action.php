@@ -21,7 +21,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 		private $client;
 		
-		public $zwsgr_smtp_opt,$zwsgr_mail_notify_opt,$zwsgr_general_opt;
+		public $zwsgr_admin_smtp_enabled,$zwsgr_smtp_opt,$zwsgr_general_opt;
 		
 		private $zwsgr_gmbc;
 
@@ -62,11 +62,15 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			// Initialize dashboard class
 			$this->zwsgr_dashboard = ZWSGR_Dashboard::get_instance();
 
-			add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
-
+			$this->zwsgr_admin_smtp_enabled = get_option('zwsgr_admin_smtp_enabled');
 			$this->zwsgr_smtp_opt = get_option( 'zwsgr_smtp_option' );
 			$this->zwsgr_general_opt = get_option( 'zwsgr_general_option' );
-			$this->zwsgr_mail_notify_opt = get_option( 'zwsgr_mail_notify_option' );
+			
+			if( $this->zwsgr_admin_smtp_enabled == 1) {
+				add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
+			}
+
+				
 		
 		}
 
@@ -1089,10 +1093,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				
 							// Prepare email
 							if (!empty($emails)) {
+								$from_email = '';
+								if (is_array($this->zwsgr_smtp_opt) && isset($this->zwsgr_smtp_opt['zwsgr_from_email'])) {
+									$from_email = $this->zwsgr_smtp_opt['zwsgr_from_email'];
+								}
 								$to = explode(',', $emails); // Assume emails are comma-separated
 								$message = $body;
-								$headers = array('Content-Type: text/html; charset=UTF-8');
-				
+								$headers[] = 'Content-type: text/html; charset=utf-8';
+								$headers[] = 'From:' . $from_email;
 								// Send the email using wp_mail()
 								$mail_sent = wp_mail($to, $subject, $message, $headers);
 				
