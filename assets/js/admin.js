@@ -2028,6 +2028,36 @@ jQuery(document).ready(function($) {
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
         }
     }); 
+
+	$('input[name="zwsgr_admin_smtp_enabled"]').change(function() {
+        if ($(this).is(':checked')) {
+        	$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
+        	$('input[name="zwsgr_from_email"]').attr('required', 'required');
+           	$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
+           	$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
+        } else {
+        	$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
+        	$('input[name="zwsgr_from_email"]').removeAttr('required');
+        	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+        	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+
+        }
+    });
+	if ($('input[name="zwsgr_admin_smtp_enabled"]').is(':checked')) {
+		$('.zwsgr-admin-enable-smtp').show();
+		$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
+		$('input[name="zwsgr_from_email"]').attr('required', 'required');
+        $('input[name="zwsgr_smtp_host"]').attr('required', 'required'); 
+	} else {
+		$('.zwsgr-admin-enable-smtp').hide(); 
+		$('input[name="zwsgr_from_email"]').removeAttr('required');
+    	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+    	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+	}
 	// End code SMTP
 	
 
