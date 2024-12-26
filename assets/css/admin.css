@@ -52,7 +52,7 @@ body .zwsgr-option-item {
     border-radius: 16px;
 }
 
-.selected-option-display,
+body .selected-option-display,
 body .generated-shortcode-display {
     margin-top: 20px;
     padding: 10px;
@@ -64,8 +64,6 @@ body .generated-shortcode-display {
 body .tab-content {
     display: none;
     padding-right: 1rem;
-    /*  border: 1px solid #ccc;
-    background-color: #fff; */
 }
 
 body .tab-content.active {
@@ -143,7 +141,7 @@ body .nav-tab.nav-tab-active {
 }
 
 
-input.zwsgr-input-text{
+body input.zwsgr-input-text{
     padding: 10px 16px;
     border: 1px solid #C1CFDE;
     background: #FCFCFC;
@@ -174,7 +172,7 @@ body .zwsgr-textarea {
     width: 100%;
 
 }
-select.zwsgr-input-text{
+body select.zwsgr-input-text{
     padding: 10px 16px;
     border: 1px solid #C1CFDE;
     height: 48px;
@@ -198,13 +196,13 @@ body select.zwsgr-input-text option {
     padding: 10px;
 }
 
-select.zwsgr-input-text:focus,
+body select.zwsgr-input-text:focus,
 body input.zwsgr-input-text:focus {
    box-shadow: none;
    border: 1px solid #C1CFDE;
 }
 
-body .zwsgr-slider .zwsgr-star, .zwsgr-badge-wrap .zwsgr-badge-item .zwsgr-star {
+body .zwsgr-slider .zwsgr-star, body .zwsgr-badge-wrap .zwsgr-badge-item .zwsgr-star {
     font-size: 20px;
 }
 
@@ -291,8 +289,8 @@ body .zwsgr-section-wrap form h2 {
 }
 
 
-.zwsgr-setting-form th,
-.zwsgr-th,
+body .zwsgr-setting-form th,
+body .zwsgr-th,
 body .zwsgr-label {
     font-size: 16px;
     font-weight: 500;
@@ -354,20 +352,20 @@ body .zwsgr-widget-wrap .zwsgr-widget-eleemt-list li {
     width: 33.33%;
 }
 
-.zwsgr-color-options,
+body .zwsgr-color-options,
 body .zwsgr-color-options_load {
     display: flex;
     margin-top: 10px;
 }
 
-.zwsgr-color-options .zwsgr-color-picker,
+body .zwsgr-color-options .zwsgr-color-picker,
 .zwsgr-color-options_load .zwsgr-color-picker-load{
     margin-right: 25px;
     display: flex;
     align-items: center;
 }
 
-.zwsgr-color-options .zwsgr-color-picker label,
+body .zwsgr-color-options .zwsgr-color-picker label,
 body .zwsgr-color-options_load .zwsgr-color-picker-load label {
     padding-right: 10px;
 }
@@ -437,7 +435,7 @@ body .zwsgr-custom-tab .zwsgr-step-arrow {
     margin: 0px 20px;
 }
 
-body .zwsgr-custom-tab .zwsgr-step-arrow:before, .zwsgr-custom-tab .zwsgr-step-arrow:after {
+body .zwsgr-custom-tab .zwsgr-step-arrow:before, body .zwsgr-custom-tab .zwsgr-step-arrow:after {
     content: "";
     background: #4A494B;
     position: relative;
@@ -538,7 +536,7 @@ body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper {
     align-items: center;
 }
 
-.zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper span, 
+body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper span, 
 body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper input {
     font-size: 16px;
     font-weight: 500;
@@ -887,6 +885,11 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-date-range-filter-wrapper {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 32px 0;
+    width: 100%;
+}
+
+body .zwgr-dashboard {
+    padding: 20px;
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
@@ -916,7 +919,8 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-item:last-child {
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button, 
 body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
-    background-color: #EDF4F5;
+    color: white !important;
+    background-color: #3caab4;
     color: #1B1B1B;
     padding: 10px 24px;
     border-radius: 50px;
@@ -940,11 +944,6 @@ body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
     line-height: 30px;
     font-family: 'Poppins';
     color: #1B1B1B;
-}
-
-body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker.active {
-    background-color: #0074A2;
-    color: #FCFCFC;    
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select, 
@@ -1009,6 +1008,10 @@ body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-location-sel
 
 @media only screen and (max-width: 1024px) {
 
+    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwsgr-account-select {
+        max-width: 100% !important;
+    }
+
     body .zwsgr-flex-inner-container .zwsgr_outer_wrapper {
         flex-direction: column;
         justify-content: center;
@@ -1050,6 +1053,7 @@ body .zwgr-dashboard #render-dynamic .zwsgr-data-card {
     max-width: 286px;
     margin: 0 24px 0 0;
     padding: 24px 27px;
+    background-color: white !important;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1140,7 +1144,12 @@ body .zwgr-dashboard #render-dynamic .zwsgr-flex-column .zwsgr_chart_legend .gui
 
 body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"] {
     font-weight: 600 !important;
-    max-width: 100px !important;
+    max-width: 210px !important;
+    text-align: center;
+}
+
+body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"]::placeholder {
+    color: white !important;
 }
 
 body .zwgr-dashboard .zwsgr-filters-wrapper input[name="dates"].active::placeholder {

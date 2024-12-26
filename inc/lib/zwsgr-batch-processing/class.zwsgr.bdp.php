@@ -24,6 +24,40 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
         private $zwsgr_average_rating;
 
+        /**
+		 * Custom log function for debugging.
+		 *
+		 * @param string $message The message to log.
+		 */
+		function zwsgr_debug_function( $message ) {
+			// Define the custom log directory path.
+			$log_dir = WP_CONTENT_DIR . '/plugins/smart-google-reviews'; // wp-content/plugins/smart-google-reviews
+		
+			// Define the log file path.
+			$log_file = $log_dir . '/smart-google-reviews-debug.log';
+		
+			// Check if the directory exists, if not create it.
+			if ( ! file_exists( $log_dir ) ) {
+				wp_mkdir_p( $log_dir );
+			}
+		
+			// Initialize the WP_Filesystem.
+			if ( ! function_exists( 'WP_Filesystem' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+			}
+			WP_Filesystem();
+		
+			global $wp_filesystem;
+		
+			// Format the log entry with UTC timestamp using gmdate().
+			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
+		
+			// Write the log entry to the file using WP_Filesystem.
+			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
+				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
+			}
+		}
+
         // Process each file by logging account names
         protected function task($zwsr_batch_data) {
 
@@ -44,12 +78,12 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 if (method_exists($this, $process_zwsgr_gmb_method)) {
                     $this->$process_zwsgr_gmb_method($zwsgr_gmb_data, $this->zwsgr_account_number, $this->zwsgr_location_number);
                 } else {
-                    error_log('BDP: Method ' . $process_zwsgr_gmb_method . ' does not exist. for: ' . $this->zwsgr_gmb_data_type .' & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                    $this->zwsgr_debug_function('BDP: Method ' . $process_zwsgr_gmb_method . ' does not exist. for: ' . $this->zwsgr_gmb_data_type .' & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
                 }
 
             } else {
 
-                error_log('BDP: No $zwsgr_gmb_data data found for: ' . $this->zwsgr_gmb_data_type .' & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function('BDP: No $zwsgr_gmb_data data found for: ' . $this->zwsgr_gmb_data_type .' & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
                 
                 return array(
                     'success' => false,
@@ -95,9 +129,9 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         $zwsgr_update_result = wp_update_post($zwsgr_request_data);
                         
                         if (is_wp_error($zwsgr_update_result)) {
-                            error_log("BDP: Failed to update account ID {$zwsgr_existing_post->ID}: for Widget ID " . $this->$zwsgr_widget_id . $zwsgr_update_result->get_error_message());
+                            $this->zwsgr_debug_function("BDP: Failed to update account ID {$zwsgr_existing_post->ID}: for Widget ID " . $this->$zwsgr_widget_id . $zwsgr_update_result->get_error_message());
                         } elseif ($zwsgr_update_result == 0) {
-                            error_log("BDP: Failed to update account ID {$zwsgr_existing_post->ID}: for Widget ID " . $this->$zwsgr_widget_id . ' Unknown error ');
+                            $this->zwsgr_debug_function("BDP: Failed to update account ID {$zwsgr_existing_post->ID}: for Widget ID " . $this->$zwsgr_widget_id . ' Unknown error ');
                         }
 
                         // Update the account number for the existing post
@@ -109,9 +143,9 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         $zwsgr_insert_account = wp_insert_post($zwsgr_request_data);
 
                         if (is_wp_error($zwsgr_insert_account)) {
-                            error_log("BDP: Failed to create new account for Widget ID " . $this->$zwsgr_widget_id . $zwsgr_insert_account->get_error_message());
+                            $this->zwsgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->$zwsgr_widget_id . $zwsgr_insert_account->get_error_message());
                         } elseif ($zwsgr_insert_account == 0) {
-                            error_log("BDP: Failed to create new account for Widget ID " . $this->$zwsgr_widget_id);
+                            $this->zwsgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->$zwsgr_widget_id);
                         } else {
                             // Add the account number for the new post
                             update_post_meta($zwsgr_insert_account, 'zwsgr_account_number', $this->zwsgr_account_number);
@@ -130,7 +164,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             } else {
 
-                error_log('BDP: Unexpected zwsgr_data for accounts & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function('BDP: Unexpected zwsgr_data for accounts & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
                 
                 return array(
                     'success' => false,
@@ -269,7 +303,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         $zwsgr_download_review_image_status = $this->zwsgr_download_review_image($zwsgr_review_dp_url, $zwsgr_save_path);
 
                         if (!$zwsgr_download_review_image_status['success']) {
-                            error_log('BDP: There was an error while downoading reviewer image.' . $zwsgr_wp_review_id . $zwsgr_review['reviewer']['displayName'] );
+                            $this->zwsgr_debug_function('BDP: There was an error while downoading reviewer image.' . $zwsgr_wp_review_id . $zwsgr_review['reviewer']['displayName'] );
                         }
 
                         // Update custom fields
@@ -284,7 +318,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                         }
 
                     } else {
-                        error_log( "BDP: Failed to insert/update review: " . ( is_wp_error( $zwsgr_wp_review_id ) ? $zwsgr_wp_review_id->get_error_message() : "Unknown error" ) );   
+                        $this->zwsgr_debug_function( "BDP: Failed to insert/update review: " . ( is_wp_error( $zwsgr_wp_review_id ) ? $zwsgr_wp_review_id->get_error_message() : "Unknown error" ) );   
                     }
             
                     // Reset post data after each query
@@ -292,7 +326,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 }
             } else {
 
-                error_log('BDP: Unexpected zwsgr_data for reviews & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function('BDP: Unexpected zwsgr_data for reviews & Widget ID '. $this->zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
                 
                 return array(
                     'success' => false,
@@ -321,7 +355,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             // Check if the image was downloaded successfully
             if ($zwsgr_review_image_data === false) {
-                error_log("BDP: Unable to download the image from URL: " . $zwsgr_review_dp_url . " for Widget ID " . $this->$zwsgr_widget_id  . ' & current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function("BDP: Unable to download the image from URL: " . $zwsgr_review_dp_url . " for Widget ID " . $this->$zwsgr_widget_id  . ' & current index ' . $this->zwsgr_current_index);
                 return array(
                     'success' => false,
                     'data'    => array (
@@ -342,7 +376,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
             if ($zwsgr_put_image_content === false) {
 
-                error_log("Error: Failed to save the image to the specified path: " . $zwsgr_save_path . " for Widget ID " . $this->$zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
+                $this->zwsgr_debug_function("Error: Failed to save the image to the specified path: " . $zwsgr_save_path . " for Widget ID " . $this->$zwsgr_widget_id . ' & current index ' . $this->zwsgr_current_index);
                 
                 return array(
                     'success' => false,

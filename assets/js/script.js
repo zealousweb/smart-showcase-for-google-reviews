@@ -259,7 +259,7 @@ jQuery(document).ready(function($) {
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					$('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					// $('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -317,9 +317,15 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-6').append(response.data.content);
 				
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
-					layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5'||layoutType === 'popup-1'||layoutType === 'popup-2') {
+					layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
+					}
+				}
+
+				if(layoutType === 'popup-1'|| layoutType === 'popup-2'){
+					if( true != response.data.disable_button ){
+						$('.scrollable-content').append(loadMoreButton);  // Clears previous content and adds the button
 					}
 				}
             }
@@ -370,7 +376,7 @@ jQuery(document).ready(function($) {
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					$('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					// $('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -428,9 +434,14 @@ jQuery(document).ready(function($) {
 				$('.zwsgr-slider-6').append(response.data.content);
 				
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
-				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5'||layoutType === 'popup-1'||layoutType === 'popup-2') {
+				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
 						$('.main-div-wrapper').append(loadMoreButton);  // Clears previous content and adds the button
+					}
+				}
+				if(layoutType === 'popup-1'|| layoutType === 'popup-2'){
+					if( true != response.data.disable_button ){
+						$('.scrollable-content').append(loadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				// console.log(response); // Log success response
