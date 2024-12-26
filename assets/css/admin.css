@@ -106,6 +106,13 @@ body .zwsgr-option-item.selected {
     border: 5px solid #285064;
 }
 
+body .zwsgr-option-item.selected[data-type="badge"] {
+    background-color: #3caab4;
+}
+
+body .zwsgr-option-item.selected[data-type="badge"] .zwsgr-layout-title {
+    color: #000;
+}
 
 /* Final Design CSS */
 
