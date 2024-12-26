@@ -933,9 +933,13 @@ body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
     transition: all 0.1s ease-in-out;
 }
 
+body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button:hover, 
+body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker:hover {
+    background-color: #F08C3C;
+}
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button.active {
     color: #FCFCFC;
-    background-color: #0074A2;
+    background-color: #F08C3C;
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
