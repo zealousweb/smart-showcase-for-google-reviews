@@ -571,7 +571,7 @@ body .zwsgr-caution-div .zwsgr-chechbox-label {
 
 #fetch-gmb-auth-url #fetch-gmb-auth-url-response .success, 
 body #disconnect-gmb-auth #disconnect-gmb-auth-response .success {
-    color: green;
+    color: red;
 }
 
 body #disconnect-gmb-auth input#delete-all-data {
@@ -579,7 +579,7 @@ body #disconnect-gmb-auth input#delete-all-data {
 }
 
 body #disconnect-gmb-auth .zwsgr-th-label {
-    margin: 0 0px 10px 0;
+    margin: 5px 0px 5px 0;
 }
 
 body #disconnect-gmb-auth .zwsgr-th-label .zwsgr-th {
@@ -592,8 +592,21 @@ body #disconnect-gmb-auth .zwsgr-th-label .zwsgr-th {
     margin: 20px 0 0 0;
 }
 
-.disconnect-wrapper .zwsgr-disconnect-btn {
+.disconnect-wrapper .zwsgr-disconnect-btn, 
+body #disconnect-gmb-auth .button-danger {
+    background-color: red !important;
+    color: white !important;
+    border: 1px solid red !important;
     margin: 0 10px 0 0 !important;
+}
+
+.disconnect-wrapper .zwsgr-disconnect-btn:hover, 
+.disconnect-wrapper .zwsgr-disconnect-btn:focus,
+body #disconnect-gmb-auth .button-danger:hover, 
+body #disconnect-gmb-auth .button-danger:focus {
+    background-color: transparent !important;
+    box-shadow: 0 0 0 1px red !important;
+    color: red !important;
 }
 
 body #fetch-gmb-data {

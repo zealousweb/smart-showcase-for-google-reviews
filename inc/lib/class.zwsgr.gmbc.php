@@ -30,6 +30,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             add_action('admin_notices', [$this, 'zwsgr_connect_google_popup_callback']);
 
+            add_action('admin_notices', [$this, 'zwsgr_connect_google_success_callback']);
+
 
             $this->client = new ZWSGR_GMB_API('');
 
@@ -188,6 +190,9 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
                         $this->zwsgr_zqm->zwsgr_fetch_gmb_data(true, false, 'zwsgr_gmb_accounts');
 
+                        // Store a flag or message in a transient or session to show the notice
+                        set_transient('zwsgr_success_notice', 'Congratulations! Successfully connected to Google.', 30);
+
                         // Redirect back to fetch gmb data page with the widget ID as a parameter
                         wp_redirect(admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
                         exit;
@@ -333,6 +338,15 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 wp_reset_postdata();
                 echo '</div>
             </div>';
+        }
+
+        public function zwsgr_connect_google_success_callback() {
+
+            $zwsgr_success_notice = get_transient('zwsgr_success_notice');
+            if ($zwsgr_success_notice) {
+                echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($zwsgr_success_notice) . '</p></div>';
+                delete_transient('zwsgr_success_notice');
+            }
         }
 
     }

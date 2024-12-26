@@ -178,7 +178,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_gmb_dashboard_filter'	=> wp_create_nonce('zwsgr_gmb_dashboard_filter'),
 				'zwsgr_data_render'				=> wp_create_nonce('zwsgr_data_render'),
 				'zwsgr_wp_review_id'            => ( is_admin() && isset( $_GET['post'] ) ) ? intval( $_GET['post'] ) : 0,
-				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args)
+				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args),
+				'zwsgr_redirect'				=> admin_url('admin.php?page=zwsgr_connect_google')
 			));
 
 			//Save Widget Ajax

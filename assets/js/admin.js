@@ -1108,12 +1108,13 @@ jQuery(document).ready(function($) {
 
 					$("#disconnect-gmb-auth-response").html("<p class='success response''> OAuth Disconnected: " + (response.data?.message || "Unknown error") + "</p>");
 
+					$("#disconnect-gmb-auth .zwsgr-th-label").html("");
+
 					$("#disconnect-gmb-auth .zwsgr-caution-div").fadeOut();
 					$("#disconnect-gmb-auth .danger-note").fadeOut();
 
-					// Reload the page after a 1-second delay
 					setTimeout(function() {
-						location.reload();
+						window.location.href = zwsgr_admin.zwsgr_redirect;
 					}, 1500);
 
 				} else {
