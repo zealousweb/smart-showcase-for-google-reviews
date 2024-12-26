@@ -253,7 +253,7 @@ jQuery(document).ready(function($) {
 		`;
 
 		// Append the notification to the target area
-		$('body').prepend(notification);
+		$('.zwsgr-dashboard').prepend(notification);
 
 		// Add click event for the dismiss button
 		$('.zwsgr-notice.zwsgr-is-dismissible').on('click', '.zwsgr-notice-dismiss', function () {

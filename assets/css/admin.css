@@ -1346,7 +1346,9 @@ body .zwsgr-google-tab-text{
     border-left-width: 4px;
     padding: 15px;
     margin: 10px 0;
-    position: relative;
+    position: sticky;
+    top: 5%;
+    z-index: 99;
     background: #f9f9f9;
     color: #333;
     border-radius: 4px;
@@ -1378,24 +1380,4 @@ body .zwsgr-google-tab-text{
 
 .zwsgr-notice p {
     margin: 0;
-}
-
-.zwsgr-notice .zwsgr-notice-dismiss {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: inherit;
-}
-
-.zwsgr-notice .zwsgr-notice-dismiss:hover {
-    color: #000;
-}
-
-.zwsgr-is-dismissible {
-    padding-right: 40px;
-    margin-left: 175px;
 }
