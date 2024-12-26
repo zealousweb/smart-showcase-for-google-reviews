@@ -103,7 +103,7 @@ body .zwsgr-badge-wrap .zwsgr-badge-item .zwsgr-star.filled {
 
 body .zwsgr-layout-title {
     font-size: 20px;
-    color: #1B1B1B;
+    color: #3caab4;
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
     text-transform: capitalize;
@@ -529,14 +529,22 @@ body .zwsgr-badge-wrap {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    gap: 30px;
+    padding-top: 20px;
 }
 
 body .zwsgr-badge-wrap .zwsgr-option-item {
-    width: 33.33%;
+    width: calc(33.33% - 20px);
     padding: 20px;
     box-shadow: none;
-    background: transparent;
+    background: #3caab4;
     box-sizing: border-box;
+    text-align: center;
+    margin: 0;
+
+}
+body .zwsgr-badge-wrap .zwsgr-option-item .zwsgr-layout-title {
+    color: #000;;
 }
 
 body .zwsgr-badge-wrap .zwsgr-layout-title-wrap {
@@ -1149,6 +1157,8 @@ body .zwsgr-slider .slick-track .zwsgr-list-inner {
 
 body .zwsgr-badge-link {
     text-decoration: none;
+    width: auto;
+    display: inline-block;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -1163,7 +1173,7 @@ body .zwsgr-badge-link {
 
 @media only screen and (max-width: 1024px) {
     body .zwsgr-badge-wrap .zwsgr-option-item {
-        width: 50%;
+        width: calc(50% - 15px);
     }
     body .zwsgr-popup-content {
         width: 60%;
@@ -1188,7 +1198,7 @@ body .zwsgr-badge-link {
         width: 50%;
     }
     body .zwsgr-badge-wrap .zwsgr-option-item {
-        width: 50%;
+        width: calc(50% - 15px);
     }
     body .zwsgr-popup-content {
         width: 90%;

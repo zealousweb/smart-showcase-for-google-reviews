@@ -62,7 +62,7 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_post->ID);
 				} else {
 					// Redirect to the widget configurator page with the selected layout option if account and location numbers are not empty
-					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $zwsgr_post->ID);
+					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-selected&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $zwsgr_post->ID);
 				}
 			
 			}
