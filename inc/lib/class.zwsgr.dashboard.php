@@ -41,7 +41,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
         public function zwsgr_data_render() {
 
-             // Ensure it's an AJAX request
+            // Ensure it's an AJAX request
             if (defined('DOING_AJAX') && DOING_AJAX) {
 
                 check_ajax_referer( 'zwsgr_data_render', 'security' );
@@ -54,8 +54,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 $zwsgr_filter_data = [
 					'zwsgr_gmb_account_number'   => null,
 					'zwsgr_gmb_account_location' => null,
-					'zwsgr_range_filter_type'    => null,
-					'zwsgr_range_filter_data'    => null
+					'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
 				];
 
             }
@@ -302,7 +302,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
-                            <button class="zwsgr-filter-button" data-filter="monthly" data-type="rangeofdays">
+                            <button class="zwsgr-filter-button active" data-filter="monthly" data-type="rangeofdays">
                                 ' . esc_html__( 'Monthly', 'smart-google-reviews' ) . '
                             </button>
                         </li>
@@ -391,6 +391,13 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             } else {
                 $zwsgr_data_render_args['meta_query'] = array($zwsgr_star_rating_query);
             }
+
+            // Add ordering by star rating and then by date
+            $zwsgr_data_render_args['orderby'] = array(
+                'meta_value' => 'ASC'
+            );
+
+            $zwsgr_data_render_args['meta_key'] = 'zwsgr_review_star_rating';
 
             $zwsgr_data_render_query = new WP_Query($zwsgr_data_render_args);
 

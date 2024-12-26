@@ -240,29 +240,6 @@ jQuery(document).ready(function($) {
 		window.location.href = newUrl;
 	});
 
-	// Function to show custom notifications
-	function showNotification(message, type) {
-		// Define the notification types: success, error, warning, info
-		var notificationClass = 'zwsgr-notice-' + type; // Example: zwsgr-notice-success, zwsgr-notice-error
-
-		// Create the notification HTML
-		var notification = `
-			<div class="zwsgr-notice ${notificationClass} zwsgr-is-dismissible">
-				<p>${message}</p>
-			</div>
-		`;
-
-		// Append the notification to the target area
-		$('.zwsgr-dashboard').prepend(notification);
-
-		// Add click event for the dismiss button
-		$('.zwsgr-notice.zwsgr-is-dismissible').on('click', '.zwsgr-notice-dismiss', function () {
-			$(this).closest('.zwsgr-notice').fadeOut(function () {
-				$(this).remove();
-			});
-		});
-	}
-
 	// Handle click events for "Select Option" buttons
     $('.select-btn').on('click', function() {
         var optionId = $(this).data('option');
@@ -270,9 +247,9 @@ jQuery(document).ready(function($) {
         var currentUrl = window.location.href.split('?')[0];
 
         if (!postId) {
-			showNotification('Post ID not found!', 'error'); // Custom error notification
-			return;
-		}
+            alert('Post ID not found!');
+            return;
+        }
 
 		// Fetch the HTML for the selected option using the correct optionId
 		var selectedOptionElement = $('#' + optionId); // Clone the selected option's element
@@ -302,13 +279,13 @@ jQuery(document).ready(function($) {
 			},
 			success: function(response) {
 				if (response.success) {
-					showNotification('Layout option saved successfully!', 'success'); // Show success message
+					alert('Layout option saved successfully!');
 				} else {
-					showNotification('Failed to save layout option.', 'error'); // Show error message
+					alert('Failed to save layout option.');
 				}
 			},
 			error: function() {
-				showNotification('An error occurred.', 'error'); // Show error message
+				alert('An error occurred.');
 			}
 		});
 
@@ -322,10 +299,10 @@ jQuery(document).ready(function($) {
         var postId = getQueryParam('zwsgr_widget_id');
         var currentUrl = window.location.href.split('?')[0];
 
-		if (!postId) {
-			showNotification('Post ID not found!', 'error'); // Custom error notification
-			return;
-		}
+        if (!postId) {
+            alert('Post ID not found!');
+            return;
+        }
 
         // Redirect to the "Generated Shortcode" tab with selected option and post_id
         window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&zwsgr_widget_id=' + postId;
@@ -1033,16 +1010,16 @@ jQuery(document).ready(function($) {
 				enable_sort_by: enableSortBy,
 				custom_css: customCSS  // Add the custom CSS value here
 			},
-			success: function (response) {
+			success: function(response) {
 				if (response.success) {
-					showNotification('Settings and shortcode saved successfully.', 'success'); // Custom success notification
+					alert('Settings and shortcode saved successfully.');
 				} else {
-					showNotification('Error: ' + response.data, 'error'); // Custom error notification
+					alert('Error: ' + response.data);
 				}
 			},
-			error: function (jqXHR, textStatus, errorThrown) {
+			error: function(jqXHR, textStatus, errorThrown) {
 				console.log('AJAX Error: ', textStatus, errorThrown);
-				showNotification('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown, 'error'); // Custom error notification
+				alert('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown);
 			}
 		});
 	});
@@ -1200,28 +1177,45 @@ jQuery(document).ready(function($) {
 
 		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
 
+		zwsgr_button.addClass("disabled");
+		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
+
+		if (!zwsgr_account_number && !zwsgr_location_number) {
+			$('#fetch-gmb-data .response').html('<p class="error">Both account and location are required.</p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
+			return;
+		}
+
 		if (!zwsgr_account_number) {
-			$('#fetch-gmb-data .response').html('<p class="error">Account is required</p>');
+			$('#fetch-gmb-data .response').html('<p class="error"> Account is required. </p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
 			return;
 		}
 
 		if (!zwsgr_location_number) {
-			$('#fetch-gmb-data .response').html('<p class="error">Location is required</p>');
+			$('#fetch-gmb-data .response').html('<p class="error"> Location is required. </p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
 			return;
 		}
 
 		if (!zwsgr_widget_id) {
 			alert("Please select an approprite location.");
-			$('#fetch-gmb-data .response').html('<p class="error">No valid widget ID found</p>');
+			$('#fetch-gmb-data .response').html('<p class="error"> No valid widget ID found. </p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
 			return;
 		}
 
 		$('#fetch-gmb-data .response').html('');
 
 		$('#fetch-gmb-data .progress-bar').css('display', 'block');
-	
-		zwsgr_button.addClass("disabled");
-		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
 	
 		processBatch(
 		  zwsgr_gmb_data_type,
@@ -1245,6 +1239,8 @@ jQuery(document).ready(function($) {
 	  $("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
 		const zwsgr_account_number = $(this).val();
 		const zwsgr_account_name = $(this).find("option:selected").text();
+		$("#fetch-gmb-data #zwsgr-location-select").remove();
+		$("body #fetch-gmb-data .zwsgr-submit-btn").remove();
 		
 		if (zwsgr_account_number) {
 
