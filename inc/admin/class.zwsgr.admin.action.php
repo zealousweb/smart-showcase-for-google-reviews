@@ -2542,18 +2542,16 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 									<div id="load-more-settings" style="display:'block';">
 									<h3 class="zwsgr-label">Number Of Review:</h3>
-									<select id="posts-per-page" name="posts_per_page" class="zwsgr-input-text">
-										<option value="1" <?php echo ($posts_per_page == 1) ? 'selected' : ''; ?>>1</option>
-										<option value="2" <?php echo ($posts_per_page == 2) ? 'selected' : ''; ?>>2</option>
-										<option value="3" <?php echo ($posts_per_page == 3) ? 'selected' : ''; ?>>3</option>
-										<option value="4" <?php echo ($posts_per_page == 4) ? 'selected' : ''; ?>>4</option>
-										<option value="5" <?php echo ($posts_per_page == 5) ? 'selected' : ''; ?>>5</option>
-										<option value="6" <?php echo ($posts_per_page == 6) ? 'selected' : ''; ?>>6</option>
-										<option value="7" <?php echo ($posts_per_page == 7) ? 'selected' : ''; ?>>7</option>
-										<option value="8" <?php echo ($posts_per_page == 8) ? 'selected' : ''; ?>>8</option>
-										<option value="9" <?php echo ($posts_per_page == 9) ? 'selected' : ''; ?>>9</option>
-										<option value="10" <?php echo ($posts_per_page == 10) ? 'selected' : ''; ?>>10</option>
-									</select>
+									<div class="zwsgr-tooltip">
+										<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo $posts_per_page; ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
+										<span class="zwsgr-tooltip-container">
+											<div class="zwsgr-wrapper">
+												<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
+												<path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z"></path></svg>
+												<span class="zwsgr-tooltip-text">This is a tooltip with dummy text</span>
+											</div>
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
