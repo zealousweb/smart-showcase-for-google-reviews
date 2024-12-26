@@ -68,13 +68,13 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             // Check if the JWT token is present in the database
             $zwsgr_jwt_token = get_option('zwsgr_jwt_token');
+            $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
             if (!empty($zwsgr_jwt_token)) {
                 // Display connected to  message and disconnect button if JWT token exists
                 echo '<div class="zwsgr-gmbc-outer-wrapper">
                     <div class="zwsgr-gmbc-container">
                         <div id="disconnect-gmb-auth" class="zwsgr-gmbc-inner-wrapper">
-                            <span style="margin-right: 10px;">Congratulations! Connected to Google</span>
                             <div id="disconnect-gmb-auth-response"></div>
                             <div class="zwsgr-caution-div">
                                 <input type="checkbox" id="delete-all-data" name="delete_all_data" style="margin-right: 7.5px;">
@@ -83,6 +83,11 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                                 </label>
                             </div>
                             <div class="danger-note">This action cannot be undone. Ensure you want to proceed.</div>
+                            <div class="zwsgr-th-label">
+								<label class="zwsgr-th">
+									' . esc_html($zwsgr_gmb_email) . '
+								</label>
+							</div>
                             <a href="" class="button button-danger zwsgr-submit-btn" id="disconnect-auth">Disconnect</a>
                         </div>
                     </div>
