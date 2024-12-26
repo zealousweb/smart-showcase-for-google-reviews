@@ -1039,7 +1039,7 @@ body .zwsgr-front-review-filter-wrap .zwsgr-front-keyword-list ul li:hover {
     width: auto;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    line-height: 1;
+    line-height: 1.4;
     background: #FCFCFC url(../images/down-arrow.png) no-repeat right 7px top 55%;
     background-size: 16px 10px;
     /* Remove default select box arrow */
