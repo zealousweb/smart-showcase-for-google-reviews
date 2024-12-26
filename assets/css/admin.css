@@ -64,8 +64,6 @@ body .generated-shortcode-display {
 body .tab-content {
     display: none;
     padding-right: 1rem;
-    /*  border: 1px solid #ccc;
-    background-color: #fff; */
 }
 
 body .tab-content.active {

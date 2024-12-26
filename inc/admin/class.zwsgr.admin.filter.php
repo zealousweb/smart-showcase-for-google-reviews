@@ -88,9 +88,6 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 				// Remove the 'View' link
 				unset($zwsgr_actions['view']);
 				
-				// // Remove the 'Trash' link
-				// unset($zwsgr_actions['trash']);
-				
 				// Remove the 'Quick Edit' link
 				unset($zwsgr_actions['inline hide-if-no-js']);
 			}

@@ -763,10 +763,10 @@ jQuery(document).ready(function($) {
 			var trimmedText = fullText.substring(0, charLimit) + '... ';
 			$element.html(trimmedText + `<a href="#" class="read-more-link">${translations[lang]}</a>`);
 			
-			// Re-apply the "Read more" click event
-			$element.find('.read-more-link').on('click', function (e) {
+			// Re-apply the "Read more" click event using event delegation
+			$(document).on('click', '.read-more-link', function (e) {
 				e.preventDefault();
-				$element.text(fullText);
+				$(this).parent().text(fullText); // Update parent with full text
 			});
 		} else {
 			$element.text(fullText); // Show full text if no limit
@@ -775,20 +775,43 @@ jQuery(document).ready(function($) {
 
 	// On character limit input change
 	$('#review-char-limit').on('input', function () {
-		var charLimit = parseInt($(this).val(), 10); // Get character limit from input
-		var lang = $('#language-select').val(); // Get selected language
+		var charLimit = parseInt($(this).val(), 10); // Get the entered value
+		var lang = $('#language-select').val(); // Get current language
 
-		// Loop through each content block and apply the limit and language
+		// Reference to the error message container
+		var $errorContainer = $('#char-limit-error');
+
+		// Remove previous error message if any
+		$errorContainer.text('');
+
+		// Validation: Ensure the value is 1 or greater
+		if (charLimit < 1 || isNaN(charLimit)) {
+			if ($(this).val().trim() === '') {
+				// If input is blank, reset all content to full text
+				$('.zwsgr-content').each(function () {
+					var $this = $(this);
+					var fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
+					$this.text(fullText); // Show the full text
+				});
+			} else {
+				$errorContainer.text('Character limit must be 1 or greater.'); // Show the error message
+				$(this).val(''); // Reset the input to an empty value
+			}
+			return; // Exit the function early if the validation fails
+		}
+
+		// If valid, apply the new character limit dynamically
 		$('.zwsgr-content').each(function () {
 			var $this = $(this);
-			var fullText = $this.data('full-text') || $this.text(); // Store the original full text
+			var fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
 
-			// Only store full text once to prevent resetting to trimmed text
+			// Store original full text if not already stored
 			if (!$this.data('full-text')) {
 				$this.data('full-text', fullText);
 			}
 
-			updateReadMoreLink($this, lang); // Update the Read more link with the correct language
+			// Update the content with the new character limit
+			updateReadMoreLink($this, lang); // Update the "Read more" link based on the new limit
 		});
 	});
 
@@ -2005,6 +2028,36 @@ jQuery(document).ready(function($) {
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
         }
     }); 
+
+	$('input[name="zwsgr_admin_smtp_enabled"]').change(function() {
+        if ($(this).is(':checked')) {
+        	$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
+        	$('input[name="zwsgr_from_email"]').attr('required', 'required');
+           	$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
+           	$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
+        } else {
+        	$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
+        	$('input[name="zwsgr_from_email"]').removeAttr('required');
+        	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+        	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+
+        }
+    });
+	if ($('input[name="zwsgr_admin_smtp_enabled"]').is(':checked')) {
+		$('.zwsgr-admin-enable-smtp').show();
+		$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
+		$('input[name="zwsgr_from_email"]').attr('required', 'required');
+        $('input[name="zwsgr_smtp_host"]').attr('required', 'required'); 
+	} else {
+		$('.zwsgr-admin-enable-smtp').hide(); 
+		$('input[name="zwsgr_from_email"]').removeAttr('required');
+    	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+    	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+	}
 	// End code SMTP
 	
 

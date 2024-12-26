@@ -41,7 +41,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			wp_enqueue_style( ZWSGR_PREFIX . '-style-css', ZWSGR_URL . 'assets/css/style.css', array(), ZWSGR_VERSION );
 
 			// Slick js
-			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+			wp_enqueue_script( ZWSGR_PREFIX . '-slick-min-js', ZWSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSGR_VERSION ,true);
 			
 			// Slick css
 			wp_enqueue_style( ZWSGR_PREFIX . '-slick-css', ZWSGR_URL . 'assets/css/slick.css', array(), ZWSGR_VERSION );
@@ -355,21 +355,22 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						// Format the published date based on the selected format
 						$formatted_date = '';
 						if ($date_format === 'DD/MM/YYYY') {
-							$formatted_date = date('d/m/Y', strtotime($published_date));
+							$formatted_date = gmdate('d/m/Y', strtotime($published_date));
 						} elseif ($date_format === 'MM-DD-YYYY') {
-							$formatted_date = date('m-d-Y', strtotime($published_date));
+							$formatted_date = gmdate('m-d-Y', strtotime($published_date));
 						} elseif ($date_format === 'YYYY/MM/DD') {
-							$formatted_date = date('Y/m/d', strtotime($published_date));
+							$formatted_date = gmdate('Y/m/d', strtotime($published_date));
 						} elseif ($date_format === 'full') {
-							$day = date('j', strtotime($published_date));
-							$month = $months[(int)date('n', strtotime($published_date)) - 1];
-							$year = date('Y', strtotime($published_date));
-						
+							$day = gmdate('j', strtotime($published_date));
+							$month = $months[(int)gmdate('n', strtotime($published_date)) - 1];
+							$year = gmdate('Y', strtotime($published_date));
+							
 							// Construct the full date
 							$formatted_date = "$month $day, $year";
 						} elseif ($date_format === 'hide') {
 							$formatted_date = ''; // No display for "hide"
 						}
+
 
 						// Map textual rating to numeric values
 						$rating_map = [
@@ -1425,9 +1426,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'class' => true,
 				];
 
-				echo wp_kses($reviews_html, $allowed_html);
-				// echo wp_kses_post($reviews_html);
-				
+				echo wp_kses($reviews_html, $allowed_html);				
 				
 				// Add the Load More button only if 'enable_load_more' is true
 				if ($enable_load_more && $query->max_num_pages >= 2 && in_array($layout_option, ['list-1','list-2','','list-3','list-4','list-5','grid-1','grid-2','grid-3','grid-4','grid-5'])) {
@@ -1437,7 +1436,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			echo '</div>';
 				if($google_review_toggle){
 					echo '<div class="zwsgr-toogle-display zwsgr-toogle-display-front">';
-						echo '<a href="'.esc_attr($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>';
+						echo '<a href="'.esc_url($zwsgr_location_new_review_uri).'" style="background-color:' . esc_attr($bg_color) . '; color:' . esc_attr($text_color) . ';" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>';
 					echo '</div>';
 				}
 			} else {
@@ -1450,8 +1449,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		function load_more_meta_data() 
 		{
 			// Verify nonce for security
-			if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'zwsgr_load_more_nonce')) {
-				wp_send_json_error(esc_html__('Nonce verification failed.', 'smart-google-reviews'));
+			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'zwsgr_load_more_nonce' ) ) {
+				wp_send_json_error( esc_html__( 'Nonce verification failed.', 'smart-google-reviews' ) );
 				return;
 			}
 
@@ -1497,15 +1496,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$ratings_to_include = array('ONE');
 			}
 
-			// $sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
+			$sort_by = isset($_POST['front_sort_by']) ? sanitize_text_field(wp_unslash($_POST['front_sort_by'])) : (get_post_meta($post_id, 'sort_by', true) ?: 'newest');
+			$front_keyword = isset($_POST['front_keyword']) ? sanitize_text_field(wp_unslash($_POST['front_keyword'])) : '';
 
-			if ($_POST['front_sort_by']) {
-				$sort_by = $_POST['front_sort_by'];
-			} else {
-				$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
-  			}            
-			
-			$front_keyword =$_POST['front_keyword'];
 			
 			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
@@ -1606,7 +1599,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 			if ($query->have_posts()) {
 				$output = '';
-				// `$output = "<pre>" . print_r( $args, true ) . "</pre>"; `
 
 				// Fetch selected elements from post meta
 				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
@@ -1637,21 +1629,22 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 						$formatted_date = '';
 						if ($date_format === 'DD/MM/YYYY') {
-							$formatted_date = date('d/m/Y', strtotime($published_date));
+							$formatted_date = gmdate('d/m/Y', strtotime($published_date));
 						} elseif ($date_format === 'MM-DD-YYYY') {
-							$formatted_date = date('m-d-Y', strtotime($published_date));
+							$formatted_date = gmdate('m-d-Y', strtotime($published_date));
 						} elseif ($date_format === 'YYYY/MM/DD') {
-							$formatted_date = date('Y/m/d', strtotime($published_date));
+							$formatted_date = gmdate('Y/m/d', strtotime($published_date));
 						} elseif ($date_format === 'full') {
-							$day = date('j', strtotime($published_date));
-							$month = $months[(int)date('n', strtotime($published_date)) - 1];
-							$year = date('Y', strtotime($published_date));
-						
+							$day = gmdate('j', strtotime($published_date));
+							$month = $months[(int)gmdate('n', strtotime($published_date)) - 1];
+							$year = gmdate('Y', strtotime($published_date));
+							
 							// Construct the full date
 							$formatted_date = "$month $day, $year";
 						} elseif ($date_format === 'hide') {
 							$formatted_date = ''; // No display for "hide"
 						}
+
 
 						// Map textual rating to numeric values
 						$rating_map = [
@@ -2383,7 +2376,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						$zwsgr_popup_content2[] = $zwsgr_popup_item2;
 
 					}
-				// $output .= '</div>';
 				$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 				$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
 				$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
