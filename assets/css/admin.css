@@ -1392,3 +1392,35 @@ body .zwsgr-google-tab-text{
 .zwsgr-notice p {
     margin: 0;
 }
+
+
+
+/* Style for tooltip container */
+.zwsgr-tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style for the tooltip text */
+.zwsgr-tooltip-text {
+    visibility: hidden;
+    width: 160px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%; /* Position the tooltip above the icon */
+    left: 50%;
+    margin-left: -80px; /* Centers the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Tooltip visibility on hover */
+.zwsgr-tooltip-container:hover .zwsgr-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
