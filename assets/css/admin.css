@@ -964,9 +964,13 @@ body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker {
     transition: all 0.1s ease-in-out;
 }
 
+body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button:hover, 
+body .zwgr-dashboard .zwgr-dashboard-header #zwsgr-date-range-picker:hover {
+    background-color: #F08C3C;
+}
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-filter-button.active {
     color: #FCFCFC;
-    background-color: #0074A2;
+    background-color: #F08C3C;
 }
 
 body .zwgr-dashboard .zwgr-dashboard-header .zwsgr-range-filter-title {
@@ -1362,4 +1366,53 @@ body .zwsgr-google-tab-text{
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
     color: red;
+}
+
+
+
+
+
+
+
+/* 26-12-24 */
+/* Custom Notification Styles */
+.zwsgr-notice {
+    border: 1px solid #ccc;
+    border-left-width: 4px;
+    padding: 15px;
+    margin: 10px 0;
+    position: sticky;
+    top: 5%;
+    z-index: 99;
+    background: #f9f9f9;
+    color: #333;
+    border-radius: 4px;
+}
+
+.zwsgr-notice-success {
+    border-left-color: #46b450;
+    background: #dff0d8;
+    color: #3c763d;
+}
+
+.zwsgr-notice-error {
+    border-left-color: #dc3232;
+    background: #f2dede;
+    color: #a94442;
+}
+
+.zwsgr-notice-warning {
+    border-left-color: #ffba00;
+    background: #fcf8e3;
+    color: #8a6d3b;
+}
+
+.zwsgr-notice-info {
+    border-left-color: #0073aa;
+    background: #e7f3f8;
+    color: #31708f;
+}
+
+.zwsgr-notice p {
+    margin: 0;
 }
