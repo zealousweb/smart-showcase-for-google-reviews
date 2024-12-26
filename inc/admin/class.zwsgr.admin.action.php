@@ -2565,7 +2565,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h2 class="zwsgr-page-title">Custom CSS Support</h2>
 					<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($custom_css); ?></textarea>
 				</div>
-					<button id="save-get-code-btn" class="zwsgr-btn" data-zwsgr-btn='zwsgr-btn'>Save & Get Code</button>
+				<button id="save-get-code-btn" class="zwsgr-btn" data-zwsgr-btn='zwsgr-btn'>
+					<?php echo !empty($current_tab2) ? 'Update' : 'Save & Get Code'; ?>
+				</button>
 				</div>
 
 				<div class="tab-content" id="tab-shortcode" style="display:none;">
