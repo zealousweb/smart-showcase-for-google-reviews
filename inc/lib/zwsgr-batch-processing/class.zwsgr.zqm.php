@@ -332,6 +332,15 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $this->zwsgr_location_name);
                     }
 
+                    // Prepare the object to store the widget ID and processing status
+                    $zwsgr_batch_data = array(
+                        'zwsgr_widget_id' => $this->zwsgr_widget_id,
+                        'zwsgr_batch_in_processing' => 'true'
+                    );
+
+                    // Update the option with both the widget ID and processing status
+                    update_option('zwsgr_batch_in_processing', $zwsgr_batch_data);
+
                     // For AJAX requests, send a JSON error response
                     wp_send_json_success(
                         array(
@@ -369,13 +378,13 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 // Use a switch statement for better clarity
                 switch ($this->zwsgr_gmb_data_type) {
                     case 'zwsgr_gmb_accounts':
-                        $zwsgr_error_message = 'No GMB Accounts found for your GMB account.';
+                        $zwsgr_error_message = 'It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.';
                         break;
                     case 'zwsgr_gmb_locations':
-                        $zwsgr_error_message = 'No Locations present. Please try again with a different GMB account. Thanks.';
+                        $zwsgr_error_message = 'No locations found under this Google My Business account. Please verify your account or try again with a different one.';
                         break;
                     case 'zwsgr_gmb_reviews':
-                        $zwsgr_error_message = 'No reviews found. Please try again with a different GMB account. Thanks.';
+                        $zwsgr_error_message = 'There are no reviews available for this location at the moment. Please try again later or choose a different location.';
                         break;
                 }
                 

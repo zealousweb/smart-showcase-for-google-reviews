@@ -430,7 +430,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                 $zwsgr_queue_manager->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
                 delete_option('zwsgr_widget_id');
-
+                delete_option('zwsgr_batch_in_processing');
                 update_post_meta($this->zwsgr_widget_id, 'zwgr_data_processing_init', 'false');
                 update_post_meta($this->zwsgr_widget_id, 'zwgr_data_sync_once', 'true');
                 update_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', $this->zwsgr_gmb_data_type);
