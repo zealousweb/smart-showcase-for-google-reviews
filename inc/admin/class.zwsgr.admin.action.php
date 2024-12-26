@@ -178,7 +178,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_gmb_dashboard_filter'	=> wp_create_nonce('zwsgr_gmb_dashboard_filter'),
 				'zwsgr_data_render'				=> wp_create_nonce('zwsgr_data_render'),
 				'zwsgr_wp_review_id'            => ( is_admin() && isset( $_GET['post'] ) ) ? intval( $_GET['post'] ) : 0,
-				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args)
+				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args),
+				'zwsgr_redirect'				=> admin_url('admin.php?page=zwsgr_connect_google')
 			));
 
 			//Save Widget Ajax
@@ -1164,12 +1165,20 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 					// Check if the JWT token is present in the database
 					$zwsgr_jwt_token = get_option('zwsgr_jwt_token');
+					$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
 					if (!empty($zwsgr_jwt_token)) { ?>
-						<a href="<?php echo esc_url(admin_url('admin.php?page=zwsgr_settings&tab=google&settings=disconnect-auth')); ?>" 
-						class="button zwsgr-submit-btn zwsgr-disconnect-btn">
-							<?php echo esc_attr($zwsgr_disconnect_text); ?>
-						</a>
+						<div class="disconnect-wrapper">
+							<a href="<?php echo esc_url(admin_url('admin.php?page=zwsgr_settings&tab=google&settings=disconnect-auth')); ?>" 
+							class="button zwsgr-submit-btn zwsgr-disconnect-btn">
+								<?php echo esc_attr($zwsgr_disconnect_text); ?>
+							</a>
+							<div class="zwsgr-th-label">
+								<label class="zwsgr-th">
+									<?php echo esc_html($zwsgr_gmb_email); ?>
+								</label>
+							</div>
+						</div>
 					<?php } else { ?>
 						<p class="zwsgr-google-tab-text">Please connect to Google!</p>
 					<?php } ?>
