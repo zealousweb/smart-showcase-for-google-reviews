@@ -291,6 +291,9 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 <!-- Filters List Section -->
                 <div class="zwsgr-filters-wrapper">
                     <ul class="zwsgr-filters-list">
+                        <li class="zwsgr-filter-item filter-text">
+                                ' . esc_html__( 'Filters', 'smart-google-reviews' ) . '
+                        </li>
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="daily" data-type="rangeofdays">
                                 ' . esc_html__( 'Daily', 'smart-google-reviews' ) . '
