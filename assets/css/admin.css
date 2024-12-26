@@ -339,6 +339,7 @@ body .zwsgr-widget-settings {
 body .zwsgr-widget-wrap {
     display: flex;
     flex-wrap: wrap;
+    gap: 30px;
 }
 
 body .zwsgr-widget-wrap .zwsgr-widget-setting {
@@ -1396,9 +1397,24 @@ body .zwsgr-google-tab-text{
 
 
 /* Style for tooltip container */
-.zwsgr-tooltip-container {
+.zwsgr-tooltip {
     position: relative;
+}
+
+.zwsgr-tooltip-container {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 500px;
+    top: 50%;
+    transform: translateY(-50%);
     display: inline-block;
+    padding-left: 10px;
+}
+
+.zwsgr-tooltip-container svg {
+    width: 20px;
+    height: 20px;
 }
 
 /* Style for the tooltip text */
@@ -1414,7 +1430,7 @@ body .zwsgr-google-tab-text{
     z-index: 1;
     bottom: 100%; /* Position the tooltip above the icon */
     left: 50%;
-    margin-left: -80px; /* Centers the tooltip */
+    transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -1423,4 +1439,22 @@ body .zwsgr-google-tab-text{
 .zwsgr-tooltip-container:hover .zwsgr-tooltip-text {
     visibility: visible;
     opacity: 1;
+}
+
+@media only screen and (max-width: 1200px) { 
+    .zwsgr-tooltip-container {
+        left: 100%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .zwsgr-tooltip-text {
+        right: 100%;
+        left: auto;
+        transform: none;
+    }
+    .zwsgr-tooltip-container {
+        padding-left: 0;
+        left: 100%;
+    }
 }
