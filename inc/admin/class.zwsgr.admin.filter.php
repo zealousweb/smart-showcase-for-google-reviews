@@ -83,7 +83,7 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 		function zwsgr_remove_quick_edit_from_widget_listings($zwsgr_actions, $zwsgr_post) {
 
 			// Check if the post type is 'zwsgr_reviews'
-			if ($zwsgr_post->post_type == 'zwsgr_data_widget') {
+			if (in_array($zwsgr_post->post_type, ['zwsgr_reviews', 'zwsgr_data_widget'])) {
 				
 				// Remove the 'View' link
 				unset($zwsgr_actions['view']);
