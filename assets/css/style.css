@@ -906,6 +906,9 @@ body .zwsgr-popup-item#zwsgr-popup1 {
     align-items: center;
 }
 
+body .zwsgr-popup-item#zwsgr-popup1 .zwsgr-final-review-wrap{
+    margin: initial;
+}
 body .zwsgr-popup-overlay {
     display: none;
     position: fixed;
