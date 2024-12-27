@@ -2357,7 +2357,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-toogle-display">
 							<a href="<?php echo esc_url($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>
 					</div>
-					<?php if ($display_option !== 'badge') : ?>
+					<?php if (!in_array($layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8'])): ?>
 						<div class="zwsgr-widget-settings">
 							<h2 class="zwsgr-page-title">Widget Settings</h2>
 							<div class="zwsgr-widget-wrap">

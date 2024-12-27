@@ -240,6 +240,29 @@ jQuery(document).ready(function($) {
 		window.location.href = newUrl;
 	});
 
+	// Function to show custom notifications
+	function showNotification(message, type) {
+		// Define the notification types: success, error, warning, info
+		var notificationClass = 'zwsgr-notice-' + type; // Example: zwsgr-notice-success, zwsgr-notice-error
+
+		// Create the notification HTML
+		var notification = `
+			<div class="zwsgr-notice ${notificationClass} zwsgr-is-dismissible">
+				<p>${message}</p>
+			</div>
+		`;
+
+		// Append the notification to the target area
+		$('.zwsgr-dashboard').prepend(notification);
+
+		// Add click event for the dismiss button
+		$('.zwsgr-notice.zwsgr-is-dismissible').on('click', '.zwsgr-notice-dismiss', function () {
+			$(this).closest('.zwsgr-notice').fadeOut(function () {
+				$(this).remove();
+			});
+		});
+	}
+
 	// Handle click events for "Select Option" buttons
     $('.select-btn').on('click', function() {
         var optionId = $(this).data('option');
@@ -247,9 +270,9 @@ jQuery(document).ready(function($) {
         var currentUrl = window.location.href.split('?')[0];
 
         if (!postId) {
-            alert('Post ID not found!');
-            return;
-        }
+			showNotification('Post ID not found!', 'error'); // Custom error notification
+			return;
+		}
 
 		// Fetch the HTML for the selected option using the correct optionId
 		var selectedOptionElement = $('#' + optionId); // Clone the selected option's element
@@ -279,13 +302,13 @@ jQuery(document).ready(function($) {
 			},
 			success: function(response) {
 				if (response.success) {
-					alert('Layout option saved successfully!');
+					showNotification('Layout option saved successfully!', 'success'); // Show success message
 				} else {
-					alert('Failed to save layout option.');
+					showNotification('Failed to save layout option.', 'error'); // Show error message
 				}
 			},
 			error: function() {
-				alert('An error occurred.');
+				showNotification('An error occurred.', 'error'); // Show error message
 			}
 		});
 
@@ -300,9 +323,9 @@ jQuery(document).ready(function($) {
         var currentUrl = window.location.href.split('?')[0];
 
         if (!postId) {
-            alert('Post ID not found!');
-            return;
-        }
+			showNotification('Post ID not found!', 'error'); // Custom error notification
+			return;
+		}
 
         // Redirect to the "Generated Shortcode" tab with selected option and post_id
         window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&zwsgr_widget_id=' + postId;
@@ -1012,14 +1035,14 @@ jQuery(document).ready(function($) {
 			},
 			success: function(response) {
 				if (response.success) {
-					alert('Settings and shortcode saved successfully.');
+					showNotification('Settings and shortcode saved successfully.', 'success'); // Custom success notification
 				} else {
-					alert('Error: ' + response.data);
+					showNotification('Error: ' + response.data, 'error'); // Custom error notification
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log('AJAX Error: ', textStatus, errorThrown);
-				alert('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown);
+				showNotification('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown, 'error'); // Custom error notification
 			}
 		});
 	});
