@@ -225,11 +225,15 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
 			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
+			$posts_per_page_load = get_option('posts_per_page');
+			echo $posts_per_page_load;
+
+			$posts_per_page = $enable_load_more ? $posts_per_page_load : $stored_posts_per_page;
 
 			// Query for posts
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Custom post type slug
-				'posts_per_page' => $stored_posts_per_page,  // Dynamic posts per page value
+				'posts_per_page' => $posts_per_page,  // Dynamic posts per page value
 				'paged'          => 1,                      // Initial page number
 				'meta_query'     => array(
 					'relation' => 'AND',  // Ensure all conditions are matched
@@ -306,7 +310,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			}
 			
 			$query = new WP_Query($args);
-
 			ob_start();  // Start output buffering
 			$this->enqueue_custom_plugin_styles($post_id);
 			echo '<div class="zwsgr-front-review-filter-wrap">';
@@ -327,7 +330,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
 				$selected_elements = maybe_unserialize($selected_elements);
 
-				$reviews_html .= '<div id="div-container">';
+				$reviews_html .= '<div id="div-container" '. "data-maxpage='$stored_posts_per_page'" . '>';
 					// Loop through the posts and display them
 					while ($query->have_posts()) {
 						$query->the_post();
@@ -1509,10 +1512,22 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			$zwsgr_location_number =get_post_meta($post_id, 'zwsgr_location_number', true);
 			$zwsgr_location_all_review_uri =  get_post_meta($post_id, 'zwsgr_location_all_review_uri', true);
 
+			$posts_per_page_load = get_option('posts_per_page');
+			// echo $posts_per_page_load;
+			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
+			// $posts_per_page = $enable_load_more ? $posts_per_page_load : $stored_posts_per_page;
+			$posts_to_show = $enable_load_more 
+				? min($posts_per_page_load, $stored_posts_per_page - (($page - 1) * $posts_per_page_load))
+				: $stored_posts_per_page;
+			// echo $posts_to_show;
+			if ($posts_to_show <= 0 ) {
+				wp_send_json_success(['message' => 'No more reviews', 'more-post' => 0, 'disable_button' => 1]);
+			}
+
 			// Query for posts based on the current page
 			$args = array(
 				'post_type'      => ZWSGR_POST_REVIEW_TYPE,  // Replace with your custom post type slug
-				'posts_per_page' => $stored_posts_per_page,  // Use dynamic posts per page value
+				'posts_per_page' => $posts_to_show,  // Use dynamic posts per page value
 				'paged'          => $page,
 				'meta_query'     => array(
 					'relation' => 'AND',
@@ -1556,7 +1571,8 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'value'   => stripslashes($front_keyword),
 					'compare' => 'LIKE',
 				);
-			}else{
+			}
+			else{
 				$args['meta_query'][]=array(
 					'key'     => 'zwsgr_review_star_rating',
 					'value'   => $ratings_to_include,  // Apply the word-based rating filter
@@ -2504,7 +2520,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 				// Prepare the response with the loaded content and the new page number
 				$response = array(
-					'content'   => $output,  // Send HTML content in the response
+					'content'   => $output ,  // Send HTML content in the response
 					'new_page'  => $page + 1,
 				);
 				wp_reset_postdata();
@@ -2512,7 +2528,24 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				// No more posts available
 				$response['err_msg'] = esc_html__('No Review Founds.', 'smart-google-reviews');
 			}
+			// if( 1 == $page ){
+			// 	$is_more = ( (int) $stored_posts_per_page > (int) $query->found_posts ) ? false : true;
+			// 	$response['disable_button'] = $is_more;
+			// }else{
+			// 	$check_multi =  (int)$posts_to_show * (int) $page;
+			// 	$is_last = ( $check_multi >= $stored_posts_per_page ) ? true : false;
+			// 	$response['disable_button'] = $is_last;
+			// }
+
+			// $check_multi =  (int)$posts_to_show * (int) $page;
+			// 	$is_last = ( $check_multi >= $stored_posts_per_page ) ? true : false;
+			// 	$response['disable_button'] = $is_last;
+
+			// else{
+				// }
+			
 			$response['disable_button'] = ( $query->max_num_pages <= $page ) ? true : false;
+				
 			wp_send_json_success($response);
 
 			wp_die();  // Properly terminate the AJAX request
