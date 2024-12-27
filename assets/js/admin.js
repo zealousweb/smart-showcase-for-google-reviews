@@ -1646,7 +1646,7 @@ jQuery(document).ready(function($) {
 
 		zwsgr_chart_data.unshift(['Rating', 'Number of Reviews']);
 
-		console.log(zwsgr_chart_data, 'zwsgr_chart_data');
+		// console.log(zwsgr_chart_data, 'zwsgr_chart_data');
 
 		var zwsgr_data = google.visualization.arrayToDataTable(zwsgr_chart_data);
 
