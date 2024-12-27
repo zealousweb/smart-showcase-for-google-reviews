@@ -2550,14 +2550,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 
 									<div id="load-more-settings" style="display:'block';">
-									<h3 class="zwsgr-label">Number Of Review:</h3>
+									<h3 class="zwsgr-label">Reviews Per Page for List, Gird, and Popup:</h3>
 									<div class="zwsgr-tooltip">
 										<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo $posts_per_page; ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 										<span class="zwsgr-tooltip-container">
 											<div class="zwsgr-wrapper">
 												<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
 												<path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z"></path></svg>
-												<span class="zwsgr-tooltip-text">This is a tooltip with dummy text</span>
+												<span class="zwsgr-tooltip-text">We recommend a maximum of 100 reviews for the best experience.</span>
 											</div>
 										</span>
 									</div>
