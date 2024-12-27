@@ -1317,7 +1317,18 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
-						</div></a>'
+						</div></a>',
+
+						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge9">
+						<div class="zwsgr-badge-image">
+							<img src="' . esc_url($image_url) . '" alt="Profile Logo">
+						</div>
+						<div class="zwsgr-badge-info">
+							<h3 class="zwsgr-average">' . $zwsgr_location_name .'</h3>
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
+						</div>
+					</div></a>',
 					],
 					'popup' => [
 						'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
