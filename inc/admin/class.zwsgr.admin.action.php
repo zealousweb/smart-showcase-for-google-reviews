@@ -2561,7 +2561,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 
 									<div id="load-more-settings" style="display:'block';">
-									<h3 class="zwsgr-label">Reviews Per Page for List, Gird, and Popup:</h3>
+									<h3 class="zwsgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
 									<div class="zwsgr-tooltip">
 										<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo $posts_per_page; ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 										<span class="zwsgr-tooltip-container">
