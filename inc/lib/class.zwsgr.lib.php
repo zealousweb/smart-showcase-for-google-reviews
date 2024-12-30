@@ -306,7 +306,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			}
 			
 			$query = new WP_Query($args);
-
 			ob_start();  // Start output buffering
 			$this->enqueue_custom_plugin_styles($post_id);
 			echo '<div class="zwsgr-front-review-filter-wrap">';
@@ -2532,4 +2531,3 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		}
 	}
 }
-

@@ -269,6 +269,7 @@ jQuery(document).ready(function($) {
         var postId = getQueryParam('zwsgr_widget_id');
         var currentUrl = window.location.href.split('?')[0];
 
+
         if (!postId) {
 			showNotification('Post ID not found!', 'error'); // Custom error notification
 			return;
@@ -321,6 +322,7 @@ jQuery(document).ready(function($) {
         var selectedOption = getQueryParam('selectedOption');
         var postId = getQueryParam('zwsgr_widget_id');
         var currentUrl = window.location.href.split('?')[0];
+
 
         if (!postId) {
 			showNotification('Post ID not found!', 'error'); // Custom error notification
