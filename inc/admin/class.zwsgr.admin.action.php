@@ -1461,6 +1461,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 
 			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
+			$post_count = $latest_zwsgr_reviews->found_posts;
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			$image_url = '';
 			if ($latest_zwsgr_reviews->have_posts()) {
@@ -2223,7 +2224,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . $zwsgr_popup_content1 . '
+									' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="error-message">No posts found. Please check back later.</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2254,7 +2255,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . $zwsgr_popup_content2 . '
+									' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="error-message">No posts found. Please check back later.</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2758,6 +2759,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
 			$zwsgr_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
+			$layout_option = get_post_meta($post_id, 'layout_option', true);
+
 
 			// Query reviews with the selected string-based filters
 			$args = array(
@@ -2827,7 +2830,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 		
 			$reviews_query = new WP_Query($args);
-
+			$post_count = $reviews_query->found_posts;
 			$reviews_html ='';    
 			
 			if ($reviews_query->have_posts()) {
@@ -3336,8 +3339,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				wp_reset_postdata();
 			} 
 			else {
-				echo '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>';
+				if ($layout_option != "popup-1" && $layout_option != "popup-2") {
+					echo '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>';
+				}				
+				
 			}
+
+			
 			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
 			$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
@@ -3497,7 +3505,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-								' . $zwsgr_popup_content1 . '
+								' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="error-message">No posts found. Please check back later.</p>') . '
 							</div>
 						</div>
 					</div>
@@ -3528,7 +3536,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-								' . $zwsgr_popup_content2 . '
+								' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="error-message">No posts found. Please check back later.</p>') . '
 							</div>
 						</div>
 					</div>
