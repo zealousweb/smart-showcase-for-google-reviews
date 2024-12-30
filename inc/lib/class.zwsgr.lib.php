@@ -1332,7 +1332,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					'popup' => [
 						'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
 							<div class="zwsgr-profile-logo">
-								<img src="' . $plugin_dir_path . 'assets/images/profile-logo.png">
+								<img src="' . esc_url($image_url) . '" alt="Profile Logo">
 							</div>
 							<div class="zwsgr-profile-info">
 								<h3>'.$zwsgr_location_name.'</h3>
@@ -1365,13 +1365,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 						<div class="zwsgr-title-wrap">
-							 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
+							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 							<h3>Reviews</h3>
 						</div>
 						<div class="zwsgr-info-wrap">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-							<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
+							<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 						</div>
 					</div>
 					<div id="zwsgrpopup2" class="zwsgr-popup-overlay">

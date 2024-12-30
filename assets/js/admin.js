@@ -1768,7 +1768,6 @@ jQuery(document).ready(function($) {
 	
 		// Handle the new rating value
 		var ratingFilterValue = rating;
-		console.log("Selected rating:", ratingFilterValue);
 	});
 	
 
@@ -1835,7 +1834,7 @@ jQuery(document).ready(function($) {
 				 if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
 					 // Optionally, you can apply list-specific reinitialization logic here
 					//  alert('List layout filtered');
-				 }
+				 }				
 			},
 			error: function(xhr, status, error) {
 				console.error("AJAX Error: ", status, error);
@@ -2036,7 +2035,6 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.toggle-content', function () {
         var $link = $(this);
         var fullText = $link.data('full-text');
-		console.log(fullText);
         var $parentParagraph = $link.closest('p');
     
         // Replace the trimmed content with the full content

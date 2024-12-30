@@ -262,7 +262,6 @@ jQuery(document).ready(function($) {
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					// $('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -381,7 +380,6 @@ jQuery(document).ready(function($) {
 					$('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					$('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					// $('.zwsgr-popup-item').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 

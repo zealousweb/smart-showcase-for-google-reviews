@@ -1461,8 +1461,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 
 			$latest_zwsgr_reviews = new WP_Query($zwsgr_reviews_args);
+			$post_count = $latest_zwsgr_reviews->found_posts;
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			$image_url = '';
+			$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 			if ($latest_zwsgr_reviews->have_posts()) {
 				while($latest_zwsgr_reviews->have_posts()) {
 					$latest_zwsgr_reviews->the_post();
@@ -1475,7 +1477,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$published_date  = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
-					$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 					// Determine if content is trimmed based on character limit
 					$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_comment) > $char_limit; // Check if the content length exceeds the character limit
@@ -2011,6 +2012,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
 			$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
 
+
 			$final_rating = ' <div class="zwsgr-final-review-wrap">
 				<svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M30.0001 14.4156L34.7771 17.0896L33.7102 11.72L37.7293 8.00321L32.293 7.35866L30.0001 2.38752L27.7071 7.35866L22.2707 8.00321L26.2899 11.72L25.223 17.0896L30.0001 14.4156ZM23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616L23.8197 19.0211Z" fill="#ccc" />
@@ -2222,7 +2224,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . $zwsgr_popup_content1 . '
+									' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2235,7 +2237,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<div class="zwsgr-info-wrap">
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-							<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
+							<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 						</div>
 					</div>
 					<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
@@ -2253,7 +2255,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . $zwsgr_popup_content2 . '
+									' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2732,7 +2734,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
 			$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
-		
 			$rating_mapping = array(
 				1 => 'ONE',
 				2 => 'TWO',
@@ -2757,6 +2758,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 			$zwsgr_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
 			$zwsgr_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
+			$layout_option = get_post_meta($post_id, 'layout_option', true);
+
 
 			// Query reviews with the selected string-based filters
 			$args = array(
@@ -2826,8 +2829,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			}
 		
 			$reviews_query = new WP_Query($args);
-
+			$post_count = $reviews_query->found_posts;
 			$reviews_html ='';    
+			$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
+
 			
 			if ($reviews_query->have_posts()) {
 				while ($reviews_query->have_posts()) {
@@ -2838,10 +2843,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_review_id= get_post_meta(get_the_ID(), 'zwsgr_review_id', true);
 					$zwsgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
-					$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 					$published_date = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
-
 					// Determine if content is trimmed based on character limit
 					$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
 					$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
@@ -3335,8 +3338,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				wp_reset_postdata();
 			} 
 			else {
-				echo '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>';
+				if ($layout_option != "popup-1" && $layout_option != "popup-2") {
+					echo '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>';
+				}				
+				
 			}
+
+			
 			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);
 			$zwsgr_slider_content3 = implode('', (array) $zwsgr_slider_content3);
@@ -3360,18 +3368,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
 
 			$zwsgr_gmb_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
-			$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_account_locations', true);
+			$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
 
 			$zwsgr_filter_data = [
 				'zwsgr_gmb_account_number'   => $zwsgr_gmb_account_number,
 				'zwsgr_gmb_account_location' => $zwsgr_gmb_account_location,
-				'zwsgr_range_filter_type'    => 'rangeofdays',
-				'zwsgr_range_filter_data'    => 'monthly'
+				'zwsgr_range_filter_type'    => '',
+				'zwsgr_range_filter_data'    => ''
 			];
 
-			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
-
-			
+			$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query($zwsgr_filter_data);		
+			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
 			$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
 
 			$final_rating = ' <div class="zwsgr-final-review-wrap">
@@ -3497,20 +3504,20 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-								' . $zwsgr_popup_content1 . '
+								' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 							</div>
 						</div>
 					</div>
 				</div>',
 				'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 					<div class="zwsgr-title-wrap">
-						 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
+						<img src="' . $plugin_dir_path . 'assets/images/google.png">
 						<h3>Reviews</h3>
 					</div>
 					<div class="zwsgr-info-wrap">
 						<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
-						<a href="#" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
+						<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" 	class="zwsgr-total-review">(  '.$zwsgr_reviews_ratings['reviews'].' reviews )</a>
 					</div>
 				</div>
 				<div id="zwsgrpopup2" class="zwsgr-popup-overlay">
@@ -3528,7 +3535,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-								' . $zwsgr_popup_content2 . '
+								' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 							</div>
 						</div>
 					</div>
