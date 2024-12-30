@@ -1375,13 +1375,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$ratings_to_include = array();
 			if ($rating_filter_word == 'TWO') {
-				$ratings_to_include = array('ONE', 'TWO');
+				$ratings_to_include = array('TWO');
 			} elseif ($rating_filter_word == 'THREE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE');
+				$ratings_to_include = array('THREE');
 			} elseif ($rating_filter_word == 'FOUR') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR');
+				$ratings_to_include = array('FOUR');
 			} elseif ($rating_filter_word == 'FIVE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
+				$ratings_to_include = array('FIVE');
 			} elseif ($rating_filter_word == 'ONE') {
 				$ratings_to_include = array('ONE');
 			}
@@ -2183,7 +2183,18 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 						' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 						<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
-					</div></a>'
+					</div></a>',
+
+					'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge9">
+						<div class="zwsgr-badge-image">
+							<img src="' . esc_url($image_url) . '" alt="Profile Logo">
+						</div>
+						<div class="zwsgr-badge-info">
+							<h3 class="zwsgr-average">' . $zwsgr_location_name .'</h3>
+							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
+							<p class="zwsgr-based-on">Based on <b> '.$zwsgr_reviews_ratings['reviews'].' reviews</b></p>
+						</div>
+					</div></a>',
 				],
 				'popup' => [
 					'<div class="zwsgr-popup-item" id="zwsgr-popup1" data-popup="zwsgrpopup1">
@@ -2357,7 +2368,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-toogle-display">
 							<a href="<?php echo esc_url($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>
 					</div>
-					<?php if ($display_option !== 'badge') : ?>
+					<?php if (!in_array($layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
 						<div class="zwsgr-widget-settings">
 							<h2 class="zwsgr-page-title">Widget Settings</h2>
 							<div class="zwsgr-widget-wrap">
@@ -2550,14 +2561,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 
 									<div id="load-more-settings" style="display:'block';">
-									<h3 class="zwsgr-label">Number Of Review:</h3>
+									<h3 class="zwsgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
 									<div class="zwsgr-tooltip">
 										<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo $posts_per_page; ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 										<span class="zwsgr-tooltip-container">
 											<div class="zwsgr-wrapper">
 												<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
 												<path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z"></path></svg>
-												<span class="zwsgr-tooltip-text">This is a tooltip with dummy text</span>
+												<span class="zwsgr-tooltip-text">We recommend a maximum of 100 reviews for the best experience.</span>
 											</div>
 										</span>
 									</div>
@@ -3324,7 +3335,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				wp_reset_postdata();
 			} 
 			else {
-				echo 'No reviews found for the selected ratings';
+				echo '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>';
 			}
 			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);

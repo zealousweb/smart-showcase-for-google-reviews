@@ -228,8 +228,11 @@ jQuery(document).ready(function($) {
 		var selectedValue = $('#front-sort-by-select').val();
 		var bg_color_load =$('.main-div-wrapper').data('bg-color');
 		var text_color_load =$('.main-div-wrapper').data('text-color');
+		var enable_load_more = $('.main-div-wrapper').data('enable-load-more');
 
-		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+		if (enable_load_more === 1){
+			var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+		}
 
 		$('.zwsgr-slider.zwsgr-list');
 
@@ -343,9 +346,11 @@ jQuery(document).ready(function($) {
 		var layoutType = $('.main-div-wrapper').data('layout-type');
 		var bg_color_load =$('.main-div-wrapper').data('bg-color');
 		var text_color_load =$('.main-div-wrapper').data('text-color');
+		var enable_load_more = $('.main-div-wrapper').data('enable-load-more');
 
-		var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
-		$('.zwsgr-slider.zwsgr-list');
+		if (enable_load_more === 1){
+			var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+		}
 
 		$('.load-more-meta').remove();
 

@@ -55,12 +55,16 @@ if ( !class_exists( 'ZWSGR_Admin_Filter' ) ) {
 				$zwsgr_account_number = get_post_meta($zwsgr_post->ID, 'zwsgr_account_number', true);
 				$zwsgr_location_number = get_post_meta($zwsgr_post->ID, 'zwsgr_location_number', true);
 				$layout_option = get_post_meta($zwsgr_post->ID, 'layout_option', true);
+				$current_tab2 = get_post_meta($zwsgr_post->ID, 'tab-selected', true);
 
 				// Check if both account and location numbers are empty
 				if (empty($zwsgr_account_number) || empty($zwsgr_location_number)) {
 					// Redirect to the 'fetch data' page if both account and location numbers are empty
 					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_post->ID);
-				} else {
+				} else if (!$current_tab2) {
+					// Redirect to a specific page for setting the tab
+					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-options&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $zwsgr_post->ID);
+				}else {
 					// Redirect to the widget configurator page with the selected layout option if account and location numbers are not empty
 					$zwsgr_url = admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-selected&selectedOption=' . $layout_option . '&zwsgr_widget_id=' . $zwsgr_post->ID);
 				}
