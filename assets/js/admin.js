@@ -1768,7 +1768,6 @@ jQuery(document).ready(function($) {
 	
 		// Handle the new rating value
 		var ratingFilterValue = rating;
-		console.log("Selected rating:", ratingFilterValue);
 	});
 	
 
@@ -2036,7 +2035,6 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.toggle-content', function () {
         var $link = $(this);
         var fullText = $link.data('full-text');
-		console.log(fullText);
         var $parentParagraph = $link.closest('p');
     
         // Replace the trimmed content with the full content
