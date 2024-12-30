@@ -1464,6 +1464,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$post_count = $latest_zwsgr_reviews->found_posts;
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			$image_url = '';
+			$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 			if ($latest_zwsgr_reviews->have_posts()) {
 				while($latest_zwsgr_reviews->have_posts()) {
 					$latest_zwsgr_reviews->the_post();
@@ -1476,7 +1477,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$published_date  = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
-					$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 					// Determine if content is trimmed based on character limit
 					$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_comment) > $char_limit; // Check if the content length exceeds the character limit
@@ -2224,7 +2224,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="error-message">No posts found. Please check back later.</p>') . '
+									' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2255,7 +2255,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-									' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="error-message">No posts found. Please check back later.</p>') . '
+									' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2734,7 +2734,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			$zwsgr_location_thumbnail_url = get_post_meta($post_id, 'zwsgr_location_thumbnail_url', true);
 			$image_url = $zwsgr_location_thumbnail_url ? $zwsgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
-		
 			$rating_mapping = array(
 				1 => 'ONE',
 				2 => 'TWO',
@@ -3505,7 +3504,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-								' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="error-message">No posts found. Please check back later.</p>') . '
+								' . (($post_count > 0) ? $zwsgr_popup_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 							</div>
 						</div>
 					</div>
@@ -3536,7 +3535,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								</div>
 							</div>
 							<div class="zwsgr-slider zwsgr-grid-item zwsgr-popup-list">
-								' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="error-message">No posts found. Please check back later.</p>') . '
+								' . (($post_count > 0) ? $zwsgr_popup_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 							</div>
 						</div>
 					</div>
