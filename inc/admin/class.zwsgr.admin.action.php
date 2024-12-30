@@ -2832,6 +2832,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$reviews_query = new WP_Query($args);
 			$post_count = $reviews_query->found_posts;
 			$reviews_html ='';    
+			$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
+
 			
 			if ($reviews_query->have_posts()) {
 				while ($reviews_query->have_posts()) {
@@ -2842,10 +2844,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					$zwsgr_review_id= get_post_meta(get_the_ID(), 'zwsgr_review_id', true);
 					$zwsgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 					$zwsgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
-					$zwsgr_location_name = get_post_meta($post_id, 'zwsgr_location_name', true);
 					$published_date = get_the_date('F j, Y');
 					$months = $this->translate_months($language);
-
 					// Determine if content is trimmed based on character limit
 					$is_trimmed = $char_limit > 0 && mb_strlen($zwsgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
 					$trimmed_content = $is_trimmed ? mb_substr($zwsgr_review_content, 0, $char_limit) . '...' : $zwsgr_review_content; // Trim the content if necessary
