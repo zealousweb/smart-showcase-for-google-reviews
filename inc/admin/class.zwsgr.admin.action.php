@@ -2036,12 +2036,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'slider' => [
 					'<div class="zwsgr-slider" id="zwsgr-slider1"> 
 						<div class="zwsgr-slider-1">
-							' . $zwsgr_slider_content1 . '
+							' . (($post_count > 0) ? $zwsgr_slider_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 						</div>
 					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider2">
 						<div class="zwsgr-slider-2">
-							' . $zwsgr_slider_content2 . '
+							' . (($post_count > 0) ? $zwsgr_slider_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 						</div>
 					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider3">
@@ -2056,57 +2056,57 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</a>
 						</div>
 						<div class="zwsgr-slider-3">
-							' . $zwsgr_slider_content3 . '
+							' . (($post_count > 0) ? $zwsgr_slider_content3  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 						</div>
 					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider4">
 						<div class="zwsgr-slider-4">
-							' . $zwsgr_slider_content4 . '
+							' . (($post_count > 0) ? $zwsgr_slider_content4  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 						</div>
 					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider5">
 						<div class="zwsgr-slider-5">
-							' . $zwsgr_slider_content5 . '
+							' . (($post_count > 0) ? $zwsgr_slider_content5  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 						</div>
 					</div>',
 					'<div class="zwsgr-slider" id="zwsgr-slider6">
 						<div class="zwsgr-slider-6">
-							' . $zwsgr_slider_content6 . '
+							' . (($post_count > 0) ? $zwsgr_slider_content6  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 						</div>
 					</div>'
 				],
 				'grid' => [
 					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid1">
-						' . $zwsgr_grid_content1 . '
+						' . (($post_count > 0) ? $zwsgr_grid_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid2">
-						' . $zwsgr_grid_content2 . '
+						' . (($post_count > 0) ? $zwsgr_grid_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid3">
-						' . $zwsgr_grid_content3 . '
+						' . (($post_count > 0) ? $zwsgr_grid_content3  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid4">
-						' . $zwsgr_grid_content4 . '
+						' . (($post_count > 0) ? $zwsgr_grid_content4  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-grid-item" id="zwsgr-grid5">
-						' . $zwsgr_grid_content5 . '
+						' . (($post_count > 0) ? $zwsgr_grid_content5  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>'
 				],
 				'list' => [
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list1">
-						' . $zwsgr_list_content1 . '
+						' . (($post_count > 0) ? $zwsgr_list_content1  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list2">
-						' . $zwsgr_list_content2 . '
+						' . (($post_count > 0) ? $zwsgr_list_content2  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list3">
-						' . $zwsgr_list_content3 . '
+						' . (($post_count > 0) ? $zwsgr_list_content3  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list4">
-						' . $zwsgr_list_content4 . '
+						' . (($post_count > 0) ? $zwsgr_list_content4  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>',
 					'<div class="zwsgr-slider zwsgr-list" id="zwsgr-list5">
-						' . $zwsgr_list_content5 . '
+						' . (($post_count > 0) ? $zwsgr_list_content5  : '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>') . '
 					</div>'
 				],
 				'badge' => [
