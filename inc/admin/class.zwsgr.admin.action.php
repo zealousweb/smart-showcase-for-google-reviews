@@ -2011,6 +2011,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
 			$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
 
+
 			$final_rating = ' <div class="zwsgr-final-review-wrap">
 				<svg width="100" height="20" viewBox="0 0 100 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M30.0001 14.4156L34.7771 17.0896L33.7102 11.72L37.7293 8.00321L32.293 7.35866L30.0001 2.38752L27.7071 7.35866L22.2707 8.00321L26.2899 11.72L25.223 17.0896L30.0001 14.4156ZM23.8197 19.0211L25.2 12.0742L20 7.26542L27.0335 6.43152L30.0001 0L32.9666 6.43152L40 7.26542L34.8001 12.0742L36.1804 19.0211L30.0001 15.5616L23.8197 19.0211Z" fill="#ccc" />
@@ -3360,18 +3361,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_popup_content2 = implode('', (array) $zwsgr_popup_content2);
 
 			$zwsgr_gmb_account_number = get_post_meta($post_id, 'zwsgr_account_number', true);
-			$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_account_locations', true);
+			$zwsgr_gmb_account_location =get_post_meta($post_id, 'zwsgr_location_number', true);
 
 			$zwsgr_filter_data = [
 				'zwsgr_gmb_account_number'   => $zwsgr_gmb_account_number,
 				'zwsgr_gmb_account_location' => $zwsgr_gmb_account_location,
-				'zwsgr_range_filter_type'    => 'rangeofdays',
-				'zwsgr_range_filter_data'    => 'monthly'
+				'zwsgr_range_filter_type'    => '',
+				'zwsgr_range_filter_data'    => ''
 			];
 
-			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_filter_data);
-
-			
+			$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query($zwsgr_filter_data);		
+			$zwsgr_reviews_ratings = $this->zwsgr_dashboard->zwsgr_get_reviews_ratings($zwsgr_data_render_args);
 			$widthPercentage = $zwsgr_reviews_ratings['ratings'] * 20;
 
 			$final_rating = ' <div class="zwsgr-final-review-wrap">

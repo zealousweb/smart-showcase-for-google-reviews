@@ -1134,6 +1134,10 @@ body .zwsgr-final-review-wrap {
     margin: 0 auto;
 }
 
+body .zwsgr-popup-wrap .zwsgr-final-review-wrap {
+    margin: initial;
+}
+
 body .zwsgr-badge-item#zwsgr-badge2 .zwsgr-badge-info .zwsgr-final-review-wrap {
     margin:  0 auto;
 }

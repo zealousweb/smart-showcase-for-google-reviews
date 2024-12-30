@@ -1365,7 +1365,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 						<div class="zwsgr-title-wrap">
-							 <img src="' . esc_url($image_url) . '" alt="Profile Logo">
+							<img src="' . $plugin_dir_path . 'assets/images/google.png">
 							<h3>Reviews</h3>
 						</div>
 						<div class="zwsgr-info-wrap">
