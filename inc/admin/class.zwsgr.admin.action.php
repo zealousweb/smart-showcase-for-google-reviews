@@ -3550,6 +3550,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$layout_option_value = $layout_option_divide[1];
 			$reviews_html = $filter_layout[$layout_option_key][$layout_option_value-1];
 
+			if($post_count > 0){
+				echo '<h3 class="zwsgr-layout-title">Layout: ' . esc_html($layout_option_key) . ' ' . esc_html($layout_option_value) . '</h3>';
+			}
+
 			// Return the filtered reviews HTML as the response
 			echo wp_kses_post($reviews_html);
 			die();
