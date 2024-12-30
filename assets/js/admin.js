@@ -1783,7 +1783,17 @@ jQuery(document).ready(function($) {
 		});
 
 		// If nothing is selected, default to all ratings (1-5 stars)
-		if (selectedRatings.length === 0) {
+		if(selectedRatings.length === 1){
+			selectedRatings =[1]
+		}else if(selectedRatings.length === 2){
+			selectedRatings =[2]
+		}else if(selectedRatings.length === 3){
+			selectedRatings =[3]
+		}else if(selectedRatings.length === 4){
+			selectedRatings =[4]
+		}else if(selectedRatings.length === 5){
+			selectedRatings =[5]
+		}else{
 			selectedRatings = [1, 2, 3, 4, 5];
 		}
 

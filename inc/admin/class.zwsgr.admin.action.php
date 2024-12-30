@@ -1375,13 +1375,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 			$ratings_to_include = array();
 			if ($rating_filter_word == 'TWO') {
-				$ratings_to_include = array('ONE', 'TWO');
+				$ratings_to_include = array('TWO');
 			} elseif ($rating_filter_word == 'THREE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE');
+				$ratings_to_include = array('THREE');
 			} elseif ($rating_filter_word == 'FOUR') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR');
+				$ratings_to_include = array('FOUR');
 			} elseif ($rating_filter_word == 'FIVE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
+				$ratings_to_include = array('FIVE');
 			} elseif ($rating_filter_word == 'ONE') {
 				$ratings_to_include = array('ONE');
 			}
@@ -3335,7 +3335,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				wp_reset_postdata();
 			} 
 			else {
-				echo 'No reviews found for the selected ratings';
+				echo '<p class="zwsgr-no-found-message">No reviews found for the selected ratings</p>';
 			}
 			$zwsgr_slider_content1 = implode('', (array) $zwsgr_slider_content1);
 			$zwsgr_slider_content2 = implode('', (array) $zwsgr_slider_content2);

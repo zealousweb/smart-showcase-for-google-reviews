@@ -200,13 +200,13 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			// Define the ratings to include based on the rating filter
 			$ratings_to_include = array();
 			if ($rating_filter_word == 'TWO') {
-				$ratings_to_include = array('ONE', 'TWO');
+				$ratings_to_include = array('TWO');
 			} elseif ($rating_filter_word == 'THREE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE');
+				$ratings_to_include = array('THREE');
 			} elseif ($rating_filter_word == 'FOUR') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR');
+				$ratings_to_include = array('FOUR');
 			} elseif ($rating_filter_word == 'FIVE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
+				$ratings_to_include = array('FIVE');
 			} elseif ($rating_filter_word == 'ONE') {
 				$ratings_to_include = array('ONE');
 			}
@@ -319,7 +319,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				}
 			echo '</div>';
 
-			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="' . esc_attr( $post_id ) . '" data-rating-filter="' . esc_attr( $rating_filter ) . '" data-layout-type="' . esc_attr( $layout_option ) . '" data-bg-color="' . esc_attr( $bg_color_load ) . '" data-text-color="' . esc_attr( $text_color_load ) . '">';
+			echo '<div class="main-div-wrapper" style="max-width: 100%;" data-widget-id="' . esc_attr( $post_id ) . '" data-rating-filter="' . esc_attr( $rating_filter ) . '" data-layout-type="' . esc_attr( $layout_option ) . '" data-bg-color="' . esc_attr( $bg_color_load ) . '" data-text-color="' . esc_attr( $text_color_load ) . '" data-enable-load-more="' . esc_attr( $enable_load_more ) . '">';
 			if ($query->have_posts()) {
 
 				// Fetch selected elements from post meta
@@ -1451,7 +1451,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 					echo '</div>';
 				}
 			} else {
-				echo '<p>' . esc_html__('No posts found.', 'smart-google-reviews') . '</p>';
+				echo '<p class="zwsgr-no-found-message">' . esc_html__('No reviews found for the selected ratings.', 'smart-google-reviews') . '</p>';
 			}
 
 			return ob_get_clean();  // Return the buffered content
@@ -1496,15 +1496,17 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 			// Define the ratings to include based on the rating filter
 			$ratings_to_include = array();
 			if ($rating_filter_word == 'TWO') {
-				$ratings_to_include = array('ONE', 'TWO');
+				$ratings_to_include = array('TWO');
 			} elseif ($rating_filter_word == 'THREE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE');
+				$ratings_to_include = array('THREE');
 			} elseif ($rating_filter_word == 'FOUR') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR');
+				$ratings_to_include = array('FOUR');
 			} elseif ($rating_filter_word == 'FIVE') {
-				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
+				$ratings_to_include = array('FIVE');
 			} elseif ($rating_filter_word == 'ONE') {
 				$ratings_to_include = array('ONE');
+			}else{
+				$ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
 			}
 
 			$sort_by = isset($_POST['front_sort_by']) ? sanitize_text_field(wp_unslash($_POST['front_sort_by'])) : (get_post_meta($post_id, 'sort_by', true) ?: 'newest');
