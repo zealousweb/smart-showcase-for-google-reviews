@@ -166,9 +166,7 @@ jQuery(document).ready(function($) {
 				settings: settings
 			},
 			success: function(response) {
-				// console.log('Display and layout option saved:', response);
-				showNotification('Display and layout option saved:', response, 'success'); // Show success message
-
+				console.log('Display and layout option saved:', response);
 			},
 			error: function(error) {
 				console.error('Error saving options:', error);
@@ -1836,25 +1834,7 @@ jQuery(document).ready(function($) {
 				 if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
 					 // Optionally, you can apply list-specific reinitialization logic here
 					//  alert('List layout filtered');
-				 }
-				 
-				 if (selectedOption === 'popup-1' || selectedOption === 'popup-2') {
-					// Create a temporary container to manipulate the HTML response
-					var tempContainer = $('<div>').html(response);
-				
-					// Find the message tag again
-					var noFoundMessage = tempContainer.find('p.zwsgr-no-found-message');
-					if (noFoundMessage.length > 0) {
-						// Append the message to .zwsgr-popup-list
-						tempContainer.find('.zwsgr-popup-list').append(noFoundMessage);
-					}
-				
-					// Update the HTML content
-					$('#selected-option-display').empty();
-					$('#selected-option-display').html(tempContainer.html());
-				}
-				
-				
+				 }				
 			},
 			error: function(xhr, status, error) {
 				console.error("AJAX Error: ", status, error);
