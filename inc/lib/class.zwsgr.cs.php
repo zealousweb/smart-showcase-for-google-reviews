@@ -218,6 +218,8 @@ if ( !class_exists( 'ZWSGR_Cron_Scheduler' ) ) {
 
                     $is_data_sync = $this->client->zwsgr_fetch_gmb_data(false, false, 'zwsgr_gmb_reviews', $zwsgr_account_number, $zwsgr_location_number);
 
+                    sleep(20);
+
                     if (!$is_data_sync) {
                         $this->zwsgr_debug_function('Data sync for widget:' . $zwsgr_widget_id . 'has been successfully processed');
                     } else {
