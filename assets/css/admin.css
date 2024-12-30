@@ -559,6 +559,52 @@ body .zwsgr-gmbc-outer-wrapper .zwsgr-gmbc-inner-wrapper input {
     text-align: left;
 }
 
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: auto;
+}
+
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    position: relative;
+    box-shadow: none;
+}
+
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button::before,
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 20px;
+    background-color: red;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: ease-out 0.3s all;
+}
+
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button:hover::before,
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button:focus::before {
+    transform: translate(-50%, -50%) rotate(135deg);
+}
+
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button:hover::after,
+body .zwsgr-gmbc-outer-wrapper #close-gmb-wrap .close-button:focus::after {
+    transform: translate(-50%, -50%) rotate(225deg);
+}
+
 #fetch-gmb-auth-url #fetch-gmb-auth-url-response .error, 
 #fetch-gmb-auth-url #fetch-gmb-auth-url-response .success,
 #disconnect-gmb-auth #disconnect-gmb-auth-response .error, 
