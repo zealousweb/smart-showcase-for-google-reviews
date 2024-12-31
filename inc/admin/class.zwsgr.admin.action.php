@@ -1436,23 +1436,27 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					break;
 
 				case 'highest':
-					// Adjust the "highest" sort based on the selected rating filter
-					if (!empty($rating_filter_word)) {
-						// Sort by the highest rating within the selected filter group
-						$zwsgr_reviews_args['meta_query'][0]['value'] = $rating_filter_word; // Limit to the selected rating
-						$zwsgr_reviews_args['orderby'] = 'meta_value_num';
-						$zwsgr_reviews_args['order'] = 'DESC';
-					} else {
-						$zwsgr_reviews_args['orderby'] = 'meta_value';
-						$zwsgr_reviews_args['order'] = 'ASC';
-						$azwsgr_reviews_argsrgs['meta_key'] = 'zwsgr_review_star_rating';
-					}
+					// Sort from FIVE to ONE
+					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+						global $wpdb;
+						if ($query->get('post_type') === ZWSGR_POST_REVIEW_TYPE) {
+							$custom_order = "'" . implode("','", array_reverse($rating_mapping)) . "'";
+							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
+						}
+						return $orderby;
+					}, 10, 2);
 					break;
 
 				case 'lowest':
-					$zwsgr_reviews_args['orderby'] = 'meta_value';
-						$zwsgr_reviews_args['order'] = 'DESC';
-						$azwsgr_reviews_argsrgs['meta_key'] = 'zwsgr_review_star_rating';
+					// Sort from ONE to FIVE
+					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+						global $wpdb;
+						if ($query->get('post_type') === ZWSGR_POST_REVIEW_TYPE) {
+							$custom_order = "'" . implode("','", $rating_mapping) . "'";
+							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
+						}
+						return $orderby;
+					}, 10, 2);
 					break;
 
 				default:
@@ -2809,21 +2813,30 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					break;
 
 				case 'highest':
-					// Sort by highest rating first
-					$args['orderby'] = 'meta_value';
-					$args['order'] = 'ASC';
-					$args['meta_key'] = 'zwsgr_review_star_rating';
+					// Sort from FIVE to ONE
+					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+						global $wpdb;
+						if ($query->get('post_type') === ZWSGR_POST_REVIEW_TYPE) {
+							$custom_order = "'" . implode("','", array_reverse($rating_mapping)) . "'";
+							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
+						}
+						return $orderby;
+					}, 10, 2);
 					break;
 
 				case 'lowest':
-					// Sort by lowest rating first
-					$args['orderby'] = 'meta_value';
-					$args['order'] = 'DESC';
-					$args['meta_key'] = 'zwsgr_review_star_rating';
+					// Sort from ONE to FIVE
+					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+						global $wpdb;
+						if ($query->get('post_type') === ZWSGR_POST_REVIEW_TYPE) {
+							$custom_order = "'" . implode("','", $rating_mapping) . "'";
+							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
+						}
+						return $orderby;
+					}, 10, 2);
 					break;
 
 				default:
-					// Default sorting (e.g., relevance)
 					$args['orderby'] = 'date';
 					$args['order'] = 'DESC';
 			}
