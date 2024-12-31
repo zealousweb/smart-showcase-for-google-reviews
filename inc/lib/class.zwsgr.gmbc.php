@@ -309,7 +309,17 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                             // Retrieve existing locations or initialize an empty array
                             $zwsgr_account_locations = get_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', true);
 
-                            
+                            if (isset($zwsgr_account_location['metadata']['newReviewUri'])) {
+                                $zwsgr_new_review_uri = $zwsgr_account_location['metadata']['newReviewUri'];
+                            } else {
+                                $zwsgr_new_review_uri = '';
+                            }
+
+                            if (isset($zwsgr_account_location['metadata']['placeId'])) {
+                                $zwsgr_place_id = $zwsgr_account_location['metadata']['placeId'];
+                            } else {
+                                $zwsgr_place_id = '';
+                            }
             
                             // Check if the custom field has a value
                             if ( $zwsgr_account_locations ) {
@@ -318,7 +328,7 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                                     foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
                                         $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
                                         $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
-                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . esc_attr($selected) . ' data-new-review-url="' . esc_url($zwsgr_account_location['metadata']['newReviewUri']) . '" data-all-reviews-url="http://search.google.com/local/reviews?placeid=' . esc_attr($zwsgr_account_location['metadata']['placeId']) . '">' . esc_html($zwsgr_account_location['title']) . '</option>';
+                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . esc_attr($selected) . ' data-new-review-url="' . esc_url($zwsgr_new_review_uri) . '" data-all-reviews-url="http://search.google.com/local/reviews?placeid=' . esc_attr($zwsgr_place_id) . '">' . esc_html($zwsgr_account_location['title']) . '</option>';
                                     }
                                 echo '</select>
                                 <a href="#" class="button button-secondary zwsgr-submit-btn ' . esc_attr($zwsgr_disabled_class) . '" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">

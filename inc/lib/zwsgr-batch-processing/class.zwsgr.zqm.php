@@ -223,7 +223,6 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
             }
 
-
             if (isset($this->zwsgr_gmb_response) && $this->zwsgr_gmb_response['success'] && !empty($this->zwsgr_gmb_response['data'])) {
 
                 $this->zwsgr_gmb_data = $this->zwsgr_gmb_response['data'];

@@ -308,7 +308,11 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                         // Update custom fields
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_id', $zwsgr_review_id );
-                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_comment', $zwsgr_review['comment'] );
+
+                        if ( isset($zwsgr_review['comment'])) {
+                            update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_comment', $zwsgr_review['comment'] );
+                        }
+
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_reviewer_name', $zwsgr_review['reviewer']['displayName'] ?? 'Anonymous' );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_star_rating', $zwsgr_review['starRating'] );
                         
@@ -422,7 +426,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                 $zwsgr_queue_manager->zwsgr_update_current_batch_index($this->zwsgr_widget_id, ($this->zwsgr_current_index + 1));
                 
-                sleep(1);
+                sleep(2);
 
                 $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token, $this->zwsgr_gmb_data_type, $this->zwsgr_account_number, $this->zwsgr_location_number, $this->zwsgr_widget_id);
 
