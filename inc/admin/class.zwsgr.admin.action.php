@@ -2565,7 +2565,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<div id="load-more-settings" style="display:'block';">
 									<h3 class="zwsgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
 									<div class="zwsgr-tooltip">
-										<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo $posts_per_page; ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
+										<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo esc_attr($posts_per_page); ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 										<span class="zwsgr-tooltip-container">
 											<div class="zwsgr-wrapper">
 												<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
@@ -3549,6 +3549,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$layout_option_key = $layout_option_divide[0]; 
 			$layout_option_value = $layout_option_divide[1];
 			$reviews_html = $filter_layout[$layout_option_key][$layout_option_value-1];
+
+			if($post_count > 0){
+				echo '<h3 class="zwsgr-layout-title">Layout: ' . esc_html($layout_option_key) . ' ' . esc_html($layout_option_value) . '</h3>';
+			}
 
 			// Return the filtered reviews HTML as the response
 			echo wp_kses_post($reviews_html);
