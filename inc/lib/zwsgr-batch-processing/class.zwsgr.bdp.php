@@ -426,7 +426,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                 $zwsgr_queue_manager->zwsgr_update_current_batch_index($this->zwsgr_widget_id, ($this->zwsgr_current_index + 1));
                 
-                sleep(2);
+                sleep(1);
 
                 $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token, $this->zwsgr_gmb_data_type, $this->zwsgr_account_number, $this->zwsgr_location_number, $this->zwsgr_widget_id);
 
