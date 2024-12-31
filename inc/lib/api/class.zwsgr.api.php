@@ -56,7 +56,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                     'Authorization' => 'Bearer ' . $this->zwsgr_access_token,
                     'Accept'        => 'application/json',
                 ],
-                'timeout' => 15,
+                'timeout' => 30,
             ];
 
             if ( $zwsgr_api_method === 'GET' && ! empty( $zwsgr_api_params ) ) {
@@ -263,7 +263,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
          * @param string $zwsgr_location_id Location ID for the desired profile thumbnail.
          * @return mixed API response with profile media data or an error.
          */
-        public function zwsgr_get_location_thumbnail($zwsgr_account_id, $zwsgr_location_id) {
+        public function zwsgr_get_location_thumbnail($zwsgr_account_id, $zwsgr_location_id, $zwsgr_page_token = null) {
 
             // Construct the API endpoint for profile media.
             $zwsgr_api_endpoint = "accounts/{$zwsgr_account_id}/locations/{$zwsgr_location_id}/media/profile";
