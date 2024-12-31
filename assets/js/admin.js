@@ -39,6 +39,20 @@ jQuery(document).ready(function($) {
             }, 2000);
         }
     });
+
+	$('.zwsgr-copy-shortcode-icon').on('click', function () {
+        var targetId = $(this).data('target');
+        var $input = $('#' + targetId);
+
+        if ($input.length) {
+            $input.select(); // Select the input field text
+            document.execCommand('copy'); // Copy the selected text
+            $(this).addClass('dashicons-yes'); // Change icon to a checkmark
+            setTimeout(() => {
+                $(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
+            }, 2000);
+        }
+    });
 	
 
 	var widget_post_type = 'zwsgr_data_widget';

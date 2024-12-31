@@ -2597,7 +2597,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-shortcode" style="display:none;">
 					<h3>Generated Shortcode</h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display">
-						<?php echo esc_html($generated_shortcode); ?>
+						<div style="display: flex; align-items: center;">
+							<input type="text" value="<?php echo esc_attr($generated_shortcode); ?>" readonly style="margin-right: 10px; width: auto;" id="shortcode-<?php echo esc_attr($post_id); ?>">
+							<span class="dashicons dashicons-admin-page zwsgr-copy-shortcode-icon" data-target="shortcode-<?php echo esc_attr($post_id); ?>" style="cursor: pointer;" title="<?php echo esc_attr__('Copy Shortcode', 'smart-google-reviews'); ?>"></span>
+						</div>
 					</div>
 				</div>
 			</div>
