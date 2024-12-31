@@ -437,6 +437,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
                         $zwsgr_numeric_rating = isset($zwsgr_rating_map[$zwsgr_review_star_rating]) ? $zwsgr_rating_map[$zwsgr_review_star_rating] : 0;
 
+                        $zwsgr_gmb_reviewer_image_dir = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
                         $zwsgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 
                         // Generate stars HTML
@@ -455,11 +456,26 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                             <div class="zwsgr-review-header">
                                 <div class="zwsgr-profile">';
 
-                        if (!empty($zwsgr_gmb_reviewer_image_uri)) {
-                            $output .= '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
-                        } else {
-                            $output .= '<img src="' . ZWSGR_URL . '/assets/images/fallback-user-dp.svg" class="fallback-user-dp">';
-                        }
+                                if (file_exists($zwsgr_gmb_reviewer_image_dir)) {
+                                    $image_id = attachment_url_to_postid($zwsgr_gmb_reviewer_image_uri);
+                                    if ($image_id) {
+                                        $output .= wp_get_attachment_image($image_id, 'thumbnail', false, [
+                                            'class' => 'fallback-user-dp',
+                                            'style' => 'max-width:32px; height:auto;',
+                                        ]);
+                                    } else {
+                                        $output .= '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
+                                    }
+                                } else {
+                                    $fallback_image_id = attachment_url_to_postid(ZWSGR_URL . '/assets/images/fallback-user-dp.svg');
+                                    if ($fallback_image_id) {
+                                        $output .= wp_get_attachment_image($fallback_image_id, 'thumbnail', false, [
+                                            'class' => 'fallback-user-dp',
+                                        ]);
+                                    } else {
+                                        $output .= '<img src="' . esc_url(ZWSGR_URL . '/assets/images/fallback-user-dp.svg') . '" class="fallback-user-dp">';
+                                    }
+                                }
 
                         $output .= '</div>
                             <div class="zwsgr-review-info">
