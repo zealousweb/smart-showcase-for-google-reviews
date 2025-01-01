@@ -1551,6 +1551,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						'type'    => 'CHAR'
 					),
 					array(
+						'key'     => '_is_hidden',
+						'compare' => 'NOT EXISTS',  // Ensure only visible posts
+					),
+					array(
 						'key'     => 'zwsgr_gmb_email',
 						'value'   => $zwsgr_gmb_email,
 						'compare' => '='
