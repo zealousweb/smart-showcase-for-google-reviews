@@ -1193,6 +1193,7 @@ body .zwsgr-toogle-display.zwsgr-toogle-display-front {
 body #div-container .zwsgr-popup-item {
     max-width: 300px;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 body #div-container .zwsgr-badge-item {
