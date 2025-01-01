@@ -115,16 +115,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		function frontend_sortby($post_id){
 
 			$sort_by = get_post_meta($post_id, 'sort_by', true);
-			?>
-			<div class="zwsgr-widget-setting-font">
-				<h3 class="zwsgr-label-font">Sort By</h3>
-				<select id="front-sort-by-select" name="front_sort_by" class="zwsgr-input-text">
-					<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-					<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-					<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
-				</select>
-			</div>
-			<?php
+			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+			if ($rating_filter === 0) {
+				?>
+				<div class="zwsgr-widget-setting-font">
+					<h3 class="zwsgr-label-font">Sort By</h3>
+					<select id="front-sort-by-select" name="front_sort_by" class="zwsgr-input-text">
+						<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
+						<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
+						<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+					</select>
+				</div>
+				<?php
+			}
 		}
 
 		function keyword_search($post_id) {
