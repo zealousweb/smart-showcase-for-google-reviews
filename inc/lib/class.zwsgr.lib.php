@@ -401,7 +401,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div class="zwsgr-slide-wrap">' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'' .
+													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').'' .
 											'</div>' 
 											: '') .
 										(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)?
@@ -416,7 +416,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-g-icon', $selected_elements)?
 										'<div class="zwsgr-google-icon">' .
 											''.
-										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'' .
 										'</div>':'') .
 									'</div>' .
 
@@ -456,7 +456,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										( !in_array('review-photo', $selected_elements)?
 										'<div class="zwsgr-profile">
 											' . 
-											( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) .
+											( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) .
 										'</div>':'').'
 									
 										'. (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '
@@ -468,7 +468,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-g-icon', $selected_elements)?
 										'<div class="zwsgr-google-icon">
 											'.
-										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 										</div>':'' ).'
 									</div>
 								</div>
@@ -487,11 +487,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 											
 										</div>':'').'
@@ -523,11 +523,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 											
 										</div>':'').'
@@ -552,10 +552,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div>' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">'.
-													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'' .
 												'</div>':'').'	
 											</div>' 
 											: '') .
@@ -589,7 +589,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -603,7 +603,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 										</div>
 										
@@ -625,7 +625,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-profile">
-											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 										</div>';
 									}
 									if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -646,7 +646,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-google-icon">
-											'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
+											'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ).'
 										</div>';
 									}
 
@@ -676,7 +676,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											</div>':'').'
 											'.( (!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -690,7 +690,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 										</div>
 										'.((!in_array('review-rating', $selected_elements) ||!in_array('review-content', $selected_elements))?'<div class="zwsgr-list-content-wrap">
@@ -718,11 +718,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
-											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 												
 										</div>':'').'
@@ -745,11 +745,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
-											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 												
 										</div>':'').'
@@ -780,7 +780,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-data">
@@ -801,7 +801,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 													'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 												</div>':'').'
 											</div>':'').'
 											' . 
@@ -822,7 +822,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
-											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 											</div>';
 										}
 
@@ -845,7 +845,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-google-icon">
-												'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
+												'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ).'
 											</div>';
 										}
 
@@ -877,7 +877,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'.( !in_array('review-photo', $selected_elements)?'
 									<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 										</div>':'').'
 										'.((!in_array('review-title', $selected_elements))||( !in_array('review-rating', $selected_elements))||(!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -896,7 +896,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-g-icon', $selected_elements)?'
 										<div class="zwsgr-google-icon">
 											'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 										</div>':'').'	
 									</div>
 									' . 
@@ -914,7 +914,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-review-detail">
 											' . 
 												( !in_array('review-photo', $selected_elements) ? '<div class="zwsgr-profile">
-												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 											</div>' : '' ) . '
 											
 											' . 
@@ -927,7 +927,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 													'.
-													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 												</div>':'').'
 												
 												' . 
@@ -949,11 +949,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
-											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 												
 										</div>':'').'
@@ -978,7 +978,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-photo', $selected_elements)?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 										</div>':'').'
 										'.(( !in_array('review-title', $selected_elements)||!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -1008,7 +1008,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
-												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 											</div>';
 										}
 										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -1052,7 +1052,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 												<div class="zwsgr-profile">
 													' . 
-														( !in_array('review-photo', $selected_elements) ? ''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'': '' ) . '
+														( !in_array('review-photo', $selected_elements) ? ''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').'': '' ) . '
 												</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -1065,7 +1065,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-g-icon', $selected_elements) ?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 											
 										</div>
@@ -1185,7 +1185,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<h3 class="zwsgr-average">Good</h3>
 										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-										<img src="' . $plugin_dir_path . 'assets/images/google.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 									</div>
 								</a>
 							</div>
@@ -1248,12 +1248,12 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<h3 class="zwsgr-average">Good</h3>
 							' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-							<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 						</div></a>',
 
 						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge2">
 							<div class="zwsgr-badge-image">
-								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 							</div>
 							<div class="zwsgr-badge-info">
 								<h3 class="zwsgr-average">Good</h3>
@@ -1267,7 +1267,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 							</div>
-							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 						</div></a>',
 
 						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge4">
@@ -1278,7 +1278,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 							<div class="zwsgr-badge4-info">
 								<h3 class="zwsgr-google">Google</h3>
 								<p class="zwsgr-avg-note">Average Rating</p>
-								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 							</div>
 						</div></a>',
 						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge5">
@@ -1304,7 +1304,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div></a>',
 
 						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge7">
-							<img src="' . $plugin_dir_path . 'assets/images/review-us.png">
+							<img src="' . $plugin_dir_path . 'assets/images/review-us.png" alt="Review Us">
 							<div class="zwsgr-badge7-rating">
 								<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
 								' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
@@ -1313,7 +1313,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 
 						'<a href="'.$zwsgr_location_all_review_uri.'" target="_blank" class="zwsgr-badge-link"><div class="zwsgr-badge-item" id="zwsgr-badge8">
 							<div class="zwsgr-logo-wrap">
-								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png">
+								<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 								<p class="zwsgr-avg-note">Google Reviews</p>
 							</div>
 							<span class="final-rating">'.$zwsgr_reviews_ratings['ratings'].'</span>
@@ -1368,7 +1368,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 						</div>',
 						'<div class="zwsgr-popup-item" id="zwsgr-popup2"  data-popup="zwsgrpopup2">
 						<div class="zwsgr-title-wrap">
-							<img src="' . $plugin_dir_path . 'assets/images/google.png">
+							<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 							<h3>Reviews</h3>
 						</div>
 						<div class="zwsgr-info-wrap">
@@ -1693,7 +1693,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div class="zwsgr-slide-wrap">' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'' .
+													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').'' .
 											'</div>' 
 											: '') .
 										(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)?
@@ -1708,7 +1708,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										(!in_array('review-g-icon', $selected_elements)?
 										'<div class="zwsgr-google-icon">' .
 											''.
-										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'' .
 										'</div>':'') .
 									'</div>' .
 
@@ -1748,7 +1748,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										( !in_array('review-photo', $selected_elements)?
 										'<div class="zwsgr-profile">
 											' . 
-											( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) .
+											( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) .
 										'</div>':'').'
 									
 										'. (!in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '
@@ -1760,7 +1760,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-g-icon', $selected_elements)?
 										'<div class="zwsgr-google-icon">
 											'.
-										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+										( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 										</div>':'' ).'
 									</div>
 								</div>
@@ -1779,11 +1779,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 											
 										</div>':'').'
@@ -1815,11 +1815,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( (!in_array('review-photo', $selected_elements) ||  !in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 											
 										</div>':'').'
@@ -1844,10 +1844,10 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'<div>' .
 										(!in_array('review-photo', $selected_elements) 
 											? '<div class="zwsgr-profile">' .
-													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+													''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">'.
-													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'' .
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'' .
 												'</div>':'').'	
 											</div>' 
 											: '') .
@@ -1881,7 +1881,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -1895,7 +1895,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 										</div>
 										
@@ -1917,7 +1917,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-profile">
-											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 										</div>';
 									}
 									if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -1938,7 +1938,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									if (!in_array('review-photo', $selected_elements)) {
 										$zwsgr_list_item1 .= '
 										<div class="zwsgr-google-icon">
-											'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
+											'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ).'
 										</div>';
 									}
 
@@ -1968,7 +1968,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											</div>':'').'
 											'.( (!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -1982,7 +1982,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 										</div>
 										'.((!in_array('review-rating', $selected_elements) ||!in_array('review-content', $selected_elements))?'<div class="zwsgr-list-content-wrap">
@@ -2010,11 +2010,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
-											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 												
 										</div>':'').'
@@ -2037,11 +2037,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
-											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 												
 										</div>':'').'
@@ -2072,7 +2072,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 											<div class="zwsgr-profile">
 												' . 
-													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+													( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 											</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-data">
@@ -2093,7 +2093,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 													'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 												</div>':'').'
 											</div>':'').'
 											' . 
@@ -2114,7 +2114,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-profile">
-											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+											'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 											</div>';
 										}
 
@@ -2137,7 +2137,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_grid_item1 .= '
 											<div class="zwsgr-google-icon">
-												'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ).'
+												'.( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ).'
 											</div>';
 										}
 
@@ -2169,7 +2169,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									'.( !in_array('review-photo', $selected_elements)?'
 									<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 										</div>':'').'
 										'.((!in_array('review-title', $selected_elements))||( !in_array('review-rating', $selected_elements))||(!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -2188,7 +2188,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-g-icon', $selected_elements)?'
 										<div class="zwsgr-google-icon">
 											'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 										</div>':'').'	
 									</div>
 									' . 
@@ -2206,7 +2206,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<div class="zwsgr-review-detail">
 											' . 
 												( !in_array('review-photo', $selected_elements) ? '<div class="zwsgr-profile">
-												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 											</div>' : '' ) . '
 											
 											' . 
@@ -2219,7 +2219,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												'.( !in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 													'.
-													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+													( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 												</div>':'').'
 												
 												' . 
@@ -2241,11 +2241,11 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 								'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 												'.(!in_array('review-g-icon', $selected_elements)?'
 												<div class="zwsgr-google-icon">
 												'.
-											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+											( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 												
 										</div>':'').'
@@ -2270,7 +2270,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										'.( !in_array('review-photo', $selected_elements)?'
 										<div class="zwsgr-profile">
 											' . 
-												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'' : '' ) . '
+												( !in_array('review-photo', $selected_elements) ? '	'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'' : '' ) . '
 										</div>':'').'
 										'.(( !in_array('review-title', $selected_elements)||!in_array('review-days-ago', $selected_elements))?'
 										<div class="zwsgr-review-info">
@@ -2300,7 +2300,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										if (!in_array('review-photo', $selected_elements)) {
 											$zwsgr_popup_item1 .= '
 											<div class="zwsgr-profile">
-												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').''.'
+												'.	''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').''.'
 											</div>';
 										}
 										if(!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements)){
@@ -2344,7 +2344,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-photo', $selected_elements)?'
 												<div class="zwsgr-profile">
 													' . 
-														( !in_array('review-photo', $selected_elements) ? ''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png">').'': '' ) . '
+														( !in_array('review-photo', $selected_elements) ? ''.(file_exists($zwsgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwsgr_reviewer_name) .'">' : '<img src="' . $plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwsgr_reviewer_name) .'">').'': '' ) . '
 												</div>':'').'
 											'.((!in_array('review-title', $selected_elements) || !in_array('review-days-ago', $selected_elements))?'
 											<div class="zwsgr-review-info">
@@ -2357,7 +2357,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											'.( !in_array('review-g-icon', $selected_elements) ?'
 											<div class="zwsgr-google-icon">
 												'.
-												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '">' : '' ) .'
+												( !in_array('review-g-icon', $selected_elements) ? '<img src="' . esc_url($plugin_dir_path . 'assets/images/google-icon.png') . '" alt="Google Icon">' : '' ) .'
 											</div>':'').'
 											
 										</div>
@@ -2471,7 +2471,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										<h3 class="zwsgr-average">Good</h3>
 										' . (!empty($final_rating) ? '<div class="zwsgr-rating">' . $final_rating . '</div>' : '') . '
 										<p class="zwsgr-based-on">Based on <b>  '.$zwsgr_reviews_ratings['reviews'].' reviews </b></p>
-										<img src="' . $plugin_dir_path . 'assets/images/google.png">
+										<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 									</div>
 								</a>
 							</div>
