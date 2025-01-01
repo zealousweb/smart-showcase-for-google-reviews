@@ -65,6 +65,25 @@ jQuery(document).ready(function($) {
             .addClass('current');
     }
 
+	var reviewt_post_type = 'zwsgr_reviews';
+
+	// Check if we're on the edit, new post, or the custom layout page for the review post type
+	if ($('.post-type-' + reviewt_post_type).length || 
+	$('.post-php.post-type-' + reviewt_post_type).length || 
+	$('.post-new-php.post-type-' + reviewt_post_type).length || 
+	window.location.href.indexOf('admin.php?page=zwsgr_review_configurator') !== -1) {
+
+	// Ensure the parent menu (dashboard) is highlighted as active
+	$('.toplevel_page_zwsgr_dashboard')
+		.removeClass('wp-not-current-submenu')
+		.addClass('wp-has-current-submenu wp-menu-open');
+
+	// Ensure the specific submenu item for zwsgr_reviews is active
+	$('ul.wp-submenu li a[href="edit.php?post_type=' + reviewt_post_type + '"]')
+		.parent('li')
+		.addClass('current');
+	}
+
 	//SEO and Notification Email Toggle 
 	var toggle = $('#zwsgr_admin_notification_enabled');
 	var notificationFields = $('.zwsgr-notification-fields');
