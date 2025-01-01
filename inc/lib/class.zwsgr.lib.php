@@ -141,7 +141,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				echo '<ul>';  // Start an unordered list
 		
 				// Add "All" as the first keyword
-				echo '<li class="zwsgr-keyword-item zwsgr-all-keyword" data-zwsgr-keyword="all">All</li>';
+				echo '<li class="zwsgr-keyword-item zwsgr-all-keyword selected" data-zwsgr-keyword="all">All</li>';
 		
 				foreach ($keywords as $keyword) {
 					// Display each keyword as a list item
