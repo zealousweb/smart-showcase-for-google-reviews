@@ -1413,6 +1413,7 @@ body .zwgr-dashboard .loader, #gmb-review-data .loader {
 
  input.zwsgr-input-text.zwsgr-shortcode-input {
     max-width: 280px;
+    text-align: center;
   }
   
  @keyframes spin {

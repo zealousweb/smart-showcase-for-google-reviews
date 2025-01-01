@@ -1221,6 +1221,10 @@ body .zwsgr-badge-link:focus {
     outline: none;
 }
 
+.zwsgr-based-on {
+    font-size: 16px;
+}
+
 @media only screen and (max-width: 1200px) {
     body .zwsgr-popup-content {
         width: 60%;

@@ -2,7 +2,10 @@ jQuery(document).ready(function($) {
 
 
 	// Bind click event to open popup
-	$(document).on('click', '.zwsgr-popup-item', function () {
+	$(document).on('click', '.zwsgr-popup-item', function (e) {
+		if ($(e.target).hasClass('zwsgr-total-review')) {
+			return;
+		}
 		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
 		$('#' + popupId).stop(true, true).fadeIn(); // Show the popup
 	});
