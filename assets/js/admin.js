@@ -639,23 +639,14 @@ jQuery(document).ready(function($) {
 
 	// Function to hide or show elements with a smooth effect
 	function toggleElements() {
-		// Define the mapping of checkbox IDs to target elements
-		const elementsMap = {
-			'#review-title': '.zwsgr-title',
-			'#review-rating': '.zwsgr-rating',
-			'#review-days-ago': '.zwsgr-days-ago',
-			'#review-content': '.zwsgr-content',
-			'#review-photo': '.zwsgr-profile',
-			'#review-g-icon': '.zwsgr-google-icon'
-		};
-	
-		// Loop through each mapping and toggle visibility based on the checkbox state
-		$.each(elementsMap, function (checkboxSelector, targetSelector) {
-			$(checkboxSelector).is(':checked')
-            ? target.stop(true, true).fadeOut(600)
-            : target.stop(true, true).fadeIn(600);
-		});
-	}
+        $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-title').stop(true, true).fadeIn(600);
+        $('#review-rating').is(':checked') ? $('.selected-option-display .zwsgr-rating').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-rating').stop(true, true).fadeIn(600);
+        $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').stop(true, true).fadeIn(600);
+        $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-content').stop(true, true).fadeIn(600);
+		$('#review-photo').is(':checked') ? $('.selected-option-display .zwsgr-profile').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-profile').stop(true, true).fadeIn(600);
+		$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwsgr-google-icon').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-google-icon').stop(true, true).fadeIn(600);
+    }
+
 	
 
     // Attach change event listeners to checkboxes
@@ -754,7 +745,7 @@ jQuery(document).ready(function($) {
 
 		if (charLimit && fullText.length > charLimit) {
 			var trimmedText = fullText.substring(0, charLimit) + '... ';
-			$element.html(trimmedText + `<a href="#" class="read-more-link">${translations[lang]}</a>`);
+			$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${translations[lang]}</a>`);
 			
 			// Re-apply the "Read more" click event using event delegation
 			$(document).on('click', '.read-more-link', function (e) {
