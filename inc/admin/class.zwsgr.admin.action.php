@@ -2522,7 +2522,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									</select>
 									<div class="zwsgr-sort-by-checkbox">
 											<input type="checkbox" class="zwsgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($enable_sort_by ? 'checked' : ''); ?> />
-											<label class="zwsgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
+											<label for="enable-sort-by-filter" class="zwsgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
 									</div>
 								</div>
 		
