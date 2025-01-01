@@ -1202,7 +1202,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							<!-- Success message container -->
 							<span id="email-success" style="color: green; display: none;"></span>
 							<?php 
-							submit_button( 'Send Notification Emails', 'zwsgr-submit-btn', 'submit_buttons' );
+							submit_button( 'Send Notification Emails', 'zwsgr-submit-btn zwsgr-notification-submit-btn', 'submit_buttons' );
 							?>
 						</form>
 					<?php elseif ($current_tab === 'advanced'): ?>
@@ -2295,7 +2295,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<div class="zwsgr-layout-radio"> 
 						<label><input type="radio" name="display_option" class="zwsgr-radio" value="all" checked> <span>All</span></label>
 						<?php foreach ($options as $key => $layouts) : ?>
-							<label><input type="radio" name="display_option" class="zwsgr-radio" value="<?php echo esc_attr($key); ?>"><span> <?php echo esc_html(ucfirst($key)); ?></span></label>
+							<label><input type="radio" name="display_option" class="zwsgr-radio" id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($key); ?>"><span for="<?php echo esc_attr($key); ?>"> <?php echo esc_html(ucfirst($key)); ?></span></label>
 						<?php endforeach; ?>
 					</div>
 
@@ -2598,8 +2598,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<h3>Generated Shortcode</h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display">
 						<div style="display: flex; align-items: center;">
-							<input type="text" value="<?php echo esc_attr($generated_shortcode); ?>" readonly style="margin-right: 10px; width: auto;" id="shortcode-<?php echo esc_attr($post_id); ?>">
-							<span class="dashicons dashicons-admin-page zwsgr-copy-shortcode-icon" data-target="shortcode-<?php echo esc_attr($post_id); ?>" style="cursor: pointer;" title="<?php echo esc_attr__('Copy Shortcode', 'smart-google-reviews'); ?>"></span>
+							<input type="text" class="zwsgr-input-text zwsgr-shortcode-input" value="<?php echo esc_attr($generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($post_id); ?>">
+							<span class="dashicons dashicons-admin-page zwsgr-copy-shortcode-icon" data-target="shortcode-<?php echo esc_attr($post_id); ?>" title="<?php echo esc_attr__('Copy Shortcode', 'smart-google-reviews'); ?>"></span>
 						</div>
 					</div>
 				</div>
