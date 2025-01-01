@@ -171,6 +171,19 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				return esc_html__('Invalid post ID.', 'smart-google-reviews');
 			}
 
+			// Check if a valid post ID is provided
+			if (empty($post_id) || !is_numeric($post_id)) {
+				return ''; // Return nothing if the post ID is invalid
+			}
+
+			// Get the post object for the specified post ID
+			$zwsgr_post = get_post($post_id);
+
+			// Check if the post exists and is of the correct post type and published
+			if (!$zwsgr_post || $zwsgr_post->post_type !== 'zwsgr_data_widget' || $zwsgr_post->post_status !== 'publish') {
+				return ''; // Return nothing if the post does not meet the conditions
+			}
+
 			// Retrieve the 'enable_load_more' setting from post meta
 			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
 			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
