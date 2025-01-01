@@ -329,7 +329,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
 				$selected_elements = maybe_unserialize($selected_elements);
 
-				$reviews_html .= '<div id="div-container">';
+				$reviews_html .= '<div id="div-container" data-widget-id="' . esc_attr( $post_id ) . '">';
 					// Loop through the posts and display them
 					while ($query->have_posts()) {
 						$query->the_post();
@@ -1624,7 +1624,6 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				$selected_elements = get_post_meta($post_id, 'selected_elements', true);
 				$selected_elements = maybe_unserialize($selected_elements);
 
-				// $output .= '<div id="div-container" style="max-width: 100%;">';
 					// Loop through the posts and append the HTML content
 					while ($query->have_posts()) {
 						$query->the_post();
