@@ -358,7 +358,7 @@
 						<input
 							name="zwsgr_smtp_submit"
 							type="submit"
-							class="button zwsgr-submit-btn"
+							class="button zwsgr-submit-btn zwsgr-smtp-submit-btn"
 							value="<?php esc_attr_e( 'Save SMTP Settings', 'smart-google-reviews' ); ?>"
 						/>
 						<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtp_nonce_name' ); ?>

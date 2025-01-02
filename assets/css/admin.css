@@ -483,19 +483,24 @@ body .zwsgr-layout-radio label {
 }
 
 body input.zwsgr-radio {
-    width: 17px;
-    height: 17px;
-    position: relative;
+    box-sizing: border-box;
 }
 
-body input.zwsgr-radio:checked::before {
+/* body input.zwsgr-radio:checked::before {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-54.5%, -48.5%);
+    transform: translate(-50%, -50%);
     margin: 0;
     width: 10px;
     height: 10px;
+} */
+
+.zwsgr-disable {
+    background-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 body .zwsgr-gmbc-outer-wrapper {
@@ -1404,6 +1409,11 @@ body .zwgr-dashboard .loader, #gmb-review-data .loader {
     border: 2.5px solid #F08C3C;
     border-top-color: #0074A2;
     top: 21.5%;
+  }
+
+ input.zwsgr-input-text.zwsgr-shortcode-input {
+    max-width: 280px;
+    text-align: center;
   }
   
  @keyframes spin {

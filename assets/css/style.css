@@ -729,6 +729,11 @@ body .zwsgr-profile-logo {
     padding-right: 20px;
 }
 
+body .zwsgr-popup-item .zwsgr-profile-logo,
+body .zwsgr-popup-wrap .zwsgr-profile-logo {
+    padding-right: 0;
+}
+
 body .zwsgr-profile-logo img {
     width: 50px;
     height: 50px;
@@ -1193,6 +1198,7 @@ body .zwsgr-toogle-display.zwsgr-toogle-display-front {
 body #div-container .zwsgr-popup-item {
     max-width: 300px;
     margin: 0 auto;
+    cursor: pointer;
 }
 
 body #div-container .zwsgr-badge-item {
@@ -1219,6 +1225,10 @@ body .zwsgr-badge-link {
 
 body .zwsgr-badge-link:focus {
     outline: none;
+}
+
+.zwsgr-based-on {
+    font-size: 16px;
 }
 
 @media only screen and (max-width: 1200px) {
