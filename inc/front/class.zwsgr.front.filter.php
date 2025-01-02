@@ -20,7 +20,8 @@ if ( !class_exists( 'ZWSGR_Front_Filter' ) ) {
 	 */
 	class ZWSGR_Front_Filter {
 
-		function __construct() {
+		function __construct() 
+		{
 
 		}
 

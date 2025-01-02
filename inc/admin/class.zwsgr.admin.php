@@ -19,8 +19,11 @@ if ( !class_exists( 'ZWSGR_Admin' ) ) {
 	 */
 	class ZWSGR_Admin {
 
+		public $action = null;
+		public $filter = null;
 		
-		function __construct() {
+		function __construct() 
+		{
 			
 
 		}

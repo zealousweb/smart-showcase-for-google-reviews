@@ -8,7 +8,7 @@
  * Author URI: https://www.zealousweb.com/
  * Developer: The ZealousWeb Team
  * Developer E-Mail: support@zealousweb.com
- * Text Domain: zw-smart-google-reviews
+ * Text Domain: smart-google-reviews
  * Domain Path: /languages
  *
  * Copyright: © 2009-2020 ZealousWeb.
@@ -54,8 +54,11 @@ if ( !defined( 'ZWSGR_PREFIX' ) ) {
 	define( 'ZWSGR_PREFIX', 'zwsgr' ); // Plugin prefix
 }
 
-if( !defined( 'ZWSGR_POST_TYPE' ) ) {
-	define( 'ZWSGR_POST_TYPE', 'zuserreg_data' ); // Plugin Google Reviews post type name
+if( !defined( 'ZWSGR_POST_REVIEW_TYPE' ) ) {
+	define( 'ZWSGR_POST_REVIEW_TYPE', 'zwsgr_reviews' ); // Plugin Google Reviews post type name
+}
+if( !defined( 'ZWSGR_POST_WIDGET_TYPE' ) ) {
+	define( 'ZWSGR_POST_WIDGET_TYPE', 'zwsgr_data_widget' ); // Plugin Google Widget post type name
 }
 
 /**
@@ -65,6 +68,9 @@ if ( !function_exists( 'ZWSGR' ) ) {
 
 	if ( is_admin() ) {
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/api/class.' . ZWSGR_PREFIX . '.api.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/zwsgr-batch-processing/class.' . ZWSGR_PREFIX . '.zqm.php' );
+		require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.gmbc.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.action.php' );
 		require_once( ZWSGR_DIR . '/inc/admin/class.' . ZWSGR_PREFIX . '.admin.filter.php' );
 		
@@ -74,6 +80,8 @@ if ( !function_exists( 'ZWSGR' ) ) {
 		require_once( ZWSGR_DIR . '/inc/front/class.' . ZWSGR_PREFIX . '.front.filter.php' );
 	}
 
+	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.cs.php' );
+	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.dashboard.php' );
 	require_once( ZWSGR_DIR . '/inc/lib/class.' . ZWSGR_PREFIX . '.lib.php' );
 
 	//Initialize all the things.

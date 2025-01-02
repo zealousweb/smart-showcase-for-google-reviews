@@ -19,13 +19,15 @@ if ( !class_exists( 'ZWSGR_Front_Action' ) ){
 	 */
 	class ZWSGR_Front_Action {
 
-		function __construct()  {
-			add_action('wp_enqueue_scripts',array( $this, 'ZWSGR_public_enqueue'));	
+		function __construct()  
+		{
+			
 		}
 
-		function ZWSGR_public_enqueue() {
-			wp_enqueue_style( ZWSGR_PREFIX . '-front-css', ZWSGR_URL . 'assets/css/front.min.css', array(), ZWSGR_VERSION );
-			wp_enqueue_script( ZWSGR_PREFIX . '_front_js', ZWSGR_URL . 'assets/js/front.min.js', array( 'jquery-core' ), ZWSGR_VERSION );
+		function ZWSGR_public_enqueue() 
+		{
+			
 		}
+		
 	}
 }
