@@ -2550,21 +2550,31 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									
 								?>
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Load More</h3>
-									<label class="switch">
-										<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
-										<span class="slider"></span>
-									</label>
-								<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
-										<div class="zwsgr-color-picker-load">
-											<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
-											<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
+									<?php 
+									$layout_option = get_post_meta($post_id, 'layout_option', true);
+
+									// Check if layout option is not in 'slider-1' to 'slider-6'
+									$exclude_slider_options = array('slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6');
+									if (!in_array($layout_option, $exclude_slider_options)) :
+									?>
+										<div class="zwsgr-load-more-wrapper">
+											<h3 class="zwsgr-label">Load More</h3>
+											<label class="switch">
+												<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
+												<span class="slider"></span>
+											</label>
+											<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
+												<div class="zwsgr-color-picker-load">
+													<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
+													<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
+												</div>
+												<div class="zwsgr-color-picker-load">
+													<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
+													<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
+												</div>
+											</div>
 										</div>
-										<div class="zwsgr-color-picker-load">
-											<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
-											<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
-										</div>
-									</div>
+									<?php endif; ?>
 
 									<div id="load-more-settings" style="display:'block';">
 									<h3 class="zwsgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
