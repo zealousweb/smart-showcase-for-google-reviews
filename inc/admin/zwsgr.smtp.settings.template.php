@@ -162,7 +162,7 @@
 			update_option( 'zwsgr_smtp_option', $zwsgr_smtp_option );
 			$message_smtp .= __( 'SMTP Settings saved.', 'smart-google-reviews' );
 		} else {
-			$custom_error[]  .= ' ' . __( 'SMTP Settings are Disabled.', 'smart-google-reviews' );
+			$message_smtp  .= ' ' . __( 'SMTP Settings saved.', 'smart-google-reviews' );
 		}
 
 		$zwsgr_smtp_option['zwsgr_admin_smtp_enabled'] = isset( $_POST['zwsgr_admin_smtp_enabled'] ) && sanitize_text_field(wp_unslash($_POST['zwsgr_admin_smtp_enabled'] ) ) == '1' ? 1 : 0;
@@ -286,7 +286,7 @@
 						<input
 							id="zwsgr-smtp-port"
 							name="zwsgr_smtp_port"
-							type="text"
+							type="number"
 							class="zwsgr-input-text"
 							required
 							value="<?php echo isset( $zwsgr_smtp_option['zwsgr_smtp_port'] ) ? esc_attr( $zwsgr_smtp_option['zwsgr_smtp_port'] ) : 25; ?>"
@@ -358,7 +358,7 @@
 						<input
 							name="zwsgr_smtp_submit"
 							type="submit"
-							class="button zwsgr-submit-btn zwsgr-smtp-submit-btn"
+							class="button zwsgr-submit-btn"
 							value="<?php esc_attr_e( 'Save SMTP Settings', 'smart-google-reviews' ); ?>"
 						/>
 						<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtp_nonce_name' ); ?>
