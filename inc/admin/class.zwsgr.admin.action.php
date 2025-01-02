@@ -163,8 +163,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query([
 				'zwsgr_gmb_account_number'   => null,
 				'zwsgr_gmb_account_location' => null,
-				'zwsgr_range_filter_type'    => null,
-				'zwsgr_range_filter_data'    => null
+				'zwsgr_range_filter_type'    => 'rangeofdays',
+				'zwsgr_range_filter_data'    => 'monthly'
 			]);
 
 			//Toggle Ajax
