@@ -1456,14 +1456,16 @@ jQuery(document).ready(function($) {
 
 		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
 		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-	
-		// Send AJAX request to handle the add / update reply request
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const zwsgr_wp_review_id = urlParams.get('post');
+
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
 			type: 'POST',
 			data: {
 				action: 'zwsgr_add_update_review_reply',
-				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_wp_review_id: zwsgr_wp_review_id,
 				zwsgr_reply_comment: zwsgr_reply_comment,
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
@@ -1496,6 +1498,9 @@ jQuery(document).ready(function($) {
 
 		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
 		var buttons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const zwsgr_wp_review_id = urlParams.get('post');
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1503,7 +1508,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwsgr_delete_review_reply',
-				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_wp_review_id: zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
 			beforeSend: function() {
