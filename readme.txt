@@ -4,7 +4,7 @@ Contributors: zealopensource
 Donate Link: http://www.zealousweb.com/payment/
 Tags: google reviews
 Requires at least: 3.5
-Tested up to: 6.6
+Tested up to: 6.7
 Stable tag: 1.0.0
 Requires PHP: 5.6
 License: GPLv3 or later

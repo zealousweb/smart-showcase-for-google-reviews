@@ -192,8 +192,8 @@ body .zwsgr-slider .slick-arrow {
     top: 50%;
     z-index: 9;
     padding: 0;
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     color: #3A4554;
     border: 0;
     border-radius: 100%;
@@ -206,27 +206,24 @@ body .zwsgr-slider .slick-arrow {
 }
 
 body .zwsgr-slider .slick-arrow.slick-next {
-    right: -2%;
+    right: -3%;
     left: auto;
 }
 
-body #div-container .zwsgr-slider .slick-arrow {
-    left: -3%;
-}
 
-body #div-container .zwsgr-slider .slick-arrow.slick-next {
+/* body #div-container .zwsgr-slider .slick-arrow.slick-next {
     right: -4%;
     left: auto;
-}
+} */
 
 body .zwsgr-slider .slick-arrow.slick-prev::before {
     content: '';
     display: block;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-left: 4px solid #3A4554;
     border-top: 4px solid #3A4554; 
-    transform: rotate(-45deg); 
+    box-sizing: border-box;
 }
 
 body .toggle-content {
@@ -236,11 +233,22 @@ body .toggle-content {
 body .zwsgr-slider .slick-arrow.slick-next::before {
     content: '';
     display: block;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-right: 4px solid #3A4554;
     border-top: 4px solid #3A4554;
+    box-sizing: border-box;
+}
+
+body .zwsgr-slider .slick-arrow.slick-next {
     transform: rotate(45deg); 
+    transform-origin: center center;
+}
+
+body .zwsgr-slider .slick-arrow.slick-prev {
+    transform: rotate(-45deg);
+    transform-origin: center center;
+    left: -3%;
 }
 
 body .zwsgr-layout-title-wrap {
@@ -933,7 +941,7 @@ body .zwsgr-popup-content {
     padding: 0; /* No padding here; apply padding to inner content */
     background: #fff;
     width: 40%;
-    max-height: 590px; /* Set the maximum height */
+    height: 590px; /* Set the maximum height */
     overflow: hidden; /* Ensures border-radius is respected */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -941,10 +949,11 @@ body .zwsgr-popup-content {
 
 body .scrollable-content {
     padding: 30px; /* Add padding to the scrollable content */
-    max-height: 500px; /* Match the parent height */
+    height: 100%; /* Match the parent height */
     overflow-y: auto; /* Enable scrolling */
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
+    box-sizing: border-box;
 }
 
 body #zwsgrpopup2 .zwsgr-popup-content {
@@ -954,7 +963,7 @@ body #zwsgrpopup2 .zwsgr-popup-content {
     transform: none;
     left: auto;
     width: 40%; /* Adjust width as needed */
-    max-height: 100vh; /* Allow the content to fill the height */
+    height: 100vh; /* Allow the content to fill the height */
     background: #fff;
     border-radius: 0; /* No rounded corners */
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Shadow on the left side */
@@ -962,15 +971,15 @@ body #zwsgrpopup2 .zwsgr-popup-content {
 }
 
 body #zwsgrpopup2 .scrollable-content {
-    padding: 50px 
-    30px; /* Add padding to the content */
-    max-height: 90vh; /* Adjust height to allow some margin for styling */
-    overflow-y: auto; /* Enable scrolling */
+    padding: 50px 30px; /* Add padding to the content */
+    overflow: auto; /* Enable scrolling */
     scrollbar-width: thin; /* Firefox: Make scrollbar thin */
     scrollbar-color: #888 #f1f1f1; /* Firefox: Custom scrollbar color */
 }
 
-
+.main-div-wrapper {
+    margin-top: 20px;
+}
 
 body /* Webkit browsers (Chrome, Edge, Safari) */
 body .zwsgr-popup-content::-webkit-scrollbar {
@@ -1170,6 +1179,7 @@ body .zwsgr-load-more-btn {
     cursor: pointer;
     font-size: 16px;
     border: none;
+    line-height: inherit;
 }
 
 body .zwsgr-load-more-btn:hover {
@@ -1234,10 +1244,6 @@ body .zwsgr-badge-link:focus {
 @media only screen and (max-width: 1200px) {
     body .zwsgr-popup-content {
         width: 60%;
-        max-height: 750px;
-    }
-    body .scrollable-content {
-        max-height: 700px;
     }
 }
 
@@ -1247,10 +1253,6 @@ body .zwsgr-badge-link:focus {
     }
     body .zwsgr-popup-content {
         width: 60%;
-        max-height: 750px;
-    }
-    body .scrollable-content {
-        max-height: 700px;
     }
     body #zwsgrpopup2 .zwsgr-popup-content {
         width: 50%;
