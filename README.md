@@ -8,7 +8,7 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - Unlimited Review Widgets - Display unlimited Google reviews widgets.
 - Syncing of Google reviews from Google My Business
 - Cron Job has Option daily, weekly, monthly
-- Review Reply Form Feilds - name, email, review title, and review message - Admin manage Form
+- Review Reply Form Fields - name, email, review title, and review message - Admin manage Form
 - Filters for sorting reviews by Rating, Keywords
 - Display Option Grid, List, Slider, Badge, Popup
 - Custom CSS support for design tweaks
