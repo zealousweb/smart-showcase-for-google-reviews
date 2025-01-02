@@ -7,7 +7,7 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 **Features of Smart Google Reviews**
 - Unlimited Review Widgets - Display unlimited Google reviews widgets.
 - Syncing of Google reviews from Google My Business
-- Cron Job has Option daily, weekly, monthly
+- Cron Job has Options daily, weekly, monthly
 - Review Reply Form Fields - name, email, review title, and review message - Admin manage Form
 - Filters for sorting reviews by Rating, Keywords
 - Display Option Grid, List, Slider, Badge, Popup
@@ -19,7 +19,7 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - Customize number of reviews displayed
 - 5+ Widget Design layouts
 - Compatibility with standard page builders like elementor, WPBakery, and Divi
-- Load more review and Limit Functionlity
+- Load more reviews and Limit Functionality
 - Trim long reviews with “read more” link
 - Responsive Slider, Grid, and List layouts
 - Notify admins of new reviews - with selection admin or other
