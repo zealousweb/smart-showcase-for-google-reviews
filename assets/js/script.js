@@ -333,7 +333,7 @@ jQuery(document).ready(function($) {
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 					layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
-						postId.append(loadMoreButton);  // Clears previous content and adds the button
+						mainDivWrapper.append(loadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 
