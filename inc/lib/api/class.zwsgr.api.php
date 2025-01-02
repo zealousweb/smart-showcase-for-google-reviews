@@ -517,7 +517,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         public function zwsgr_fetch_jwt_token($zwsgr_request) {
 
             // Get 'auth_code' and 'consent' from function params parameters
-            $zwsgr_auth_code = isset($_GET['auth_code']) ? sanitize_text_field($_GET['auth_code']) : '';
+            $zwsgr_auth_code = isset($_GET['auth_code']) ? sanitize_text_field(wp_unslash($_GET['auth_code'])) : '';
 
             // Prepare the payload for the request
             $zwsgr_payload_data = [
