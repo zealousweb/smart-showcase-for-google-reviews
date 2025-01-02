@@ -1042,12 +1042,12 @@ jQuery(document).ready(function($) {
 		processBatch(zwsgr_gmb_data_type);
 	});
 	
-	$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").on("click", function (e) {
+	$("#fetch-gmb-auth-url").on("click", function (e) {
 		
 		e.preventDefault();
 
-		$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', true);
-		$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Connecting...");
+		$("#fetch-gmb-auth-url").prop('disabled', true);
+		$("#fetch-gmb-auth-url").html("Connecting...");
 
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -1060,8 +1060,8 @@ jQuery(document).ready(function($) {
 
 				if (response.success) {
 					
-					$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', false);
-					$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Redirecting...");
+					$("#fetch-gmb-auth-url").prop('disabled', false);
+					$("#fetch-gmb-auth-url").html("Redirecting...");
 
 					// Redirect to the OAuth URL
 					window.location.href = response.data.zwsgr_oauth_url;
@@ -1074,8 +1074,8 @@ jQuery(document).ready(function($) {
 			},
 			error: function (xhr, status, error) {
 
-				$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', false);
-				$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Connect with Google");
+				$("#fetch-gmb-auth-url").prop('disabled', false);
+				$("#fetch-gmb-auth-url").html("Connect with Google");
 
 				// Log and alert errors
 				$("#fetch-gmb-auth-url-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
@@ -1636,6 +1636,11 @@ jQuery(document).ready(function($) {
 			pieHole: 0.4,
 			width: 276,
 			height: 276,
+			pieSliceText: 'percentage',
+			pieSliceTextStyle: {
+				color: '#000000',
+				fontSize: 16
+			},
 			legend: 'none',
 			chartArea: {
 				width: '90%',
