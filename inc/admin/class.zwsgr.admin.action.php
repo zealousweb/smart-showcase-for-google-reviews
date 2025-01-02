@@ -163,8 +163,8 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$zwsgr_data_render_args = $this->zwsgr_dashboard->zwsgr_data_render_query([
 				'zwsgr_gmb_account_number'   => null,
 				'zwsgr_gmb_account_location' => null,
-				'zwsgr_range_filter_type'    => null,
-				'zwsgr_range_filter_data'    => null
+									'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
 			]);
 
 			//Toggle Ajax
@@ -177,7 +177,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				'zwsgr_delete_review_reply'	    => wp_create_nonce('zwsgr_delete_review_reply'),
 				'zwsgr_gmb_dashboard_filter'	=> wp_create_nonce('zwsgr_gmb_dashboard_filter'),
 				'zwsgr_data_render'				=> wp_create_nonce('zwsgr_data_render'),
-				'zwsgr_wp_review_id'            => ( is_admin() && isset( $_GET['post'] ) ) ? intval( $_GET['post'] ) : 0,
 				'zwsgr_dynamic_chart_data'		=> $this->zwsgr_dashboard->zwsgr_dynamic_chart_data($zwsgr_data_render_args),
 				'zwsgr_redirect'				=> admin_url('admin.php?page=zwsgr_connect_google')
 			));
@@ -901,7 +900,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			check_ajax_referer( 'toggle-visibility-nonce', 'nonce' );
 		
-			$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+			$post_id = isset($_POST['post_id']) ? sanitize_text_field(wp_unslash($_POST['post_id'])) : 0;
 
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				wp_send_json_error( array( 'message' => 'Not authorized' ) );
@@ -2550,31 +2549,21 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									
 								?>
 								<div class="zwsgr-widget-setting">
-									<?php 
-									$layout_option = get_post_meta($post_id, 'layout_option', true);
-
-									// Check if layout option is not in 'slider-1' to 'slider-6'
-									$exclude_slider_options = array('slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6');
-									if (!in_array($layout_option, $exclude_slider_options)) :
-									?>
-										<div class="zwsgr-load-more-wrapper">
-											<h3 class="zwsgr-label">Load More</h3>
-											<label class="switch">
-												<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
-												<span class="slider"></span>
-											</label>
-											<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
-												<div class="zwsgr-color-picker-load">
-													<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
-													<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
-												</div>
-												<div class="zwsgr-color-picker-load">
-													<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
-													<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
-												</div>
-											</div>
+									<h3 class="zwsgr-label">Load More</h3>
+									<label class="switch">
+										<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
+										<span class="slider"></span>
+									</label>
+								<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
+										<div class="zwsgr-color-picker-load">
+											<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
+											<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
 										</div>
-									<?php endif; ?>
+										<div class="zwsgr-color-picker-load">
+											<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
+											<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
+										</div>
+									</div>
 
 									<div id="load-more-settings" style="display:'block';">
 									<h3 class="zwsgr-label">Reviews Per Page for List, Grid, and Popup:</h3>

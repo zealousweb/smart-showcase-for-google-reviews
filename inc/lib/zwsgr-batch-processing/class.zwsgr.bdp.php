@@ -469,7 +469,10 @@ add_action('wp_ajax_zwsgr_get_batch_processing_status', 'zwsgr_get_batch_process
  */
 function zwsgr_get_batch_processing_status() {
 
-    $zwsgr_widget_id           = $_POST['zwsgr_widget_id'];
+    // Check nonce and AJAX referer
+    check_ajax_referer('zwsgr_queue_manager_nounce', 'security');
+
+    $zwsgr_widget_id           = intval($_POST['zwsgr_widget_id']);
     $zwgr_data_processing_init = get_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init', true);
     $zwgr_data_sync_once       = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
     $zwsgr_gmb_data_type       = get_post_meta($zwsgr_widget_id, 'zwsgr_gmb_data_type', true);
