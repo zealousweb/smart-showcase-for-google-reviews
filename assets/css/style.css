@@ -729,6 +729,7 @@ body .zwsgr-profile-logo {
     padding-right: 20px;
 }
 
+body .zwsgr-popup-item .zwsgr-profile-logo,
 body .zwsgr-popup-wrap .zwsgr-profile-logo {
     padding-right: 0;
 }

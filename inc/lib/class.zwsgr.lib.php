@@ -426,7 +426,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
 												: '') .
 											(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
+												? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h3>' 
 												: '') .
 										'</div>':'') .
 										(!in_array('review-g-icon', $selected_elements)?
@@ -460,7 +460,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . 
 									
 									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) .
+										? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) .
 									'</div>':'').'
 									
 									' . 
@@ -518,7 +518,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 									
 										' . 
@@ -554,7 +554,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 										' . 
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
@@ -591,7 +591,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													'</p>' 
 													: '') .
 												(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h3>' 
 													: '') .
 											'</div>' 
 											: '') .
@@ -614,7 +614,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
@@ -652,9 +652,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										}
 										if (!in_array('review-days-ago', $selected_elements)) {
 											$zwsgr_list_item1 .= '
-												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+												<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
 													' . esc_html($formatted_date) . ' 
-												</h5>';
+												</h3>';
 										}
 										$zwsgr_list_item1 .= '</div>';
 									}
@@ -701,7 +701,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
@@ -748,7 +748,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 									</div>
 								</div>
@@ -777,7 +777,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										
 										' . 
 											( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+												? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 									</div>
 									' . 
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
@@ -805,7 +805,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'') .'
 										</div>
 
@@ -850,9 +850,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											}
 											if (!in_array('review-days-ago', $selected_elements)) {
 												$zwsgr_grid_item1 .= '
-													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
 														' . esc_html($formatted_date) . ' 
-													</h5>';
+													</h3>';
 											}
 											$zwsgr_grid_item1 .= '</div>'; 
 										}
@@ -905,7 +905,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											
 										</div>':'').'
@@ -937,7 +937,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											'.((!in_array('review-g-icon', $selected_elements) ||!in_array('review-rating', $selected_elements))?'
 											<div class="zwsgr-rating-wrap">
 												'.( !in_array('review-g-icon', $selected_elements)?'
@@ -977,7 +977,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 								' . 
 									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+										? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 								' . 
 									( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 								' . 
@@ -1002,7 +1002,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 										
 										' . 
@@ -1035,9 +1035,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											}
 											if (!in_array('review-days-ago', $selected_elements)) {
 												$zwsgr_popup_item1 .= '
-													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
 														' . esc_html($formatted_date) . ' 
-													</h5>';
+													</h3>';
 											}
 											$zwsgr_popup_item1 .= '</div>'; 
 										}
@@ -1076,7 +1076,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											'.( !in_array('review-g-icon', $selected_elements) ?'
 											<div class="zwsgr-google-icon">
@@ -1721,7 +1721,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' 
 												: '') .
 											(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
+												? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h3>' 
 												: '') .
 										'</div>':'') .
 										(!in_array('review-g-icon', $selected_elements)?
@@ -1755,7 +1755,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . 
 									
 									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) .
+										? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) .
 									'</div>':'').'
 									
 									' . 
@@ -1813,7 +1813,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 									
 										' . 
@@ -1849,7 +1849,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 										' . 
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
@@ -1886,7 +1886,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													'</p>' 
 													: '') .
 												(!in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h5>' 
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . '</h3>' 
 													: '') .
 											'</div>' 
 											: '') .
@@ -1909,7 +1909,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
@@ -1947,9 +1947,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										}
 										if (!in_array('review-days-ago', $selected_elements)) {
 											$zwsgr_list_item1 .= '
-												<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+												<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
 													' . esc_html($formatted_date) . ' 
-												</h5>';
+												</h3>';
 										}
 										$zwsgr_list_item1 .= '</div>';
 									}
@@ -1996,7 +1996,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											'.( !in_array('review-g-icon', $selected_elements)?'
 											<div class="zwsgr-google-icon">
@@ -2043,7 +2043,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 									</div>
 								</div>
@@ -2072,7 +2072,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 										
 										' . 
 											( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-												? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+												? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 									</div>
 									' . 
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
@@ -2100,7 +2100,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'') .'
 										</div>
 
@@ -2145,9 +2145,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											}
 											if (!in_array('review-days-ago', $selected_elements)) {
 												$zwsgr_grid_item1 .= '
-													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
 														' . esc_html($formatted_date) . ' 
-													</h5>';
+													</h3>';
 											}
 											$zwsgr_grid_item1 .= '</div>'; 
 										}
@@ -2200,7 +2200,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											
 										</div>':'').'
@@ -2232,7 +2232,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											'.((!in_array('review-g-icon', $selected_elements) ||!in_array('review-rating', $selected_elements))?'
 											<div class="zwsgr-rating-wrap">
 												'.( !in_array('review-g-icon', $selected_elements)?'
@@ -2272,7 +2272,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 									( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 								' . 
 									( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-										? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+										? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 								' . 
 									( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwsgr-rating">' . $stars_html . '</div>' : '' ) . '
 								' . 
@@ -2297,7 +2297,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 												( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 											' . 
 												( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-													? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+													? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 										</div>':'').'
 										
 										' . 
@@ -2330,9 +2330,9 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 											}
 											if (!in_array('review-days-ago', $selected_elements)) {
 												$zwsgr_popup_item1 .= '
-													<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
+													<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">
 														' . esc_html($formatted_date) . ' 
-													</h5>';
+													</h3>';
 											}
 											$zwsgr_popup_item1 .= '</div>'; 
 										}
@@ -2371,7 +2371,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 													( !in_array('review-title', $selected_elements) && !empty($zwsgr_reviewer_name) ? '<h2 class="zwsgr-title">' . esc_html($zwsgr_reviewer_name) . '</h2>' : '' ) . '
 												' . 
 													( !in_array('review-days-ago', $selected_elements) && !empty($published_date) 
-														? '<h5 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h5>' : '' ) . '
+														? '<h3 class="zwsgr-days-ago zwsgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '' ) . '
 											</div>':'').'
 											'.( !in_array('review-g-icon', $selected_elements) ?'
 											<div class="zwsgr-google-icon">
