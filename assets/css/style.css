@@ -1179,6 +1179,7 @@ body .zwsgr-load-more-btn {
     cursor: pointer;
     font-size: 16px;
     border: none;
+    line-height: inherit;
 }
 
 body .zwsgr-load-more-btn:hover {
