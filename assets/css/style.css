@@ -1358,7 +1358,9 @@ body .zwsgr-badge-link:focus {
     }
 }
 
-
+.zwsgr-main-wrapper{
+    max-width: 100%;
+}
 
 
 
