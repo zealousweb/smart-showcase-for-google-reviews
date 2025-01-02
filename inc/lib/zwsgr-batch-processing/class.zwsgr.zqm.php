@@ -290,19 +290,25 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
-                    $zwsgr_widget_title = $this->zwsgr_account_name;
+                    $zwsgr_account_name = !empty($this->zwsgr_account_name) ? $this->zwsgr_account_name : get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', true);
+                    $zwsgr_location_name = !empty($this->zwsgr_location_name) ? $this->zwsgr_location_name : get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', true);
 
-                    if (!empty($this->zwsgr_location_name)) {
-                        $zwsgr_widget_title .= ' - ' . $this->zwsgr_location_name;
+                    $zwsgr_widget_title = $zwsgr_account_name;
+
+                    if (!empty($zwsgr_location_name)) {
+                        $zwsgr_widget_title .= ' - ' . $zwsgr_location_name;
                     }
-                        
-                    // Prepare post data for updating the title
-                    $zwsgr_widget_data = [
-                        'ID'         => $this->zwsgr_widget_id,
-                        'post_title' => sanitize_text_field($zwsgr_widget_title),
-                    ];
 
-                    wp_update_post($zwsgr_widget_data);
+                    // Prepare the widget title only if it is not empty
+                    if (!empty($zwsgr_widget_title)) {
+                        $zwsgr_widget_data = [
+                            'ID'         => $this->zwsgr_widget_id,
+                            'post_title' => sanitize_text_field($zwsgr_widget_title),
+                        ];
+
+                        // Update the post with the new title
+                        wp_update_post($zwsgr_widget_data);
+                    }
 
                     if ($this->zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
 
@@ -321,16 +327,23 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                             $missing_data[] = 'zwsgr_location_name';
                         }
                     
-                        // If any data is missing, log an error and skip the update.
                         if (!empty($missing_data)) {
                             $this->zwsgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwsgr_widget_id . " - Missing: " . implode(', ', $missing_data));
-                            return; // Optionally return to stop further execution.
+                            return;
                         }
-                    
+
                         // Update post meta if values are not empty
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_all_review_uri', $this->zwsgr_location_all_review_uri);
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', $this->zwsgr_location_new_review_uri);
-                        update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $this->zwsgr_location_name);
+
+                        if (!empty($zwsgr_account_name)) {
+                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', $zwsgr_account_name);
+                        }
+
+                        if (!empty($zwsgr_location_name)) {
+                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $zwsgr_location_name);
+                        }
+
                     }
 
                     // Prepare the object to store the widget ID and processing status
