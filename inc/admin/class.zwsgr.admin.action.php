@@ -69,9 +69,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			if( $this->zwsgr_admin_smtp_enabled == 1) {
 				add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
 			}
-
-				
-		
 		}
 
 		/**
