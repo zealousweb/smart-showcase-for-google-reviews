@@ -1401,6 +1401,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						'type'    => 'CHAR'
 					),
 					array(
+						'key'     => '_is_hidden',
+						'compare' => 'NOT EXISTS',  // Ensure only visible posts
+					),
+					array(
 						'key'     => 'zwsgr_gmb_email',
 						'value'   => $zwsgr_gmb_email,
 						'compare' => '='
@@ -2788,6 +2792,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						'value'   => $rating_strings,
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => '_is_hidden',
+						'compare' => 'NOT EXISTS',  // Ensure only visible posts
 					),
 					array(
 						'key'     => 'zwsgr_gmb_email',
