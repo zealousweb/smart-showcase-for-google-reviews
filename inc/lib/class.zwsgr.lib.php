@@ -120,7 +120,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 				?>
 				<div class="zwsgr-widget-setting-font">
 					<h3 class="zwsgr-label-font">Sort By</h3>
-					<select id="front-sort-by-select-<?php echo $post_id; ?>" name="front_sort_by" class="zwsgr-input-text front-sort-by-select">
+					<select id="front-sort-by-select-<?php echo esc_attr( $post_id ); ?>" name="front_sort_by" class="zwsgr-input-text front-sort-by-select">
 						<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
 						<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
 						<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
@@ -136,7 +136,7 @@ if ( !class_exists( 'ZWSGR_Lib' ) ) {
 		
 			// Check if keywords are available and is an array
 			if (is_array($keywords) && !empty($keywords)) {
-				echo "<div id='zwsgr-front-keywords-list-$post_id' class='zwsgr-front-keywords-list zwsgr-front-keyword-list'>";
+				echo "<div id='zwsgr-front-keywords-list-" . esc_attr( $post_id ) . "' class='zwsgr-front-keywords-list zwsgr-front-keyword-list'>";
 				echo '<h3 class="zwsgr-label-font">Keywords</h3>';
 				echo '<ul>';  // Start an unordered list
 		
