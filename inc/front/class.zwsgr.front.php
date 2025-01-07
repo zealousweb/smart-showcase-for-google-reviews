@@ -25,9 +25,5 @@ if ( !class_exists( 'ZWSGR_Front' ) ) {
 		{
 		
 		}
-
-		
-
-
 	}
 }
