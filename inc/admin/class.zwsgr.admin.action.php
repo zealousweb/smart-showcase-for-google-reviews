@@ -69,9 +69,6 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			if( $this->zwsgr_admin_smtp_enabled == 1) {
 				add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
 			}
-
-				
-		
 		}
 
 		/**
@@ -1399,6 +1396,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						'value'   => $ratings_to_include,  // Apply the word-based rating filter
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => '_is_hidden',
+						'compare' => 'NOT EXISTS',  // Ensure only visible posts
 					),
 					array(
 						'key'     => 'zwsgr_gmb_email',
@@ -2788,6 +2789,10 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 						'value'   => $rating_strings,
 						'compare' => 'IN',
 						'type'    => 'CHAR'
+					),
+					array(
+						'key'     => '_is_hidden',
+						'compare' => 'NOT EXISTS',  // Ensure only visible posts
 					),
 					array(
 						'key'     => 'zwsgr_gmb_email',
