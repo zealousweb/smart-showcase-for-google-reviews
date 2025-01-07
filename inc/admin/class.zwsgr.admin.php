@@ -25,10 +25,6 @@ if ( !class_exists( 'ZWSGR_Admin' ) ) {
 		function __construct() 
 		{
 			
-
 		}
-
-		
-
 	}
 }

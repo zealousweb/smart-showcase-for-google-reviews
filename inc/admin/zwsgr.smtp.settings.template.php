@@ -369,12 +369,11 @@
 			</table>
 		</form>
 
-	<?php
-    //} //elseif ( $current == 'test-mail' ) { ?>
-		<?php if( !empty( $message ) )  { ?>
-		<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible">
-			<p><strong><?php echo esc_html( $message ); ?></strong></p>
-		</div>
+		<?php
+		if( !empty( $message ) )  { ?>
+			<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible">
+				<p><strong><?php echo esc_html( $message ); ?></strong></p>
+			</div>
 		<?php } ?>
 
 		<?php if( !empty( $custom_error  ) )  { 
@@ -386,7 +385,7 @@
 				}
 			}
 			?>
-		</div>
+			</div>
 		<?php } ?>
 
 		<h2 class="zwsgr-page-title zwsgr-admin-enable-smtp"><?php esc_html_e( 'Test Mail', 'smart-google-reviews' ); ?></h2>
