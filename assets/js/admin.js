@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
 		if ($(e.target).hasClass('zwsgr-total-review')) {
 			return;
 		}
-		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+		let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
 		$('#' + popupId).stop(true, true).fadeIn(); // Show the popup
 	});
 
@@ -30,8 +30,8 @@ jQuery(document).ready(function($) {
 	});
 
 	$(document).on('click', '.copy-shortcode-icon, .zwsgr-copy-shortcode-icon', function () {
-		var targetId = $(this).data('target');
-		var $input = $('#' + targetId);
+		let targetId = $(this).data('target');
+		let $input = $('#' + targetId);
 	
 		if ($input.length) {
 			// Copy the input field text using Clipboard API
@@ -46,12 +46,12 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	var widget_post_type = 'zwsgr_data_widget';
+	var widgetPostType = 'zwsgr_data_widget';
 
     // Check if we're on the edit, new post, or the custom layout page for the widget post type
-    if ($('.post-type-' + widget_post_type).length || 
-        $('.post-php.post-type-' + widget_post_type).length || 
-        $('.post-new-php.post-type-' + widget_post_type).length || 
+    if ($('.post-type-' + widgetPostType).length || 
+        $('.post-php.post-type-' + widgetPostType).length || 
+        $('.post-new-php.post-type-' + widgetPostType).length || 
         window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator') !== -1) {
 
         // Ensure the parent menu (dashboard) is highlighted as active
@@ -60,17 +60,17 @@ jQuery(document).ready(function($) {
             .addClass('wp-has-current-submenu wp-menu-open');
 
         // Ensure the specific submenu item for zwsgr_data_widget is active
-        $('ul.wp-submenu li a[href="edit.php?post_type=' + widget_post_type + '"]')
+        $('ul.wp-submenu li a[href="edit.php?post_type=' + widgetPostType + '"]')
             .parent('li')
             .addClass('current');
     }
 
-	var reviewt_post_type = 'zwsgr_reviews';
+	var reviewPostType = 'zwsgr_reviews';
 
 	// Check if we're on the edit, new post, or the custom layout page for the review post type
-	if ($('.post-type-' + reviewt_post_type).length || 
-	$('.post-php.post-type-' + reviewt_post_type).length || 
-	$('.post-new-php.post-type-' + reviewt_post_type).length || 
+	if ($('.post-type-' + reviewPostType).length || 
+	$('.post-php.post-type-' + reviewPostType).length || 
+	$('.post-new-php.post-type-' + reviewPostType).length || 
 	window.location.href.indexOf('admin.php?page=zwsgr_review_configurator') !== -1) {
 
 	// Ensure the parent menu (dashboard) is highlighted as active
@@ -79,7 +79,7 @@ jQuery(document).ready(function($) {
 		.addClass('wp-has-current-submenu wp-menu-open');
 
 	// Ensure the specific submenu item for zwsgr_reviews is active
-	$('ul.wp-submenu li a[href="edit.php?post_type=' + reviewt_post_type + '"]')
+	$('ul.wp-submenu li a[href="edit.php?post_type=' + reviewPostType + '"]')
 		.parent('li')
 		.addClass('current');
 	}
@@ -108,14 +108,14 @@ jQuery(document).ready(function($) {
 
 	// SEO and Notification email vaildation
 	function validateEmail(email) {
-		var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		return emailPattern.test(email);
 	}
 
 	// Function to validate emails and show messages
 	function validateEmails() {
-		var emails = $('#zwsgr_admin_notification_emails').val().split(',');
-		var invalidEmails = [];
+		let emails = $('#zwsgr_admin_notification_emails').val().split(',');
+		let invalidEmails = [];
 		emails.forEach(function(email) {
 			email = email.trim(); // Clean the email address
 			if (!validateEmail(email)) {
@@ -144,8 +144,8 @@ jQuery(document).ready(function($) {
 
 	// On form submission, check if all emails are valid
 	$('#notification-form').on('submit', function(e) {
-		var emails = $('#zwsgr_admin_notification_emails').val().split(',');
-		var invalidEmails = [];
+		let emails = $('#zwsgr_admin_notification_emails').val().split(',');
+		let invalidEmails = [];
 		emails.forEach(function(email) {
 			email = email.trim();
 			if (!validateEmail(email)) {
@@ -178,9 +178,9 @@ jQuery(document).ready(function($) {
 
 	// Function to save the selected display option and layout option via AJAX
 	function saveSelectedOption(option) {
-		var postId = getQueryParam('zwsgr_widget_id');
-		var settings = $('.tab-item.active').attr('data-tab');
-		var selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
+		let postId = getQueryParam('zwsgr_widget_id');
+		let settings = $('.tab-item.active').attr('data-tab');
+		let selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
 		$.ajax({
 			url: ajaxurl,
@@ -195,7 +195,7 @@ jQuery(document).ready(function($) {
 				settings: settings
 			},
 			success: function(response) {
-				console.log('Display and layout option saved:', response);
+				// console.log('Display and layout option saved:', response);
 			},
 			error: function(error) {
 				console.error('Error saving options:', error);
@@ -233,7 +233,7 @@ jQuery(document).ready(function($) {
 
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
-		var selectedOptionElement = $('#' + selectedOption);
+		let selectedOptionElement = $('#' + selectedOption);
 		$('#selected-option-display').html(selectedOptionElement);
 		$('#selected-option-display').find('.select-btn').remove();
 
@@ -245,15 +245,15 @@ jQuery(document).ready(function($) {
 	
 	// Handle click events for the tab navigation items
 	$('.tab-item').on('click', function() {
-		var tabId = $(this).data('tab');
-		var currentUrl = window.location.href.split('?')[0]; // Get the base URL
+		let tabId = $(this).data('tab');
+		let currentUrl = window.location.href.split('?')[0]; // Get the base URL
 
 		// Get existing query parameters
-		var selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
-		var postId = getQueryParam('zwsgr_widget_id'); // Get the post_id from the URL if it exists
+		let selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
+		let postId = getQueryParam('zwsgr_widget_id'); // Get the post_id from the URL if it exists
 
 		// Start building the new URL with page and tab parameters
-		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
+		let newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
 
 		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
@@ -272,10 +272,10 @@ jQuery(document).ready(function($) {
 	// Function to show custom notifications
 	function showNotification(message, type) {
 		// Define the notification types: success, error, warning, info
-		var notificationClass = 'zwsgr-notice-' + type; // Example: zwsgr-notice-success, zwsgr-notice-error
+		let notificationClass = 'zwsgr-notice-' + type; // Example: zwsgr-notice-success, zwsgr-notice-error
 
 		// Create the notification HTML
-		var notification = `
+		let notification = `
 			<div class="zwsgr-notice ${notificationClass} zwsgr-is-dismissible">
 				<p>${message}</p>
 			</div>
@@ -294,9 +294,9 @@ jQuery(document).ready(function($) {
 
 	// Handle click events for "Select Option" buttons
     $('.select-btn').on('click', function() {
-        var optionId = $(this).data('option');
-        var postId = getQueryParam('zwsgr_widget_id');
-        var currentUrl = window.location.href.split('?')[0];
+        let optionId = $(this).data('option');
+        let postId = getQueryParam('zwsgr_widget_id');
+        let currentUrl = window.location.href.split('?')[0];
 
 
         if (!postId) {
@@ -305,17 +305,14 @@ jQuery(document).ready(function($) {
 		}
 
 		// Fetch the HTML for the selected option using the correct optionId
-		var selectedOptionElement = $('#' + optionId); // Clone the selected option's element
+		let selectedOptionElement = $('#' + optionId); // Clone the selected option's element
 		$('#selected-option-display').html(selectedOptionElement); // Update the display area
 		$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
-	
-		// Get the outer HTML of the selected element
-		var selectedHtml = selectedOptionElement.prop('outerHTML');
 
 		// Get the current display option (assuming you have a variable for this)
-		var displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
-		var settings = $('.tab-item.active').attr('data-tab');
-		var currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
+		let displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
+		let settings = $('.tab-item.active').attr('data-tab');
+		let currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
 
 		$.ajax({
 			url: ajaxurl,  // This is the WordPress AJAX URL
@@ -348,9 +345,9 @@ jQuery(document).ready(function($) {
 
     // Handle the Save & Get Code Button
     $('#save-get-code-btn').on('click', function() {
-        var selectedOption = getQueryParam('selectedOption');
-        var postId = getQueryParam('zwsgr_widget_id');
-        var currentUrl = window.location.href.split('?')[0];
+        let selectedOption = getQueryParam('selectedOption');
+        let postId = getQueryParam('zwsgr_widget_id');
+        let currentUrl = window.location.href.split('?')[0];
 
 
         if (!postId) {
@@ -365,10 +362,10 @@ jQuery(document).ready(function($) {
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider(container) {
 		// Find all sliders within the container
-		var sliders = $(container).find('[class^="zwsgr-slider-"]');
+		let sliders = $(container).find('[class^="zwsgr-slider-"]');
 	
 		// Slider configurations based on slider types
-		var sliderConfigs = {
+		let sliderConfigs = {
 			'zwsgr-slider-1': {
 				infinite: true,
 				slidesToShow: 3,
@@ -457,7 +454,7 @@ jQuery(document).ready(function($) {
 	
 		// Iterate through each slider and reinitialize
 		sliders.each(function () {
-			var slider = $(this);
+			let slider = $(this);
 	
 			// Unslick if already initialized
 			if (slider.hasClass('slick-initialized')) {
@@ -465,8 +462,8 @@ jQuery(document).ready(function($) {
 			}
 	
 			// Get slider-specific settings
-			var sliderClass = slider.attr('class').split(' ').find(cls => cls.startsWith('zwsgr-slider-'));
-			var config = sliderConfigs[sliderClass];
+			let sliderClass = slider.attr('class').split(' ').find(cls => cls.startsWith('zwsgr-slider-'));
+			let config = sliderConfigs[sliderClass];
 	
 			// Initialize Slick with the configuration
 			if (config) {
@@ -592,12 +589,12 @@ jQuery(document).ready(function($) {
 		]
 	});
 
-	// Handle click on visibility toggle icon of REview CPT
+	// Handle click on visibility toggle icon of Review CPT
 	$('.zwsgr-toggle-visibility').on('click', function(e) {
 		e.preventDefault();
 
-		var post_id = $(this).data('post-id');
-		var $icon = $(this).find('.dashicons');
+		let postId = $(this).data('post-id');
+		let $icon = $(this).find('.dashicons');
 
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -606,7 +603,7 @@ jQuery(document).ready(function($) {
 			dataType: 'json',
 			data: {
 				action: 'toggle_visibility',
-				post_id: post_id,
+				post_id: postId,
 				nonce: zwsgr_admin.nonce
 			},
 			success: function(response) {
@@ -615,7 +612,7 @@ jQuery(document).ready(function($) {
 					$icon.removeClass('dashicons-hidden dashicons-visibility').addClass('dashicons-' + response.data.icon);
 
 					// Optionally display the current state somewhere on the page
-					var currentState = response.data.state;
+					let currentState = response.data.state;
 					// console.log("Post visibility is now: " + currentState); 	
 				}
 			}
@@ -624,8 +621,8 @@ jQuery(document).ready(function($) {
 
 	$('#toggle-google-review').on('change', function() {
         // Update button colors based on the color pickers
-        var bgColor = $('#bg-color-picker').val();
-        var textColor = $('#text-color-picker').val();
+        let bgColor = $('#bg-color-picker').val();
+        let textColor = $('#text-color-picker').val();
 
         $('.zwsgr-google-toggle').css({
             'background-color': bgColor,
@@ -635,13 +632,13 @@ jQuery(document).ready(function($) {
 
     // When the background color picker changes
     $('#bg-color-picker').on('input', function() {
-        var bgColor = $(this).val();
+        let bgColor = $(this).val();
         $('.zwsgr-google-toggle').css('background-color', bgColor);
     });
 
     // When the text color picker changes
     $('#text-color-picker').on('input', function() {
-        var textColor = $(this).val();
+        let textColor = $(this).val();
         $('.zwsgr-google-toggle').css('color', textColor);
     });
 
@@ -762,11 +759,11 @@ jQuery(document).ready(function($) {
 
 	// Function to update Read more link based on language
 	function updateReadMoreLink($element, lang) {
-		var charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
-		var fullText = $element.data('full-text'); // Get the stored full text
+		let charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
+		let fullText = $element.data('full-text'); // Get the stored full text
 
 		if (charLimit && fullText.length > charLimit) {
-			var trimmedText = fullText.substring(0, charLimit) + '... ';
+			let trimmedText = fullText.substring(0, charLimit) + '... ';
 			$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${translations[lang]}</a>`);
 			
 			// Re-apply the "Read more" click event using event delegation
@@ -781,11 +778,11 @@ jQuery(document).ready(function($) {
 
 	// On character limit input change
 	$('#review-char-limit').on('input', function () {
-		var charLimit = parseInt($(this).val(), 10); // Get the entered value
-		var lang = $('#language-select').val(); // Get current language
+		let charLimit = parseInt($(this).val(), 10); // Get the entered value
+		let lang = $('#language-select').val(); // Get current language
 
 		// Reference to the error message container
-		var $errorContainer = $('#char-limit-error');
+		let $errorContainer = $('#char-limit-error');
 
 		// Remove previous error message if any
 		$errorContainer.text('');
@@ -795,8 +792,8 @@ jQuery(document).ready(function($) {
 			if ($(this).val().trim() === '') {
 				// If input is blank, reset all content to full text
 				$('.zwsgr-content').each(function () {
-					var $this = $(this);
-					var fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
+					let $this = $(this);
+					let fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
 					$this.text(fullText); // Show the full text
 				});
 			} else {
@@ -808,8 +805,8 @@ jQuery(document).ready(function($) {
 
 		// If valid, apply the new character limit dynamically
 		$('.zwsgr-content').each(function () {
-			var $this = $(this);
-			var fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
+			let $this = $(this);
+			let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
 
 			// Store original full text if not already stored
 			if (!$this.data('full-text')) {
@@ -840,12 +837,12 @@ jQuery(document).ready(function($) {
 
 	// On language select change
 	$('#language-select').on('change', function () {
-		var lang = $(this).val(); // Get selected language
+		let lang = $(this).val(); // Get selected language
 		updateDisplayedDates(); // Re-render dates when language changes
 
 		// Loop through each content block and update the Read more link with the new language
 		$('.zwsgr-content').each(function () {
-			var $this = $(this);
+			let $this = $(this);
 			updateReadMoreLink($this, lang);
 		});
 	});
@@ -959,32 +956,30 @@ jQuery(document).ready(function($) {
 	$('#save-get-code-btn').on('click', function(e) {
 		e.preventDefault();
 	
-		var postId = getQueryParam('zwsgr_widget_id'); // Get post_id from the URL
-		var displayOption = $('input[name="display_option"]:checked').val();
-		var selectedElements = $('input[name="review-element"]:checked').map(function() {
+		let postId = getQueryParam('zwsgr_widget_id'); // Get post_id from the URL
+		let displayOption = $('input[name="display_option"]:checked').val();
+		let selectedElements = $('input[name="review-element"]:checked').map(function() {
 			return $(this).val();
 		}).get();
-		// var ratingFilter = $('.star-filter.selected').data('rating') || '';
-		var keywords = $('#keywords-list .keyword-item').map(function() {
+		let keywords = $('#keywords-list .keyword-item').map(function() {
 			return $(this).text().trim().replace(' ✖', '');
 		}).get();
-		var dateFormat = $('#date-format-select').val();
-		var charLimit = $('#review-char-limit').val();
-		var language = $('#language-select').val();
-		var sortBy = $('#sort-by-select').val();
-		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
-		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
-		var bgColor = $('#bg-color-picker').val();
-		var textColor = $('#text-color-picker').val();
-		var bgColorLoad = $('#bg-color-picker_load').val();
-		var textColorLoad = $('#text-color-picker_load').val();
-		var settings = $('.tab-item.active').attr('data-tab');
-		var postsPerPage = $('#posts-per-page').val();
-		// Fetch the selected star rating from the star filter
-		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
-		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
-		var customCSS = $('.zwsgr-textarea').val();
-		var enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
+		let dateFormat = $('#date-format-select').val();
+		let charLimit = $('#review-char-limit').val();
+		let language = $('#language-select').val();
+		let sortBy = $('#sort-by-select').val();
+		let enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
+		let googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
+		let bgColor = $('#bg-color-picker').val();
+		let textColor = $('#text-color-picker').val();
+		let bgColorLoad = $('#bg-color-picker_load').val();
+		let textColorLoad = $('#text-color-picker_load').val();
+		let settings = $('.tab-item.active').attr('data-tab');
+		let postsPerPage = $('#posts-per-page').val();
+		let selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
+		let currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+		let customCSS = $('.zwsgr-textarea').val();
+		let enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -1732,7 +1727,7 @@ jQuery(document).ready(function($) {
 	}
 
 	$('.star-filter').on('click', function () {
-		var rating = $(this).data('rating'); // Get the rating of the clicked star
+		let rating = $(this).data('rating'); // Get the rating of the clicked star
 	
 		// Check if the clicked star is already selected and is the lowest rating
 		if ($(this).hasClass('selected') && rating === 1) {
@@ -1744,7 +1739,7 @@ jQuery(document).ready(function($) {
 	
 		// Toggle the 'selected' state of stars
 		$('.star-filter').each(function () {
-			var currentRating = $(this).data('rating');
+			let currentRating = $(this).data('rating');
 			if (currentRating <= rating) {
 				// Select this star
 				$(this).addClass('selected');
@@ -1757,17 +1752,17 @@ jQuery(document).ready(function($) {
 		});
 	
 		// Handle the new rating value
-		var ratingFilterValue = rating;
+		let ratingFilterValue = rating;
 	});
 	
 
 	// Event listener for clicking on a star filter
 	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
-		var nonce = filter_reviews.nonce;
-		var postId = getQueryParam('zwsgr_widget_id');
-		var sortBy = $('#sort-by-select').val(); // Get the selected sort by value
+		let nonce = filter_reviews.nonce;
+		let postId = getQueryParam('zwsgr_widget_id');
+		let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
 		// Prepare an array of selected ratings
-		var selectedRatings = [];
+		let selectedRatings = [];
 		$('.filter-rating .star-filter.selected').each(function() {
 			selectedRatings.push($(this).data('rating')); // Push each selected rating into the array
 		});
@@ -1834,12 +1829,12 @@ jQuery(document).ready(function($) {
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider1(container) {
 		// Find and reinitialize Slick sliders
-		var slider1 = $(container).find('.zwsgr-slider-1');
-		var slider2 = $(container).find('.zwsgr-slider-2');
-		var slider3 = $(container).find('.zwsgr-slider-3');
-		var slider4 = $(container).find('.zwsgr-slider-4');
-		var slider5 = $(container).find('.zwsgr-slider-5');
-		var slider6 = $(container).find('.zwsgr-slider-6');
+		let slider1 = $(container).find('.zwsgr-slider-1');
+		let slider2 = $(container).find('.zwsgr-slider-2');
+		let slider3 = $(container).find('.zwsgr-slider-3');
+		let slider4 = $(container).find('.zwsgr-slider-4');
+		let slider5 = $(container).find('.zwsgr-slider-5');
+		let slider6 = $(container).find('.zwsgr-slider-6');
 
 		// Unslick if it's already initialized
 		if (slider1.hasClass('slick-initialized')) {

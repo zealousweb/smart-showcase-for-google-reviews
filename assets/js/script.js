@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
 
 	// Bind click event to open popup
 	$(document).on('click', '.zwsgr-popup-item', function (e) {
-		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+		let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
 		
 		if( $( e.target ).hasClass('zwsgr-popup-item') ){
 			$('#' + popupId).fadeIn(); // Show the popup
@@ -32,11 +32,11 @@ jQuery(document).ready(function($) {
 
     $('body').on('click','.load-more-meta',function() {
 		const mainWrapper = $(this).parents('.zwsgr-main-wrapper');
-        var button = mainWrapper.find(this);
-        var page = button.data('page');  // Get the current page number
-        var post_id = button.data('post-id');  // Get the post-id from the button data attribute
-		var selectedValue = mainWrapper.find('.front-sort-by-select').val();
-		var keyword = mainWrapper.find('.zwsgr-front-keywords-list li.selected').data('zwsgr-keyword');
+        let button = mainWrapper.find(this);
+        let page = button.data('page');  // Get the current page number
+        let postId = button.data('post-id');  // Get the post-id from the button data attribute
+		let selectedValue = mainWrapper.find('.front-sort-by-select').val();
+		let keyword = mainWrapper.find('.zwsgr-front-keywords-list li.selected').data('zwsgr-keyword');
         // Disable the button to prevent multiple clicks
         button.prop('disabled', true).text('Loading...');
 
@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
             method: 'POST',
             data: {
                 action: 'load_more_meta_data',  // Action hook for AJAX
-                post_id: post_id,  // Pass the post-id from the button
+                post_id: postId,  // Pass the post-id from the button
                 page: page,  // Pass the current page number
 				front_sort_by: selectedValue,
 				front_keyword: keyword,
@@ -57,13 +57,13 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     // Append new post content to the #div-container
 					
-					var popupContentContainer = mainWrapper.find('.zwsgr-slider.zwsgr-grid-item.zwsgr-popup-list');
+					var popupContentContainer = mainWrapper.find('zwsgr-slider.zwsgr-grid-item.zwsgr-popup-list');
 
 					// Append new content to the popup
 					if (popupContentContainer.length >= 1) {
 						popupContentContainer.append(response.data.content);  // Append the new content to the popup
 					}
-					var container = $('#div-container[data-widget-id="' + post_id + '"]');
+					let container = $('#div-container[data-widget-id="' + postId + '"]');
 
 					if (container.find('.zwsgr-list').length >= 1) {
 						container.find('.zwsgr-list').append(response.data.content);
@@ -92,9 +92,9 @@ jQuery(document).ready(function($) {
     });
 
     $(document).on('click', '.toggle-content', function () {
-        var $link = $(this);
-        var fullText = $link.data('full-text');
-        var $parentParagraph = $link.closest('p');
+        let $link = $(this);
+        let fullText = $link.data('full-text');
+        let $parentParagraph = $link.closest('p');
     
         // Replace the trimmed content with the full content
         $parentParagraph.html(fullText);
@@ -234,12 +234,6 @@ jQuery(document).ready(function($) {
 		const mainDivWrapper = mainWrapper.find('.zwsgr-front-review-filter-wrap').next();
 		const list_to_apnd = mainDivWrapper.find('.zwsgr-slider.zwsgr-list');
 		const grid_to_apnd = mainDivWrapper.find('.zwsgr-slider.zwsgr-grid-item');
-		const slider1_to_apnd = mainDivWrapper.find('.zwsgr-slider-1');
-		const slider2_to_apnd = mainDivWrapper.find('.zwsgr-slider-2');
-		const slider3_to_apnd = mainDivWrapper.find('.zwsgr-slider-3');
-		const slider4_to_apnd = mainDivWrapper.find('.zwsgr-slider-4');
-		const slider5_to_apnd = mainDivWrapper.find('.zwsgr-slider-5');
-		const slider6_to_apnd = mainDivWrapper.find('.zwsgr-slider-6');
 	
 		const ratingFilter = mainDivWrapper.data('rating-filter');
 		const layoutType = mainDivWrapper.data('layout-type');
@@ -276,12 +270,12 @@ jQuery(document).ready(function($) {
 					// No more posts, show the "No more posts." message
 					list_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					grid_to_apnd.html('<p class="zwsgr-no-found-message" style="width:100%;">' + response.data.err_msg + '</p>');
-					slider1_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider2_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider3_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider4_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider5_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider6_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('#zwsgr-slider3').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -297,46 +291,47 @@ jQuery(document).ready(function($) {
 
 				// Slider
 				setTimeout(function() {
-					reinitializeSlickSlider(slider1_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-1'));
 				}, 100);
-				slider1_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-1').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider1_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-1').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider2_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-2'));
 				}, 100);
-				slider2_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-2').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider2_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-2').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider3_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('#zwsgr-slider3'));
 				}, 100);
-				slider3_to_apnd.empty('');
+				mainDivWrapper.find('#zwsgr-slider3').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider3_to_apnd.append(response.data.content);
+				mainDivWrapper.find('#zwsgr-slider3').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider4_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-4'));
 				}, 100);
-				slider4_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-4').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider4_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-4').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider5_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-5'));
 				}, 100);
-				slider5_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-5').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider5_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-5').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider6_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-6'));
 				}, 100);
-				slider6_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-6').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider6_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-6').append(response.data.content);
+				
 				
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
@@ -369,12 +364,6 @@ jQuery(document).ready(function($) {
 	
 		const list_to_apnd = mainDivWrapper.find('.zwsgr-slider.zwsgr-list');
 		const grid_to_apnd = mainDivWrapper.find('.zwsgr-slider.zwsgr-grid-item');
-		const slider1_to_apnd = mainDivWrapper.find('.zwsgr-slider-1');
-		const slider2_to_apnd = mainDivWrapper.find('.zwsgr-slider-2');
-		const slider3_to_apnd = mainDivWrapper.find('.zwsgr-slider-3');
-		const slider4_to_apnd = mainDivWrapper.find('.zwsgr-slider-4');
-		const slider5_to_apnd = mainDivWrapper.find('.zwsgr-slider-5');
-		const slider6_to_apnd = mainDivWrapper.find('.zwsgr-slider-6');
 	
 		const ratingFilter = mainDivWrapper.data('rating-filter');
 		const layoutType = mainDivWrapper.data('layout-type');
@@ -406,12 +395,12 @@ jQuery(document).ready(function($) {
 					// No more posts, show the "No more posts." message
 					list_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					grid_to_apnd.html('<p class="zwsgr-no-found-message" style="width:100%;">' + response.data.err_msg + '</p>');
-					slider1_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider2_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider3_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider4_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider5_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
-					slider6_to_apnd.html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-1').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-2').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('#zwsgr-slider3').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-4').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-5').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
+					mainDivWrapper.find('.zwsgr-slider-6').html('<p class="zwsgr-no-found-message">' + response.data.err_msg + '</p>');
 					return;
 				}
 
@@ -427,46 +416,46 @@ jQuery(document).ready(function($) {
 
 				// Slider
 				setTimeout(function() {
-					reinitializeSlickSlider(slider1_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-1'));
 				}, 100);
-				slider1_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-1').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider1_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-1').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider2_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-2'));
 				}, 100);
-				slider2_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-2').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider2_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-2').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider3_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('#zwsgr-slider3'));
 				}, 100);
-				slider3_to_apnd.empty('');
+				mainDivWrapper.find('#zwsgr-slider3').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider3_to_apnd.append(response.data.content);
+				mainDivWrapper.find('#zwsgr-slider3').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider4_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-4'));
 				}, 100);
-				slider4_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-4').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider4_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-4').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider5_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-5'));
 				}, 100);
-				slider5_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-5').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider5_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-5').append(response.data.content);
 
 				setTimeout(function() {
-					reinitializeSlickSlider(slider6_to_apnd);
+					reinitializeSlickSlider(mainDivWrapper.find('.zwsgr-slider-6'));
 				}, 100);
-				slider6_to_apnd.empty('');
+				mainDivWrapper.find('.zwsgr-slider-6').empty('');
 				// Append the 'Load More' button before making the AJAX request
-				slider6_to_apnd.append(response.data.content);
+				mainDivWrapper.find('.zwsgr-slider-6').append(response.data.content);
 				
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
@@ -486,12 +475,12 @@ jQuery(document).ready(function($) {
 	
 	function reinitializeSlickSlider(container) {
 		// Find and reinitialize Slick sliders
-		var slider1 = $(container).find('.zwsgr-slider-1');
-		var slider2 = $(container).find('.zwsgr-slider-2');
-		var slider3 = $(container).find('.zwsgr-slider-3');
-		var slider4 = $(container).find('.zwsgr-slider-4');
-		var slider5 = $(container).find('.zwsgr-slider-5');
-		var slider6 = $(container).find('.zwsgr-slider-6');
+		let slider1 = $(container).find('.zwsgr-slider-1');
+		let slider2 = $(container).find('.zwsgr-slider-2');
+		let slider3 = $(container).find('.zwsgr-slider-3');
+		let slider4 = $(container).find('.zwsgr-slider-4');
+		let slider5 = $(container).find('.zwsgr-slider-5');
+		let slider6 = $(container).find('.zwsgr-slider-6');
 
 		// Unslick if it's already initialized
 		if (slider1.hasClass('slick-initialized')) {
