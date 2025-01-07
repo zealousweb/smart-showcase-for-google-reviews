@@ -133,17 +133,17 @@ jQuery(document).ready(function($) {
 	}
 
 	// On keypress in the email field
-	$('#zwsgr_admin_notification_emails').on('keypress', function() {
+	$(document).on('keypress', '#zwsgr_admin_notification_emails', function() {
 		validateEmails();
 	});
 
 	// On blur (when the user leaves the email field)
-	$('#zwsgr_admin_notification_emails').on('blur', function() {
+	$(document).on('blur', '#zwsgr_admin_notification_emails', function() {
 		validateEmails();
 	});
 
 	// On form submission, check if all emails are valid
-	$('#notification-form').on('submit', function(e) {
+	$(document).on('submit', '#notification-form', function(e) {
 		let emails = $('#zwsgr_admin_notification_emails').val().split(',');
 		let invalidEmails = [];
 		emails.forEach(function(email) {
@@ -244,7 +244,7 @@ jQuery(document).ready(function($) {
 	}
 	
 	// Handle click events for the tab navigation items
-	$('.tab-item').on('click', function() {
+	$(document).on('click', '.tab-item', function() {
 		let tabId = $(this).data('tab');
 		let currentUrl = window.location.href.split('?')[0]; // Get the base URL
 
@@ -293,7 +293,7 @@ jQuery(document).ready(function($) {
 	}
 
 	// Handle click events for "Select Option" buttons
-    $('.select-btn').on('click', function() {
+    $(document).on('click', '.select-btn', function() {
         let optionId = $(this).data('option');
         let postId = getQueryParam('zwsgr_widget_id');
         let currentUrl = window.location.href.split('?')[0];
@@ -344,7 +344,7 @@ jQuery(document).ready(function($) {
     });
 
     // Handle the Save & Get Code Button
-    $('#save-get-code-btn').on('click', function() {
+    $(document).on('click', '#save-get-code-btn', function() {
         let selectedOption = getQueryParam('selectedOption');
         let postId = getQueryParam('zwsgr_widget_id');
         let currentUrl = window.location.href.split('?')[0];
@@ -590,7 +590,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Handle click on visibility toggle icon of Review CPT
-	$('.zwsgr-toggle-visibility').on('click', function(e) {
+	$(document).on('click', '.zwsgr-toggle-visibility', function(e) {
 		e.preventDefault();
 
 		let postId = $(this).data('post-id');
@@ -619,7 +619,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$('#toggle-google-review').on('change', function() {
+	$(document).on('change', '#toggle-google-review', function() {
         // Update button colors based on the color pickers
         let bgColor = $('#bg-color-picker').val();
         let textColor = $('#text-color-picker').val();
@@ -631,13 +631,13 @@ jQuery(document).ready(function($) {
     });
 
     // When the background color picker changes
-    $('#bg-color-picker').on('input', function() {
+	$(document).on('input', '#bg-color-picker', function() {
         let bgColor = $(this).val();
         $('.zwsgr-google-toggle').css('background-color', bgColor);
     });
 
     // When the text color picker changes
-    $('#text-color-picker').on('input', function() {
+	$(document).on('input', '#text-color-picker', function() {
         let textColor = $(this).val();
         $('.zwsgr-google-toggle').css('color', textColor);
     });
@@ -654,7 +654,7 @@ jQuery(document).ready(function($) {
 	toggleButtonVisibility();
 
 	// Run the function whenever the checkbox state changes
-	$('#toggle-google-review').on('change', toggleButtonVisibility);
+	$(document).on('change', '#toggle-google-review', toggleButtonVisibility);
 
 	// Function to hide or show elements with a smooth effect
 	function toggleElements() {
@@ -669,7 +669,7 @@ jQuery(document).ready(function($) {
 	
 
     // Attach change event listeners to checkboxes
-    $('input[name="review-element"]').on('change', function() {
+	$(document).on('change', 'input[name="review-element"]', function() {
         toggleElements(); // Call function to toggle elements with fade effect
     });
 
@@ -713,7 +713,7 @@ jQuery(document).ready(function($) {
 		}
 	}
 	// Event listener for date format dropdown
-	$('#date-format-select').on('change', function() {
+	$(document).on('change', '#date-format-select', function() {
 		const selectedFormat = $(this).val();
 		updateDisplayedDates(); // Updated to ensure it re-renders based on new format
 	});
@@ -777,7 +777,7 @@ jQuery(document).ready(function($) {
 	}
 
 	// On character limit input change
-	$('#review-char-limit').on('input', function () {
+	$(document).on('input', '#review-char-limit', function () {
 		let charLimit = parseInt($(this).val(), 10); // Get the entered value
 		let lang = $('#language-select').val(); // Get current language
 
@@ -836,7 +836,7 @@ jQuery(document).ready(function($) {
 	
 
 	// On language select change
-	$('#language-select').on('change', function () {
+	$(document).on('change', '#language-select', function () {
 		let lang = $(this).val(); // Get selected language
 		updateDisplayedDates(); // Re-render dates when language changes
 
@@ -847,10 +847,10 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$('#date-format-select').on('change', updateDisplayedDates); // Ensure dates update on format change
+	$(document).on('change', '#date-format-select', updateDisplayedDates);
 
 	// Toggle for Google Review link
-    $('#toggle-google-review').on('change', function() {
+	$(document).on('change', '#toggle-google-review', function() {
         if ($(this).is(':checked')) {
 			$('#color-picker-options').stop(true, true).fadeIn();
         } else {
@@ -859,7 +859,7 @@ jQuery(document).ready(function($) {
     });
 
 	// Toggle for Lode More
-	$('#enable-load-more').on('change', function () {
+	$(document).on('change', '#enable-load-more', function () {
         if ($(this).is(':checked')) {
             // If checkbox is checked, fade in the color picker options
 			$('#zwsgr-load-color-picker-options').stop(true, true).fadeIn();
@@ -933,7 +933,7 @@ jQuery(document).ready(function($) {
 	};
 
 	// Handle the Enter key press to add keywords
-	$('#keywords-input').on('keypress', function (e) {
+	$(document).on('keypress', '#keywords-input', function (e) {
 		if (e.which === 13) { // Check for Enter key
 			e.preventDefault(); // Prevent default form submission
 			handleAddKeywords($(this).val());
@@ -941,19 +941,19 @@ jQuery(document).ready(function($) {
 	});
 
 	// Handle the blur event to add keywords
-	$('#keywords-input').on('blur', function () {
+	$(document).on('blur', '#keywords-input', function () {
 		handleAddKeywords($(this).val());
 	});
 
 
     // Set up click event to remove existing keywords (on page load)
-    $('#keywords-list').on('click', '.remove-keyword', function () {
+	$(document).on('click', '#keywords-list .remove-keyword', function () {
         $(this).parent('.keyword-item').remove(); // Remove the clicked keyword
         updateInputField(); // Update the hidden input after removal
     });
 	
 	// Save the all Widget and Generate the shortcode
-	$('#save-get-code-btn').on('click', function(e) {
+	$(document).on('click', '#save-get-code-btn', function(e) {
 		e.preventDefault();
 	
 		let postId = getQueryParam('zwsgr_widget_id'); // Get post_id from the URL
@@ -1726,7 +1726,7 @@ jQuery(document).ready(function($) {
 		});
 	}
 
-	$('.star-filter').on('click', function () {
+	$(document).on('click', '.star-filter', function () {
 		let rating = $(this).data('rating'); // Get the rating of the clicked star
 	
 		// Check if the clicked star is already selected and is the lowest rating

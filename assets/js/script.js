@@ -30,7 +30,7 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-    $('body').on('click','.load-more-meta',function() {
+    $(document).on('click','.load-more-meta',function() {
 		const mainWrapper = $(this).parents('.zwsgr-main-wrapper');
         let button = mainWrapper.find(this);
         let page = button.data('page');  // Get the current page number
@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
 		]
 	});
 
-	$('body').on('click', '.zwsgr-front-keywords-list  li', function () {
+	$(document).on('click', '.zwsgr-front-keywords-list  li', function () {
 		
 		// Get the closest '.zwsgr-main-wrapper' for the clicked element
 		const mainWrapper = $(this).parents('.zwsgr-main-wrapper');
@@ -349,7 +349,7 @@ jQuery(document).ready(function($) {
         });
 	});
 
-	$('body').on('change', '.front-sort-by-select', function () {
+	$(document).on('change', '.front-sort-by-select', function () {
 		const mainWrapper = $(this).parents('.zwsgr-main-wrapper'); // Find the closest wrapper for scoping
 		const postId = mainWrapper.data('widget-id'); // Dynamically get the post ID from the wrapper
 	
