@@ -344,7 +344,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
         }
 
-         /**
+        /**
         * Downloads an image from a URL and saves it to a specified path.
         *
         * @param string $zwsgr_review_dp_url The image URL to download.

@@ -167,7 +167,7 @@
 
 		$zwsgr_smtp_option['zwsgr_admin_smtp_enabled'] = isset( $_POST['zwsgr_admin_smtp_enabled'] ) && sanitize_text_field(wp_unslash($_POST['zwsgr_admin_smtp_enabled'] ) ) == '1' ? 1 : 0;
 
-		 if ( isset( $_POST['zwsgr_admin_smtp_enabled'] ) && $_POST['zwsgr_admin_smtp_enabled'] == '1' ) {
+		if ( isset( $_POST['zwsgr_admin_smtp_enabled'] ) && $_POST['zwsgr_admin_smtp_enabled'] == '1' ) {
 			$zwsgr_smtp_option['zwsgr_admin_smtp_enabled'] = 1;
 			
 		} else {
