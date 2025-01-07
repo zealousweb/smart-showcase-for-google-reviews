@@ -17,7 +17,7 @@ body .zwsgr-slider .zwsgr-slider-4 .zwsgr-slide-item {
 }
 
 body .zwsgr-slider .zwsgr-slider-2 .zwsgr-slide-item {
-  padding: 0;
+    padding: 0;
 }
 
 body .zwsgr-slider .zwsgr-slider-2 .zwsgr-slide-item .zwsgr-list-inner {
@@ -369,7 +369,6 @@ body .zwsgr-slider .zwsgr-slide-item:focus {
 body .zwsgr-slider .zwsgr-slide-item {
     background: transparent;
     border-radius: 0;
-   
 }
 body .zwsgr-grid-inner {
     background: #FAFAFA;
@@ -1054,7 +1053,6 @@ body .zwsgr-front-review-filter-wrap {
     justify-content: flex-end;
     align-items: center;
     flex-wrap: wrap;
- 
 }
 
 body .zwsgr-front-review-filter-wrap .zwsgr-label-font {
@@ -1349,7 +1347,7 @@ body .zwsgr-badge-link:focus {
     body .zwsgr-popup-content {
         max-height: 300px;
     }
- }
+}
 
 
 @media only screen and (max-width: 480px) {
