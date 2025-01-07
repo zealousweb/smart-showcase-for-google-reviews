@@ -485,15 +485,15 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1200,
 				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
+					slidesToShow: 2,
+					slidesToScroll: 2
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -509,15 +509,15 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1200,
 				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
+					slidesToShow: 2,
+					slidesToScroll: 2
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -533,8 +533,8 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1180,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -558,8 +558,8 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -575,15 +575,15 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1200,
 				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
+					slidesToShow: 2,
+					slidesToScroll: 2
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -819,7 +819,7 @@ jQuery(document).ready(function($) {
 	});
 
 	   // Function to update displayed dates based on selected language and format
-	   function updateDisplayedDates() {
+	function updateDisplayedDates() {
 		const lang = $('#language-select').val(); // Get selected language
 		const format = $('#date-format-select').val(); // Get selected date format
 	
@@ -1142,24 +1142,20 @@ jQuery(document).ready(function($) {
 		return emailPattern.test(email);
 	}
 	
-	  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
+	$("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
 		e.preventDefault();
 		const zwsgr_button = $(this);
 		const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
 	
 		// Get selected account and location from the dropdowns
-		const zwsgr_account_number = $(
-		  "#fetch-gmb-data #zwsgr-account-select"
-		).val();
+		const zwsgr_account_number = $("#fetch-gmb-data #zwsgr-account-select").val();
 		$("#fetch-gmb-data #zwsgr-account-select").addClass('disabled');
 
 		const zwsgr_account_name = $(
 			"#fetch-gmb-data #zwsgr-account-select option:selected"
 		).text();
 
-		const zwsgr_location_number = $(
-		  "#fetch-gmb-data #zwsgr-location-select"
-		).val();
+		const zwsgr_location_number = $("#fetch-gmb-data #zwsgr-location-select").val();
 
 		const zwsgr_location_name = $(
 			"#fetch-gmb-data #zwsgr-location-select option:selected"
@@ -1218,25 +1214,25 @@ jQuery(document).ready(function($) {
 		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
 		processBatch(
-		  zwsgr_gmb_data_type,
-		  zwsgr_account_number,
-		  zwsgr_location_number,
-		  zwsgr_widget_id,
-		  zwsgr_location_name,
-		  zwsgr_location_new_review_uri,
-		  zwsgr_account_name,
-		  zwsgr_location_all_review_uri
+			zwsgr_gmb_data_type,
+			zwsgr_account_number,
+			zwsgr_location_number,
+			zwsgr_widget_id,
+			zwsgr_location_name,
+			zwsgr_location_new_review_uri,
+			zwsgr_account_name,
+			zwsgr_location_all_review_uri
 		);
-	  });
+	});
 	
 	  // Function to get URL parameter by name
-	  function zwsgr_getUrlParameter(name) {
+	function zwsgr_getUrlParameter(name) {
 		const urlParams = new URLSearchParams(window.location.search);
 		return urlParams.get(name);
-	  }
+	}
 	
 	  // Listen for changes in the account dropdown and process batch if changed
-	  $("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
+	$("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
 		const zwsgr_account_number = $(this).val();
 		const zwsgr_account_name = $(this).find("option:selected").text();
 		$("#fetch-gmb-data #zwsgr-location-select").remove();
@@ -1245,17 +1241,17 @@ jQuery(document).ready(function($) {
 		if (zwsgr_account_number) {
 
 		  // Add loading spinner and disable the dropdown to prevent multiple selections
-		  $(this).prop("disabled", true);
-		  $("#fetch-gmb-data #zwsgr-location-select").remove();
-		  $("#fetch-gmb-data #fetch-gmd-reviews").remove();
-	
-		  const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
-		  
-		  $('#fetch-gmb-data .response').html('');
-		  $('#fetch-gmb-data .progress-bar').css('display', 'block');
-	
-		  // Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
-		  processBatch(
+			$(this).prop("disabled", true);
+			$("#fetch-gmb-data #zwsgr-location-select").remove();
+			$("#fetch-gmb-data #fetch-gmd-reviews").remove();
+		
+			const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+			
+			$('#fetch-gmb-data .response').html('');
+			$('#fetch-gmb-data .progress-bar').css('display', 'block');
+		
+			// Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
+			processBatch(
 			"zwsgr_gmb_locations",
 			zwsgr_account_number,
 			null,
@@ -1263,27 +1259,26 @@ jQuery(document).ready(function($) {
 			null,
 			null,
 			zwsgr_account_name
-		  );
-
+			);
 		}		
 
-	  });
+	});
 	
-	  function processBatch(
-		zwsgr_gmb_data_type,
-		zwsgr_account_number,
-		zwsgr_location_number,
-		zwsgr_widget_id,
-		zwsgr_location_name,
-		zwsgr_location_new_review_uri,
-		zwsgr_account_name,
-		zwsgr_location_all_review_uri
-	  ) {
+	function processBatch(
+	zwsgr_gmb_data_type,
+	zwsgr_account_number,
+	zwsgr_location_number,
+	zwsgr_widget_id,
+	zwsgr_location_name,
+	zwsgr_location_new_review_uri,
+	zwsgr_account_name,
+	zwsgr_location_all_review_uri
+	) {
 		$.ajax({
-		  url: zwsgr_admin.ajax_url,
-		  type: "POST",
-		  dataType: "json",
-		  data: {
+			url: zwsgr_admin.ajax_url,
+			type: "POST",
+			dataType: "json",
+			data: {
 			action: "zwsgr_fetch_gmb_data",
 			security: zwsgr_admin.zwsgr_queue_manager_nounce,
 			zwsgr_gmb_data_type: zwsgr_gmb_data_type,
@@ -1294,8 +1289,8 @@ jQuery(document).ready(function($) {
 			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri,
 			zwsgr_account_name: zwsgr_account_name,
 			zwsgr_location_all_review_uri: zwsgr_location_all_review_uri
-		  },
-		  success: function (response) {
+			},
+			success: function (response) {
 
 			if (response.success) {
 				$('#fetch-gmb-data .progress-bar').stop(true, true).fadeIn();
@@ -1305,44 +1300,44 @@ jQuery(document).ready(function($) {
 				setTimeout(function() {
 					location.reload();
 				}, 1500);
-            }
+			}
 
-		  },
-		  error: function (xhr, status, error) {
+			},
+			error: function (xhr, status, error) {
 			
 			// Catch errors sent using wp_send_json_error
-            let response = xhr.responseJSON;
+			let response = xhr.responseJSON;
 
 			console.log(response, 'response');
 
-            if (response && !response.success) {
+			if (response && !response.success) {
 				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
-            }
+			}
 
 			// Reload the page after a 1-second delay
 			setTimeout(function() {
 				location.reload();
 			}, 1500);
 
-		  },
+			},
 		});
 
 		// batchInterval = setInterval(function() {
 		// 	checkBatchStatus();
 		// }, 1000);
 
-	  }
+	}
 
 	  // Check if we're on the specific page URL that contains zwsgr_widget_id dynamically
-	  if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
+	if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
         // Call the function to check batch status
 		batchInterval = setInterval(function() {
 			checkBatchStatus();
 		}, 2500);
 
-      }
+	}
 	
-	  function checkBatchStatus() {
+	function checkBatchStatus() {
 
 		// Function to get URL parameters
 		function getUrlParameter(name) {
@@ -1354,70 +1349,67 @@ jQuery(document).ready(function($) {
 		const zwsgr_widget_id = getUrlParameter('zwsgr_widget_id');
 
 		$.ajax({
-		  url: zwsgr_admin.ajax_url,
-		  method: "POST",
-		  data: {
-			action: "zwsgr_get_batch_processing_status",
-			security: zwsgr_admin.zwsgr_queue_manager_nounce,
-			zwsgr_widget_id: zwsgr_widget_id
-		  },
-		  success: function (response) {
-
-			if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
-				
-				$('#fetch-gmb-data .progress-bar #progress').val(100);
-				$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
-				$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
-
-				if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
-
-					$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
-
-				} else if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
-
-					$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
-					$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
-
-				}
-				
-				setTimeout(function () {
-					$('#fetch-gmb-data .progress-bar').fadeOut();
-					if (response.data.zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
-						redirectToOptionsTab();
-					} else {
-						location.reload();
-					}
-				}, 2000);
-
-			} else {
-				 
-				// Use the batch progress directly from the response
-				var zwsgr_batch_progress = response.data.zwsgr_batch_progress;
-
-				// Check if zwsgr_batch_progress is a valid number
-				if (!isNaN(zwsgr_batch_progress) && zwsgr_batch_progress >= 0 && zwsgr_batch_progress <= 100) {
+			url: zwsgr_admin.ajax_url,
+			method: "POST",
+			data: {
+				action: "zwsgr_get_batch_processing_status",
+				security: zwsgr_admin.zwsgr_queue_manager_nounce,
+				zwsgr_widget_id: zwsgr_widget_id
+			},
+			success: function (response) {
+				if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
 					
-					// Update the progress bar with the batch progress
-					$('#fetch-gmb-data .progress-bar #progress').val(zwsgr_batch_progress);
-					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwsgr_batch_progress) + '%');
+					$('#fetch-gmb-data .progress-bar #progress').val(100);
+					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
+					$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
+
+					if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
+
+						$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
+
+					} else if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+
+						$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
+						$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
+
+					}
+					
+					setTimeout(function () {
+						$('#fetch-gmb-data .progress-bar').fadeOut();
+						if (response.data.zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
+							redirectToOptionsTab();
+						} else {
+							location.reload();
+						}
+					}, 2000);
 
 				} else {
+					// Use the batch progress directly from the response
+					var zwsgr_batch_progress = response.data.zwsgr_batch_progress;
 
-					console.error('Invalid batch progress:', zwsgr_batch_progress);
-					
+					// Check if zwsgr_batch_progress is a valid number
+					if (!isNaN(zwsgr_batch_progress) && zwsgr_batch_progress >= 0 && zwsgr_batch_progress <= 100) {
+						
+						// Update the progress bar with the batch progress
+						$('#fetch-gmb-data .progress-bar #progress').val(zwsgr_batch_progress);
+						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwsgr_batch_progress) + '%');
+
+					} else {
+
+						console.error('Invalid batch progress:', zwsgr_batch_progress);
+						
+					}
 				}
-
-			}
-		  },
-		  error: function (xhr, status, error) {
-			//console.error("Error:", error);
-			//console.error("Status:", status);
-			//console.error("Response:", xhr.responseText);
-		  },
+			},
+			error: function (xhr, status, error) {
+				//console.error("Error:", error);
+				//console.error("Status:", status);
+				//console.error("Response:", xhr.responseText);
+			},
 		});
-	  }
+	}
 
-	  function redirectToOptionsTab() {
+	function redirectToOptionsTab() {
 		// Get the current URL
 		let currentUrl = window.location.href;
 		
@@ -1432,7 +1424,7 @@ jQuery(document).ready(function($) {
 		window.location.href = currentUrl;
 	}
 	
-	  $("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
+	$("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
 	
 		event.preventDefault();
 
@@ -1485,9 +1477,9 @@ jQuery(document).ready(function($) {
 			}
 		});
 	
-	  });
+	});
 	
-	  $("#gmb-review-data #delete-reply").on("click", function (event) {
+	$("#gmb-review-data #delete-reply").on("click", function (event) {
 		
 		event.preventDefault();
 
@@ -1804,21 +1796,20 @@ jQuery(document).ready(function($) {
 					console.error("Expected HTML content, but received:", response);
 				}
 
-				 // Use getQueryParam to extract the 'selectedOption' parameter from the URL
-				 var selectedOption = getQueryParam('selectedOption');
+				// Use getQueryParam to extract the 'selectedOption' parameter from the URL
+				var selectedOption = getQueryParam('selectedOption');
 
-				 // Only reinitialize Slick slider if selectedOption is one of the slider options
-				 if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
-					 setTimeout(function() {
-						 reinitializeSlickSlider1($('#selected-option-display'));
-					 }, 100);
-				 }
-	 
-				 // Handle list layout reinitialization (if needed)
-				 if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
+				// Only reinitialize Slick slider if selectedOption is one of the slider options
+				if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
+					setTimeout(function() {
+						reinitializeSlickSlider1($('#selected-option-display'));
+					}, 100);
+				}
+				// Handle list layout reinitialization (if needed)
+				if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
 					 // Optionally, you can apply list-specific reinitialization logic here
 					//  alert('List layout filtered');
-				 }				
+				}				
 			},
 			error: function(xhr, status, error) {
 				console.error("AJAX Error: ", status, error);
@@ -1874,15 +1865,15 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 1200,
 						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
+							slidesToShow: 2,
+							slidesToScroll: 2
 						}
 					},
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1900,15 +1891,15 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 1200,
 						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
+							slidesToShow: 2,
+							slidesToScroll: 2
 						}
 					},
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1955,8 +1946,8 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1974,15 +1965,15 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 1200,
 						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
+							slidesToShow: 2,
+							slidesToScroll: 2
 						}
 					},
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -2068,17 +2059,17 @@ jQuery(document).ready(function($) {
 	var smtpsubmitButton = $('.zwsgr-smtp-submit-btn'); // Select the submit button
 	$('input[name="zwsgr_admin_smtp_enabled"]').change(function() {
         if ($(this).is(':checked')) {
-        	$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
-        	$('input[name="zwsgr_from_email"]').attr('required', 'required');
-           	$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
-           	$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
+			$('input[name="zwsgr_from_email"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
+			$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
 			smtpsubmitButton.removeClass('zwsgr-disable'); 
         } else {
-        	$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
-        	$('input[name="zwsgr_from_email"]').removeAttr('required');
-        	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
-        	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+			$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
+			$('input[name="zwsgr_from_email"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
 			smtpsubmitButton.addClass('zwsgr-disable'); 
         }
@@ -2093,8 +2084,8 @@ jQuery(document).ready(function($) {
 	} else {
 		$('.zwsgr-admin-enable-smtp').hide(); 
 		$('input[name="zwsgr_from_email"]').removeAttr('required');
-    	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
-    	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
 		smtpsubmitButton.addClass('zwsgr-disable'); 
 	}
