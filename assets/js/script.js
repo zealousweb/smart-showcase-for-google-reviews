@@ -1,3 +1,4 @@
+"use strict";
 jQuery(document).ready(function($) {
 
 	// Bind click event to open popup

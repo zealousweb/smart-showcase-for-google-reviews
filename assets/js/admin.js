@@ -1,5 +1,5 @@
+"use strict";
 jQuery(document).ready(function($) {
-
 
 	// Bind click event to open popup
 	$(document).on('click', '.zwsgr-popup-item', function (e) {
@@ -2104,7 +2104,4 @@ jQuery(document).ready(function($) {
 	$('#zwsgr-account-select').on('change', function () {
 		$(this).closest('form').submit();
 	});
-
-
-	
 });
