@@ -269,7 +269,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			);
 
 			add_submenu_page(
-                null,
+                '',
                 'Widget Configurator',             
                 'Widget Configurator',
                 'manage_options',
