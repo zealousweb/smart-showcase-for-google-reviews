@@ -38,6 +38,7 @@ jQuery(document).ready(function($) {
         let postId = button.data('post-id');  // Get the post-id from the button data attribute
 		let selectedValue = mainWrapper.find('.front-sort-by-select').val();
 		let keyword = mainWrapper.find('.zwsgr-front-keywords-list li.selected').data('zwsgr-keyword');
+		let popupContentContainer = mainWrapper.find('zwsgr-slider.zwsgr-grid-item.zwsgr-popup-list');
         // Disable the button to prevent multiple clicks
         button.prop('disabled', true).text('Loading...');
 
@@ -56,10 +57,6 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 // console.log(response, 'response ');
                 if (response.success) {
-                    // Append new post content to the #div-container
-					
-					var popupContentContainer = mainWrapper.find('zwsgr-slider.zwsgr-grid-item.zwsgr-popup-list');
-
 					// Append new content to the popup
 					if (popupContentContainer.length >= 1) {
 						popupContentContainer.append(response.data.content);  // Append the new content to the popup
@@ -243,7 +240,7 @@ jQuery(document).ready(function($) {
 		const enable_load_more = mainDivWrapper.data('enable-load-more');
 		
 		if (enable_load_more === 1){
-			var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+			var zwsgrLoadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
 		}
 
 		$('.zwsgr-slider.zwsgr-list');
@@ -337,12 +334,12 @@ jQuery(document).ready(function($) {
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
-						mainDivWrapper.append(loadMoreButton);  // Clears previous content and adds the button
+						mainDivWrapper.append(zwsgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				if(layoutType === 'popup-1'|| layoutType === 'popup-2'){
 					if( true != response.data.disable_button ){
-						$('.scrollable-content').append(loadMoreButton);  // Clears previous content and adds the button
+						$('.scrollable-content').append(zwsgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				// console.log(response); // Log success response
@@ -373,7 +370,7 @@ jQuery(document).ready(function($) {
 		const enable_load_more = mainDivWrapper.data('enable-load-more');
 	
 		if (enable_load_more === 1){
-			var loadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+			var zwsgrLoadMoreButton = '<button class="load-more-meta zwsgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
 		}
 
 		mainDivWrapper.find('.load-more-meta').remove();
@@ -461,12 +458,12 @@ jQuery(document).ready(function($) {
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
-						mainDivWrapper.append(loadMoreButton);  // Clears previous content and adds the button
+						mainDivWrapper.append(zwsgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				if(layoutType === 'popup-1'|| layoutType === 'popup-2'){
 					if( true != response.data.disable_button ){
-						$('.scrollable-content').append(loadMoreButton);  // Clears previous content and adds the button
+						$('.scrollable-content').append(zwsgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				// console.log(response); // Log success response
