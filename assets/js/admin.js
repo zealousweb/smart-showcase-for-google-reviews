@@ -2018,7 +2018,7 @@ jQuery(document).ready(function($) {
 
 	// Start code SMTP
 	function zwsgr_update_Smtp_Port() {
-        var encryptionType = $('input[name="zwsgr_smtp_ency_type"]:checked').val();
+        let encryptionType = $('input[name="zwsgr_smtp_ency_type"]:checked').val();
         switch(encryptionType) {
             case 'none':
                 $('#zwsgr-smtp-port').val('25'); // Set port to 25 for 'None'
@@ -2033,7 +2033,7 @@ jQuery(document).ready(function($) {
                 $('#zwsgr-smtp-port').val('25'); // Default port
         }
     }
-	$('input[name="zwsgr_smtp_ency_type"]').change(function() {
+	$(document).on('change', 'input[name="zwsgr_smtp_ency_type"]', function() {
         zwsgr_update_Smtp_Port(); // Update the port when the encryption type is changed
     });
 	if ($('#zwsgr_smtp_auth_1').is(':checked')) {
@@ -2045,8 +2045,8 @@ jQuery(document).ready(function($) {
 		$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
 		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
     }
-    $('input[name="zwsgr_smtp_auth"]').change(function() {
-        if ($(this).val() == 'no') {
+    $(document).on('change', 'input[name="zwsgr_smtp_auth"]', function() {
+        if ($(this).val() === 'no') {
             $('.zwsgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
 			$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
@@ -2056,22 +2056,22 @@ jQuery(document).ready(function($) {
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
         }
     }); 
-	var smtpsubmitButton = $('.zwsgr-smtp-submit-btn'); // Select the submit button
-	$('input[name="zwsgr_admin_smtp_enabled"]').change(function() {
+	var smtpSubmitButton = $('.zwsgr-smtp-submit-btn'); // Select the submit button
+	$(document).on('change', 'input[name="zwsgr_admin_smtp_enabled"]', function() {
         if ($(this).is(':checked')) {
 			$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
 			$('input[name="zwsgr_from_email"]').attr('required', 'required');
 			$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
 			$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
-			smtpsubmitButton.removeClass('zwsgr-disable'); 
+			smtpSubmitButton.removeClass('zwsgr-disable'); 
         } else {
 			$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
 			$('input[name="zwsgr_from_email"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_host"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
-			smtpsubmitButton.addClass('zwsgr-disable'); 
+			smtpSubmitButton.addClass('zwsgr-disable'); 
         }
     });
 	if ($('input[name="zwsgr_admin_smtp_enabled"]').is(':checked')) {
@@ -2080,19 +2080,19 @@ jQuery(document).ready(function($) {
 		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
 		$('input[name="zwsgr_from_email"]').attr('required', 'required');
         $('input[name="zwsgr_smtp_host"]').attr('required', 'required'); 
-		smtpsubmitButton.removeClass('zwsgr-disable'); 
+		smtpSubmitButton.removeClass('zwsgr-disable'); 
 	} else {
 		$('.zwsgr-admin-enable-smtp').hide(); 
 		$('input[name="zwsgr_from_email"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_host"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
-		smtpsubmitButton.addClass('zwsgr-disable'); 
+		smtpSubmitButton.addClass('zwsgr-disable'); 
 	}
 	// End code SMTP
 	
 
-	$('#zwsgr-account-select').on('change', function () {
+	$(document).on('change', '#zwsgr-account-select', function () {
 		$(this).closest('form').submit();
 	});
 });
