@@ -1244,6 +1244,9 @@ body .zwsgr-badge-link:focus {
     max-width: 100%;
 }
 
+.zwsgr-main-div-wrapper{
+    max-width: 100%;
+}
 
 @media only screen and (max-width: 1200px) {
     body .zwsgr-popup-content {
