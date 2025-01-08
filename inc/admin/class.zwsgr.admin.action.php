@@ -2266,13 +2266,13 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwsgr-custom-tab">
-					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwsgr-step">1. </span>Fetch Data</li>
+					<li class="tab-item zwsgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwsgr-step"><?php echo esc_html__('1.', 'smart-google-reviews'); ?></span><?php echo esc_html__('Fetch Data', 'smart-google-reviews'); ?></li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item  <?php echo ($layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step">2. </span>Select Display Options</li>
+					<li class="tab-item zwsgr-tab-item  <?php echo ($layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwsgr-step"><?php echo esc_html__('2.', 'smart-google-reviews'); ?></span><?php echo esc_html__('Select Display Options', 'smart-google-reviews'); ?></li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step">3. </span>Selected Option</li>
+					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwsgr-step"><?php echo esc_html__('3.', 'smart-google-reviews'); ?></span><?php echo esc_html__('Selected Option', 'smart-google-reviews'); ?></li>
 					<span class="zwsgr-step-arrow"></span>
-					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step">4. </span>Generated Shortcode</li>
+					<li class="tab-item zwsgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwsgr-step"><?php echo esc_html__('4.', 'smart-google-reviews'); ?></span><?php echo esc_html__('Generated Shortcode', 'smart-google-reviews'); ?></li>
 				</ul>
 
 				<!-- Tab Data Fetch Areas -->
@@ -2360,17 +2360,17 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				</div>
 
 				<div class="tab-content zwsgr-tab-content-display" id="tab-selected">
-					<h3>Selected Option</h3>
+					<h3><?php echo esc_html__('Selected Option', 'smart-google-reviews'); ?></h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="zwsgr-toogle-display">
-							<a href="<?php echo esc_url($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank">Review Us On G</a>
+							<a href="<?php echo esc_url($zwsgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwsgr-google-toggle" target="_blank"><?php echo esc_html__('Review Us On G', 'smart-google-reviews'); ?></a>
 					</div>
 					<?php if (!in_array($layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
 						<div class="zwsgr-widget-settings">
-							<h2 class="zwsgr-page-title">Widget Settings</h2>
+							<h2 class="zwsgr-page-title"><?php echo esc_html__('Widget Settings', 'smart-google-reviews'); ?></h2>
 							<div class="zwsgr-widget-wrap">
 								<div class="zwsgr-widget-setting">
-										<h3 class="zwsgr-label">Filter Rating</h3>
+										<h3 class="zwsgr-label"><?php echo esc_html__('Filter Rating', 'smart-google-reviews'); ?></h3>
 										<div class="filter-rating">
 											<?php
 											for ($i = 1; $i <= 5; $i++) {
@@ -2390,46 +2390,46 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Hide Element</h3>
+									<h3 class="zwsgr-label"><?php echo esc_html__('Hide Element', 'smart-google-reviews'); ?></h3>
 									<ul class="zwsgr-widget-eleemt-list">
 										<li>
 											<input type="checkbox" id="review-title" class="zwsgr-checkbox" name="review-element" value="review-title" 
 											<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-title" class="zwsgr-chechbox-label">Reviewer Name</label>
+											<label for="review-title" class="zwsgr-chechbox-label"><?php echo esc_html__('Reviewer Name', 'smart-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-rating" class="zwsgr-checkbox" name="review-element" value="review-rating" 
 											<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-rating" class="zwsgr-chechbox-label">Rating</label>
+											<label for="review-rating" class="zwsgr-chechbox-label"><?php echo esc_html__('Rating', 'smart-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-days-ago" class="zwsgr-checkbox" name="review-element" value="review-days-ago" 
 											<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-days-ago" class="zwsgr-chechbox-label">Date</label>
+											<label for="review-days-ago" class="zwsgr-chechbox-label"><?php echo esc_html__('Date', 'smart-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-content" class="zwsgr-checkbox" name="review-element" value="review-content" 
 											<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-content" class="zwsgr-chechbox-label">Review Content</label>
+											<label for="review-content" class="zwsgr-chechbox-label"><?php echo esc_html__('Review Content', 'smart-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-photo" class="zwsgr-checkbox" name="review-element" value="review-photo" 
 											<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-photo" class="zwsgr-chechbox-label">Reviewer Photo</label>
+											<label for="review-photo" class="zwsgr-chechbox-label"><?php echo esc_html__('Reviewer Photo', 'smart-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-g-icon" class="zwsgr-checkbox" name="review-element" value="review-g-icon" 
 											<?php echo in_array('review-g-icon', $selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-g-icon" class="zwsgr-chechbox-label">G Icon</label>
+											<label for="review-g-icon" class="zwsgr-chechbox-label"><?php echo esc_html__('G Icon', 'smart-google-reviews'); ?></label>
 										</li>
 										<!-- Add more elements as needed -->
 									</ul>
 								</div>
 
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Keywords</h3>
+									<h3 class="zwsgr-label"><?php echo esc_html__('Keywords', 'smart-google-reviews'); ?></h3>
 									<input type="text" id="keywords-input" name="keywords-input" class="zwsgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
-									<p class="zwsgr-description">Type keywords separated by commas</p>
+									<p class="zwsgr-description"><?php echo esc_html__('Type keywords separated by commas', 'smart-google-reviews'); ?></p>
 
 									<!-- Hidden input field to store comma-separated keywords for submission -->
 									<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
@@ -2449,12 +2449,12 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									?>
 
 									<div id="error-message" class="error-message zwsgr-keyword-error-message">
-										You can only enter a maximum of 5 keywords.
+										<?php echo esc_html__('You can only enter a maximum of 5 keywords.', 'smart-google-reviews'); ?>
 									</div> 
 								</div>
 
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Review us on Google</h3>
+									<h3 class="zwsgr-label"><?php echo esc_html__('Review us on Google', 'smart-google-reviews'); ?></h3>
 									<label class="switch">
 										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
 										<span class="slider"></span>
@@ -2462,44 +2462,44 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 
 									<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwsgr-color-options">
 										<div class="zwsgr-color-picker">
-											<label for="bg-color-picker" class="zwsgr-chechbox-label">Background Color:</label>
+											<label for="bg-color-picker" class="zwsgr-chechbox-label"><?php echo esc_html__('Background Color:', 'smart-google-reviews'); ?></label>
 											<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#3780ff'); ?>">
 										</div>
 										<div class="zwsgr-color-picker">
-											<label for="text-color-picker" class="zwsgr-chechbox-label">Text Color:</label>
+											<label for="text-color-picker" class="zwsgr-chechbox-label"><?php echo esc_html__('Text Color:', 'smart-google-reviews'); ?></label>
 											<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color ? $text_color : '#ffffff'); ?>">
 										</div>
 									</div>
 								</div>
 
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Trim long reviews with a "read more" link</h3>
+									<h3 class="zwsgr-label"><?php echo esc_html__('Trim long reviews with a "read more" link', 'smart-google-reviews'); ?></h3>
 									<input type="number" class="zwsgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
 									<p id="char-limit-error" class="error-message"></p>
 								</div>
 
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Language</h3>
+									<h3 class="zwsgr-label"><?php echo esc_html__('Language', 'smart-google-reviews'); ?></h3>
 									<select id="language-select" name="language" class="zwsgr-input-text">
-										<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
-										<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
-										<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
-										<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
-										<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
-										<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
-										<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
-										<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
-										<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
-										<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
-										<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
-										<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
-										<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
-										<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
-										<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
-										<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
-										<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
-										<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
-										<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
+										<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>><?php echo esc_html__('English', 'smart-google-reviews'); ?></option>
+										<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>><?php echo esc_html__('Spanish', 'smart-google-reviews'); ?></option>
+										<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>><?php echo esc_html__('French', 'smart-google-reviews'); ?></option>
+										<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>><?php echo esc_html__('German', 'smart-google-reviews'); ?></option>
+										<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>><?php echo esc_html__('Italian', 'smart-google-reviews'); ?></option>
+										<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>><?php echo esc_html__('Portuguese', 'smart-google-reviews'); ?></option>
+										<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>><?php echo esc_html__('Russian', 'smart-google-reviews'); ?></option>
+										<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>><?php echo esc_html__('Chinese', 'smart-google-reviews'); ?></option>
+										<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>><?php echo esc_html__('Japanese', 'smart-google-reviews'); ?></option>
+										<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>><?php echo esc_html__('Hindi', 'smart-google-reviews'); ?></option>
+										<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>><?php echo esc_html__('Arabic', 'smart-google-reviews'); ?></option>
+										<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>><?php echo esc_html__('Korean', 'smart-google-reviews'); ?></option>
+										<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>><?php echo esc_html__('Turkish', 'smart-google-reviews'); ?></option>
+										<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>><?php echo esc_html__('Bengali', 'smart-google-reviews'); ?></option>
+										<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>><?php echo esc_html__('Malay', 'smart-google-reviews'); ?></option>
+										<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>><?php echo esc_html__('Dutch', 'smart-google-reviews'); ?></option>
+										<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>><?php echo esc_html__('Polish', 'smart-google-reviews'); ?></option>
+										<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>><?php echo esc_html__('Swedish', 'smart-google-reviews'); ?></option>
+										<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>><?php echo esc_html__('Thai', 'smart-google-reviews'); ?></option>
 										<!-- Add more languages as needed -->
 									</select>
 								</div>
@@ -2507,24 +2507,24 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								<div class="zwsgr-widget-setting">
 									<h3 class="zwsgr-label">Sort By</h3>
 									<select id="sort-by-select" name="sort_by" class="zwsgr-input-text">
-										<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-										<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-										<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+										<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>><?php echo esc_html__('Newest', 'smart-google-reviews'); ?></option>
+										<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>><?php echo esc_html__('Highest Rating', 'smart-google-reviews'); ?></option>
+										<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>><?php echo esc_html__('Lowest Rating', 'smart-google-reviews'); ?></option>
 									</select>
 									<div class="zwsgr-sort-by-checkbox">
 											<input type="checkbox" class="zwsgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($enable_sort_by ? 'checked' : ''); ?> />
-											<label for="enable-sort-by-filter" class="zwsgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
+											<label for="enable-sort-by-filter" class="zwsgr-chechbox-label"><?php echo esc_html__('Do you want to show "Sort By" filter on front side?', 'smart-google-reviews'); ?></label>
 									</div>
 								</div>
 		
 								<div class="zwsgr-widget-setting">
-									<h3 class="zwsgr-label">Date Format</h3>
+									<h3 class="zwsgr-label"><?php echo esc_html__('Date Format', 'smart-google-reviews'); ?></h3>
 									<select id="date-format-select" name="date-format" class="zwsgr-input-text">
-										<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
-										<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
-										<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
-										<option value="full" <?php echo ($date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
-										<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
+										<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>><?php echo esc_html__('DD/MM/YYYY', 'smart-google-reviews'); ?></option>
+										<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>><?php echo esc_html__('MM-DD-YYYY', 'smart-google-reviews'); ?></option>
+										<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>><?php echo esc_html__('YYYY/MM/DD', 'smart-google-reviews'); ?></option>
+										<option value="full" <?php echo ($date_format === 'full') ? 'selected' : ''; ?>><?php echo esc_html__('Full Date (e.g., January 1, 2024)', 'smart-google-reviews'); ?></option>
+										<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>><?php echo esc_html__('Hide', 'smart-google-reviews'); ?></option>
 									</select>
 								</div>
 								<?php
@@ -2555,11 +2555,11 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 											</label>
 											<div id="zwsgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwsgr-color-options_load">
 												<div class="zwsgr-color-picker-load">
-													<label for="bg-color-picker_load" class="zwsgr-chechbox-label">Background Color:</label>
+													<label for="bg-color-picker_load" class="zwsgr-chechbox-label"><?php echo esc_html__('Background Color:', 'smart-google-reviews'); ?></label>
 													<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
 												</div>
 												<div class="zwsgr-color-picker-load">
-													<label for="text-color-picker_load" class="zwsgr-chechbox-label">Text Color:</label>
+													<label for="text-color-picker_load" class="zwsgr-chechbox-label"><?php echo esc_html__('Text Color:', 'smart-google-reviews'); ?></label>
 													<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
 												</div>
 											</div>
@@ -2568,14 +2568,14 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 									<?php endif; ?>
 
 									<div id="load-more-settings">
-										<h3 class="zwsgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
+										<h3 class="zwsgr-label"><?php echo esc_html__('Reviews Per Page for List, Grid, and Popup:', 'smart-google-reviews'); ?></h3>
 										<div class="zwsgr-tooltip">
 											<input type="number" id="posts-per-page" name="posts_per_page" class="zwsgr-input-text" value="<?php echo esc_attr($posts_per_page); ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 											<span class="zwsgr-tooltip-container">
 												<div class="zwsgr-wrapper">
 													<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
 													<path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z"></path></svg>
-													<span class="zwsgr-tooltip-text">We recommend a maximum of 100 reviews for the best experience.</span>
+													<span class="zwsgr-tooltip-text"><?php echo esc_html__('We recommend a maximum of 100 reviews for the best experience.', 'smart-google-reviews'); ?></span>
 												</div>
 											</span>
 										</div>
@@ -2586,16 +2586,16 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 					<?php endif; ?>
 				
 					<div class="zwsgr-widget-settings">
-						<h2 class="zwsgr-page-title">Custom CSS Support</h2>
+						<h2 class="zwsgr-page-title"><?php echo esc_html__('Custom CSS Support', 'smart-google-reviews'); ?></h2>
 						<textarea class="zwsgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($custom_css); ?></textarea>
 					</div>
 					<button id="save-get-code-btn" class="zwsgr-btn" data-zwsgr-btn='zwsgr-btn'>
-						<?php echo !empty($current_tab2) ? 'Update' : 'Save & Get Code'; ?>
+						<?php echo !empty($current_tab2) ? esc_html__('Update', 'smart-google-reviews') : esc_html__('Save & Get Code', 'smart-google-reviews'); ?>
 					</button>
 				</div>
 
 				<div class="tab-content zwsgr-tab-content-display" id="tab-shortcode">
-					<h3>Generated Shortcode</h3>
+					<h3><?php echo esc_html__('Generated Shortcode', 'smart-google-reviews'); ?></h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display">
 						<div class="zwsgr-shortcode">
 							<input type="text" class="zwsgr-input-text zwsgr-shortcode-input" value="<?php echo esc_attr($generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($post_id); ?>">
