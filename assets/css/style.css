@@ -48,6 +48,16 @@ body .zwsgr-slider .zwsgr-profile {
     position: relative;
 }
 
+body .zwsgr-slider .zwsgr-profile img {
+    width: 62px;
+    height: 62px;
+}
+
+body .zwsgr-slide-wrap4 .zwsgr-google-icon img {
+    width: 20px;
+    height: 20px;
+}
+
 body .zwsgr-slider .zwsgr-slide-wrap .zwsgr-profile img {
     width: 62px;
     height: 62px;
@@ -481,6 +491,16 @@ body .zwsgr-grid-item#zwsgr-grid4 .zwsgr-profile {
     width: 62px;
     position: relative;
     margin: 0 auto 20px;
+}
+
+body .zwsgr-grid-item#zwsgr-grid4 .zwsgr-profile img {
+    width: 62px;
+    height: 62px;
+}
+
+body .zwsgr-grid-item#zwsgr-grid4 .zwsgr-google-icon img, body #zwsgr-slider5 .zwsgr-google-icon img {
+    width: 20px;
+    height: 20px;
 }
 
 body #zwsgr-slider5 .zwsgr-profile {
