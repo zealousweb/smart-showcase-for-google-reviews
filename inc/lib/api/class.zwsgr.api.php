@@ -256,7 +256,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
         }
 
-       /**
+        /**
          * Fetches the profile media thumbnail for a specific location.
          *
          * @param string $zwsgr_account_id Google My Business account ID.
@@ -409,7 +409,6 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
             // Check that all parameters are provided
             if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_number ) || empty( $zwsgr_review_id ) ) {
-               
                 // For AJAX requests, send a JSON error response
                 wp_send_json_error(
                     array(

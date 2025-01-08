@@ -205,8 +205,8 @@ body select.zwsgr-input-text option {
 
 body select.zwsgr-input-text:focus,
 body input.zwsgr-input-text:focus {
-   box-shadow: none;
-   border: 1px solid #C1CFDE;
+    box-shadow: none;
+    border: 1px solid #C1CFDE;
 }
 
 body .zwsgr-slider .zwsgr-star, body .zwsgr-badge-wrap .zwsgr-badge-item .zwsgr-star {
@@ -1400,28 +1400,28 @@ body .zwgr-dashboard .loader, #gmb-review-data .loader {
     border-top-color: #0074A2;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
-  }
+}
 
-  body #gmb-review-data .loader {
+body #gmb-review-data .loader {
     position: absolute;
     width: 20px;
     height: 20px;
     border: 2.5px solid #F08C3C;
     border-top-color: #0074A2;
     top: 21.5%;
-  }
+}
 
- input.zwsgr-input-text.zwsgr-shortcode-input {
+input.zwsgr-input-text.zwsgr-shortcode-input {
     max-width: 280px;
     text-align: center;
-  }
-  
- @keyframes spin {
-     to { -webkit-transform: rotate(360deg); }
-  }
+}
+
+@keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
 @-webkit-keyframes spin {
-     to { -webkit-transform: rotate(360deg); }
-  }
+    to { -webkit-transform: rotate(360deg); }
+}
 
 
 
@@ -1550,4 +1550,39 @@ body .zwsgr-google-tab-text{
         padding-left: 0;
         left: 100%;
     }
+}
+
+
+
+
+
+
+/* 8-1-25 */
+.zwsgr-shortcode{
+    display: flex;
+    align-items: center;
+}
+
+.zwsgr-shortcode-text{
+    margin-right: 10px;
+    width: auto;
+}
+.zwsgr-dashicons{
+    cursor: pointer;
+}
+
+.zwsgr-email-error{
+    color: red;
+    display: none;
+}
+.zwsgr-email-success{
+    color: green;
+    display: none;
+}
+.zwsgr-keyword-error-message{
+    display: none;
+    color: red;
+}
+.zwsgr-tab-content-display{
+    display: none;
 }
