@@ -46,12 +46,12 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	var widgetPostType = 'zwsgr_data_widget';
+	var zwsgrWidgetPostType = 'zwsgr_data_widget';
 
     // Check if we're on the edit, new post, or the custom layout page for the widget post type
-    if ($('.post-type-' + widgetPostType).length || 
-        $('.post-php.post-type-' + widgetPostType).length || 
-        $('.post-new-php.post-type-' + widgetPostType).length || 
+    if ($('.post-type-' + zwsgrWidgetPostType).length || 
+        $('.post-php.post-type-' + zwsgrWidgetPostType).length || 
+        $('.post-new-php.post-type-' + zwsgrWidgetPostType).length || 
         window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator') !== -1) {
 
         // Ensure the parent menu (dashboard) is highlighted as active
@@ -60,17 +60,17 @@ jQuery(document).ready(function($) {
             .addClass('wp-has-current-submenu wp-menu-open');
 
         // Ensure the specific submenu item for zwsgr_data_widget is active
-        $('ul.wp-submenu li a[href="edit.php?post_type=' + widgetPostType + '"]')
+        $('ul.wp-submenu li a[href="edit.php?post_type=' + zwsgrWidgetPostType + '"]')
             .parent('li')
             .addClass('current');
     }
 
-	var reviewPostType = 'zwsgr_reviews';
+	var zwsgrReviewPostType = 'zwsgr_reviews';
 
 	// Check if we're on the edit, new post, or the custom layout page for the review post type
-	if ($('.post-type-' + reviewPostType).length || 
-	$('.post-php.post-type-' + reviewPostType).length || 
-	$('.post-new-php.post-type-' + reviewPostType).length || 
+	if ($('.post-type-' + zwsgrReviewPostType).length || 
+	$('.post-php.post-type-' + zwsgrReviewPostType).length || 
+	$('.post-new-php.post-type-' + zwsgrReviewPostType).length || 
 	window.location.href.indexOf('admin.php?page=zwsgr_review_configurator') !== -1) {
 
 	// Ensure the parent menu (dashboard) is highlighted as active
@@ -79,29 +79,29 @@ jQuery(document).ready(function($) {
 		.addClass('wp-has-current-submenu wp-menu-open');
 
 	// Ensure the specific submenu item for zwsgr_reviews is active
-	$('ul.wp-submenu li a[href="edit.php?post_type=' + reviewPostType + '"]')
+	$('ul.wp-submenu li a[href="edit.php?post_type=' + zwsgrReviewPostType + '"]')
 		.parent('li')
 		.addClass('current');
 	}
 
 	//SEO and Notification Email Toggle 
-	var toggle = $('#zwsgr_admin_notification_enabled');
-	var notificationFields = $('.zwsgr-notification-fields');
-	var submitButton = $('.zwsgr-notification-submit-btn'); 
-	if (toggle.is(':checked')) {
-		notificationFields.show();
-		submitButton.removeClass('zwsgr-disable');
+	var zwsgrToggle = $('#zwsgr_admin_notification_enabled');
+	var zwsgrNotificationFields = $('.zwsgr-notification-fields');
+	var zwsgrSubmitButton = $('.zwsgr-notification-submit-btn'); 
+	if (zwsgrToggle.is(':checked')) {
+		zwsgrNotificationFields.show();
+		zwsgrSubmitButton.removeClass('zwsgr-disable');
 	} else {
-		notificationFields.hide();
-		submitButton.addClass('zwsgr-disable');
+		zwsgrNotificationFields.hide();
+		zwsgrSubmitButton.addClass('zwsgr-disable');
 	}
-	toggle.on('change', function () {
+	zwsgrToggle.on('change', function () {
 		if ($(this).is(':checked')) {
-			notificationFields.show();
-			submitButton.removeClass('zwsgr-disable');
+			zwsgrNotificationFields.show();
+			zwsgrSubmitButton.removeClass('zwsgr-disable');
 		} else {
-			notificationFields.hide();
-			submitButton.addClass('zwsgr-disable');
+			zwsgrNotificationFields.hide();
+			zwsgrSubmitButton.addClass('zwsgr-disable');
 		}
 	});
 
@@ -221,19 +221,19 @@ jQuery(document).ready(function($) {
 	}
 
 	// Get the active tab and selected option from the URL
-	var activeTab = getQueryParam('tab') || 'tab-options'; // Default to 'tab-options'
-	var selectedOption = getQueryParam('selectedOption'); // Get the selected option ID from URL
+	var zwsgrActiveTab = getQueryParam('tab') || 'tab-options'; // Default to 'tab-options'
+	var zwsgrSelectedOption = getQueryParam('selectedOption'); // Get the selected option ID from URL
 
 	// Initially show the active tab content
 	$('.tab-content').hide(); // Hide all tab content
-	$('#' + activeTab).show(); // Show the active tab content
+	$('#' + zwsgrActiveTab).show(); // Show the active tab content
 
 	$('.tab-item').removeClass('active');
-	$('.tab-item[data-tab="' + activeTab + '"]').addClass('active');
+	$('.tab-item[data-tab="' + zwsgrActiveTab + '"]').addClass('active');
 
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
-	if (selectedOption && activeTab === 'tab-selected') {
-		let selectedOptionElement = $('#' + selectedOption);
+	if (zwsgrSelectedOption && zwsgrActiveTab === 'tab-selected') {
+		let selectedOptionElement = $('#' + zwsgrSelectedOption);
 		$('#selected-option-display').html(selectedOptionElement);
 		$('#selected-option-display').find('.select-btn').remove();
 
@@ -735,7 +735,7 @@ jQuery(document).ready(function($) {
 	}
 
 	// Translations for "Read more" in different languages
-	var translations = {
+	var zwsgrTranslations = {
 		en: 'Read more',
 		es: 'Leer más',
 		fr: 'Lire la suite',
@@ -764,7 +764,7 @@ jQuery(document).ready(function($) {
 
 		if (charLimit && fullText.length > charLimit) {
 			let trimmedText = fullText.substring(0, charLimit) + '... ';
-			$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${translations[lang]}</a>`);
+			$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${zwsgrTranslations[lang]}</a>`);
 			
 			// Re-apply the "Read more" click event using event delegation
 			$(document).on('click', '.read-more-link', function (e) {
@@ -1753,6 +1753,7 @@ jQuery(document).ready(function($) {
 		let nonce = filter_reviews.nonce;
 		let postId = getQueryParam('zwsgr_widget_id');
 		let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
+		let selectedOption = getQueryParam('selectedOption');
 		// Prepare an array of selected ratings
 		let selectedRatings = [];
 		$('.filter-rating .star-filter.selected').each(function() {
@@ -1795,9 +1796,6 @@ jQuery(document).ready(function($) {
 				} else {
 					console.error("Expected HTML content, but received:", response);
 				}
-
-				// Use getQueryParam to extract the 'selectedOption' parameter from the URL
-				var selectedOption = getQueryParam('selectedOption');
 
 				// Only reinitialize Slick slider if selectedOption is one of the slider options
 				if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
@@ -2056,7 +2054,7 @@ jQuery(document).ready(function($) {
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
         }
     }); 
-	var smtpSubmitButton = $('.zwsgr-smtp-submit-btn'); // Select the submit button
+	var zwsgrSmtpSubmitButton = $('.zwsgr-smtp-submit-btn'); // Select the submit button
 	$(document).on('change', 'input[name="zwsgr_admin_smtp_enabled"]', function() {
         if ($(this).is(':checked')) {
 			$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
@@ -2064,14 +2062,14 @@ jQuery(document).ready(function($) {
 			$('input[name="zwsgr_from_email"]').attr('required', 'required');
 			$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
 			$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
-			smtpSubmitButton.removeClass('zwsgr-disable'); 
+			zwsgrSmtpSubmitButton.removeClass('zwsgr-disable'); 
         } else {
 			$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
 			$('input[name="zwsgr_from_email"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_host"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
-			smtpSubmitButton.addClass('zwsgr-disable'); 
+			zwsgrSmtpSubmitButton.addClass('zwsgr-disable'); 
         }
     });
 	if ($('input[name="zwsgr_admin_smtp_enabled"]').is(':checked')) {
@@ -2080,14 +2078,14 @@ jQuery(document).ready(function($) {
 		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
 		$('input[name="zwsgr_from_email"]').attr('required', 'required');
         $('input[name="zwsgr_smtp_host"]').attr('required', 'required'); 
-		smtpSubmitButton.removeClass('zwsgr-disable'); 
+		zwsgrSmtpSubmitButton.removeClass('zwsgr-disable'); 
 	} else {
 		$('.zwsgr-admin-enable-smtp').hide(); 
 		$('input[name="zwsgr_from_email"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_host"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
-		smtpSubmitButton.addClass('zwsgr-disable'); 
+		zwsgrSmtpSubmitButton.addClass('zwsgr-disable'); 
 	}
 	// End code SMTP
 	
