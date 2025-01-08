@@ -162,12 +162,12 @@
 			update_option( 'zwsgr_smtp_option', $zwsgr_smtp_option );
 			$message_smtp .= __( 'SMTP Settings saved.', 'smart-google-reviews' );
 		} else {
-			$custom_error[]  .= ' ' . __( 'SMTP Settings are Disabled.', 'smart-google-reviews' );
+			$message_smtp  .= ' ' . __( 'SMTP Settings saved.', 'smart-google-reviews' );
 		}
 
 		$zwsgr_smtp_option['zwsgr_admin_smtp_enabled'] = isset( $_POST['zwsgr_admin_smtp_enabled'] ) && sanitize_text_field(wp_unslash($_POST['zwsgr_admin_smtp_enabled'] ) ) == '1' ? 1 : 0;
 
-		 if ( isset( $_POST['zwsgr_admin_smtp_enabled'] ) && $_POST['zwsgr_admin_smtp_enabled'] == '1' ) {
+		if ( isset( $_POST['zwsgr_admin_smtp_enabled'] ) && $_POST['zwsgr_admin_smtp_enabled'] == '1' ) {
 			$zwsgr_smtp_option['zwsgr_admin_smtp_enabled'] = 1;
 			
 		} else {
@@ -286,7 +286,7 @@
 						<input
 							id="zwsgr-smtp-port"
 							name="zwsgr_smtp_port"
-							type="text"
+							type="number"
 							class="zwsgr-input-text"
 							required
 							value="<?php echo isset( $zwsgr_smtp_option['zwsgr_smtp_port'] ) ? esc_attr( $zwsgr_smtp_option['zwsgr_smtp_port'] ) : 25; ?>"
@@ -369,12 +369,11 @@
 			</table>
 		</form>
 
-	<?php
-    //} //elseif ( $current == 'test-mail' ) { ?>
-		<?php if( !empty( $message ) )  { ?>
-		<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible">
-			<p><strong><?php echo esc_html( $message ); ?></strong></p>
-		</div>
+		<?php
+		if( !empty( $message ) )  { ?>
+			<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible">
+				<p><strong><?php echo esc_html( $message ); ?></strong></p>
+			</div>
 		<?php } ?>
 
 		<?php if( !empty( $custom_error  ) )  { 
@@ -386,7 +385,7 @@
 				}
 			}
 			?>
-		</div>
+			</div>
 		<?php } ?>
 
 		<h2 class="zwsgr-page-title zwsgr-admin-enable-smtp"><?php esc_html_e( 'Test Mail', 'smart-google-reviews' ); ?></h2>

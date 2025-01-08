@@ -56,7 +56,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
                     'Authorization' => 'Bearer ' . $this->zwsgr_access_token,
                     'Accept'        => 'application/json',
                 ],
-                'timeout' => 15,
+                'timeout' => 30,
             ];
 
             if ( $zwsgr_api_method === 'GET' && ! empty( $zwsgr_api_params ) ) {
@@ -256,14 +256,14 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
         }
 
-       /**
+        /**
          * Fetches the profile media thumbnail for a specific location.
          *
          * @param string $zwsgr_account_id Google My Business account ID.
          * @param string $zwsgr_location_id Location ID for the desired profile thumbnail.
          * @return mixed API response with profile media data or an error.
          */
-        public function zwsgr_get_location_thumbnail($zwsgr_account_id, $zwsgr_location_id) {
+        public function zwsgr_get_location_thumbnail($zwsgr_account_id, $zwsgr_location_id, $zwsgr_page_token = null) {
 
             // Construct the API endpoint for profile media.
             $zwsgr_api_endpoint = "accounts/{$zwsgr_account_id}/locations/{$zwsgr_location_id}/media/profile";
@@ -409,7 +409,6 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
 
             // Check that all parameters are provided
             if ( empty( $zwsgr_wp_review_id ) || empty( $zwsgr_account_number ) || empty( $zwsgr_location_number ) || empty( $zwsgr_review_id ) ) {
-               
                 // For AJAX requests, send a JSON error response
                 wp_send_json_error(
                     array(
@@ -517,7 +516,7 @@ if ( ! class_exists( 'ZWSGR_GMB_API' ) ) {
         public function zwsgr_fetch_jwt_token($zwsgr_request) {
 
             // Get 'auth_code' and 'consent' from function params parameters
-            $zwsgr_auth_code = isset($_GET['auth_code']) ? sanitize_text_field($_GET['auth_code']) : '';
+            $zwsgr_auth_code = isset($_GET['auth_code']) ? sanitize_text_field(wp_unslash($_GET['auth_code'])) : '';
 
             // Prepare the payload for the request
             $zwsgr_payload_data = [

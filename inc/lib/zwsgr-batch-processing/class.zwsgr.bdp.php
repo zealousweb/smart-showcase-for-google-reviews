@@ -308,7 +308,11 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
                         // Update custom fields
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_id', $zwsgr_review_id );
-                        update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_comment', $zwsgr_review['comment'] );
+
+                        if ( isset($zwsgr_review['comment'])) {
+                            update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_comment', $zwsgr_review['comment'] );
+                        }
+
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_reviewer_name', $zwsgr_review['reviewer']['displayName'] ?? 'Anonymous' );
                         update_post_meta( $zwsgr_wp_review_id, 'zwsgr_review_star_rating', $zwsgr_review['starRating'] );
                         
@@ -340,7 +344,7 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
 
         }
 
-         /**
+        /**
         * Downloads an image from a URL and saves it to a specified path.
         *
         * @param string $zwsgr_review_dp_url The image URL to download.
@@ -424,13 +428,13 @@ if (!class_exists('Zwsgr_GMB_Background_Data_Processor')) {
                 
                 sleep(1);
 
-                $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token, null, null, null, $this->zwsgr_widget_id);
+                $zwsgr_queue_manager->zwsgr_fetch_gmb_data(true, $this->next_page_token, $this->zwsgr_gmb_data_type, $this->zwsgr_account_number, $this->zwsgr_location_number, $this->zwsgr_widget_id);
 
             } else {
 
                 $zwsgr_queue_manager->zwsgr_reset_current_batch_index($this->zwsgr_widget_id);
                 delete_option('zwsgr_widget_id');
-
+                delete_option('zwsgr_batch_in_processing');
                 update_post_meta($this->zwsgr_widget_id, 'zwgr_data_processing_init', 'false');
                 update_post_meta($this->zwsgr_widget_id, 'zwgr_data_sync_once', 'true');
                 update_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', $this->zwsgr_gmb_data_type);
@@ -465,7 +469,10 @@ add_action('wp_ajax_zwsgr_get_batch_processing_status', 'zwsgr_get_batch_process
  */
 function zwsgr_get_batch_processing_status() {
 
-    $zwsgr_widget_id           = $_POST['zwsgr_widget_id'];
+    // Check nonce and AJAX referer
+    check_ajax_referer('zwsgr_queue_manager_nounce', 'security');
+
+    $zwsgr_widget_id           = intval($_POST['zwsgr_widget_id']);
     $zwgr_data_processing_init = get_post_meta($zwsgr_widget_id, 'zwgr_data_processing_init', true);
     $zwgr_data_sync_once       = get_post_meta($zwsgr_widget_id, 'zwgr_data_sync_once', true);
     $zwsgr_gmb_data_type       = get_post_meta($zwsgr_widget_id, 'zwsgr_gmb_data_type', true);

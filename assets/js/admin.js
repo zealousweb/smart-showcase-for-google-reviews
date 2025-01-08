@@ -1,10 +1,13 @@
+"use strict";
 jQuery(document).ready(function($) {
 
-
 	// Bind click event to open popup
-	$(document).on('click', '.zwsgr-popup-item', function () {
-		var popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-		$('#' + popupId).fadeIn(); // Show the popup
+	$(document).on('click', '.zwsgr-popup-item', function (e) {
+		if ($(e.target).hasClass('zwsgr-total-review')) {
+			return;
+		}
+		let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+		$('#' + popupId).stop(true, true).fadeIn(); // Show the popup
 	});
 
 	// Bind click event to close popup when the close button is clicked
@@ -15,38 +18,40 @@ jQuery(document).ready(function($) {
 	// Bind click event to close popup when clicking outside the popup content
 	$(document).on('click', '.zwsgr-popup-overlay', function (e) {
 		if ($(e.target).is('.zwsgr-popup-overlay')) {
-			$(this).fadeOut(); // Hide the popup
+			$(this).stop(true, true).fadeOut(); // Hide the popup
 		}
 	});
 
 	// Bind keydown event to close popup when ESC key is pressed
 	$(document).on('keydown', function (e) {
 		if (e.key === "Escape" || e.keyCode === 27) {
-			$('.zwsgr-popup-overlay').fadeOut(); // Hide the popup
+			$('.zwsgr-popup-overlay').stop(true, true).fadeOut(); // Hide the popup
 		}
 	});
 
-	$('.copy-shortcode-icon').on('click', function () {
-        var targetId = $(this).data('target');
-        var $input = $('#' + targetId);
-
-        if ($input.length) {
-            $input.select(); // Select the input field text
-            document.execCommand('copy'); // Copy the selected text
-            $(this).addClass('dashicons-yes'); // Change icon to a checkmark
-            setTimeout(() => {
-                $(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
-            }, 2000);
-        }
-    });
+	$(document).on('click', '.copy-shortcode-icon, .zwsgr-copy-shortcode-icon', function () {
+		let targetId = $(this).data('target');
+		let $input = $('#' + targetId);
 	
-
-	var widget_post_type = 'zwsgr_data_widget';
+		if ($input.length) {
+			// Copy the input field text using Clipboard API
+			navigator.clipboard.writeText($input.val()).then(() => {
+				$(this).addClass('dashicons-yes'); // Change icon to a checkmark
+				setTimeout(() => {
+					$(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
+				}, 2000);
+			}).catch(err => {
+				console.error('Failed to copy text: ', err);
+			});
+		}
+	});
+	
+	var widgetPostType = 'zwsgr_data_widget';
 
     // Check if we're on the edit, new post, or the custom layout page for the widget post type
-    if ($('body.post-type-' + widget_post_type).length || 
-        $('body.post-php.post-type-' + widget_post_type).length || 
-        $('body.post-new-php.post-type-' + widget_post_type).length || 
+    if ($('.post-type-' + widgetPostType).length || 
+        $('.post-php.post-type-' + widgetPostType).length || 
+        $('.post-new-php.post-type-' + widgetPostType).length || 
         window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator') !== -1) {
 
         // Ensure the parent menu (dashboard) is highlighted as active
@@ -55,38 +60,62 @@ jQuery(document).ready(function($) {
             .addClass('wp-has-current-submenu wp-menu-open');
 
         // Ensure the specific submenu item for zwsgr_data_widget is active
-        $('ul.wp-submenu li a[href="edit.php?post_type=' + widget_post_type + '"]')
+        $('ul.wp-submenu li a[href="edit.php?post_type=' + widgetPostType + '"]')
             .parent('li')
             .addClass('current');
     }
 
+	var reviewPostType = 'zwsgr_reviews';
+
+	// Check if we're on the edit, new post, or the custom layout page for the review post type
+	if ($('.post-type-' + reviewPostType).length || 
+	$('.post-php.post-type-' + reviewPostType).length || 
+	$('.post-new-php.post-type-' + reviewPostType).length || 
+	window.location.href.indexOf('admin.php?page=zwsgr_review_configurator') !== -1) {
+
+	// Ensure the parent menu (dashboard) is highlighted as active
+	$('.toplevel_page_zwsgr_dashboard')
+		.removeClass('wp-not-current-submenu')
+		.addClass('wp-has-current-submenu wp-menu-open');
+
+	// Ensure the specific submenu item for zwsgr_reviews is active
+	$('ul.wp-submenu li a[href="edit.php?post_type=' + reviewPostType + '"]')
+		.parent('li')
+		.addClass('current');
+	}
+
 	//SEO and Notification Email Toggle 
 	var toggle = $('#zwsgr_admin_notification_enabled');
 	var notificationFields = $('.zwsgr-notification-fields');
+	var submitButton = $('.zwsgr-notification-submit-btn'); 
 	if (toggle.is(':checked')) {
 		notificationFields.show();
+		submitButton.removeClass('zwsgr-disable');
 	} else {
 		notificationFields.hide();
+		submitButton.addClass('zwsgr-disable');
 	}
 	toggle.on('change', function () {
 		if ($(this).is(':checked')) {
 			notificationFields.show();
+			submitButton.removeClass('zwsgr-disable');
 		} else {
 			notificationFields.hide();
+			submitButton.addClass('zwsgr-disable');
 		}
 	});
 
 
 	// SEO and Notification email vaildation
 	function validateEmail(email) {
-		var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		return emailPattern.test(email);
 	}
 
 	// Function to validate emails and show messages
 	function validateEmails() {
-		var emails = $('#zwsgr_admin_notification_emails').val().split(',');
-		var invalidEmails = [];
+		let emails = $('#zwsgr_admin_notification_emails').val().split(',');
+		let invalidEmails = [];
 		emails.forEach(function(email) {
 			email = email.trim(); // Clean the email address
 			if (!validateEmail(email)) {
@@ -104,19 +133,19 @@ jQuery(document).ready(function($) {
 	}
 
 	// On keypress in the email field
-	$('#zwsgr_admin_notification_emails').on('keypress', function() {
+	$(document).on('keypress', '#zwsgr_admin_notification_emails', function() {
 		validateEmails();
 	});
 
 	// On blur (when the user leaves the email field)
-	$('#zwsgr_admin_notification_emails').on('blur', function() {
+	$(document).on('blur', '#zwsgr_admin_notification_emails', function() {
 		validateEmails();
 	});
 
 	// On form submission, check if all emails are valid
-	$('#notification-form').on('submit', function(e) {
-		var emails = $('#zwsgr_admin_notification_emails').val().split(',');
-		var invalidEmails = [];
+	$(document).on('submit', '#notification-form', function(e) {
+		let emails = $('#zwsgr_admin_notification_emails').val().split(',');
+		let invalidEmails = [];
 		emails.forEach(function(email) {
 			email = email.trim();
 			if (!validateEmail(email)) {
@@ -149,9 +178,9 @@ jQuery(document).ready(function($) {
 
 	// Function to save the selected display option and layout option via AJAX
 	function saveSelectedOption(option) {
-		var postId = getQueryParam('zwsgr_widget_id');
-		var settings = $('.tab-item.active').attr('data-tab');
-		var selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
+		let postId = getQueryParam('zwsgr_widget_id');
+		let settings = $('.tab-item.active').attr('data-tab');
+		let selectedLayout = $('.zwsgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
 		$.ajax({
 			url: ajaxurl,
@@ -166,7 +195,7 @@ jQuery(document).ready(function($) {
 				settings: settings
 			},
 			success: function(response) {
-				console.log('Display and layout option saved:', response);
+				// console.log('Display and layout option saved:', response);
 			},
 			error: function(error) {
 				console.error('Error saving options:', error);
@@ -204,7 +233,7 @@ jQuery(document).ready(function($) {
 
 	// If there's a selected option in the URL, display it in the "Selected Option" tab
 	if (selectedOption && activeTab === 'tab-selected') {
-		var selectedOptionElement = $('#' + selectedOption);
+		let selectedOptionElement = $('#' + selectedOption);
 		$('#selected-option-display').html(selectedOptionElement);
 		$('#selected-option-display').find('.select-btn').remove();
 
@@ -215,16 +244,16 @@ jQuery(document).ready(function($) {
 	}
 	
 	// Handle click events for the tab navigation items
-	$('.tab-item').on('click', function() {
-		var tabId = $(this).data('tab');
-		var currentUrl = window.location.href.split('?')[0]; // Get the base URL
+	$(document).on('click', '.tab-item', function() {
+		let tabId = $(this).data('tab');
+		let currentUrl = window.location.href.split('?')[0]; // Get the base URL
 
 		// Get existing query parameters
-		var selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
-		var postId = getQueryParam('zwsgr_widget_id'); // Get the post_id from the URL if it exists
+		let selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
+		let postId = getQueryParam('zwsgr_widget_id'); // Get the post_id from the URL if it exists
 
 		// Start building the new URL with page and tab parameters
-		var newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
+		let newUrl = currentUrl + '?page=zwsgr_widget_configurator&tab=' + tabId;
 
 		// Add selectedOption to the URL if it exists
 		if (selectedOption) {
@@ -240,29 +269,50 @@ jQuery(document).ready(function($) {
 		window.location.href = newUrl;
 	});
 
+	// Function to show custom notifications
+	function showNotification(message, type) {
+		// Define the notification types: success, error, warning, info
+		let notificationClass = 'zwsgr-notice-' + type; // Example: zwsgr-notice-success, zwsgr-notice-error
+
+		// Create the notification HTML
+		let notification = `
+			<div class="zwsgr-notice ${notificationClass} zwsgr-is-dismissible">
+				<p>${message}</p>
+			</div>
+		`;
+
+		// Append the notification to the target area
+		$('.zwsgr-dashboard').prepend(notification);
+
+		// Add click event for the dismiss button
+		$('.zwsgr-notice.zwsgr-is-dismissible').on('click', '.zwsgr-notice-dismiss', function () {
+			$(this).closest('.zwsgr-notice').fadeOut(function () {
+				$(this).remove();
+			});
+		});
+	}
+
 	// Handle click events for "Select Option" buttons
-    $('.select-btn').on('click', function() {
-        var optionId = $(this).data('option');
-        var postId = getQueryParam('zwsgr_widget_id');
-        var currentUrl = window.location.href.split('?')[0];
+    $(document).on('click', '.select-btn', function() {
+        let optionId = $(this).data('option');
+        let postId = getQueryParam('zwsgr_widget_id');
+        let currentUrl = window.location.href.split('?')[0];
+
 
         if (!postId) {
-            alert('Post ID not found!');
-            return;
-        }
+			showNotification('Post ID not found!', 'error'); // Custom error notification
+			return;
+		}
 
 		// Fetch the HTML for the selected option using the correct optionId
-		var selectedOptionElement = $('#' + optionId); // Clone the selected option's element
+		let selectedOptionElement = $('#' + optionId); // Clone the selected option's element
 		$('#selected-option-display').html(selectedOptionElement); // Update the display area
 		$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
-	
-		// Get the outer HTML of the selected element
-		var selectedHtml = selectedOptionElement.prop('outerHTML');
 
 		// Get the current display option (assuming you have a variable for this)
-		var displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
-		var settings = $('.tab-item.active').attr('data-tab');
-		var currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
+		let displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
+		let settings = $('.tab-item.active').attr('data-tab');
+		let currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
 
 		$.ajax({
 			url: ajaxurl,  // This is the WordPress AJAX URL
@@ -279,13 +329,13 @@ jQuery(document).ready(function($) {
 			},
 			success: function(response) {
 				if (response.success) {
-					alert('Layout option saved successfully!');
+					showNotification('Layout option saved successfully!', 'success'); // Show success message
 				} else {
-					alert('Failed to save layout option.');
+					showNotification('Failed to save layout option.', 'error'); // Show error message
 				}
 			},
 			error: function() {
-				alert('An error occurred.');
+				showNotification('An error occurred.', 'error'); // Show error message
 			}
 		});
 
@@ -294,15 +344,16 @@ jQuery(document).ready(function($) {
     });
 
     // Handle the Save & Get Code Button
-    $('#save-get-code-btn').on('click', function() {
-        var selectedOption = getQueryParam('selectedOption');
-        var postId = getQueryParam('zwsgr_widget_id');
-        var currentUrl = window.location.href.split('?')[0];
+    $(document).on('click', '#save-get-code-btn', function() {
+        let selectedOption = getQueryParam('selectedOption');
+        let postId = getQueryParam('zwsgr_widget_id');
+        let currentUrl = window.location.href.split('?')[0];
+
 
         if (!postId) {
-            alert('Post ID not found!');
-            return;
-        }
+			showNotification('Post ID not found!', 'error'); // Custom error notification
+			return;
+		}
 
         // Redirect to the "Generated Shortcode" tab with selected option and post_id
         window.location.href = currentUrl + '?page=zwsgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&zwsgr_widget_id=' + postId;
@@ -310,43 +361,12 @@ jQuery(document).ready(function($) {
 
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider(container) {
-		// Find and reinitialize Slick sliders
-		var slider1 = $(container).find('.zwsgr-slider-1');
-		var slider2 = $(container).find('.zwsgr-slider-2');
-		var slider3 = $(container).find('.zwsgr-slider-3');
-		var slider4 = $(container).find('.zwsgr-slider-4');
-		var slider5 = $(container).find('.zwsgr-slider-5');
-		var slider6 = $(container).find('.zwsgr-slider-6');
-
-		// Unslick if it's already initialized
-		if (slider1.hasClass('slick-initialized')) {
-			slider1.slick('unslick');
-		}
-
-		if (slider2.hasClass('slick-initialized')) {
-			slider2.slick('unslick');
-		}
-
-		if (slider3.hasClass('slick-initialized')) {
-			slider3.slick('unslick');
-		}
-
-		if (slider4.hasClass('slick-initialized')) {
-			slider4.slick('unslick');
-		}
-
-		if (slider5.hasClass('slick-initialized')) {
-			slider5.slick('unslick');
-		}
-
-		if (slider6.hasClass('slick-initialized')) {
-			slider6.slick('unslick');
-		}
-
-
-		// Reinitialize the selected slider
-		if (slider1.length) {
-			slider1.slick({
+		// Find all sliders within the container
+		let sliders = $(container).find('[class^="zwsgr-slider-"]');
+	
+		// Slider configurations based on slider types
+		let sliderConfigs = {
+			'zwsgr-slider-1': {
 				infinite: true,
 				slidesToShow: 3,
 				slidesToScroll: 3,
@@ -355,24 +375,15 @@ jQuery(document).ready(function($) {
 				responsive: [
 					{
 						breakpoint: 1200,
-						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
-						}
+						settings: { slidesToShow: 2, slidesToScroll: 2 }
 					},
 					{
 						breakpoint: 480,
-						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
-						}
+						settings: { slidesToShow: 1, slidesToScroll: 1 }
 					}
 				]
-			});
-		}
-
-		if (slider2.length) {
-			slider2.slick({
+			},
+			'zwsgr-slider-2': {
 				infinite: true,
 				slidesToShow: 3,
 				slidesToScroll: 3,
@@ -381,24 +392,15 @@ jQuery(document).ready(function($) {
 				responsive: [
 					{
 						breakpoint: 1200,
-						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
-						}
+						settings: { slidesToShow: 2, slidesToScroll: 2 }
 					},
 					{
 						breakpoint: 480,
-						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
-						}
+						settings: { slidesToShow: 1, slidesToScroll: 1 }
 					}
 				]
-			});
-		}
-
-		if (slider3.length) {
-			slider3.slick({
+			},
+			'zwsgr-slider-3': {
 				infinite: true,
 				slidesToShow: 2,
 				slidesToScroll: 2,
@@ -407,27 +409,18 @@ jQuery(document).ready(function($) {
 				responsive: [
 					{
 						breakpoint: 1180,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1
-						}
+						settings: { slidesToShow: 1, slidesToScroll: 1 }
 					}
 				]
-			});
-		}
-
-		if (slider4.length) {
-			slider4.slick({
+			},
+			'zwsgr-slider-4': {
 				infinite: true,
 				slidesToShow: 1,
 				slidesToScroll: 1,
 				arrows: true,
-				dots: false,
-			});
-		}
-
-		if (slider5.length) {
-			slider5.slick({
+				dots: false
+			},
+			'zwsgr-slider-5': {
 				infinite: true,
 				slidesToShow: 2,
 				slidesToScroll: 2,
@@ -436,17 +429,11 @@ jQuery(document).ready(function($) {
 				responsive: [
 					{
 						breakpoint: 480,
-						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
-						}
+						settings: { slidesToShow: 1, slidesToScroll: 1 }
 					}
 				]
-			});
-		}
-
-		if (slider6.length) {
-			slider6.slick({
+			},
+			'zwsgr-slider-6': {
 				infinite: true,
 				slidesToShow: 3,
 				slidesToScroll: 3,
@@ -455,22 +442,36 @@ jQuery(document).ready(function($) {
 				responsive: [
 					{
 						breakpoint: 1200,
-						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
-						}
+						settings: { slidesToShow: 2, slidesToScroll: 2 }
 					},
 					{
 						breakpoint: 480,
-						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
-						}
+						settings: { slidesToShow: 1, slidesToScroll: 1 }
 					}
 				]
-			});
-		}
+			}
+		};
+	
+		// Iterate through each slider and reinitialize
+		sliders.each(function () {
+			let slider = $(this);
+	
+			// Unslick if already initialized
+			if (slider.hasClass('slick-initialized')) {
+				slider.slick('unslick');
+			}
+	
+			// Get slider-specific settings
+			let sliderClass = slider.attr('class').split(' ').find(cls => cls.startsWith('zwsgr-slider-'));
+			let config = sliderConfigs[sliderClass];
+	
+			// Initialize Slick with the configuration
+			if (config) {
+				slider.slick(config);
+			}
+		});
 	}
+	
 
 	// Slick sliders
 	$('.zwsgr-slider-1').slick({
@@ -484,15 +485,15 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1200,
 				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
+					slidesToShow: 2,
+					slidesToScroll: 2
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -508,15 +509,15 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1200,
 				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
+					slidesToShow: 2,
+					slidesToScroll: 2
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -532,8 +533,8 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1180,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -557,8 +558,8 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
@@ -574,26 +575,26 @@ jQuery(document).ready(function($) {
 			{
 				breakpoint: 1200,
 				settings: {
-				  slidesToShow: 2,
-				  slidesToScroll: 2
+					slidesToShow: 2,
+					slidesToScroll: 2
 				}
 			},
 			{
 				breakpoint: 480,
 				settings: {
-				  slidesToShow: 1,
-				  slidesToScroll: 1
+					slidesToShow: 1,
+					slidesToScroll: 1
 				}
 			}
 		]
 	});
 
-	// Handle click on visibility toggle icon of REview CPT
-	$('.zwsgr-toggle-visibility').on('click', function(e) {
+	// Handle click on visibility toggle icon of Review CPT
+	$(document).on('click', '.zwsgr-toggle-visibility', function(e) {
 		e.preventDefault();
 
-		var post_id = $(this).data('post-id');
-		var $icon = $(this).find('.dashicons');
+		let postId = $(this).data('post-id');
+		let $icon = $(this).find('.dashicons');
 
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -602,7 +603,7 @@ jQuery(document).ready(function($) {
 			dataType: 'json',
 			data: {
 				action: 'toggle_visibility',
-				post_id: post_id,
+				post_id: postId,
 				nonce: zwsgr_admin.nonce
 			},
 			success: function(response) {
@@ -611,17 +612,17 @@ jQuery(document).ready(function($) {
 					$icon.removeClass('dashicons-hidden dashicons-visibility').addClass('dashicons-' + response.data.icon);
 
 					// Optionally display the current state somewhere on the page
-					var currentState = response.data.state;
+					let currentState = response.data.state;
 					// console.log("Post visibility is now: " + currentState); 	
 				}
 			}
 		});
 	});
 
-	$('#toggle-google-review').on('change', function() {
+	$(document).on('change', '#toggle-google-review', function() {
         // Update button colors based on the color pickers
-        var bgColor = $('#bg-color-picker').val();
-        var textColor = $('#text-color-picker').val();
+        let bgColor = $('#bg-color-picker').val();
+        let textColor = $('#text-color-picker').val();
 
         $('.zwsgr-google-toggle').css({
             'background-color': bgColor,
@@ -630,14 +631,14 @@ jQuery(document).ready(function($) {
     });
 
     // When the background color picker changes
-    $('#bg-color-picker').on('input', function() {
-        var bgColor = $(this).val();
+	$(document).on('input', '#bg-color-picker', function() {
+        let bgColor = $(this).val();
         $('.zwsgr-google-toggle').css('background-color', bgColor);
     });
 
     // When the text color picker changes
-    $('#text-color-picker').on('input', function() {
-        var textColor = $(this).val();
+	$(document).on('input', '#text-color-picker', function() {
+        let textColor = $(this).val();
         $('.zwsgr-google-toggle').css('color', textColor);
     });
 
@@ -653,20 +654,22 @@ jQuery(document).ready(function($) {
 	toggleButtonVisibility();
 
 	// Run the function whenever the checkbox state changes
-	$('#toggle-google-review').on('change', toggleButtonVisibility);
+	$(document).on('change', '#toggle-google-review', toggleButtonVisibility);
 
 	// Function to hide or show elements with a smooth effect
-    function toggleElements() {
-        $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').fadeOut(600) : $('.selected-option-display .zwsgr-title').fadeIn(600);
-        $('#review-rating').is(':checked') ? $('.selected-option-display .zwsgr-rating').fadeOut(600) : $('.selected-option-display .zwsgr-rating').fadeIn(600);
-        $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').fadeIn(600);
-        $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').fadeOut(600) : $('.selected-option-display .zwsgr-content').fadeIn(600);
-		$('#review-photo').is(':checked') ? $('.selected-option-display .zwsgr-profile').fadeOut(600) : $('.selected-option-display .zwsgr-profile').fadeIn(600);
-		$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwsgr-google-icon').fadeOut(600) : $('.selected-option-display .zwsgr-google-icon').fadeIn(600);
+	function toggleElements() {
+        $('#review-title').is(':checked') ? $('.selected-option-display .zwsgr-title').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-title').stop(true, true).fadeIn(600);
+        $('#review-rating').is(':checked') ? $('.selected-option-display .zwsgr-rating').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-rating').stop(true, true).fadeIn(600);
+        $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwsgr-days-ago').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-days-ago').stop(true, true).fadeIn(600);
+        $('#review-content').is(':checked') ? $('.selected-option-display .zwsgr-content').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-content').stop(true, true).fadeIn(600);
+		$('#review-photo').is(':checked') ? $('.selected-option-display .zwsgr-profile').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-profile').stop(true, true).fadeIn(600);
+		$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwsgr-google-icon').stop(true, true).fadeOut(600) : $('.selected-option-display .zwsgr-google-icon').stop(true, true).fadeIn(600);
     }
 
+	
+
     // Attach change event listeners to checkboxes
-    $('input[name="review-element"]').on('change', function() {
+	$(document).on('change', 'input[name="review-element"]', function() {
         toggleElements(); // Call function to toggle elements with fade effect
     });
 
@@ -710,7 +713,7 @@ jQuery(document).ready(function($) {
 		}
 	}
 	// Event listener for date format dropdown
-	$('#date-format-select').on('change', function() {
+	$(document).on('change', '#date-format-select', function() {
 		const selectedFormat = $(this).val();
 		updateDisplayedDates(); // Updated to ensure it re-renders based on new format
 	});
@@ -756,12 +759,12 @@ jQuery(document).ready(function($) {
 
 	// Function to update Read more link based on language
 	function updateReadMoreLink($element, lang) {
-		var charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
-		var fullText = $element.data('full-text'); // Get the stored full text
+		let charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
+		let fullText = $element.data('full-text'); // Get the stored full text
 
 		if (charLimit && fullText.length > charLimit) {
-			var trimmedText = fullText.substring(0, charLimit) + '... ';
-			$element.html(trimmedText + `<a href="#" class="read-more-link">${translations[lang]}</a>`);
+			let trimmedText = fullText.substring(0, charLimit) + '... ';
+			$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${translations[lang]}</a>`);
 			
 			// Re-apply the "Read more" click event using event delegation
 			$(document).on('click', '.read-more-link', function (e) {
@@ -774,12 +777,12 @@ jQuery(document).ready(function($) {
 	}
 
 	// On character limit input change
-	$('#review-char-limit').on('input', function () {
-		var charLimit = parseInt($(this).val(), 10); // Get the entered value
-		var lang = $('#language-select').val(); // Get current language
+	$(document).on('input', '#review-char-limit', function () {
+		let charLimit = parseInt($(this).val(), 10); // Get the entered value
+		let lang = $('#language-select').val(); // Get current language
 
 		// Reference to the error message container
-		var $errorContainer = $('#char-limit-error');
+		let $errorContainer = $('#char-limit-error');
 
 		// Remove previous error message if any
 		$errorContainer.text('');
@@ -789,8 +792,8 @@ jQuery(document).ready(function($) {
 			if ($(this).val().trim() === '') {
 				// If input is blank, reset all content to full text
 				$('.zwsgr-content').each(function () {
-					var $this = $(this);
-					var fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
+					let $this = $(this);
+					let fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
 					$this.text(fullText); // Show the full text
 				});
 			} else {
@@ -802,8 +805,8 @@ jQuery(document).ready(function($) {
 
 		// If valid, apply the new character limit dynamically
 		$('.zwsgr-content').each(function () {
-			var $this = $(this);
-			var fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
+			let $this = $(this);
+			let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
 
 			// Store original full text if not already stored
 			if (!$this.data('full-text')) {
@@ -816,7 +819,7 @@ jQuery(document).ready(function($) {
 	});
 
 	   // Function to update displayed dates based on selected language and format
-	   function updateDisplayedDates() {
+	function updateDisplayedDates() {
 		const lang = $('#language-select').val(); // Get selected language
 		const format = $('#date-format-select').val(); // Get selected date format
 	
@@ -833,37 +836,36 @@ jQuery(document).ready(function($) {
 	
 
 	// On language select change
-	$('#language-select').on('change', function () {
-		var lang = $(this).val(); // Get selected language
+	$(document).on('change', '#language-select', function () {
+		let lang = $(this).val(); // Get selected language
 		updateDisplayedDates(); // Re-render dates when language changes
 
 		// Loop through each content block and update the Read more link with the new language
 		$('.zwsgr-content').each(function () {
-			var $this = $(this);
+			let $this = $(this);
 			updateReadMoreLink($this, lang);
 		});
 	});
 
-	$('#date-format-select').on('change', updateDisplayedDates); // Ensure dates update on format change
+	$(document).on('change', '#date-format-select', updateDisplayedDates);
 
 	// Toggle for Google Review link
-    $('#toggle-google-review').on('change', function() {
+	$(document).on('change', '#toggle-google-review', function() {
         if ($(this).is(':checked')) {
-
-            $('#color-picker-options').fadeIn(); // Show color picker options
+			$('#color-picker-options').stop(true, true).fadeIn();
         } else {
-            $('#color-picker-options').fadeOut(); // Hide color picker options
+			$('#color-picker-options').stop(true, true).fadeOut();
         }
     });
 
 	// Toggle for Lode More
-	$('#enable-load-more').on('change', function () {
+	$(document).on('change', '#enable-load-more', function () {
         if ($(this).is(':checked')) {
             // If checkbox is checked, fade in the color picker options
-            $('#zwsgr-load-color-picker-options').fadeIn();
+			$('#zwsgr-load-color-picker-options').stop(true, true).fadeIn();
         } else {
             // If checkbox is unchecked, fade out the color picker options
-            $('#zwsgr-load-color-picker-options').fadeOut();
+			$('#zwsgr-load-color-picker-options').stop(true, true).fadeOut();
         }
     });
 
@@ -931,7 +933,7 @@ jQuery(document).ready(function($) {
 	};
 
 	// Handle the Enter key press to add keywords
-	$('#keywords-input').on('keypress', function (e) {
+	$(document).on('keypress', '#keywords-input', function (e) {
 		if (e.which === 13) { // Check for Enter key
 			e.preventDefault(); // Prevent default form submission
 			handleAddKeywords($(this).val());
@@ -939,47 +941,45 @@ jQuery(document).ready(function($) {
 	});
 
 	// Handle the blur event to add keywords
-	$('#keywords-input').on('blur', function () {
+	$(document).on('blur', '#keywords-input', function () {
 		handleAddKeywords($(this).val());
 	});
 
 
     // Set up click event to remove existing keywords (on page load)
-    $('#keywords-list').on('click', '.remove-keyword', function () {
+	$(document).on('click', '#keywords-list .remove-keyword', function () {
         $(this).parent('.keyword-item').remove(); // Remove the clicked keyword
         updateInputField(); // Update the hidden input after removal
     });
 	
 	// Save the all Widget and Generate the shortcode
-	$('#save-get-code-btn').on('click', function(e) {
+	$(document).on('click', '#save-get-code-btn', function(e) {
 		e.preventDefault();
 	
-		var postId = getQueryParam('zwsgr_widget_id'); // Get post_id from the URL
-		var displayOption = $('input[name="display_option"]:checked').val();
-		var selectedElements = $('input[name="review-element"]:checked').map(function() {
+		let postId = getQueryParam('zwsgr_widget_id'); // Get post_id from the URL
+		let displayOption = $('input[name="display_option"]:checked').val();
+		let selectedElements = $('input[name="review-element"]:checked').map(function() {
 			return $(this).val();
 		}).get();
-		// var ratingFilter = $('.star-filter.selected').data('rating') || '';
-		var keywords = $('#keywords-list .keyword-item').map(function() {
+		let keywords = $('#keywords-list .keyword-item').map(function() {
 			return $(this).text().trim().replace(' ✖', '');
 		}).get();
-		var dateFormat = $('#date-format-select').val();
-		var charLimit = $('#review-char-limit').val();
-		var language = $('#language-select').val();
-		var sortBy = $('#sort-by-select').val();
-		var enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
-		var googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
-		var bgColor = $('#bg-color-picker').val();
-		var textColor = $('#text-color-picker').val();
-		var bgColorLoad = $('#bg-color-picker_load').val();
-		var textColorLoad = $('#text-color-picker_load').val();
-		var settings = $('.tab-item.active').attr('data-tab');
-		var postsPerPage = $('#posts-per-page').val();
-		// Fetch the selected star rating from the star filter
-		var selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
-		var currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
-		var customCSS = $('.zwsgr-textarea').val();
-		var enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
+		let dateFormat = $('#date-format-select').val();
+		let charLimit = $('#review-char-limit').val();
+		let language = $('#language-select').val();
+		let sortBy = $('#sort-by-select').val();
+		let enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
+		let googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
+		let bgColor = $('#bg-color-picker').val();
+		let textColor = $('#text-color-picker').val();
+		let bgColorLoad = $('#bg-color-picker_load').val();
+		let textColorLoad = $('#text-color-picker_load').val();
+		let settings = $('.tab-item.active').attr('data-tab');
+		let postsPerPage = $('#posts-per-page').val();
+		let selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
+		let currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+		let customCSS = $('.zwsgr-textarea').val();
+		let enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
 
 		// Send AJAX request to store the widget data and shortcode
 		$.ajax({
@@ -1012,14 +1012,14 @@ jQuery(document).ready(function($) {
 			},
 			success: function(response) {
 				if (response.success) {
-					alert('Settings and shortcode saved successfully.');
+					showNotification('Settings and shortcode saved successfully.', 'success'); // Custom success notification
 				} else {
-					alert('Error: ' + response.data);
+					showNotification('Error: ' + response.data, 'error'); // Custom error notification
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log('AJAX Error: ', textStatus, errorThrown);
-				alert('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown);
+				showNotification('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown, 'error'); // Custom error notification
 			}
 		});
 	});
@@ -1037,12 +1037,12 @@ jQuery(document).ready(function($) {
 		processBatch(zwsgr_gmb_data_type);
 	});
 	
-	$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").on("click", function (e) {
+	$("#fetch-gmb-auth-url").on("click", function (e) {
 		
 		e.preventDefault();
 
-		$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', true);
-		$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Connecting...");
+		$("#fetch-gmb-auth-url").prop('disabled', true);
+		$("#fetch-gmb-auth-url").html("Connecting...");
 
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
@@ -1055,8 +1055,8 @@ jQuery(document).ready(function($) {
 
 				if (response.success) {
 					
-					$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', false);
-					$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Redirecting...");
+					$("#fetch-gmb-auth-url").prop('disabled', false);
+					$("#fetch-gmb-auth-url").html("Redirecting...");
 
 					// Redirect to the OAuth URL
 					window.location.href = response.data.zwsgr_oauth_url;
@@ -1069,8 +1069,8 @@ jQuery(document).ready(function($) {
 			},
 			error: function (xhr, status, error) {
 
-				$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").prop('disabled', false);
-				$("#fetch-gmb-auth-url-wrapper #fetch-gmb-auth-url").html("Connect with Google");
+				$("#fetch-gmb-auth-url").prop('disabled', false);
+				$("#fetch-gmb-auth-url").html("Connect with Google");
 
 				// Log and alert errors
 				$("#fetch-gmb-auth-url-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
@@ -1108,12 +1108,13 @@ jQuery(document).ready(function($) {
 
 					$("#disconnect-gmb-auth-response").html("<p class='success response''> OAuth Disconnected: " + (response.data?.message || "Unknown error") + "</p>");
 
+					$("#disconnect-gmb-auth .zwsgr-th-label").html("");
+
 					$("#disconnect-gmb-auth .zwsgr-caution-div").fadeOut();
 					$("#disconnect-gmb-auth .danger-note").fadeOut();
 
-					// Reload the page after a 1-second delay
 					setTimeout(function() {
-						location.reload();
+						window.location.href = zwsgr_admin.zwsgr_redirect;
 					}, 1500);
 
 				} else {
@@ -1141,24 +1142,20 @@ jQuery(document).ready(function($) {
 		return emailPattern.test(email);
 	}
 	
-	  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
+	$("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
 		e.preventDefault();
 		const zwsgr_button = $(this);
 		const zwsgr_gmb_data_type = zwsgr_button.data("fetch-type");
 	
 		// Get selected account and location from the dropdowns
-		const zwsgr_account_number = $(
-		  "#fetch-gmb-data #zwsgr-account-select"
-		).val();
+		const zwsgr_account_number = $("#fetch-gmb-data #zwsgr-account-select").val();
 		$("#fetch-gmb-data #zwsgr-account-select").addClass('disabled');
 
 		const zwsgr_account_name = $(
 			"#fetch-gmb-data #zwsgr-account-select option:selected"
 		).text();
 
-		const zwsgr_location_number = $(
-		  "#fetch-gmb-data #zwsgr-location-select"
-		).val();
+		const zwsgr_location_number = $("#fetch-gmb-data #zwsgr-location-select").val();
 
 		const zwsgr_location_name = $(
 			"#fetch-gmb-data #zwsgr-location-select option:selected"
@@ -1176,19 +1173,39 @@ jQuery(document).ready(function($) {
 
 		const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
 
+		zwsgr_button.addClass("disabled");
+		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
+
+		if (!zwsgr_account_number && !zwsgr_location_number) {
+			$('#fetch-gmb-data .response').html('<p class="error">Both account and location are required.</p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
+			return;
+		}
+
 		if (!zwsgr_account_number) {
-			$('#fetch-gmb-data .response').html('<p class="error">Account is required</p>');
+			$('#fetch-gmb-data .response').html('<p class="error"> Account is required. </p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
 			return;
 		}
 
 		if (!zwsgr_location_number) {
-			$('#fetch-gmb-data .response').html('<p class="error">Location is required</p>');
+			$('#fetch-gmb-data .response').html('<p class="error"> Location is required. </p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
 			return;
 		}
 
 		if (!zwsgr_widget_id) {
 			alert("Please select an approprite location.");
-			$('#fetch-gmb-data .response').html('<p class="error">No valid widget ID found</p>');
+			$('#fetch-gmb-data .response').html('<p class="error"> No valid widget ID found. </p>');
+			setTimeout(function() {
+				location.reload();
+			}, 1500);
 			return;
 		}
 
@@ -1196,46 +1213,45 @@ jQuery(document).ready(function($) {
 
 		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
-		zwsgr_button.addClass("disabled");
-		zwsgr_button.html('<span class="spinner is-active"></span> Fetching...');
-	
 		processBatch(
-		  zwsgr_gmb_data_type,
-		  zwsgr_account_number,
-		  zwsgr_location_number,
-		  zwsgr_widget_id,
-		  zwsgr_location_name,
-		  zwsgr_location_new_review_uri,
-		  zwsgr_account_name,
-		  zwsgr_location_all_review_uri
+			zwsgr_gmb_data_type,
+			zwsgr_account_number,
+			zwsgr_location_number,
+			zwsgr_widget_id,
+			zwsgr_location_name,
+			zwsgr_location_new_review_uri,
+			zwsgr_account_name,
+			zwsgr_location_all_review_uri
 		);
-	  });
+	});
 	
 	  // Function to get URL parameter by name
-	  function zwsgr_getUrlParameter(name) {
+	function zwsgr_getUrlParameter(name) {
 		const urlParams = new URLSearchParams(window.location.search);
 		return urlParams.get(name);
-	  }
+	}
 	
 	  // Listen for changes in the account dropdown and process batch if changed
-	  $("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
+	$("#fetch-gmb-data #zwsgr-account-select").on("change", function () {
 		const zwsgr_account_number = $(this).val();
 		const zwsgr_account_name = $(this).find("option:selected").text();
+		$("#fetch-gmb-data #zwsgr-location-select").remove();
+		$("body #fetch-gmb-data .zwsgr-submit-btn").remove();
 		
 		if (zwsgr_account_number) {
 
 		  // Add loading spinner and disable the dropdown to prevent multiple selections
-		  $(this).prop("disabled", true);
-		  $("#fetch-gmb-data #zwsgr-location-select").remove();
-		  $("#fetch-gmb-data #fetch-gmd-reviews").remove();
-	
-		  const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
-		  
-		  $('#fetch-gmb-data .response').html('');
-		  $('#fetch-gmb-data .progress-bar').css('display', 'block');
-	
-		  // Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
-		  processBatch(
+			$(this).prop("disabled", true);
+			$("#fetch-gmb-data #zwsgr-location-select").remove();
+			$("#fetch-gmb-data #fetch-gmd-reviews").remove();
+		
+			const zwsgr_widget_id = zwsgr_getUrlParameter("zwsgr_widget_id");
+			
+			$('#fetch-gmb-data .response').html('');
+			$('#fetch-gmb-data .progress-bar').css('display', 'block');
+		
+			// Assuming 'zwsgr_gmb_locations' as the data type for fetching locations on account change
+			processBatch(
 			"zwsgr_gmb_locations",
 			zwsgr_account_number,
 			null,
@@ -1243,27 +1259,26 @@ jQuery(document).ready(function($) {
 			null,
 			null,
 			zwsgr_account_name
-		  );
-
+			);
 		}		
 
-	  });
+	});
 	
-	  function processBatch(
-		zwsgr_gmb_data_type,
-		zwsgr_account_number,
-		zwsgr_location_number,
-		zwsgr_widget_id,
-		zwsgr_location_name,
-		zwsgr_location_new_review_uri,
-		zwsgr_account_name,
-		zwsgr_location_all_review_uri
-	  ) {
+	function processBatch(
+	zwsgr_gmb_data_type,
+	zwsgr_account_number,
+	zwsgr_location_number,
+	zwsgr_widget_id,
+	zwsgr_location_name,
+	zwsgr_location_new_review_uri,
+	zwsgr_account_name,
+	zwsgr_location_all_review_uri
+	) {
 		$.ajax({
-		  url: zwsgr_admin.ajax_url,
-		  type: "POST",
-		  dataType: "json",
-		  data: {
+			url: zwsgr_admin.ajax_url,
+			type: "POST",
+			dataType: "json",
+			data: {
 			action: "zwsgr_fetch_gmb_data",
 			security: zwsgr_admin.zwsgr_queue_manager_nounce,
 			zwsgr_gmb_data_type: zwsgr_gmb_data_type,
@@ -1274,55 +1289,55 @@ jQuery(document).ready(function($) {
 			zwsgr_location_new_review_uri: zwsgr_location_new_review_uri,
 			zwsgr_account_name: zwsgr_account_name,
 			zwsgr_location_all_review_uri: zwsgr_location_all_review_uri
-		  },
-		  success: function (response) {
+			},
+			success: function (response) {
 
 			if (response.success) {
-				$('#fetch-gmb-data .progress-bar').fadeIn();
+				$('#fetch-gmb-data .progress-bar').stop(true, true).fadeIn();
 			} else {
 				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
 				// Reload the page after a 1-second delay
 				setTimeout(function() {
 					location.reload();
 				}, 1500);
-            }
+			}
 
-		  },
-		  error: function (xhr, status, error) {
+			},
+			error: function (xhr, status, error) {
 			
 			// Catch errors sent using wp_send_json_error
-            let response = xhr.responseJSON;
+			let response = xhr.responseJSON;
 
 			console.log(response, 'response');
 
-            if (response && !response.success) {
+			if (response && !response.success) {
 				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
-            }
+			}
 
 			// Reload the page after a 1-second delay
 			setTimeout(function() {
 				location.reload();
 			}, 1500);
 
-		  },
+			},
 		});
 
 		// batchInterval = setInterval(function() {
 		// 	checkBatchStatus();
 		// }, 1000);
 
-	  }
+	}
 
 	  // Check if we're on the specific page URL that contains zwsgr_widget_id dynamically
-	  if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
+	if (window.location.href.indexOf('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=') !== -1) {
         // Call the function to check batch status
 		batchInterval = setInterval(function() {
 			checkBatchStatus();
 		}, 2500);
 
-      }
+	}
 	
-	  function checkBatchStatus() {
+	function checkBatchStatus() {
 
 		// Function to get URL parameters
 		function getUrlParameter(name) {
@@ -1334,70 +1349,67 @@ jQuery(document).ready(function($) {
 		const zwsgr_widget_id = getUrlParameter('zwsgr_widget_id');
 
 		$.ajax({
-		  url: zwsgr_admin.ajax_url,
-		  method: "POST",
-		  data: {
-			action: "zwsgr_get_batch_processing_status",
-			security: zwsgr_admin.zwsgr_queue_manager_nounce,
-			zwsgr_widget_id: zwsgr_widget_id
-		  },
-		  success: function (response) {
-
-			if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
-				
-				$('#fetch-gmb-data .progress-bar #progress').val(100);
-				$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
-				$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
-
-				if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
-
-					$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
-
-				} else if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
-
-					$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
-					$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
-
-				}
-				
-				setTimeout(function () {
-					$('#fetch-gmb-data .progress-bar').fadeOut();
-					if (response.data.zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
-						redirectToOptionsTab();
-					} else {
-						location.reload();
-					}
-				}, 2000);
-
-			} else {
-				 
-				// Use the batch progress directly from the response
-				var zwsgr_batch_progress = response.data.zwsgr_batch_progress;
-
-				// Check if zwsgr_batch_progress is a valid number
-				if (!isNaN(zwsgr_batch_progress) && zwsgr_batch_progress >= 0 && zwsgr_batch_progress <= 100) {
+			url: zwsgr_admin.ajax_url,
+			method: "POST",
+			data: {
+				action: "zwsgr_get_batch_processing_status",
+				security: zwsgr_admin.zwsgr_queue_manager_nounce,
+				zwsgr_widget_id: zwsgr_widget_id
+			},
+			success: function (response) {
+				if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
 					
-					// Update the progress bar with the batch progress
-					$('#fetch-gmb-data .progress-bar #progress').val(zwsgr_batch_progress);
-					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwsgr_batch_progress) + '%');
+					$('#fetch-gmb-data .progress-bar #progress').val(100);
+					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
+					$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
+
+					if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_locations') {
+
+						$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
+
+					} else if (response.data.zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
+
+						$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
+						$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
+
+					}
+					
+					setTimeout(function () {
+						$('#fetch-gmb-data .progress-bar').fadeOut();
+						if (response.data.zwsgr_gmb_data_type === 'zwsgr_gmb_reviews') {
+							redirectToOptionsTab();
+						} else {
+							location.reload();
+						}
+					}, 2000);
 
 				} else {
+					// Use the batch progress directly from the response
+					var zwsgr_batch_progress = response.data.zwsgr_batch_progress;
 
-					console.error('Invalid batch progress:', zwsgr_batch_progress);
-					
+					// Check if zwsgr_batch_progress is a valid number
+					if (!isNaN(zwsgr_batch_progress) && zwsgr_batch_progress >= 0 && zwsgr_batch_progress <= 100) {
+						
+						// Update the progress bar with the batch progress
+						$('#fetch-gmb-data .progress-bar #progress').val(zwsgr_batch_progress);
+						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwsgr_batch_progress) + '%');
+
+					} else {
+
+						console.error('Invalid batch progress:', zwsgr_batch_progress);
+						
+					}
 				}
-
-			}
-		  },
-		  error: function (xhr, status, error) {
-			//console.error("Error:", error);
-			//console.error("Status:", status);
-			//console.error("Response:", xhr.responseText);
-		  },
+			},
+			error: function (xhr, status, error) {
+				//console.error("Error:", error);
+				//console.error("Status:", status);
+				//console.error("Response:", xhr.responseText);
+			},
 		});
-	  }
+	}
 
-	  function redirectToOptionsTab() {
+	function redirectToOptionsTab() {
 		// Get the current URL
 		let currentUrl = window.location.href;
 		
@@ -1412,7 +1424,7 @@ jQuery(document).ready(function($) {
 		window.location.href = currentUrl;
 	}
 	
-	  $("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
+	$("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
 	
 		event.preventDefault();
 
@@ -1431,14 +1443,16 @@ jQuery(document).ready(function($) {
 
 		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
 		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-	
-		// Send AJAX request to handle the add / update reply request
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const zwsgr_wp_review_id = urlParams.get('post');
+
 		$.ajax({
 			url: zwsgr_admin.ajax_url,
 			type: 'POST',
 			data: {
 				action: 'zwsgr_add_update_review_reply',
-				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_wp_review_id: zwsgr_wp_review_id,
 				zwsgr_reply_comment: zwsgr_reply_comment,
 				security: zwsgr_admin.zwsgr_add_update_reply_nonce
 			},
@@ -1463,14 +1477,17 @@ jQuery(document).ready(function($) {
 			}
 		});
 	
-	  });
+	});
 	
-	  $("#gmb-review-data #delete-reply").on("click", function (event) {
+	$("#gmb-review-data #delete-reply").on("click", function (event) {
 		
 		event.preventDefault();
 
 		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
 		var buttons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const zwsgr_wp_review_id = urlParams.get('post');
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1478,7 +1495,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwsgr_delete_review_reply',
-				zwsgr_wp_review_id: zwsgr_admin.zwsgr_wp_review_id,
+				zwsgr_wp_review_id: zwsgr_wp_review_id,
 				security: zwsgr_admin.zwsgr_delete_review_reply
 			},
 			beforeSend: function() {
@@ -1603,7 +1620,7 @@ jQuery(document).ready(function($) {
 
 		zwsgr_chart_data.unshift(['Rating', 'Number of Reviews']);
 
-		console.log(zwsgr_chart_data, 'zwsgr_chart_data');
+		// console.log(zwsgr_chart_data, 'zwsgr_chart_data');
 
 		var zwsgr_data = google.visualization.arrayToDataTable(zwsgr_chart_data);
 
@@ -1611,6 +1628,11 @@ jQuery(document).ready(function($) {
 			pieHole: 0.4,
 			width: 276,
 			height: 276,
+			pieSliceText: 'percentage',
+			pieSliceTextStyle: {
+				color: '#000000',
+				fontSize: 16
+			},
 			legend: 'none',
 			chartArea: {
 				width: '90%',
@@ -1672,7 +1694,7 @@ jQuery(document).ready(function($) {
 			success: function(response) {
 				if (response.success) {
 					$('.zwgr-dashboard').append(response.data.html);
-					$('.zwgr-dashboard').children(':last').hide().fadeIn(300);
+					$('.zwgr-dashboard').children(':last').hide().stop(true, true).fadeIn(300);
 					if (response.data.zwsgr_chart_data) {
 						setTimeout(function() {
 							google.charts.setOnLoadCallback(zwsgr_draw_chart(response.data.zwsgr_chart_data));
@@ -1696,8 +1718,8 @@ jQuery(document).ready(function($) {
 		});
 	}
 
-	$('.star-filter').on('click', function () {
-		var rating = $(this).data('rating'); // Get the rating of the clicked star
+	$(document).on('click', '.star-filter', function () {
+		let rating = $(this).data('rating'); // Get the rating of the clicked star
 	
 		// Check if the clicked star is already selected and is the lowest rating
 		if ($(this).hasClass('selected') && rating === 1) {
@@ -1709,7 +1731,7 @@ jQuery(document).ready(function($) {
 	
 		// Toggle the 'selected' state of stars
 		$('.star-filter').each(function () {
-			var currentRating = $(this).data('rating');
+			let currentRating = $(this).data('rating');
 			if (currentRating <= rating) {
 				// Select this star
 				$(this).addClass('selected');
@@ -1722,25 +1744,33 @@ jQuery(document).ready(function($) {
 		});
 	
 		// Handle the new rating value
-		var ratingFilterValue = rating;
-		console.log("Selected rating:", ratingFilterValue);
+		let ratingFilterValue = rating;
 	});
 	
 
 	// Event listener for clicking on a star filter
 	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
-		var selectedRating = $(this).data('rating'); // Get the selected rating
-		var nonce = filter_reviews.nonce;
-		var postId = getQueryParam('zwsgr_widget_id');
-		var sortBy = $('#sort-by-select').val(); // Get the selected sort by value
+		let nonce = filter_reviews.nonce;
+		let postId = getQueryParam('zwsgr_widget_id');
+		let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
 		// Prepare an array of selected ratings
-		var selectedRatings = [];
+		let selectedRatings = [];
 		$('.filter-rating .star-filter.selected').each(function() {
 			selectedRatings.push($(this).data('rating')); // Push each selected rating into the array
 		});
 
 		// If nothing is selected, default to all ratings (1-5 stars)
-		if (selectedRatings.length === 0) {
+		if(selectedRatings.length === 1){
+			selectedRatings =[1]
+		}else if(selectedRatings.length === 2){
+			selectedRatings =[2]
+		}else if(selectedRatings.length === 3){
+			selectedRatings =[3]
+		}else if(selectedRatings.length === 4){
+			selectedRatings =[4]
+		}else if(selectedRatings.length === 5){
+			selectedRatings =[5]
+		}else{
 			selectedRatings = [1, 2, 3, 4, 5];
 		}
 
@@ -1766,21 +1796,20 @@ jQuery(document).ready(function($) {
 					console.error("Expected HTML content, but received:", response);
 				}
 
-				 // Use getQueryParam to extract the 'selectedOption' parameter from the URL
-				 var selectedOption = getQueryParam('selectedOption');
+				// Use getQueryParam to extract the 'selectedOption' parameter from the URL
+				var selectedOption = getQueryParam('selectedOption');
 
-				 // Only reinitialize Slick slider if selectedOption is one of the slider options
-				 if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
-					 setTimeout(function() {
-						 reinitializeSlickSlider1($('#selected-option-display'));
-					 }, 100);
-				 }
-	 
-				 // Handle list layout reinitialization (if needed)
-				 if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
+				// Only reinitialize Slick slider if selectedOption is one of the slider options
+				if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
+					setTimeout(function() {
+						reinitializeSlickSlider1($('#selected-option-display'));
+					}, 100);
+				}
+				// Handle list layout reinitialization (if needed)
+				if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
 					 // Optionally, you can apply list-specific reinitialization logic here
 					//  alert('List layout filtered');
-				 }
+				}				
 			},
 			error: function(xhr, status, error) {
 				console.error("AJAX Error: ", status, error);
@@ -1791,12 +1820,12 @@ jQuery(document).ready(function($) {
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider1(container) {
 		// Find and reinitialize Slick sliders
-		var slider1 = $(container).find('.zwsgr-slider-1');
-		var slider2 = $(container).find('.zwsgr-slider-2');
-		var slider3 = $(container).find('.zwsgr-slider-3');
-		var slider4 = $(container).find('.zwsgr-slider-4');
-		var slider5 = $(container).find('.zwsgr-slider-5');
-		var slider6 = $(container).find('.zwsgr-slider-6');
+		let slider1 = $(container).find('.zwsgr-slider-1');
+		let slider2 = $(container).find('.zwsgr-slider-2');
+		let slider3 = $(container).find('.zwsgr-slider-3');
+		let slider4 = $(container).find('.zwsgr-slider-4');
+		let slider5 = $(container).find('.zwsgr-slider-5');
+		let slider6 = $(container).find('.zwsgr-slider-6');
 
 		// Unslick if it's already initialized
 		if (slider1.hasClass('slick-initialized')) {
@@ -1836,15 +1865,15 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 1200,
 						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
+							slidesToShow: 2,
+							slidesToScroll: 2
 						}
 					},
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1862,15 +1891,15 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 1200,
 						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
+							slidesToShow: 2,
+							slidesToScroll: 2
 						}
 					},
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1917,8 +1946,8 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1936,15 +1965,15 @@ jQuery(document).ready(function($) {
 					{
 						breakpoint: 1200,
 						settings: {
-						  slidesToShow: 2,
-						  slidesToScroll: 2
+							slidesToShow: 2,
+							slidesToScroll: 2
 						}
 					},
 					{
 						breakpoint: 480,
 						settings: {
-						  slidesToShow: 1,
-						  slidesToScroll: 1
+							slidesToShow: 1,
+							slidesToScroll: 1
 						}
 					}
 				]
@@ -1981,7 +2010,6 @@ jQuery(document).ready(function($) {
 	$(document).on('click', '.toggle-content', function () {
         var $link = $(this);
         var fullText = $link.data('full-text');
-		console.log(fullText);
         var $parentParagraph = $link.closest('p');
     
         // Replace the trimmed content with the full content
@@ -2028,21 +2056,22 @@ jQuery(document).ready(function($) {
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
         }
     }); 
-
+	var smtpsubmitButton = $('.zwsgr-smtp-submit-btn'); // Select the submit button
 	$('input[name="zwsgr_admin_smtp_enabled"]').change(function() {
         if ($(this).is(':checked')) {
-        	$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_username"]').attr('required', 'required');
 			$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
-        	$('input[name="zwsgr_from_email"]').attr('required', 'required');
-           	$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
-           	$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
+			$('input[name="zwsgr_from_email"]').attr('required', 'required');
+			$('input[name="zwsgr_smtp_host"]').attr('required', 'required');
+			$('.zwsgr-admin-enable-smtp').show(); // Example of showing an element
+			smtpsubmitButton.removeClass('zwsgr-disable'); 
         } else {
-        	$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
-        	$('input[name="zwsgr_from_email"]').removeAttr('required');
-        	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
-        	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+			$('.zwsgr-admin-enable-smtp').hide(); // Example of hiding an element
+			$('input[name="zwsgr_from_email"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+			$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 			$('input[name="zwsgr_smtp_password"]').removeAttr('required');
-
+			smtpsubmitButton.addClass('zwsgr-disable'); 
         }
     });
 	if ($('input[name="zwsgr_admin_smtp_enabled"]').is(':checked')) {
@@ -2051,12 +2080,14 @@ jQuery(document).ready(function($) {
 		$('input[name="zwsgr_smtp_password"]').attr('required', 'required');
 		$('input[name="zwsgr_from_email"]').attr('required', 'required');
         $('input[name="zwsgr_smtp_host"]').attr('required', 'required'); 
+		smtpsubmitButton.removeClass('zwsgr-disable'); 
 	} else {
 		$('.zwsgr-admin-enable-smtp').hide(); 
 		$('input[name="zwsgr_from_email"]').removeAttr('required');
-    	$('input[name="zwsgr_smtp_host"]').removeAttr('required');
-    	$('input[name="zwsgr_smtp_username"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_host"]').removeAttr('required');
+		$('input[name="zwsgr_smtp_username"]').removeAttr('required');
 		$('input[name="zwsgr_smtp_password"]').removeAttr('required');
+		smtpsubmitButton.addClass('zwsgr-disable'); 
 	}
 	// End code SMTP
 	
@@ -2064,7 +2095,4 @@ jQuery(document).ready(function($) {
 	$('#zwsgr-account-select').on('change', function () {
 		$(this).closest('form').submit();
 	});
-
-
-	
 });

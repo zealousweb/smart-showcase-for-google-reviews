@@ -45,7 +45,6 @@ if ( !class_exists( 'ZWSGR' ) ) {
 				add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
 			}
 			
-			
 		}
 
 		/**

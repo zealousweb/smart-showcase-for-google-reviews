@@ -100,19 +100,21 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
         public function zwsgr_fetch_gmb_data($zwsgr_internal_call = false, $zwsgr_next_page_token = false, $zwsgr_gmb_data_type = null, $zwsgr_account_number = null, $zwsgr_location_number = null, $zwsgr_widget_id = null) {
 
+            if (!$zwsgr_internal_call && defined('DOING_AJAX') && DOING_AJAX) {
+                check_ajax_referer('zwsgr_queue_manager_nounce', 'security');
+            }
+
             // Get the values from method parameters, $_POST, or options as fallback
-            $this->zwsgr_widget_id               = isset($zwsgr_widget_id)                ? sanitize_text_field($zwsgr_widget_id)               : (isset($_POST['zwsgr_widget_id'])               ? sanitize_text_field($_POST['zwsgr_widget_id'])               : get_option('zwsgr_widget_id'));
-            $this->zwsgr_gmb_data_type           = isset($zwsgr_gmb_data_type)            ? sanitize_text_field($zwsgr_gmb_data_type)           : (isset($_POST['zwsgr_gmb_data_type'])           ? sanitize_text_field($_POST['zwsgr_gmb_data_type'])           : get_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', true));
-            $this->zwsgr_account_number          = isset($zwsgr_account_number)           ? sanitize_text_field($zwsgr_account_number)          : (isset($_POST['zwsgr_account_number'])          ? sanitize_text_field($_POST['zwsgr_account_number'])          : get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_number', true));
-            $this->zwsgr_location_number         = isset($zwsgr_location_number)          ? sanitize_text_field($zwsgr_location_number)         : (isset($_POST['zwsgr_location_number'])         ? sanitize_text_field($_POST['zwsgr_location_number'])         : get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_number', true));
-            $this->zwsgr_location_new_review_uri = isset($zwsgr_location_new_review_uri)  ? esc_url($zwsgr_location_new_review_uri)             : (isset($_POST['zwsgr_location_new_review_uri']) ? esc_url($_POST['zwsgr_location_new_review_uri'])             : esc_url(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', true)));
-            $this->zwsgr_location_name           = isset($zwsgr_location_name)            ? sanitize_text_field($zwsgr_location_name)           : (isset($_POST['zwsgr_location_name'])           ? sanitize_text_field($_POST['zwsgr_location_name'])           : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', true)));
-            $this->zwsgr_account_name            = isset($zwsgr_account_name)             ? sanitize_text_field($zwsgr_account_name)            : (isset($_POST['zwsgr_account_name'])            ? sanitize_text_field($_POST['zwsgr_account_name'])            : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', true)));
-            $this->zwsgr_location_all_review_uri = isset($zwsgr_location_all_review_uri)  ? sanitize_text_field($zwsgr_location_all_review_uri) : (isset($_POST['zwsgr_location_all_review_uri']) ? sanitize_text_field($_POST['zwsgr_location_all_review_uri']) : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_all_review_uri', true)));
+            $this->zwsgr_widget_id               = isset($zwsgr_widget_id)                ? sanitize_text_field($zwsgr_widget_id)               : (isset($_POST['zwsgr_widget_id'])               ? sanitize_text_field(wp_unslash($_POST['zwsgr_widget_id']))               : get_option('zwsgr_widget_id'));
+            $this->zwsgr_gmb_data_type           = isset($zwsgr_gmb_data_type)            ? sanitize_text_field($zwsgr_gmb_data_type)           : (isset($_POST['zwsgr_gmb_data_type'])           ? sanitize_text_field(wp_unslash($_POST['zwsgr_gmb_data_type']))           : get_post_meta($this->zwsgr_widget_id, 'zwsgr_gmb_data_type', true));
+            $this->zwsgr_account_number          = isset($zwsgr_account_number)           ? sanitize_text_field($zwsgr_account_number)          : (isset($_POST['zwsgr_account_number'])          ? sanitize_text_field(wp_unslash($_POST['zwsgr_account_number']))          : get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_number', true));
+            $this->zwsgr_location_number         = isset($zwsgr_location_number)          ? sanitize_text_field($zwsgr_location_number)         : (isset($_POST['zwsgr_location_number'])         ? sanitize_text_field(wp_unslash($_POST['zwsgr_location_number']))         : get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_number', true));
+            $this->zwsgr_location_new_review_uri = isset($zwsgr_location_new_review_uri)  ? esc_url_raw($zwsgr_location_new_review_uri)         : (isset($_POST['zwsgr_location_new_review_uri']) ? esc_url_raw(wp_unslash($_POST['zwsgr_location_new_review_uri']))         : esc_url_raw(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', true)));
+            $this->zwsgr_location_name           = isset($zwsgr_location_name)            ? sanitize_text_field($zwsgr_location_name)           : (isset($_POST['zwsgr_location_name'])           ? sanitize_text_field(wp_unslash($_POST['zwsgr_location_name']))           : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', true)));
+            $this->zwsgr_account_name            = isset($zwsgr_account_name)             ? sanitize_text_field($zwsgr_account_name)            : (isset($_POST['zwsgr_account_name'])            ? sanitize_text_field(wp_unslash($_POST['zwsgr_account_name']))            : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', true)));
+            $this->zwsgr_location_all_review_uri = isset($zwsgr_location_all_review_uri)  ? sanitize_text_field($zwsgr_location_all_review_uri) : (isset($_POST['zwsgr_location_all_review_uri']) ? sanitize_text_field(wp_unslash($_POST['zwsgr_location_all_review_uri'])) : sanitize_text_field(get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_all_review_uri', true)));
 
             if (!$zwsgr_internal_call && defined('DOING_AJAX') && DOING_AJAX) {
-
-                check_ajax_referer('zwsgr_queue_manager_nounce', 'security');
 
                 if (empty($this->zwsgr_widget_id)) {
 
@@ -223,7 +225,6 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
             }
 
-
             if (isset($this->zwsgr_gmb_response) && $this->zwsgr_gmb_response['success'] && !empty($this->zwsgr_gmb_response['data'])) {
 
                 $this->zwsgr_gmb_data = $this->zwsgr_gmb_response['data'];
@@ -289,19 +290,25 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
-                    $zwsgr_widget_title = $this->zwsgr_account_name;
+                    $zwsgr_account_name = !empty($this->zwsgr_account_name) ? $this->zwsgr_account_name : get_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', true);
+                    $zwsgr_location_name = !empty($this->zwsgr_location_name) ? $this->zwsgr_location_name : get_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', true);
 
-                    if (!empty($this->zwsgr_location_name)) {
-                        $zwsgr_widget_title .= ' - ' . $this->zwsgr_location_name;
+                    $zwsgr_widget_title = $zwsgr_account_name;
+
+                    if (!empty($zwsgr_location_name)) {
+                        $zwsgr_widget_title .= ' - ' . $zwsgr_location_name;
                     }
-                        
-                    // Prepare post data for updating the title
-                    $zwsgr_widget_data = [
-                        'ID'         => $this->zwsgr_widget_id,
-                        'post_title' => sanitize_text_field($zwsgr_widget_title),
-                    ];
 
-                    wp_update_post($zwsgr_widget_data);
+                    // Prepare the widget title only if it is not empty
+                    if (!empty($zwsgr_widget_title)) {
+                        $zwsgr_widget_data = [
+                            'ID'         => $this->zwsgr_widget_id,
+                            'post_title' => sanitize_text_field($zwsgr_widget_title),
+                        ];
+
+                        // Update the post with the new title
+                        wp_update_post($zwsgr_widget_data);
+                    }
 
                     if ($this->zwsgr_gmb_data_type == 'zwsgr_gmb_reviews') {
 
@@ -320,17 +327,33 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                             $missing_data[] = 'zwsgr_location_name';
                         }
                     
-                        // If any data is missing, log an error and skip the update.
                         if (!empty($missing_data)) {
                             $this->zwsgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwsgr_widget_id . " - Missing: " . implode(', ', $missing_data));
-                            return; // Optionally return to stop further execution.
+                            return;
                         }
-                    
+
                         // Update post meta if values are not empty
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_all_review_uri', $this->zwsgr_location_all_review_uri);
                         update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_new_review_uri', $this->zwsgr_location_new_review_uri);
-                        update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $this->zwsgr_location_name);
+
+                        if (!empty($zwsgr_account_name)) {
+                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_account_name', $zwsgr_account_name);
+                        }
+
+                        if (!empty($zwsgr_location_name)) {
+                            update_post_meta($this->zwsgr_widget_id, 'zwsgr_location_name', $zwsgr_location_name);
+                        }
+
                     }
+
+                    // Prepare the object to store the widget ID and processing status
+                    $zwsgr_batch_data = array(
+                        'zwsgr_widget_id' => $this->zwsgr_widget_id,
+                        'zwsgr_batch_in_processing' => 'true'
+                    );
+
+                    // Update the option with both the widget ID and processing status
+                    update_option('zwsgr_batch_in_processing', $zwsgr_batch_data);
 
                     // For AJAX requests, send a JSON error response
                     wp_send_json_success(
@@ -369,13 +392,13 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 // Use a switch statement for better clarity
                 switch ($this->zwsgr_gmb_data_type) {
                     case 'zwsgr_gmb_accounts':
-                        $zwsgr_error_message = 'No GMB Accounts found for your GMB account.';
+                        $zwsgr_error_message = 'It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.';
                         break;
                     case 'zwsgr_gmb_locations':
-                        $zwsgr_error_message = 'No Locations present. Please try again with a different GMB account. Thanks.';
+                        $zwsgr_error_message = 'No locations found under this Google My Business account. Please verify your account or try again with a different one.';
                         break;
                     case 'zwsgr_gmb_reviews':
-                        $zwsgr_error_message = 'No reviews found. Please try again with a different GMB account. Thanks.';
+                        $zwsgr_error_message = 'There are no reviews available for this location at the moment. Please try again later or choose a different location.';
                         break;
                 }
                 

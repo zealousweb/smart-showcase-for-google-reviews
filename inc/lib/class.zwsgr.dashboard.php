@@ -41,7 +41,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
         public function zwsgr_data_render() {
 
-             // Ensure it's an AJAX request
+            // Ensure it's an AJAX request
             if (defined('DOING_AJAX') && DOING_AJAX) {
 
                 check_ajax_referer( 'zwsgr_data_render', 'security' );
@@ -54,8 +54,8 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 $zwsgr_filter_data = [
 					'zwsgr_gmb_account_number'   => null,
 					'zwsgr_gmb_account_location' => null,
-					'zwsgr_range_filter_type'    => null,
-					'zwsgr_range_filter_data'    => null
+					'zwsgr_range_filter_type'    => 'rangeofdays',
+					'zwsgr_range_filter_data'    => 'monthly'
 				];
 
             }
@@ -102,95 +102,88 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             $zwsgr_range_filter_type    = isset($zwsgr_filter_data['zwsgr_range_filter_type'])    ? sanitize_text_field($zwsgr_filter_data['zwsgr_range_filter_type']) : '';
             $zwsgr_range_filter_data    = isset($zwsgr_filter_data['zwsgr_range_filter_data'])    ? sanitize_text_field($zwsgr_filter_data['zwsgr_range_filter_data']) : '';
 
-            if (!isset($zwsgr_gmb_email) || empty($zwsgr_gmb_email)) {
-                return $zwsgr_data_render_args;
-            }
+            // Set up the query arguments
+            $zwsgr_data_render_args = array(
+                'post_type'   => 'zwsgr_reviews',
+                'fields'      => 'ids',
+                'posts_per_page' => -1,
+                'meta_query' => array(
+                    'relation' => 'AND',
+                    array(
+                        'key'     => 'zwsgr_gmb_email',
+                        'value'   => $zwsgr_gmb_email,
+                        'compare' => '=',
+                    )
+                ),
+            );
 
-            if (!empty($zwsgr_gmb_email)) {
+            if (!empty($zwsgr_range_filter_data) && $zwsgr_range_filter_type == 'rangeofdays') {
 
-                // Set up the query arguments
-                $zwsgr_data_render_args = array(
-                    'post_type'   => 'zwsgr_reviews',
-                    'fields'      => 'ids',
-                    'posts_per_page' => -1,
-                    'meta_query' => array(
-                        'relation' => 'AND',
+                if ($zwsgr_range_filter_data == 'daily') {
+                    $zwsgr_data_render_args['date_query'] = array(
                         array(
-                            'key'     => 'zwsgr_gmb_email',
-                            'value'   => $zwsgr_gmb_email,
-                            'compare' => '=',
-                        )
+                            'after'     => 'today', // Posts from today
+                            'inclusive' => true,
+                        ),
+                    );
+                } elseif ($zwsgr_range_filter_data == 'weekly') {
+                    $zwsgr_data_render_args['date_query'] = array(
+                        array(
+                            'after'     => '7 days ago',
+                            'inclusive' => true,
+                        ),
+                    );
+                } elseif ($zwsgr_range_filter_data == 'monthly') {
+                    $zwsgr_data_render_args['date_query'] = array(
+                        array(
+                            'after'     => '30 days ago',
+                            'inclusive' => true,
+                        ),
+                    );
+                }
+
+            } else if (!empty($zwsgr_range_filter_data) && $zwsgr_range_filter_type == 'rangeofdate') {
+
+                $zwsgr_range_dates = explode(' - ', $zwsgr_range_filter_data);
+                $zwsgr_start_date  = $zwsgr_range_dates[0]; 
+                $zwsgr_end_date    = isset($zwsgr_range_dates[1]) ? $zwsgr_range_dates[1] : ''; 
+                $zwsgr_start_date = gmdate('Y-m-d', strtotime($zwsgr_start_date));
+                $zwsgr_end_date = gmdate('Y-m-d', strtotime($zwsgr_end_date));
+                $zwsgr_data_render_args['date_query'] = array(
+                    'relation' => 'AND',
+                    array(
+                        'after'     => $zwsgr_start_date,
+                        'inclusive' => true,
+                    ),
+                    array(
+                        'before'    => $zwsgr_end_date,
+                        'inclusive' => true,
                     ),
                 );
+                
+            }
 
-                if (!empty($zwsgr_range_filter_data) && $zwsgr_range_filter_type == 'rangeofdays') {
+            // Add the account filter only if it exists
+            if (!empty($zwsgr_gmb_account_number)) {
+                $zwsgr_data_render_args['meta_query'][] = array(
+                    'key'     => 'zwsgr_account_number',
+                    'value'   => $zwsgr_gmb_account_number,
+                    'compare' => '=',
+                );
+            }
 
-                    if ($zwsgr_range_filter_data == 'daily') {
-                        $zwsgr_data_render_args['date_query'] = array(
-                            array(
-                                'after'     => 'today', // Posts from today
-                                'inclusive' => true,
-                            ),
-                        );
-                    } elseif ($zwsgr_range_filter_data == 'weekly') {
-                        $zwsgr_data_render_args['date_query'] = array(
-                            array(
-                                'after'     => '7 days ago',
-                                'inclusive' => true,
-                            ),
-                        );
-                    } elseif ($zwsgr_range_filter_data == 'monthly') {
-                        $zwsgr_data_render_args['date_query'] = array(
-                            array(
-                                'after'     => '30 days ago',
-                                'inclusive' => true,
-                            ),
-                        );
-                    }
+            // Add the location filter only if it exists
+            if (!empty($zwsgr_gmb_account_location)) {
+                $zwsgr_data_render_args['meta_query'][] = array(
+                    'key'     => 'zwsgr_location_number',
+                    'value'   => $zwsgr_gmb_account_location,
+                    'compare' => '=',
+                );
+            }
 
-                } else if (!empty($zwsgr_range_filter_data) && $zwsgr_range_filter_type == 'rangeofdate') {
-
-                    $zwsgr_range_dates = explode(' - ', $zwsgr_range_filter_data);
-                    $zwsgr_start_date  = $zwsgr_range_dates[0]; 
-                    $zwsgr_end_date    = isset($zwsgr_range_dates[1]) ? $zwsgr_range_dates[1] : ''; 
-                    $zwsgr_start_date = gmdate('Y-m-d', strtotime($zwsgr_start_date));
-                    $zwsgr_end_date = gmdate('Y-m-d', strtotime($zwsgr_end_date));
-                    $zwsgr_data_render_args['date_query'] = array(
-                        'relation' => 'AND',
-                        array(
-                            'after'     => $zwsgr_start_date,
-                            'inclusive' => true,
-                        ),
-                        array(
-                            'before'    => $zwsgr_end_date,
-                            'inclusive' => true,
-                        ),
-                    );
-                    
-                }
-
-                // Add the account filter only if it exists
-                if (!empty($zwsgr_gmb_account_number)) {
-                    $zwsgr_data_render_args['meta_query'][] = array(
-                        'key'     => 'zwsgr_account_number',
-                        'value'   => $zwsgr_gmb_account_number,
-                        'compare' => '=',
-                    );
-                }
-
-                // Add the location filter only if it exists
-                if (!empty($zwsgr_gmb_account_location)) {
-                    $zwsgr_data_render_args['meta_query'][] = array(
-                        'key'     => 'zwsgr_location_number',
-                        'value'   => $zwsgr_gmb_account_location,
-                        'compare' => '=',
-                    );
-                }
-
-                return $zwsgr_data_render_args;
+            return $zwsgr_data_render_args;
 
         }
-    }
 
         public function zwsgr_get_reviews_ratings($zwsgr_data_render_args) {
 
@@ -291,6 +284,9 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 <!-- Filters List Section -->
                 <div class="zwsgr-filters-wrapper">
                     <ul class="zwsgr-filters-list">
+                        <li class="zwsgr-filter-item filter-text">
+                                ' . esc_html__( 'Filters', 'smart-google-reviews' ) . '
+                        </li>
                         <li class="zwsgr-filter-item">
                             <button class="zwsgr-filter-button" data-filter="daily" data-type="rangeofdays">
                                 ' . esc_html__( 'Daily', 'smart-google-reviews' ) . '
@@ -302,7 +298,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                             </button>
                         </li>
                         <li class="zwsgr-filter-item">
-                            <button class="zwsgr-filter-button" data-filter="monthly" data-type="rangeofdays">
+                            <button class="zwsgr-filter-button active" data-filter="monthly" data-type="rangeofdays">
                                 ' . esc_html__( 'Monthly', 'smart-google-reviews' ) . '
                             </button>
                         </li>
@@ -392,6 +388,13 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                 $zwsgr_data_render_args['meta_query'] = array($zwsgr_star_rating_query);
             }
 
+            // Add ordering by star rating and then by date
+            $zwsgr_data_render_args['orderby'] = array(
+                'meta_value' => 'ASC'
+            );
+
+            $zwsgr_data_render_args['meta_key'] = 'zwsgr_review_star_rating';
+
             $zwsgr_data_render_query = new WP_Query($zwsgr_data_render_args);
 
             $output = '<div class="zwsgr-reviews-wrapper zwsgr-flex-column">
@@ -427,6 +430,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
 
                         $zwsgr_numeric_rating = isset($zwsgr_rating_map[$zwsgr_review_star_rating]) ? $zwsgr_rating_map[$zwsgr_review_star_rating] : 0;
 
+                        $zwsgr_gmb_reviewer_image_dir = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
                         $zwsgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwsgr_review_id.'.png';
 
                         // Generate stars HTML
@@ -445,11 +449,26 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                             <div class="zwsgr-review-header">
                                 <div class="zwsgr-profile">';
 
-                        if (!empty($zwsgr_gmb_reviewer_image_uri)) {
-                            $output .= '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
-                        } else {
-                            $output .= '<img src="' . ZWSGR_URL . '/assets/images/fallback-user-dp.svg" class="fallback-user-dp">';
-                        }
+                                if (file_exists($zwsgr_gmb_reviewer_image_dir)) {
+                                    $image_id = attachment_url_to_postid($zwsgr_gmb_reviewer_image_uri);
+                                    if ($image_id) {
+                                        $output .= wp_get_attachment_image($image_id, 'thumbnail', false, [
+                                            'class' => 'fallback-user-dp',
+                                            'style' => 'max-width:32px; height:auto;',
+                                        ]);
+                                    } else {
+                                        $output .= '<img src="' . esc_url($zwsgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
+                                    }
+                                } else {
+                                    $fallback_image_id = attachment_url_to_postid(ZWSGR_URL . '/assets/images/fallback-user-dp.svg');
+                                    if ($fallback_image_id) {
+                                        $output .= wp_get_attachment_image($fallback_image_id, 'thumbnail', false, [
+                                            'class' => 'fallback-user-dp',
+                                        ]);
+                                    } else {
+                                        $output .= '<img src="' . esc_url(ZWSGR_URL . '/assets/images/fallback-user-dp.svg') . '" class="fallback-user-dp">';
+                                    }
+                                }
 
                         $output .= '</div>
                             <div class="zwsgr-review-info">

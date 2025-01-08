@@ -30,6 +30,8 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             add_action('admin_notices', [$this, 'zwsgr_connect_google_popup_callback']);
 
+            add_action('admin_notices', [$this, 'zwsgr_connect_google_success_callback']);
+
 
             $this->client = new ZWSGR_GMB_API('');
 
@@ -68,13 +70,14 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
 
             // Check if the JWT token is present in the database
             $zwsgr_jwt_token = get_option('zwsgr_jwt_token');
+            $zwsgr_gmb_email = get_option('zwsgr_gmb_email');
 
             if (!empty($zwsgr_jwt_token)) {
                 // Display connected to  message and disconnect button if JWT token exists
                 echo '<div class="zwsgr-gmbc-outer-wrapper">
                     <div class="zwsgr-gmbc-container">
+                        <div id="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwsgr_settings')).'" class="close-button"></a></div>
                         <div id="disconnect-gmb-auth" class="zwsgr-gmbc-inner-wrapper">
-                            <span style="margin-right: 10px;">Congratulations! Connected to Google</span>
                             <div id="disconnect-gmb-auth-response"></div>
                             <div class="zwsgr-caution-div">
                                 <input type="checkbox" id="delete-all-data" name="delete_all_data" style="margin-right: 7.5px;">
@@ -83,6 +86,11 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                                 </label>
                             </div>
                             <div class="danger-note">This action cannot be undone. Ensure you want to proceed.</div>
+                            <div class="zwsgr-th-label">
+								<label class="zwsgr-th">
+									' . esc_html($zwsgr_gmb_email) . '
+								</label>
+							</div>
                             <a href="" class="button button-danger zwsgr-submit-btn" id="disconnect-auth">Disconnect</a>
                         </div>
                     </div>
@@ -182,6 +190,9 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                     if ($zwsgr_new_widget_id) {
 
                         $this->zwsgr_zqm->zwsgr_fetch_gmb_data(true, false, 'zwsgr_gmb_accounts');
+
+                        // Store a flag or message in a transient or session to show the notice
+                        set_transient('zwsgr_success_notice', 'Congratulations! Successfully connected to Google.', 30);
 
                         // Redirect back to fetch gmb data page with the widget ID as a parameter
                         wp_redirect(admin_url('admin.php?page=zwsgr_widget_configurator&tab=tab-fetch-data&zwsgr_widget_id=' . $zwsgr_new_widget_id));
@@ -297,17 +308,28 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                         
                             // Retrieve existing locations or initialize an empty array
                             $zwsgr_account_locations = get_post_meta($zwsgr_request_data_id, 'zwsgr_account_locations', true);
-
-                            
             
                             // Check if the custom field has a value
                             if ( $zwsgr_account_locations ) {
                                 echo '<select id="zwsgr-location-select" name="zwsgr_location" class="zwsgr-input-text ' . esc_attr($zwsgr_disabled_class) . '">
                                     <option value="">Select a Location</option>';
                                     foreach ( $zwsgr_account_locations as $zwsgr_account_location ) {
+
+                                        if (isset($zwsgr_account_location['metadata']['newReviewUri'])) {
+                                            $zwsgr_new_review_uri = $zwsgr_account_location['metadata']['newReviewUri'];
+                                        } else {
+                                            $zwsgr_new_review_uri = '';
+                                        }
+            
+                                        if (isset($zwsgr_account_location['metadata']['placeId'])) {
+                                            $zwsgr_place_id = $zwsgr_account_location['metadata']['placeId'];
+                                        } else {
+                                            $zwsgr_place_id = '';
+                                        }
+                                        
                                         $zwsgr_account_location_id = $zwsgr_account_location['name'] ? ltrim( strrchr( $zwsgr_account_location['name'], '/' ), '/' ) : '';
                                         $selected = ($zwsgr_account_location_id === $zwsgr_location_number) ? 'selected' : '';
-                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . esc_attr($selected) . ' data-new-review-url="' . esc_url($zwsgr_account_location['metadata']['newReviewUri']) . '" data-all-reviews-url="http://search.google.com/local/reviews?placeid=' . esc_attr($zwsgr_account_location['metadata']['placeId']) . '">' . esc_html($zwsgr_account_location['title']) . '</option>';
+                                        echo '<option value="' . esc_attr($zwsgr_account_location_id) . '" ' . esc_attr($selected) . ' data-new-review-url="' . esc_url($zwsgr_new_review_uri) . '" data-all-reviews-url="http://search.google.com/local/reviews?placeid=' . esc_attr($zwsgr_place_id) . '">' . esc_html($zwsgr_account_location['title']) . '</option>';
                                     }
                                 echo '</select>
                                 <a href="#" class="button button-secondary zwsgr-submit-btn ' . esc_attr($zwsgr_disabled_class) . '" id="fetch-gmd-reviews" data-fetch-type="zwsgr_gmb_reviews">
@@ -328,6 +350,15 @@ if ( ! class_exists( 'Zwsgr_Google_My_Business_Connector' ) ) {
                 wp_reset_postdata();
                 echo '</div>
             </div>';
+        }
+
+        public function zwsgr_connect_google_success_callback() {
+
+            $zwsgr_success_notice = get_transient('zwsgr_success_notice');
+            if ($zwsgr_success_notice) {
+                echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($zwsgr_success_notice) . '</p></div>';
+                delete_transient('zwsgr_success_notice');
+            }
         }
 
     }
