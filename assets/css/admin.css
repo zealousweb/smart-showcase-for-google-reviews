@@ -1551,3 +1551,38 @@ body .zwsgr-google-tab-text{
         left: 100%;
     }
 }
+
+
+
+
+
+
+/* 8-1-25 */
+.zwsgr-shortcode{
+    display: flex;
+    align-items: center;
+}
+
+.zwsgr-shortcode-text{
+    margin-right: 10px;
+    width: auto;
+}
+.zwsgr-dashicons{
+    cursor: pointer;
+}
+
+.zwsgr-email-error{
+    color: red;
+    display: none;
+}
+.zwsgr-email-success{
+    color: green;
+    display: none;
+}
+.zwsgr-keyword-error-message{
+    display: none;
+    color: red;
+}
+.zwsgr-tab-content-display{
+    display: none;
+}
