@@ -192,7 +192,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             ];
 
             // Make the API request to get oauth URl.
-            $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-access-token', $zwssgr_payload_data, 'POST', '', 'https://sgr.zealousweb.com/wp-json/');
+            $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-access-token', $zwssgr_payload_data, 'POST', '', 'https://siteproofs.com/projects/zealousweb/plugindev/user-demo/wp-json/');
 
                 // Check if the response is successful and contains the oauth URL
                 if (isset($zwssgr_response['success']) && $zwssgr_response['success'] === true && isset($zwssgr_response['data']['access_token'])) {
@@ -482,7 +482,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             ];
 
             // Make the API request to get oauth URl.
-            $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/auth', $zwssgr_payload_data, 'POST', '', 'https://sgr.zealousweb.com/wp-json/');
+            $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/auth', $zwssgr_payload_data, 'POST', '', 'https://siteproofs.com/projects/zealousweb/plugindev/user-demo/wp-json/');
 
             // Check if the response is successful and contains the oauth URL
             if (isset($zwssgr_response['success']) && $zwssgr_response['success'] === true && isset($zwssgr_response['data']['zwssgr_oauth_url'])) {
@@ -524,7 +524,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             ];
 
             // Make the API request to get oauth URl.
-            $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-jwt-token', $zwssgr_payload_data, 'POST', '', 'https://sgr.zealousweb.com/wp-json/');
+            $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-jwt-token', $zwssgr_payload_data, 'POST', '', 'https://siteproofs.com/projects/zealousweb/plugindev/user-demo/wp-json/');
 
             return $zwssgr_response;
 
