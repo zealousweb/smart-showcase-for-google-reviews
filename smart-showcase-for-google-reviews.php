@@ -47,7 +47,7 @@ if ( !defined( 'ZWSSGR_PLUGIN_BASENAME' ) ) {
 }
 
 if ( !defined( 'ZWSSGR_META_PREFIX' ) ) {
-	define( 'ZWSSGR_META_PREFIX', 'ZWSSGR_' ); // Plugin metabox prefix
+	define( 'ZWSSGR_META_PREFIX', 'zwssgr_' ); // Plugin metabox prefix
 }
 
 if ( !defined( 'ZWSSGR_PREFIX' ) ) {
@@ -55,10 +55,10 @@ if ( !defined( 'ZWSSGR_PREFIX' ) ) {
 }
 
 if( !defined( 'ZWSSGR_POST_REVIEW_TYPE' ) ) {
-	define( 'ZWSSGR_POST_REVIEW_TYPE', 'ZWSSGR_reviews' ); // Plugin Google Reviews post type name
+	define( 'ZWSSGR_POST_REVIEW_TYPE', 'zwssgr_reviews' ); // Plugin Google Reviews post type name
 }
 if( !defined( 'ZWSSGR_POST_WIDGET_TYPE' ) ) {
-	define( 'ZWSSGR_POST_WIDGET_TYPE', 'ZWSSGR_data_widget' ); // Plugin Google Widget post type name
+	define( 'ZWSSGR_POST_WIDGET_TYPE', 'zwssgr_data_widget' ); // Plugin Google Widget post type name
 }
 
 /**
