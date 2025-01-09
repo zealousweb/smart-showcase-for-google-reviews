@@ -92,6 +92,7 @@ if ( !class_exists( 'ZWSGR' ) ) {
 		}
 
 		function action__plugins_loaded() {
+			ob_start();
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 
