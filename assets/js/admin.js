@@ -1658,7 +1658,7 @@ jQuery(document).ready(function($) {
 
 		e.preventDefault();
 
-		$zwssgr_chart_wrapper = $('#zwssgr_chart_wrapper').outerHeight(true);
+		$('#zwssgr_chart_wrapper').outerHeight(true);
 
 		var zwssgr_gmb_account_div = $("#gmb-data-filter #zwssgr-account-select");
 		var zwssgr_gmb_location_div = $("#gmb-data-filter #zwssgr-location-select");
