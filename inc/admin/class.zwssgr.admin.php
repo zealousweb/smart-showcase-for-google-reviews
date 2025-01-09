@@ -1,23 +1,23 @@
 <?php
 /**
- * ZWSGR_Admin Class
+ * ZWSSGR_Admin Class
  *
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Smart Google Reviews
+ * @subpackage Smart Showcase for Google Reviews
  * @since 1.0.0
  */
 
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ZWSGR_Admin' ) ) {
+if ( !class_exists( 'ZWSSGR_Admin' ) ) {
 
 	/**
-	 * The ZWSGR_Admin Class
+	 * The ZWSSGR_Admin Class
 	 */
-	class ZWSGR_Admin {
+	class ZWSSGR_Admin {
 
 		public $action = null;
 		public $filter = null;
