@@ -1,23 +1,23 @@
 <?php
 /**
- * ZWSGR_Front Class
+ * ZWSSGR_Front Class
  *
  * Handles the Frontend functionality.
  *
  * @package WordPress
- * @subpackage Smart Google Reviews
+ * @subpackage Smart Showcase for Google Reviews
  * @since 1.0.0
  */
 
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ZWSGR_Front' ) ) {
+if ( !class_exists( 'ZWSSGR_Front' ) ) {
 
 	/**
-	 * The ZWSGR_Front Class
+	 * The ZWSSGR_Front Class
 	 */
-	class ZWSGR_Front {
+	class ZWSSGR_Front {
 
 		public $front,$action,$filter = null;
 		
