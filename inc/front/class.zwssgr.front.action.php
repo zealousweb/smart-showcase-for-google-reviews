@@ -1,30 +1,30 @@
 <?php
 /**
- * ZWSGR_Front_Action Class
+ * ZWSSGR_Front_Action Class
  *
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Smart Google Reviews
+ * @subpackage Smart Showcase for Google Reviews
  * @since 1.0.0
  */
 
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ZWSGR_Front_Action' ) ){
+if ( !class_exists( 'ZWSSGR_Front_Action' ) ){
 
 	/**
-	 *  The ZWSGR_Front_Action Class
+	 *  The ZWSSGR_Front_Action Class
 	 */
-	class ZWSGR_Front_Action {
+	class ZWSSGR_Front_Action {
 
 		function __construct()  
 		{
 			
 		}
 
-		function ZWSGR_public_enqueue() 
+		function ZWSSGR_public_enqueue() 
 		{
 			
 		}
