@@ -51,7 +51,7 @@ if ( !defined( 'ZWSSGR_META_PREFIX' ) ) {
 }
 
 if ( !defined( 'ZWSSGR_PREFIX' ) ) {
-	define( 'ZWSSGR_PREFIX', 'zwsgr' ); // Plugin prefix
+	define( 'ZWSSGR_PREFIX', 'zwssgr' ); // Plugin prefix
 }
 
 if( !defined( 'ZWSSGR_POST_REVIEW_TYPE' ) ) {
@@ -64,12 +64,12 @@ if( !defined( 'ZWSSGR_POST_WIDGET_TYPE' ) ) {
 /**
  * Initialize the main class
  */
-if ( !function_exists( 'ZWSGR' ) ) {
+if ( !function_exists( 'ZWSSGR' ) ) {
 
 	if ( is_admin() ) {
 		require_once( ZWSSGR_DIR . '/inc/admin/class.' . ZWSSGR_PREFIX . '.admin.php' );
 		require_once( ZWSSGR_DIR . '/inc/lib/api/class.' . ZWSSGR_PREFIX . '.api.php' );
-		require_once( ZWSSGR_DIR . '/inc/lib/zwsgr-batch-processing/class.' . ZWSSGR_PREFIX . '.zqm.php' );
+		require_once( ZWSSGR_DIR . '/inc/lib/zwssgr-batch-processing/class.' . ZWSSGR_PREFIX . '.zqm.php' );
 		require_once( ZWSSGR_DIR . '/inc/lib/class.' . ZWSSGR_PREFIX . '.gmbc.php' );
 		require_once( ZWSSGR_DIR . '/inc/admin/class.' . ZWSSGR_PREFIX . '.admin.action.php' );
 		require_once( ZWSSGR_DIR . '/inc/admin/class.' . ZWSSGR_PREFIX . '.admin.filter.php' );
