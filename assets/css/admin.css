@@ -1446,7 +1446,7 @@ body .zwsgr-google-tab-text{
 
 /* 26-12-24 */
 /* Custom Notification Styles */
-.zwsgr-notice {
+body .zwsgr-notice {
     border: 1px solid #ccc;
     border-left-width: 4px;
     padding: 15px;
@@ -1459,42 +1459,42 @@ body .zwsgr-google-tab-text{
     border-radius: 4px;
 }
 
-.zwsgr-notice-success {
+body .zwsgr-notice-success {
     border-left-color: #46b450;
     background: #dff0d8;
     color: #3c763d;
 }
 
-.zwsgr-notice-error {
+body .zwsgr-notice-error {
     border-left-color: #dc3232;
     background: #f2dede;
     color: #a94442;
 }
 
-.zwsgr-notice-warning {
+body .zwsgr-notice-warning {
     border-left-color: #ffba00;
     background: #fcf8e3;
     color: #8a6d3b;
 }
 
-.zwsgr-notice-info {
+body .zwsgr-notice-info {
     border-left-color: #0073aa;
     background: #e7f3f8;
     color: #31708f;
 }
 
-.zwsgr-notice p {
+body .zwsgr-notice p {
     margin: 0;
 }
 
 
 
 /* Style for tooltip container */
-.zwsgr-tooltip {
+body .zwsgr-tooltip {
     position: relative;
 }
 
-.zwsgr-tooltip-container {
+body .zwsgr-tooltip-container {
     width: 20px;
     height: 20px;
     position: absolute;
@@ -1505,13 +1505,13 @@ body .zwsgr-google-tab-text{
     padding-left: 10px;
 }
 
-.zwsgr-tooltip-container svg {
+body .zwsgr-tooltip-container svg {
     width: 20px;
     height: 20px;
 }
 
 /* Style for the tooltip text */
-.zwsgr-tooltip-text {
+body .zwsgr-tooltip-text {
     visibility: hidden;
     width: 160px;
     background-color: black;
@@ -1529,7 +1529,7 @@ body .zwsgr-google-tab-text{
 }
 
 /* Tooltip visibility on hover */
-.zwsgr-tooltip-container:hover .zwsgr-tooltip-text {
+body .zwsgr-tooltip-container:hover .zwsgr-tooltip-text {
     visibility: visible;
     opacity: 1;
 }
@@ -1558,31 +1558,31 @@ body .zwsgr-google-tab-text{
 
 
 /* 8-1-25 */
-.zwsgr-shortcode{
+body .zwsgr-shortcode{
     display: flex;
     align-items: center;
 }
 
-.zwsgr-shortcode-text{
+body .zwsgr-shortcode-text{
     margin-right: 10px;
     width: auto;
 }
-.zwsgr-dashicons{
+body .zwsgr-dashicons{
     cursor: pointer;
 }
 
-.zwsgr-email-error{
+body .zwsgr-email-error{
     color: red;
     display: none;
 }
-.zwsgr-email-success{
+body .zwsgr-email-success{
     color: green;
     display: none;
 }
-.zwsgr-keyword-error-message{
+body .zwsgr-keyword-error-message{
     display: none;
     color: red;
 }
-.zwsgr-tab-content-display{
+body .zwsgr-tab-content-display{
     display: none;
 }

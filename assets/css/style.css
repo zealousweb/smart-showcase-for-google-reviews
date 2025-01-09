@@ -1255,16 +1255,16 @@ body .zwsgr-badge-link:focus {
     outline: none;
 }
 
-.zwsgr-based-on {
+body .zwsgr-based-on {
     font-size: 16px;
 }
 
 
-.zwsgr-main-wrapper{
+body .zwsgr-main-wrapper{
     max-width: 100%;
 }
 
-.zwsgr-main-div-wrapper{
+body .zwsgr-main-div-wrapper{
     max-width: 100%;
 }
 
