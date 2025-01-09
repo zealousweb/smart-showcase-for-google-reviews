@@ -1,4 +1,4 @@
-=== Smart Google Reviews ===
+=== Smart Showcase for Google Reviews ===
 
 Contributors: zealopensource
 Donate Link: http://www.zealousweb.com/payment/
@@ -11,15 +11,15 @@ License: GPLv3 or later
 Version: 1.0.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Smart Google Reviews is a WordPress plugin that lets businesses display Google customer reviews on their websites easily.
+Smart Showcase for Google Reviews is a WordPress plugin that lets businesses display Google customer reviews on their websites easily.
 
 == Description ==
 
-Smart Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites. By syncing reviews directly from Google My Business, this plugin helps build trust and credibility with potential customers. With a range of display options including grids, lists, sliders, badges, and popups, you can showcase reviews in a format that best suits your site’s design.
+Smart Showcase for Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites. By syncing reviews directly from Google My Business, this plugin helps build trust and credibility with potential customers. With a range of display options including grids, lists, sliders, badges, and popups, you can showcase reviews in a format that best suits your site’s design.
 
-Customize the look and feel with custom CSS, and place reviews anywhere on your site using shortcodes. The plugin also supports multiple languages and complies with GDPR, ensuring a seamless and secure user experience. Additionally, Smart Google Reviews offers admin management features, including form fields for review replies, filters for sorting reviews, and notification systems for new reviews and replies. Whether you’re using Elementor, WPBakery, or Divi, this plugin integrates smoothly with your page builder to enhance your site’s functionality and appearance.
+Customize the look and feel with custom CSS, and place reviews anywhere on your site using shortcodes. The plugin also supports multiple languages and complies with GDPR, ensuring a seamless and secure user experience. Additionally, Smart Showcase for Google Reviews offers admin management features, including form fields for review replies, filters for sorting reviews, and notification systems for new reviews and replies. Whether you’re using Elementor, WPBakery, or Divi, this plugin integrates smoothly with your page builder to enhance your site’s functionality and appearance.
 
-== Features of Smart Google Reviews ==
+== Features of Smart Showcase for Google Reviews ==
 
 * Syncing of Google reviews from Google My Business
 * Cron Job has Option daily, weekly, monthly
@@ -70,7 +70,7 @@ Yes, you can display Google reviews on any page, post, or widget area of your si
 = 1.0 =
 Initial Release 
 
-== Features of Smart Google Reviews Pro ==
+== Features of Smart Showcase for Google Reviews Pro ==
 
 * Dashboard for review statistics
     * Total reviews
@@ -89,7 +89,7 @@ Initial Release
 * Automatic replies to users based on their star rating (positive or negative) (Using AI)
 * Integration with Google Analytics to track user interaction with reviews
 
-<strong>[Demo for Smart Google Reviews Pro]()</strong>
+<strong>[Demo for Smart Showcase for Google Reviews Pro]()</strong>
 
 **OUR OTHER PLUGINS**
 
@@ -117,7 +117,7 @@ Installing the plugin is easy. Just follow these steps:
 
 == Screenshots ==
 
-1. Smart Google Reviews
+1. Smart Showcase for Google Reviews
 2. Displayed Google Reviews on a website.
 
 == Changelog ==
