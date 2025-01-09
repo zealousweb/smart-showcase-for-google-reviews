@@ -17,32 +17,7 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
     class Zwsgr_Queue_Manager {
 
         private static $instance = null;
-
-        private $zwsgr_bdp;
-
-        private $zwsgr_gmb_api;
-
-        private $zwsgr_gmb_response;
-
-        private $zwsgr_gmb_data;
-
-        private $zwsgr_widget_id;
-
-        private $zwsgr_current_index;
-
-        private $zwsgr_gmb_data_type;
-        
-        private $zwsgr_account_number;
-        
-        private $zwsgr_location_number;
-        
-        private $zwsgr_location_new_review_uri;
-        
-        private $zwsgr_location_name;
-
-        private $zwsgr_account_name;
-
-        private $zwsgr_access_token;
+        private $zwsgr_bdp, $zwsgr_gmb_api, $zwsgr_gmb_response, $zwsgr_gmb_data, $zwsgr_widget_id, $zwsgr_current_index, $zwsgr_gmb_data_type, $zwsgr_account_number, $zwsgr_location_number, $zwsgr_location_new_review_uri, $zwsgr_location_name, $zwsgr_account_name, $zwsgr_access_token;
 
         public function __construct() {
 
