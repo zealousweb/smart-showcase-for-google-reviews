@@ -843,6 +843,13 @@ jQuery(document).ready(function($) {
 		// Loop through each content block and update the Read more link with the new language
 		$('.zwsgr-content').each(function () {
 			let $this = $(this);
+			let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
+
+			// Store original full text if not already stored
+			if (!$this.data('full-text')) {
+				$this.data('full-text', fullText);
+			}
+
 			updateReadMoreLink($this, lang);
 		});
 	});

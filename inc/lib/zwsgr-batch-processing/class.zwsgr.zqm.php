@@ -387,18 +387,18 @@ if (!class_exists('Zwsgr_Queue_Manager')) {
                 $this->zwsgr_debug_function("ZQM: Batch processing error: Failed for" . $this->zwsgr_gmb_data_type .' & Widget ID ' . $this->zwsgr_widget_id .'& current index ' . $this->zwsgr_current_index);
 
                 // Define a default error message
-                $zwsgr_error_message = 'An unknown error occurred. Please try again.';
+                $zwsgr_error_message = esc_html__('An unknown error occurred. Please try again.', 'smart-google-reviews');
 
                 // Use a switch statement for better clarity
                 switch ($this->zwsgr_gmb_data_type) {
                     case 'zwsgr_gmb_accounts':
-                        $zwsgr_error_message = 'It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.';
+                        $zwsgr_error_message = esc_html__('It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.', 'smart-google-reviews');
                         break;
                     case 'zwsgr_gmb_locations':
-                        $zwsgr_error_message = 'No locations found under this Google My Business account. Please verify your account or try again with a different one.';
+                        $zwsgr_error_message = esc_html__('No locations found under this Google My Business account. Please verify your account or try again with a different one.', 'smart-google-reviews');
                         break;
                     case 'zwsgr_gmb_reviews':
-                        $zwsgr_error_message = 'There are no reviews available for this location at the moment. Please try again later or choose a different location.';
+                        $zwsgr_error_message = esc_html__('There are no reviews available for this location at the moment. Please try again later or choose a different location.', 'smart-google-reviews');
                         break;
                 }
                 

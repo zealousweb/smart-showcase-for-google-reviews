@@ -994,7 +994,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$value = get_option('zwsgr_admin_notification_emails', '');
 			echo '<div class="zwsgr-notification-field">';
 			echo '<div class="zwsgr-th-label">';
-			echo '<label class="zwsgr-th">Custom Email Addresses</label>';
+			echo '<label class="zwsgr-th">' . esc_html__('Custom Email Addresses', 'smart-google-reviews') . '</label>';
 			echo '</div>';
 			echo '<div class="zwsgr-field">';
 			echo '<input type="text" id="zwsgr_admin_notification_emails" name="zwsgr_admin_notification_emails" class="zwsgr-input-text" rows="5" cols="50" value="' . esc_attr($value) . '" />';
@@ -1008,7 +1008,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			$value = get_option('zwsgr_admin_notification_emails_subject', '');
 			echo '<div class="zwsgr-notification-field">';
 			echo '<div class="zwsgr-th-label">';
-			echo '<label class="zwsgr-th">Custom Email Subject</label>';
+			echo '<label class="zwsgr-th">' . esc_html__('Custom Email Subject', 'smart-google-reviews') . '</label>';
 			echo '</div>';
 			echo '<div class="zwsgr-field">';
 			echo '<input type="text" id="zwsgr_admin_notification_emails_subject" class="zwsgr-input-text" name="zwsgr_admin_notification_emails_subject" rows="5" cols="50" value="' . esc_attr(
@@ -1048,9 +1048,9 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 		{
 			$value = get_option('zwsgr_sync_reviews', 'daily');
 			echo '<select id="zwsgr_sync_reviews" name="zwsgr_sync_reviews" class="zwsgr-input-text">
-					<option value="daily" ' . selected($value, 'daily', false) . '>Daily</option>
-					<option value="weekly" ' . selected($value, 'weekly', false) . '>Weekly</option>
-					<option value="monthly" ' . selected($value, 'monthly', false) . '>Monthly</option>
+					<option value="daily" ' . selected($value, 'daily', false) . '>'. esc_html__('Daily', 'smart-google-reviews').'</option>
+					<option value="weekly" ' . selected($value, 'weekly', false) . '>'. esc_html__('Weekly', 'smart-google-reviews').'</option>
+					<option value="monthly" ' . selected($value, 'monthly', false) . '>'. esc_html__('Monthly', 'smart-google-reviews').'</option>
 				</select>';
 		}
 
@@ -1176,7 +1176,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 							</div>
 						</div>
 					<?php } else { ?>
-						<p class="zwsgr-google-tab-text">Please connect to Google!</p>
+						<p class="zwsgr-google-tab-text"><?php echo esc_html__('Please connect to Google!', 'smart-google-reviews'); ?></p>
 					<?php } ?>
 
 					<?php elseif ($current_tab === 'notifications'): ?>
@@ -2261,7 +2261,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 			
 			<div class="zwsgr-dashboard">
 
-				<h1 class="zwsgr-page-title">Widget Configuration</h1>
+				<h1 class="zwsgr-page-title"><?php echo esc_html__('Widget Configuration', 'smart-google-reviews'); ?></h1>
 
 
 				<!-- Tab Navigation -->
@@ -2284,7 +2284,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-options">
 					<!-- Dynamically Render Radio Buttons -->
 					<div class="zwsgr-layout-radio"> 
-						<label><input type="radio" name="display_option" class="zwsgr-radio" value="all" checked> <span>All</span></label>
+						<label><input type="radio" name="display_option" class="zwsgr-radio" value="all" checked> <span><?php echo esc_html__('All', 'smart-google-reviews'); ?></span></label>
 						<?php foreach ($options as $key => $layouts) : ?>
 							<label><input type="radio" name="display_option" class="zwsgr-radio" id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($key); ?>"><span for="<?php echo esc_attr($key); ?>"> <?php echo esc_html(ucfirst($key)); ?></span></label>
 						<?php endforeach; ?>
@@ -2311,7 +2311,7 @@ if ( !class_exists( 'ZWSGR_Admin_Action' ) ){
 								echo '<div id="' . esc_attr($element_id) . '" class="zwsgr-option-item' . esc_attr($selected_class) . '" data-type="' . esc_attr($option_type) . '" style="display: ' . esc_attr($display_style) . ';">';
 									echo '<div class="zwsgr-layout-title-wrap">';
 										echo '<h3 class="zwsgr-layout-title">Layout: '. esc_html($option_type) .' '.esc_html($layout_count).'</h3>';
-										echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
+										echo '<button class="select-btn zwsgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>'. esc_html__('Select Option', 'smart-google-reviews').'</button>';
 									echo '</div>';
 									$allowed_html = wp_kses_allowed_html('post');
 

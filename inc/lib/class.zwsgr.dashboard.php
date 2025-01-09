@@ -333,7 +333,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
             // Build the select dropdown
             $data_filter_output = '<div id="gmb-data-filter">
                 <select id="zwsgr-account-select" name="zwsgr_account" class="zwsgr-input-text">
-                    <option value="">Select an Account</option>';
+                    <option value="">'. esc_html__('Select an Account', 'smart-google-reviews').'</option>';
                     foreach ($zwsgr_request_data as $zwsgr_widget_id) {
                         $zwsgr_account_number = get_post_meta($zwsgr_widget_id, 'zwsgr_account_number', true);
                         $zwsgr_account_name   = get_the_title($zwsgr_widget_id);
@@ -520,7 +520,7 @@ if ( !class_exists( 'ZWSGR_Dashboard' ) ) {
                     '</h4>
                     <div class="zwsgr_outer_wrapper">
                         <div id="zwsgr_chart_wrapper">
-                            <div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>
+                            <div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">'. esc_html__('No enough data available', 'smart-google-reviews').'</div>
                         </div>
                         <div id="zwsr_chart_legend_wrapper">
                             <div class="zwsgr_chart_legend">
