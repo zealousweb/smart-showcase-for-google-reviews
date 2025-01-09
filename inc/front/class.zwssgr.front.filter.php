@@ -1,11 +1,11 @@
 <?php
 /**
- * ZWSGR_Front_Filter Class
+ * ZWSSGR_Front_Filter Class
  *
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Smart Google Reviews
+ * @subpackage Smart Showcase for Google Reviews
  * @since 1.0.0
  */
 
@@ -13,12 +13,12 @@
 
 if ( !defined( 'ABSPATH' ) ) exit;
 
-if ( !class_exists( 'ZWSGR_Front_Filter' ) ) {
+if ( !class_exists( 'ZWSSGR_Front_Filter' ) ) {
 
 	/**
-	 *  The ZWSGR_Front_Filter Class
+	 *  The ZWSSGR_Front_Filter Class
 	 */
-	class ZWSGR_Front_Filter {
+	class ZWSSGR_Front_Filter {
 
 		function __construct() 
 		{
