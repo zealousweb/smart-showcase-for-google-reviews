@@ -19,13 +19,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 	 */
 	class ZWSSGR_Admin_Action {
 
-		private $client;
+		private $client, $zwssgr_gmbc,$zwssgr_dashboard;
 		
 		public $zwssgr_admin_smtp_enabled,$zwssgr_smtp_opt,$zwssgr_general_opt;
-		
-		private $zwssgr_gmbc;
-
-		private $zwssgr_dashboard;
 
 		function __construct()  
 		{

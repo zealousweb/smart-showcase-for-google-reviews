@@ -16,9 +16,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
         private static $instance = null;
 
-        private $client;
-
-        private $zwssgr_zqm;
+        private $client,$zwssgr_zqm;
 
         public function __construct() {
 
