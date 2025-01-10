@@ -28,7 +28,8 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			add_shortcode( 'zwssgr_widget', array($this,'shortcode_load_more'));
 			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
 			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
-
+			add_action('wp_head', array($this, 'enqueue_custom_plugin_styles'));
+			
 			// Initialize dashboard class
 			$this->zwssgr_dashboard = ZWSSGR_Dashboard::get_instance();
 
@@ -52,11 +53,30 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			));
 		}
 
-		function enqueue_custom_plugin_styles($post_id) {
-			$custom_css = get_post_meta($post_id, '_zwssgr_custom_css', true);
-			// Check if there's any custom CSS to render
-			if (!empty($custom_css)) {
-				echo '<style type="text/css">' . esc_html($custom_css) . '</style>';
+	
+		function enqueue_custom_plugin_styles() {
+			$zwssgr_wd_posts_args = array(
+				'post_type'			=> 'zwssgr_data_widget',
+				'posts_per_page'	=> -1,
+				'status'			=> 'publish',
+				'fields'			=> 'ids',
+				'meta_query' => array(
+					array(
+						'key'     => '_zwssgr_custom_css',
+						'value'   => '', 
+						'compare' => '!=',
+					),
+				),
+			);
+			$zwssgr_wd_posts = get_posts( $zwssgr_wd_posts_args );
+			
+			$zwssgr_wd_dy_style = '';
+	
+			if( ! empty( $zwssgr_wd_posts ) ){
+				foreach( $zwssgr_wd_posts as $zwssgr_wd_posts_single_id ){
+					$zwssgr_wd_dy_style .= get_post_meta($zwssgr_wd_posts_single_id, '_zwssgr_custom_css', true);
+					echo '<style type="text/css">' . esc_html($zwssgr_wd_dy_style) . '</style>';
+				}
 			}
 		}
 		
@@ -329,7 +349,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 			echo '<div class="zwssgr-main-wrapper" data-widget-id="' . esc_attr( $post_id ) . '">';
 
-				$this->enqueue_custom_plugin_styles($post_id);
+				//$this->enqueue_custom_plugin_styles($post_id);
 				echo '<div class="zwssgr-front-review-filter-wrap" data-widget-id="' . esc_attr( $post_id ) . '">';
 					if ($badge_layout_option === 'badge') {
 					}else{
