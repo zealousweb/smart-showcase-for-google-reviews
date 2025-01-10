@@ -74,11 +74,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 // Display connected to  message and disconnect button if JWT token exists
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
-                        <div id="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="close-button"></a></div>
-                        <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper">
-                            <div id="disconnect-gmb-auth-response"></div>
+                        <div id="close-gmb-wrap" class="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="close-button"></a></div>
+                        <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper disconnect-gmb-auth">
+                            <div id="disconnect-gmb-auth-response" class="disconnect-gmb-auth-response"></div>
                             <div class="zwssgr-caution-div">
-                                <input type="checkbox" id="delete-all-data" name="delete_all_data">
+                                <input type="checkbox" id="delete-all-data" name="delete_all_data" class="delete-all-data">
                                 <label for="delete-all-data" class="zwssgr-chechbox-label">
                                     Caution: Check this box to permanently delete all data.
                                 </label>
@@ -99,8 +99,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     <div class="zwssgr-gmbc-container">
                         <div id="fetch-gmb-auth-url-wrapper" class="zwssgr-gmbc-inner-wrapper">
                             <span> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
-                            <div id="fetch-gmb-auth-url-response"></div>   
-                            <a href="" class="button button-primary zwssgr-submit-btn" id="fetch-gmb-auth-url">Connect with Google</a>
+                            <div id="fetch-gmb-auth-url-response" class="fetch-gmb-auth-url-response"></div>   
+                            <a href="" class="button button-primary zwssgr-submit-btn fetch-gmb-auth-url" id="fetch-gmb-auth-url">Connect with Google</a>
                         </div>
                     </div>
                 </div>';
@@ -237,11 +237,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
             }            
         
-            echo '<div id="fetch-gmb-data">
+            echo '<div id="fetch-gmb-data" class="fetch-gmb-data">
                 <div class="response"></div>
                 <div class="progress-bar '. esc_attr( $zwgr_data_processing_init ) .'">
-                    <progress id="progress" value="'. esc_attr( $zwssgr_batch_progress ) .'" max="100"></progress>
-                    <span id="progress-percentage"> '. esc_attr( $zwssgr_batch_progress ) .'% </span>
+                    <progress class="progress" id="progress" value="'. esc_attr( $zwssgr_batch_progress ) .'" max="100"></progress>
+                    <span id="progress-percentage" class="progress-percentage"> '. esc_attr( $zwssgr_batch_progress ) .'% </span>
                 </div>
                 <div class="fetch-gmb-inner-data">';
                     // Check if the widget ID is not empty
