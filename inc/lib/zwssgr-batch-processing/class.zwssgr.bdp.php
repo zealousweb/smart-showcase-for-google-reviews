@@ -230,7 +230,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
         }              
 
-        protected function process_zwssgr_gmb_reviews($zwssgr_gmb_data, $zwssgr_account_number = null, $zwssgr_location_number) {
+        protected function process_zwssgr_gmb_reviews($zwssgr_gmb_data, $zwssgr_location_number,$zwssgr_account_number = null) {
 
             // If $zwssgr_account_number is not provided, use the class property
             $zwssgr_account_number = $zwssgr_account_number ?? $this->zwssgr_account_number;
