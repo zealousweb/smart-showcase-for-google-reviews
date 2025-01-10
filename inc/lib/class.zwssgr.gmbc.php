@@ -47,6 +47,10 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
         public function zwssgr_gmbc_add_menu_items() {
 
+             if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
+
             $zwssgr_gmb_email = get_option('zwssgr_gmb_email');
 
             if (empty($zwssgr_gmb_email) || (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true')) {
@@ -111,6 +115,10 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
         // If applicable display the "Connect with Google" button on each page of sgr plugin
         public function zwssgr_connect_google_popup_callback() {
 
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
+
             // Check if we're in the admin panel
             if (is_admin()) {
 
@@ -153,6 +161,10 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
         // Handle the 'auth_code' flow during admin_init
         public function zwssgr_handle_auth_code() {
+
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
 
             if (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
 
@@ -217,6 +229,10 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
         }
         
         public function zwssgr_fetch_gmb_data_callback() {
+
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
 
             $zwssgr_widget_id = isset($_GET['zwssgr_widget_id']) ? sanitize_text_field($_GET['zwssgr_widget_id']) : '';
 
