@@ -988,7 +988,8 @@ input.zwssgr-radio {
     background-color: #F08C3C;
 }
 
-.zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-button.active {
+.zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-button.active,
+.zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-picker.active {
     color: #FCFCFC;
     background-color: #F08C3C;
 }
