@@ -193,6 +193,7 @@ input.zwssgr-input-text.zwssgr-shortcode-input {
     height: auto;
 }
 
+/* End Of General Styles */
 
 /* ==========================================================================
    2. Components
@@ -608,6 +609,8 @@ input.zwssgr-radio {
     line-height: 1.6;
     color: red;
 }
+
+/* End Of Components Style */
 
 /* ==========================================================================
    3. Dashboard
@@ -1282,6 +1285,7 @@ input.zwssgr-radio {
     top: 21.5%;
 }
 
+/* End Of Dashboard Style */
 
 /* ==========================================================================
    4. Notifications
@@ -1363,6 +1367,7 @@ input.zwssgr-radio {
     color: green;
 }
 
+/* End of Notifications Style */
 
 /* ==========================================================================
    5. Tooltip Styles
@@ -1416,6 +1421,8 @@ input.zwssgr-radio {
 @-webkit-keyframes spin {
     to { -webkit-transform: rotate(360deg); }
 }
+
+/* End Of Tooltip Styles */
 
 /* ==========================================================================
    6. Media Queries
@@ -1578,3 +1585,5 @@ input.zwssgr-radio {
         left: 100%;
     }
 }
+
+/* End Of Media Queries */
