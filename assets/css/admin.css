@@ -486,16 +486,6 @@ body input.zwssgr-radio {
     box-sizing: border-box;
 }
 
-/* body input.zwssgr-radio:checked::before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    width: 10px;
-    height: 10px;
-} */
-
 .zwssgr-disable {
     background-color: #ccc;
     color: #999;
@@ -1057,93 +1047,6 @@ body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-location-se
     pointer-events: none;
 }
 
-@media only screen and (max-width: 767px) {
-
-    body .zwgr-dashboard-header {
-        padding-bottom: 16px !important;
-    }
-
-    body .zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
-        flex-direction: column;
-        margin: 0 !important;
-    }
-
-    body .zwgr-dashboard #render-dynamic .zwssgr-data-card {
-        margin: 0 0 24px 0 !important;
-        max-width: -webkit-fill-available !important;
-    }
-
-    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-filter-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-        margin: 0 0 16px 0 !important;
-    }
-
-    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-item {
-        margin: 0 12px 12px 0 !important;
-    }
-
-    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-item:last-child {
-        margin: 0 !important;
-    }
-
-    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filters-list {
-        flex-wrap: wrap;
-    }
-
-    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-filter-wrapper .zwssgr-title-wrapper {
-        margin-bottom: 16px !important;
-    }
-
-    .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-account-select, 
-    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-location-select {
-        max-width: 100%;
-        margin: 0 0 16px 0;
-    }
-    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter .zwssgr-input-text:last-child {
-        margin: 0;
-    }
-
-}
-
-@media only screen and (max-width: 1024px) {
-
-    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-account-select {
-        max-width: 100% !important;
-    }
-
-    body .zwssgr-flex-inner-container .zwssgr_outer_wrapper {
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    body .zwgr-dashboard #render-dynamic .zwssgr-flex-column .zwssgr_chart_legend {
-        margin: 0 14px 0 0 !important;
-    }
-
-    body .zwssgr-flex-inner-container .zwssgr_outer_wrapper #zwssgr_chart_wrapper {
-        margin: 0 20px 0 0 !important;
-    }
-
-    body .zwssgr-flex-inner-container .zwssgr_outer_wrapper #zwsr_chart_legend_wrapper {
-        display: flex;
-        justify-content: space-between;
-        margin: 32px 0 0 0;
-    }
-
-    body .zwgr-dashboard #render-dynamic .zwgr-dashboard-footer {
-        flex-direction: column !important;
-        margin: 0 !important;
-    }
-
-    body .zwgr-dashboard #render-dynamic .zwssgr-flex-column {
-        width: 100% !important;
-        margin: 0 0 24px 0;
-        padding: 0 !important;
-    }
-}
-
-
 body .zwgr-dashboard #render-dynamic {
     padding: 32px 0 0 0;
 }
@@ -1534,23 +1437,7 @@ body .zwssgr-tooltip-container:hover .zwssgr-tooltip-text {
     opacity: 1;
 }
 
-@media only screen and (max-width: 1200px) { 
-    .zwssgr-tooltip-container {
-        left: 100%;
-    }
-}
 
-@media only screen and (max-width: 480px) {
-    .zwssgr-tooltip-text {
-        right: 100%;
-        left: auto;
-        transform: none;
-    }
-    .zwssgr-tooltip-container {
-        padding-left: 0;
-        left: 100%;
-    }
-}
 
 
 
@@ -1585,4 +1472,112 @@ body .zwssgr-keyword-error-message{
 }
 body .zwssgr-tab-content-display{
     display: none;
+}
+
+
+
+
+@media only screen and (max-width: 1200px) { 
+    .zwssgr-tooltip-container {
+        left: 100%;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+
+    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-account-select {
+        max-width: 100% !important;
+    }
+
+    body .zwssgr-flex-inner-container .zwssgr_outer_wrapper {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    body .zwgr-dashboard #render-dynamic .zwssgr-flex-column .zwssgr_chart_legend {
+        margin: 0 14px 0 0 !important;
+    }
+
+    body .zwssgr-flex-inner-container .zwssgr_outer_wrapper #zwssgr_chart_wrapper {
+        margin: 0 20px 0 0 !important;
+    }
+
+    body .zwssgr-flex-inner-container .zwssgr_outer_wrapper #zwsr_chart_legend_wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin: 32px 0 0 0;
+    }
+
+    body .zwgr-dashboard #render-dynamic .zwgr-dashboard-footer {
+        flex-direction: column !important;
+        margin: 0 !important;
+    }
+
+    body .zwgr-dashboard #render-dynamic .zwssgr-flex-column {
+        width: 100% !important;
+        margin: 0 0 24px 0;
+        padding: 0 !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+    body .zwgr-dashboard-header {
+        padding-bottom: 16px !important;
+    }
+
+    body .zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
+        flex-direction: column;
+        margin: 0 !important;
+    }
+
+    body .zwgr-dashboard #render-dynamic .zwssgr-data-card {
+        margin: 0 0 24px 0 !important;
+        max-width: -webkit-fill-available !important;
+    }
+
+    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-filter-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 0 0 16px 0 !important;
+    }
+
+    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-item {
+        margin: 0 12px 12px 0 !important;
+    }
+
+    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-item:last-child {
+        margin: 0 !important;
+    }
+
+    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filters-list {
+        flex-wrap: wrap;
+    }
+
+    body .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-filter-wrapper .zwssgr-title-wrapper {
+        margin-bottom: 16px !important;
+    }
+
+    .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-account-select, 
+    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter #zwssgr-location-select {
+        max-width: 100%;
+        margin: 0 0 16px 0;
+    }
+    body .zwgr-dashboard .zwgr-dashboard-header #gmb-data-filter .zwssgr-input-text:last-child {
+        margin: 0;
+    }
+
+}
+
+
+@media only screen and (max-width: 480px) {
+    .zwssgr-tooltip-text {
+        right: 100%;
+        left: auto;
+        transform: none;
+    }
+    .zwssgr-tooltip-container {
+        padding-left: 0;
+        left: 100%;
+    }
 }
