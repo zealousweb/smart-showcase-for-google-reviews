@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Smart Showcase for Google Reviews
- * Plugin URL: https://wordpress.org/plugin-url/
+ * Plugin URL: https://wordpress.org/plugins/smart-showcase-for-google-reviews/
  * Description: The Smart Showcase for Google Reviews enables users to easily embed Google Reviews on your WordPress site.
  * Version: 1.0.0
  * Author: ZealousWeb
