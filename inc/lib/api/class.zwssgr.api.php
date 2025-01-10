@@ -515,6 +515,9 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
         
         public function zwssgr_fetch_jwt_token($zwssgr_request) {
 
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
             // Get 'auth_code' and 'consent' from function params parameters
             $zwssgr_auth_code = isset($_GET['auth_code']) ? sanitize_text_field(wp_unslash($_GET['auth_code'])) : '';
 
