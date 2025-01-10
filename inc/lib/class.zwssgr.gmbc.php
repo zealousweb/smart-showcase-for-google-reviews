@@ -80,8 +80,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                         <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper">
                             <div id="disconnect-gmb-auth-response"></div>
                             <div class="zwssgr-caution-div">
-                                <input type="checkbox" id="delete-all-data" name="delete_all_data" style="margin-right: 7.5px;">
-                                <label for="delete-all-data" style="color: red;" class="zwssgr-chechbox-label">
+                                <input type="checkbox" id="delete-all-data" name="delete_all_data">
+                                <label for="delete-all-data" class="zwssgr-chechbox-label">
                                     Caution: Check this box to permanently delete all data.
                                 </label>
                             </div>
@@ -100,7 +100,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
                         <div id="fetch-gmb-auth-url-wrapper" class="zwssgr-gmbc-inner-wrapper">
-                            <span style="margin-right: 10px;"> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
+                            <span> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
                             <div id="fetch-gmb-auth-url-response"></div>   
                             <a href="" class="button button-primary zwssgr-submit-btn" id="fetch-gmb-auth-url">Connect with Google</a>
                         </div>
