@@ -192,10 +192,10 @@
 						<?php esc_html_e( 'Enable SMTP', 'smart-showcase-for-google-reviews' ); ?>
 					</th>
 					<td>
-						<label class="switch">
+						<label class="switch zwssgr-switch">
 							<input type="checkbox" id="zwssgr_admin_smtp_enabled" name="zwssgr_admin_smtp_enabled"
 								value="1" <?php checked( isset( $zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] ) && $zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] == 1 ); ?>>
-							<span class="slider"></span>
+							<span class="slider zwssgr-toggle-slider"></span>
 						</label>
 					</td>
 				</tr>
