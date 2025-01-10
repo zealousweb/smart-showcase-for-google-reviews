@@ -454,10 +454,9 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                                     if ($image_id) {
                                         $output .= wp_get_attachment_image($image_id, 'thumbnail', false, [
                                             'class' => 'fallback-user-dp',
-                                            'style' => 'max-width:32px; height:auto;',
                                         ]);
                                     } else {
-                                        $output .= '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
+                                        $output .= '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp">';
                                     }
                                 } else {
                                     $fallback_image_id = attachment_url_to_postid(ZWSSGR_URL . '/assets/images/fallback-user-dp.svg');
@@ -520,27 +519,27 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     '</h4>
                     <div class="zwssgr_outer_wrapper">
                         <div id="zwssgr_chart_wrapper">
-                            <div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>
+                            <div class="zwssgr-dashboard-text">No enough data available</div>
                         </div>
                         <div id="zwsr_chart_legend_wrapper">
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #f08c3c;"></div>
+                                <div class="marker zwssgr-chart-lengend-orange"></div>
                                 <div class="guide">5 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #3caab4"></div>
+                                <div class="marker zwssgr-chart-lengend-cian"></div>
                                 <div class="guide">4 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #a9c6cc"></div>
+                                <div class="marker zwssgr-chart-lengend-grey"></div>
                                 <div class="guide">3 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #285064"></div>
+                                <div class="marker zwssgr-chart-lengend-blue"></div>
                                 <div class="guide">2 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #f44336"></div>
+                                <div class="marker zwssgr-chart-lengend-red"></div>
                                 <div class="guide">1 Star</div>
                             </div>
                         </div>

@@ -533,7 +533,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</th>
 					<td>';
 						if (!empty($zwssgr_gmb_reviewer_image_uri)) {
-							echo '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:50px; height:auto;" alt="'. esc_html($zwssgr_reviewer_name).'">';
+							echo '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="zwssgr-fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name).'">';
 						} else {
 							echo '<img src="' . esc_url( ZWSSGR_URL . '/assets/images/fallback-user-dp.svg' ) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name).'">';						
 						}
@@ -544,7 +544,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<label for="zwssgr_reviewer_name">' . esc_html('Reviewer', 'smart-showcase-for-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwssgr_reviewer_name) . '" readonly class="regular-text" style="width:100%;" />
+						<input type="text" value="' . esc_attr($zwssgr_reviewer_name) . '" readonly class="zwssgr-regular-text" />
 					</td>
 				</tr>
 								<tr>
@@ -552,7 +552,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<label for="zwssgr_review_published_date">' . esc_html('Publish Date', 'smart-showcase-for-google-reviews') . '</label>
 					</th>
 					<td>
-						<input type="text" value="' . esc_attr($zwssgr_review_published_date) . '" readonly class="regular-text" style="width:100%;" />
+						<input type="text" value="' . esc_attr($zwssgr_review_published_date) . '" readonly class="zwssgr-regular-text" />
 					</td>
 				</tr>
 				<tr>
@@ -560,7 +560,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<label for="zwssgr_review_comment">' . esc_html('Review Content', 'smart-showcase-for-google-reviews') . '</label>
 					</th>
 					<td>
-						<textarea readonly class="regular-text" rows="5" style="width:100%;">' . esc_textarea($zwssgr_review_comment) . '</textarea>
+						<textarea readonly class="zwssgr-regular-text" rows="5">' . esc_textarea($zwssgr_review_comment) . '</textarea>
 					</td>
 				</tr>
 				<tr>
@@ -585,7 +585,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<label for="zwssgr_reply_update_time">' . esc_html('Reply Update Time', 'smart-showcase-for-google-reviews') . '</label>
 						</th>
 						<td>
-							<input type="text" value="' . esc_attr($zwssgr_formatted_time) . '" readonly class="regular-text" style="width:100%;" />
+							<input type="text" value="' . esc_attr($zwssgr_formatted_time) . '" readonly class="zwssgr-regular-text" />
 						</td>
 					</tr>';
 
@@ -595,8 +595,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<label for="zwssgr_reply_comment"> ' . esc_html('Reply Content', 'smart-showcase-for-google-reviews') . ' </label>
 					</th>
 					<td>
-						<div id="json-response-message" style="margin-bottom: 10px; color: green;"></div>
-						<textarea name="zwssgr_reply_comment" class="regular-text" rows="5" style="width: 100%;">'. esc_textarea($zwssgr_reply_comment) .'</textarea>
+						<div id="json-response-message zwssgr-success-message"></div>
+						<textarea name="zwssgr_reply_comment" class="zwssgr-regular-text" rows="5">'. esc_textarea($zwssgr_reply_comment) .'</textarea>
 						<div class="cta-wrapper">';
 							if (!empty($zwssgr_reply_comment)) {
 								echo '<button class="button button-primary button-large zwssgr-submit-btn" id="update-reply"> ' . esc_html('Update', 'smart-showcase-for-google-reviews') . ' </button>';
