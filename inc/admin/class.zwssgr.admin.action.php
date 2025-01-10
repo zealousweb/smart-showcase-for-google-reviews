@@ -983,9 +983,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_admin_notification_enabled_callback()
 		{
 			$value = get_option('zwssgr_admin_notification_enabled', '0');
-			echo '<label class="switch">';
+			echo '<label class="switch zwssgr-switch">';
 			echo '<input type="checkbox" id="zwssgr_admin_notification_enabled" name="zwssgr_admin_notification_enabled" value="1" ' . checked(0, $value, false) . ' />';
-			echo '<span class="slider"></span>';
+			echo '<span class="slider zwssgr-toggle-slider"></span>';
 			echo '</label>';
 		}
 
@@ -2455,9 +2455,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label">Review us on Google</h3>
-									<label class="switch">
+									<label class="switch zwssgr-switch">
 										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
-										<span class="slider"></span>
+										<span class="slider zwssgr-toggle-slider"></span>
 									</label>
 
 									<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwssgr-color-options">
@@ -2549,9 +2549,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									?>
 										<div class="zwssgr-load-more-wrapper">
 											<h3 class="zwssgr-label">Load More</h3>
-											<label class="switch">
+											<label class="switch zwssgr-switch">
 												<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
-												<span class="slider"></span>
+												<span class="slider zwssgr-toggle-slider"></span>
 											</label>
 											<div id="zwssgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwssgr-color-options_load">
 												<div class="zwssgr-color-picker-load">
