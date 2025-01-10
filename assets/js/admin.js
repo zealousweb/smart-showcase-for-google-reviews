@@ -1603,7 +1603,7 @@ jQuery(document).ready(function($) {
 		// Check if zwssgr_chart_data is a valid array
 		if (!Array.isArray(zwssgr_chart_data)) {
 			document.getElementById('zwssgr_chart_wrapper').innerHTML = 
-				'<div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>';
+				'<div class="zwssgr-dashboard-text">No enough data available</div>';
 			return;
 		}
 
@@ -1614,7 +1614,7 @@ jQuery(document).ready(function($) {
 
 		if (zwssgr_all_zero) {
 			document.getElementById('zwssgr_chart_wrapper').innerHTML = 
-				'<div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>';
+				'<div class="zwssgr-dashboard-text">No enough data available</div>';
 			return;
 		}
 
@@ -1658,7 +1658,7 @@ jQuery(document).ready(function($) {
 
 		e.preventDefault();
 
-		$('#zwssgr_chart_wrapper').outerHeight(true);
+		var $zwssgr_chart_wrapper = $('#zwssgr_chart_wrapper').outerHeight(true);
 
 		var zwssgr_gmb_account_div = $("#gmb-data-filter #zwssgr-account-select");
 		var zwssgr_gmb_location_div = $("#gmb-data-filter #zwssgr-location-select");
