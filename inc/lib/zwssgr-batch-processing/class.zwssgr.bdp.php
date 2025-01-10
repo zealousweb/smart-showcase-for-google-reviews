@@ -7,23 +7,8 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
     class Zwssgr_GMB_Background_Data_Processor extends WP_Background_Process {
 
         protected $action = 'Zwssgr_GMB_Background_Data_Processor';
-
-        private $zwsr_batch_data;
-
-        private $zwssgr_widget_id;
-
-        private $zwssgr_current_index;
-
-        private $zwssgr_account_number;
-
-        private $zwssgr_location_number;
-
-        private $next_page_token;
-
-        private $zwssgr_total_reviews;
-
-        private $zwssgr_average_rating;
-
+        private $zwsr_batch_data, $zwssgr_widget_id, $zwssgr_current_index, $zwssgr_account_number, $zwssgr_location_number, $next_page_token, $zwssgr_total_reviews, $zwssgr_average_rating;
+        public $zwssgr_gmb_data_type;
         /**
 		 * Custom log function for debugging.
 		 *
