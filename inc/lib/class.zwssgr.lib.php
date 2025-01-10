@@ -348,7 +348,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					$selected_elements = get_post_meta($post_id, 'selected_elements', true);
 					$selected_elements = maybe_unserialize($selected_elements);
 
-					$reviews_html .= '<div id="div-container" data-widget-id="' . esc_attr( $post_id ) . '">';
+					$reviews_html .= '<div id="div-container" class="zwssgr-front-container" data-widget-id="' . esc_attr( $post_id ) . '">';
 						// Loop through the posts and display them
 						while ($query->have_posts()) {
 							$query->the_post();

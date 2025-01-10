@@ -1219,13 +1219,13 @@ body .zwssgr-toogle-display.zwssgr-toogle-display-front {
     margin-top: 30px;
 }
 
-body #div-container .zwssgr-popup-item {
+body .zwssgr-front-container .zwssgr-popup-item {
     max-width: 300px;
     margin: 0 auto;
     cursor: pointer;
 }
 
-body #div-container .zwssgr-badge-item {
+body .zwssgr-front-container .zwssgr-badge-item {
     max-width: 300px;
     margin: 0 auto;
 }
