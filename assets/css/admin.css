@@ -1066,6 +1066,13 @@ input.zwssgr-radio {
     margin: 0;
 }
 
+.zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 0 36px 0;
+}
+
 .zwgr-dashboard #render-dynamic .zwssgr-average-rating-card .zwssgr-card-value {
     color: #F08C3C;
 }
@@ -1551,6 +1558,11 @@ input.zwssgr-radio {
 
     .zwssgr-widget-wrap .zwssgr-widget-setting {
         width: 100%;
+    }
+
+    .zwgr-dashboard #render-dynamic .zwgr-dashboard-body {
+        flex-direction: column;
+        margin: 0 !important;
     }
 }
 
