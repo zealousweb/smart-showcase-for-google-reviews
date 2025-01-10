@@ -55,6 +55,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			add_action('restrict_manage_posts', array( $this,'zwssgr_add_custom_meta_filters'));
 			add_action('pre_get_posts', array( $this,'zwssgr_filter_posts_by_custom_meta'));
 
+			add_action('admin_enqueue_scripts', array($this, 'custom_admin_fonts'));
+
 			// Initialize dashboard class
 			$this->zwssgr_dashboard = ZWSSGR_Dashboard::get_instance();
 
@@ -109,6 +111,16 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			//set reasonable timeout
 			$phpmailer->Timeout = 10;
 			$phpmailer->CharSet  = "utf-8";
+		}
+		
+
+		function custom_admin_fonts() {
+			wp_enqueue_style(
+				'custom-admin-font',
+				'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
+				false,
+				null
+			);
 		}
 		
 		/**
