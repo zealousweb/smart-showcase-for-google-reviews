@@ -123,8 +123,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
             if (is_admin()) {
 
                 // Get the current page or post type
-                $zwssgr_current_page      = isset($_GET['page']) ? $_GET['page'] : '';
-                $zwssgr_current_post_type = isset($_GET['post_type']) ? $_GET['post_type'] : '';
+                $zwssgr_current_page      = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
+                $zwssgr_current_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
 
                 // Define the valid pages and post types
                 $zwssgr_valid_pages = array(
@@ -168,8 +168,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
             if (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
 
-                $zwssgr_auth_code = sanitize_text_field($_GET['auth_code']);
-                $zwssgr_gmb_email = sanitize_text_field($_GET['user_email']);
+                $zwssgr_auth_code = sanitize_text_field(wp_unslash($_GET['auth_code']));
+                $zwssgr_gmb_email = sanitize_text_field(wp_unslash($_GET['user_email']));
                 
                 update_option('zwssgr_gmb_email', $zwssgr_gmb_email);
 
@@ -234,7 +234,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 return;
             }
 
-            $zwssgr_widget_id = isset($_GET['zwssgr_widget_id']) ? sanitize_text_field($_GET['zwssgr_widget_id']) : '';
+            $zwssgr_widget_id = isset($_GET['zwssgr_widget_id']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_widget_id'])) : '';
 
             if (!empty($zwssgr_widget_id)) {
                 // Fetch the GMB email from the options table
