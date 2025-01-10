@@ -563,10 +563,12 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .zwssgr-slider3 .zwssgr-slider-badge {
     width: 240px;
+    text-align: center;
 }
 
 .zwssgr-slider3 .zwssgr-slider-3 {
