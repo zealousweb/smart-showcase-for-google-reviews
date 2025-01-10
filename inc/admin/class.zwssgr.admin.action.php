@@ -133,7 +133,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		{
 
 			// admin js
-			wp_enqueue_script( ZWSSGR_PREFIX . '-admin-min-js', ZWSSGR_URL . 'assets/js/admin.min.js', array( 'jquery-core' ), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL . 'assets/js/admin.js', array( 'jquery-core' ), ZWSSGR_VERSION ,true);
 
 			// Google chart JS
@@ -143,7 +142,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_enqueue_script( ZWSSGR_PREFIX . '-daterangepicker-min-js', ZWSSGR_URL . 'assets/js/daterangepicker.min.js', array( 'jquery-core', 'moment' ), ZWSSGR_VERSION ,true);
 
 			// admin css
-			wp_enqueue_style( ZWSSGR_PREFIX . '-admin-min-css', ZWSSGR_URL . 'assets/css/admin.min.css', array(), ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', array(), ZWSSGR_VERSION );	
 			
 			// style css
