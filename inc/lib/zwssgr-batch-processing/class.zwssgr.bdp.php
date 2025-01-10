@@ -263,8 +263,8 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                             'post_content' => '',
                             'post_status'  => 'publish',
                             'post_type'    => 'zwssgr_reviews',
-                            'post_date'      => isset( $zwssgr_review['createTime'] ) ? date( 'Y-m-d H:i:s', strtotime( $zwssgr_review['createTime'] ) ) : current_time( 'mysql' ),
-                            'post_modified'  => isset( $zwssgr_review['updateTime'] ) ? date( 'Y-m-d H:i:s', strtotime( $zwssgr_review['updateTime'] ) ) : current_time( 'mysql' ),
+                            'post_date'      => isset( $zwssgr_review['createTime'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $zwssgr_review['createTime'] ) ) : current_time( 'mysql' ),
+                            'post_modified'  => isset( $zwssgr_review['updateTime'] ) ? gmdate( 'Y-m-d H:i:s', strtotime( $zwssgr_review['updateTime'] ) ) : current_time( 'mysql' ),
                         ];
                         
                         $zwssgr_wp_review_id = wp_insert_post( $zwssgr_review_data );
@@ -457,7 +457,7 @@ function zwssgr_get_batch_processing_status() {
     // Check nonce and AJAX referer
     check_ajax_referer('zwssgr_queue_manager_nounce', 'security');
 
-    $zwssgr_widget_id           = intval($_POST['zwssgr_widget_id']);
+    $zwssgr_widget_id = isset($_POST['zwssgr_widget_id']) ? intval($_POST['zwssgr_widget_id']) : 0;
     $zwgr_data_processing_init = get_post_meta($zwssgr_widget_id, 'zwgr_data_processing_init', true);
     $zwgr_data_sync_once       = get_post_meta($zwssgr_widget_id, 'zwgr_data_sync_once', true);
     $zwssgr_gmb_data_type       = get_post_meta($zwssgr_widget_id, 'zwssgr_gmb_data_type', true);
