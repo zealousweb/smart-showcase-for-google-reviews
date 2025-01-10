@@ -926,6 +926,7 @@ input.zwssgr-radio {
     align-items: center;
     margin: 0 0 32px 0;
     width: 100%;
+    flex-wrap: wrap;
 }
 
 .zwgr-dashboard {
@@ -1424,13 +1425,14 @@ input.zwssgr-radio {
     .zwssgr-tooltip-container {
         left: 100%;
     }
+
+    .zwgr-dashboard .zwssgr-date-range-filter-wrapper .zwssgr-title-wrapper {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
 
 @media only screen and (max-width: 1024px) {
-
-    .zwgr-dashboard .zwgr-dashboard-header .gmb-data-filter .zwssgr-account-select {
-        max-width: 100% !important;
-    }
 
     .zwssgr-flex-inner-container .zwssgr_outer_wrapper {
         flex-direction: column;
