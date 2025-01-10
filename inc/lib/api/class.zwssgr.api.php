@@ -317,8 +317,8 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             check_ajax_referer('zwssgr_add_update_reply_nonce', 'security');
 
             // Retrieve POST values
-            $zwssgr_wp_review_id    = isset($_POST['zwssgr_wp_review_id']) ? sanitize_text_field($_POST['zwssgr_wp_review_id']) : '';
-            $zwssgr_reply_comment   = isset($_POST['zwssgr_reply_comment']) ? sanitize_text_field($_POST['zwssgr_reply_comment']) : '';
+            $zwssgr_wp_review_id    = isset($_POST['zwssgr_wp_review_id']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_wp_review_id'])) : '';
+            $zwssgr_reply_comment   = isset($_POST['zwssgr_reply_comment']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_reply_comment'])) : '';
             $zwssgr_account_number  = get_post_meta($zwssgr_wp_review_id, 'zwssgr_account_number', true);
             $zwssgr_location_number   = get_post_meta($zwssgr_wp_review_id, 'zwssgr_location_number', true);
             $zwssgr_review_id       = get_post_meta($zwssgr_wp_review_id, 'zwssgr_review_id', true);
@@ -402,7 +402,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             check_ajax_referer('zwssgr_delete_review_reply', 'security');
 
             // Retrieve POST values
-            $zwssgr_wp_review_id    = isset($_POST['zwssgr_wp_review_id']) ? sanitize_text_field($_POST['zwssgr_wp_review_id']) : '';
+            $zwssgr_wp_review_id    = isset($_POST['zwssgr_wp_review_id']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_wp_review_id'])) : '';
             $zwssgr_account_number  = get_post_meta($zwssgr_wp_review_id, 'zwssgr_account_number', true);
             $zwssgr_location_number   = get_post_meta($zwssgr_wp_review_id, 'zwssgr_location_number', true);
             $zwssgr_review_id       = get_post_meta($zwssgr_wp_review_id, 'zwssgr_review_id', true);
