@@ -917,11 +917,6 @@ input.zwssgr-radio {
     color: red;
 }
 
-.toplevel_page_zwssgr_dashboard #wpcontent {
-    padding: 32px;
-    background-color: #fcfcfc;
-}
-
 .zwgr-dashboard .zwgr-dashboard-header {
     padding-bottom: 32px;
     border-bottom: 1px solid rgba(27, 27, 27, 0.1);
