@@ -104,12 +104,10 @@ body .zwssgr-slider .zwssgr-star,
     color: #ccc;
 }
 
-
 body .zwssgr-slider .zwssgr-star.filled,
 body .zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-star.filled {
     color: #f39c12;
 }
-
 
 body .zwssgr-layout-title {
     font-size: 20px;
@@ -118,7 +116,6 @@ body .zwssgr-layout-title {
     font-family: 'Poppins', sans-serif;
     text-transform: capitalize;
 }
-
 
 body .zwssgr-slider {
     padding: 0 30px;
@@ -220,12 +217,6 @@ body .zwssgr-slider .slick-arrow.slick-next {
     left: auto;
 }
 
-
-/* body #div-container .zwssgr-slider .slick-arrow.slick-next {
-    right: -4%;
-    left: auto;
-} */
-
 body .zwssgr-slider .slick-arrow.slick-prev::before {
     content: '';
     display: block;
@@ -287,6 +278,7 @@ body .zwssgr-list2 .zwssgr-slide-item .zwssgr-list-inner {
     background-color: #FFFFFF;
     border: 1px solid #E8EBEF
 }
+
 body .zwssgr-list2 .zwssgr-list-content-wrap {
     padding-left: 80px;
 }
@@ -294,6 +286,7 @@ body .zwssgr-list2 .zwssgr-list-content-wrap {
 body .zwssgr-list3 .zwssgr-slide-item {
     text-align: center;
 }
+
 body .zwssgr-list3 .zwssgr-rating {
     margin: 0 auto;
 }
@@ -321,6 +314,7 @@ body .zwssgr-list-wrap5 {
     align-items: flex-start;
     flex-wrap: wrap;
 }
+
 body .zwssgr-list-wrap5 .zwssgr-prifile-wrap {
     width: 30%;
     display: flex;
@@ -328,6 +322,7 @@ body .zwssgr-list-wrap5 .zwssgr-prifile-wrap {
     align-items: center;
     flex-wrap: wrap;
 }
+
 .zwssgr-list-wrap5 .zwssgr-prifile-wrap .zwssgr-profile{
     width: 62px;
     height: 62px;
@@ -336,6 +331,7 @@ body .zwssgr-list-wrap5 .zwssgr-prifile-wrap {
 body .zwssgr-list-wrap5 .zwssgr-prifile-wrap .zwssgr-data {
     width: calc(100% - 80px);
 }
+
 .zwssgr-list-wrap5 .zwssgr-content-wrap{
     width: 70%;
     padding-left: 10px;
@@ -380,6 +376,7 @@ body .zwssgr-slider .zwssgr-slide-item {
     background: transparent;
     border-radius: 0;
 }
+
 body .zwssgr-grid-inner {
     background: #FAFAFA;
     border-radius: 8px;
@@ -412,12 +409,15 @@ body .zwssgr-grid-item.zwssgr-grid3 .zwssgr-slide-item {
     background-color: #FFFFFF;
     border: 1px solid #E8EBEF;
 }
+
 body .zwssgr-list {
     padding: 0;
 }
+
 body .zwssgr-list .zwssgr-slide-item {
     padding: 0;
 }
+
 .zwssgr-slide-item .zwssgr-list-inner{
     background-color:#FAFAFA;
     padding: 20px;
@@ -441,7 +441,6 @@ body .zwssgr-slider5 .zwssgr-slide-item .zwssgr-list-inner,
 body .zwssgr-slider6 .zwssgr-slide-item .zwssgr-list-inner {
     margin: 0 10px 20px 10px;
 }
-
 
 body .zwssgr-slider2 .zwssgr-slide-item .zwssgr-list-inner,
 body .zwssgr-list4 .zwssgr-slide-item .zwssgr-list-inner,
@@ -487,6 +486,7 @@ body .zwssgr-grid-item.zwssgr-grid4 .zwssgr-slide-item {
     text-align: center;
     width: 25%;
 }
+
 body .zwssgr-grid-item.zwssgr-grid4 .zwssgr-profile {
     width: 62px;
     position: relative;
@@ -519,7 +519,6 @@ body .zwssgr-grid-item.zwssgr-grid4 .zwssgr-rating {
     margin: 10px auto;
 }
 
-
 body .zwssgr-grid-item.zwssgr-grid5 .zwssgr-slide-item {
     width: 50%;
 }
@@ -532,8 +531,6 @@ body .zwssgr-grid-item.zwssgr-grid5 .zwssgr-slide-wrap .zwssgr-review-info {
     width: calc(100% - 180px);
     padding-left: 20px;
 }
-
-
 
 .zwssgr-badge-item .zwssgr-average{
     color: #1B1B1B;
@@ -570,6 +567,7 @@ body .zwssgr-badge-wrap .zwssgr-option-item {
     margin: 0;
 
 }
+
 body .zwssgr-badge-wrap .zwssgr-option-item .zwssgr-layout-title {
     color: #000;;
 }
@@ -609,7 +607,6 @@ body .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info {
 body .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info p {
     margin-bottom: 0;
 }
-
 
 .zwssgr-badge-item.zwssgr-badge9{
     box-shadow: 10px 10px 30px 0px #00000005;
@@ -823,6 +820,7 @@ body .zwssgr-badge-item.zwssgr-badge8 .final-rating {
     font-size: 56px;
     font-weight: 400;
 }
+
 body .zwssgr-logo-wrap {
     display: flex;
     justify-content: center;
@@ -957,19 +955,19 @@ body .zwssgr-popup-content {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 0; /* No padding here; apply padding to inner content */
+    padding: 0; 
     background: #fff;
     width: 40%;
-    height: 590px; /* Set the maximum height */
-    overflow: hidden; /* Ensures border-radius is respected */
+    height: 590px; 
+    overflow: hidden; 
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 body .scrollable-content {
-    padding: 30px; /* Add padding to the scrollable content */
-    height: 100%; /* Match the parent height */
-    overflow-y: auto; /* Enable scrolling */
+    padding: 30px; 
+    height: 100%; 
+    overflow-y: auto; 
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
     box-sizing: border-box;
@@ -981,44 +979,42 @@ body .zwssgrpopup2 .zwssgr-popup-content {
     top: 0;
     transform: none;
     left: auto;
-    width: 40%; /* Adjust width as needed */
-    height: 100vh; /* Allow the content to fill the height */
+    width: 40%; 
+    height: 100vh; 
     background: #fff;
-    border-radius: 0; /* No rounded corners */
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Shadow on the left side */
+    border-radius: 0; 
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     overflow: hidden; 
 }
 
 body .zwssgrpopup2 .scrollable-content {
-    padding: 50px 30px; /* Add padding to the content */
-    overflow: auto; /* Enable scrolling */
-    scrollbar-width: thin; /* Firefox: Make scrollbar thin */
-    scrollbar-color: #888 #f1f1f1; /* Firefox: Custom scrollbar color */
+    padding: 50px 30px; 
+    overflow: auto; 
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #f1f1f1;
 }
 
 .main-div-wrapper {
     margin-top: 20px;
 }
 
-body /* Webkit browsers (Chrome, Edge, Safari) */
 body .zwssgr-popup-content::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */
+    width: 10px; 
 }
 
 body .zwssgr-popup-content::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Background color of the scrollbar track */
-    border-radius: 10px; /* Rounded corners for the track */
+    background: #f1f1f1; 
+    border-radius: 10px; 
 }
 
 body .zwssgr-popup-content::-webkit-scrollbar-thumb {
-    background: #888; /* Color of the scrollbar thumb */
-    border-radius: 10px; /* Rounded corners for the thumb */
+    background: #888; 
+    border-radius: 10px; 
 }
 
 body .zwssgr-popup-content::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Darker color on hover */
+    background: #555; 
 }
-
 
 body .zwssgr-close-popup {
     position: absolute;
@@ -1054,11 +1050,9 @@ body .zwssgrpopup2 .zwssgr-list-content-wrap {
     padding-left: 80px;
 }
 
-
 body .selected-option-display .zwssgr-badge-item {
     max-width: 300px;
 }
-
 
 body .zwssgr-front-review-filter-wrap {
     max-width: 100%;
@@ -1109,6 +1103,7 @@ body .zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul li {
     font-size: 16px;
     color: #000;
 }
+
 body .zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul li.selected,
 body .zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul li:hover {
     background-color: #bbb; 
@@ -1129,10 +1124,9 @@ body .zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul li:hover {
     line-height: 1.4;
     background: #FCFCFC url(../images/down-arrow.png) no-repeat right 7px top 55%;
     background-size: 16px 10px;
-    /* Remove default select box arrow */
-    appearance: none; /* For Webkit browsers */
-    -webkit-appearance: none; /* For Webkit browsers (Safari, Chrome) */
-    -moz-appearance: none; /* For Firefox */
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
 }
 
 body .zwssgr-slider3 {
@@ -1187,6 +1181,7 @@ body .zwssgr-final-review-fill {
     height: 100%;
     overflow: hidden;
 }
+
 body .zwssgr-load-more-btn {
     background-color: #000;
     color: #fff;
@@ -1216,6 +1211,7 @@ body .zwssgr-google-toggle {
     border: none;
     display: inline-block;
 }
+
 body .zwssgr-toogle-display.zwssgr-toogle-display-front { 
     background-color: transparent;
     border: none;
@@ -1233,6 +1229,7 @@ body #div-container .zwssgr-badge-item {
     max-width: 300px;
     margin: 0 auto;
 }
+
 body .zwssgr-slider .slick-track {
     display: flex;
 }
@@ -1258,7 +1255,6 @@ body .zwssgr-badge-link:focus {
 body .zwssgr-based-on {
     font-size: 16px;
 }
-
 
 body .zwssgr-main-wrapper{
     max-width: 100%;
