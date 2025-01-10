@@ -66,7 +66,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
             $zwssgr_chart_data = $this->zwssgr_dynamic_chart_data($zwssgr_data_render_args);
 
-            $zwssgr_data_render_output .= '<div id="render-dynamic">
+            $zwssgr_data_render_output .= '<div id="render-dynamic" class="render-dynamic">
                 <div class="zwgr-dashboard-body">'
                     . $this->zwssgr_total_reviews($zwssgr_data_render_args) .
                     $this->zwssgr_average_ratings($zwssgr_data_render_args) . 
@@ -303,7 +303,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                             </button>
                         </li>
                         <li class="zwssgr-filter-item">
-                            <input type="text" name="dates" value="" id="zwssgr-date-range-picker" class="" data-type="rangeofdate">
+                            <input type="text" name="dates" value="" id="zwssgr-date-range-picker" class="zwssgr-date-range-picker" data-type="rangeofdate">
                         </li>
                     </ul>
                 </div> 
@@ -331,8 +331,8 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             ));
 
             // Build the select dropdown
-            $data_filter_output = '<div id="gmb-data-filter">
-                <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text">
+            $data_filter_output = '<div id="gmb-data-filter" class="gmb-data-filter">
+                <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
                     <option value="">Select an Account</option>';
                     foreach ($zwssgr_request_data as $zwssgr_widget_id) {
                         $zwssgr_account_number = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
@@ -454,10 +454,9 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                                     if ($image_id) {
                                         $output .= wp_get_attachment_image($image_id, 'thumbnail', false, [
                                             'class' => 'fallback-user-dp',
-                                            'style' => 'max-width:32px; height:auto;',
                                         ]);
                                     } else {
-                                        $output .= '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" style="max-width:32px; height:auto;">';
+                                        $output .= '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp">';
                                     }
                                 } else {
                                     $fallback_image_id = attachment_url_to_postid(ZWSSGR_URL . '/assets/images/fallback-user-dp.svg');
@@ -519,28 +518,28 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                         esc_html__( 'Review Statistics Chart', 'smart-showcase-for-google-reviews' ) . 
                     '</h4>
                     <div class="zwssgr_outer_wrapper">
-                        <div id="zwssgr_chart_wrapper">
-                            <div style="text-align: center; font-size: 16px; color: #888; padding: 50px;">No enough data available</div>
+                        <div id="zwssgr_chart_wrapper" class="zwssgr_chart_wrapper">
+                            <div class="zwssgr-dashboard-text">No enough data available</div>
                         </div>
-                        <div id="zwsr_chart_legend_wrapper">
+                        <div id="zwsr_chart_legend_wrapper" class="zwsr_chart_legend_wrapper">
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #f08c3c;"></div>
+                                <div class="marker zwssgr-chart-lengend-orange"></div>
                                 <div class="guide">5 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #3caab4"></div>
+                                <div class="marker zwssgr-chart-lengend-cian"></div>
                                 <div class="guide">4 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #a9c6cc"></div>
+                                <div class="marker zwssgr-chart-lengend-grey"></div>
                                 <div class="guide">3 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #285064"></div>
+                                <div class="marker zwssgr-chart-lengend-blue"></div>
                                 <div class="guide">2 Star</div>
                             </div>
                             <div class="zwssgr_chart_legend">
-                                <div class="marker" style="background-color: #f44336"></div>
+                                <div class="marker zwssgr-chart-lengend-red"></div>
                                 <div class="guide">1 Star</div>
                             </div>
                         </div>
@@ -583,7 +582,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
         
             // Check if the custom field has a value
             if ($zwssgr_account_locations) {
-                $output .= '<select id="zwssgr-location-select" name="zwssgr_location" class="zwssgr-input-text">';
+                $output .= '<select id="zwssgr-location-select" name="zwssgr_location" class="zwssgr-input-text zwssgr-location-select">';
                 $output .= '<option value="">Select a Location</option>';
                 
                 foreach ($zwssgr_account_locations as $zwssgr_account_location) {

@@ -16,9 +16,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
         private static $instance = null;
 
-        private $client;
-
-        private $zwssgr_zqm;
+        private $client,$zwssgr_zqm;
 
         public function __construct() {
 
@@ -49,6 +47,10 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
         public function zwssgr_gmbc_add_menu_items() {
 
+             if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
+
             $zwssgr_gmb_email = get_option('zwssgr_gmb_email');
 
             if (empty($zwssgr_gmb_email) || (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true')) {
@@ -76,12 +78,12 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 // Display connected to  message and disconnect button if JWT token exists
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
-                        <div id="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="close-button"></a></div>
-                        <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper">
-                            <div id="disconnect-gmb-auth-response"></div>
+                        <div id="close-gmb-wrap" class="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="close-button"></a></div>
+                        <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper disconnect-gmb-auth">
+                            <div id="disconnect-gmb-auth-response" class="disconnect-gmb-auth-response"></div>
                             <div class="zwssgr-caution-div">
-                                <input type="checkbox" id="delete-all-data" name="delete_all_data" style="margin-right: 7.5px;">
-                                <label for="delete-all-data" style="color: red;" class="zwssgr-chechbox-label">
+                                <input type="checkbox" id="delete-all-data" name="delete_all_data" class="delete-all-data">
+                                <label for="delete-all-data" class="zwssgr-chechbox-label">
                                     Caution: Check this box to permanently delete all data.
                                 </label>
                             </div>
@@ -100,9 +102,9 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
                         <div id="fetch-gmb-auth-url-wrapper" class="zwssgr-gmbc-inner-wrapper">
-                            <span style="margin-right: 10px;"> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
-                            <div id="fetch-gmb-auth-url-response"></div>   
-                            <a href="" class="button button-primary zwssgr-submit-btn" id="fetch-gmb-auth-url">Connect with Google</a>
+                            <span> Connect with your Google account to seamlessly fetch and showcase reviews. </span>
+                            <div id="fetch-gmb-auth-url-response" class="fetch-gmb-auth-url-response"></div>   
+                            <a href="" class="button button-primary zwssgr-submit-btn fetch-gmb-auth-url" id="fetch-gmb-auth-url">Connect with Google</a>
                         </div>
                     </div>
                 </div>';
@@ -113,12 +115,16 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
         // If applicable display the "Connect with Google" button on each page of sgr plugin
         public function zwssgr_connect_google_popup_callback() {
 
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
+
             // Check if we're in the admin panel
             if (is_admin()) {
 
                 // Get the current page or post type
-                $zwssgr_current_page      = isset($_GET['page']) ? $_GET['page'] : '';
-                $zwssgr_current_post_type = isset($_GET['post_type']) ? $_GET['post_type'] : '';
+                $zwssgr_current_page      = isset($_GET['page']) ? sanitize_text_field(wp_unslash($_GET['page'])) : '';
+                $zwssgr_current_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
 
                 // Define the valid pages and post types
                 $zwssgr_valid_pages = array(
@@ -156,10 +162,14 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
         // Handle the 'auth_code' flow during admin_init
         public function zwssgr_handle_auth_code() {
 
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
+
             if (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true') {
 
-                $zwssgr_auth_code = sanitize_text_field($_GET['auth_code']);
-                $zwssgr_gmb_email = sanitize_text_field($_GET['user_email']);
+                $zwssgr_auth_code = sanitize_text_field(wp_unslash($_GET['auth_code']));
+                $zwssgr_gmb_email = sanitize_text_field(wp_unslash($_GET['user_email']));
                 
                 update_option('zwssgr_gmb_email', $zwssgr_gmb_email);
 
@@ -220,7 +230,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
         
         public function zwssgr_fetch_gmb_data_callback() {
 
-            $zwssgr_widget_id = isset($_GET['zwssgr_widget_id']) ? sanitize_text_field($_GET['zwssgr_widget_id']) : '';
+            if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+                return;
+            }
+
+            $zwssgr_widget_id = isset($_GET['zwssgr_widget_id']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_widget_id'])) : '';
 
             if (!empty($zwssgr_widget_id)) {
                 // Fetch the GMB email from the options table
@@ -239,11 +253,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
             }            
         
-            echo '<div id="fetch-gmb-data">
+            echo '<div id="fetch-gmb-data" class="fetch-gmb-data">
                 <div class="response"></div>
                 <div class="progress-bar '. esc_attr( $zwgr_data_processing_init ) .'">
-                    <progress id="progress" value="'. esc_attr( $zwssgr_batch_progress ) .'" max="100"></progress>
-                    <span id="progress-percentage"> '. esc_attr( $zwssgr_batch_progress ) .'% </span>
+                    <progress class="progress" id="progress" value="'. esc_attr( $zwssgr_batch_progress ) .'" max="100"></progress>
+                    <span id="progress-percentage" class="progress-percentage"> '. esc_attr( $zwssgr_batch_progress ) .'% </span>
                 </div>
                 <div class="fetch-gmb-inner-data">';
                     // Check if the widget ID is not empty
