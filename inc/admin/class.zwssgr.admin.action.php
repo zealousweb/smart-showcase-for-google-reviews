@@ -819,34 +819,34 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		}
 
 		// Add the custom "Shortcode" column
-		function zwssgr_add_shortcode_column($columns) 
+		function zwssgr_add_shortcode_column($zwssgr_columns) 
 		{
-			$new_columns = array();
-			foreach ($columns as $key => $title) {
+			$zwssgr_new_columns = array();
+			foreach ($zwssgr_columns as $key => $title) {
 				if ($key === 'title') {
-					$new_columns[$key] = $title; // Keep the Title column
-					$new_columns['shortcode'] = __('Shortcode', 'smart-showcase-for-google-reviews'); // Add Shortcode column after Title
+					$zwssgr_new_columns[$key] = $title; // Keep the Title column
+					$zwssgr_new_columns['shortcode'] = __('Shortcode', 'smart-showcase-for-google-reviews'); // Add Shortcode column after Title
 				} else {
-					$new_columns[$key] = $title; // Add other columns
+					$zwssgr_new_columns[$key] = $title; // Add other columns
 				}
 			}
-			return $new_columns;
+			return $zwssgr_new_columns;
 		}
 
 
-		function zwssgr_populate_shortcode_column($column, $post_id) 
+		function zwssgr_populate_shortcode_column($zwssgr_column, $post_id) 
 		{
-			if ($column === 'shortcode') {
+			if ($zwssgr_column === 'shortcode') {
 				// Check if the "tab-selected" metadata exists and meets a specific condition
-				$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
+				$zwssgr_current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
 				
-				if ($current_tab2) { // Or use any specific condition for `$current_tab2`
+				if ($zwssgr_current_tab2) { // Or use any specific condition for `$zwssgr_current_tab2`
 					// Generate the shortcode
-					$shortcode = sprintf('[zwssgr_widget post-id="%d"]', $post_id);
+					$zwssgr_shortcode = sprintf('[zwssgr_widget post-id="%d"]', $post_id);
 					
 					// Display the shortcode and copy icon
 					echo '<div class="zwssgr-shortcode">';
-					echo '<input type="text" value="' . esc_attr($shortcode) . '" readonly class="zwssgr-shortcode-text" id="shortcode-' . esc_attr($post_id) . '">';
+					echo '<input type="text" value="' . esc_attr($zwssgr_shortcode) . '" readonly class="zwssgr-shortcode-text" id="shortcode-' . esc_attr($post_id) . '">';
 					echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . esc_attr($post_id) . '" class="zwssgr-dashicons" title="' . esc_attr__('Copy Shortcode', 'smart-showcase-for-google-reviews') . '"></span>';
 					echo '</div>';
 				} else {
@@ -863,35 +863,35 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 *
 		 * @method filter__zwssgr_manage_zwssgr_reviews_posts_columns
 		 *
-		 * @param  array $columns
+		 * @param  array $zwssgr_columns
 		 *
 		 * @return array
 		 */
-		function filter__zwssgr_manage_data_posts_columns($columns)
+		function filter__zwssgr_manage_data_posts_columns($zwssgr_columns)
 		{
-			unset($columns['date']);
-			unset($columns['title']);
-			$columns['title'] = __('Review', 'smart-showcase-for-google-reviews');
-			$columns[ZWSSGR_META_PREFIX . 'user_login'] = __('Hide', 'smart-showcase-for-google-reviews');
-			$columns['date'] = __('Date', 'smart-showcase-for-google-reviews');
-			return $columns;
+			unset($zwssgr_columns['date']);
+			unset($zwssgr_columns['title']);
+			$zwssgr_columns['title'] = __('Review', 'smart-showcase-for-google-reviews');
+			$zwssgr_columns[ZWSSGR_META_PREFIX . 'user_login'] = __('Hide', 'smart-showcase-for-google-reviews');
+			$zwssgr_columns['date'] = __('Date', 'smart-showcase-for-google-reviews');
+			return $zwssgr_columns;
 		}
 
 		/**
 		 * Render the visibility column content
 		 *
-		 * @param string $column
+		 * @param string $zwssgr_column
 		 * @param int $post_id
 		 */
-		function render_hide_column_content( $column, $post_id ) 
+		function render_hide_column_content( $zwssgr_column, $post_id ) 
 		{
-			if ( $column === ZWSSGR_META_PREFIX . 'user_login' ) {
-				$is_hidden = get_post_meta( $post_id, '_is_hidden', true );
-				$icon = $is_hidden ? 'hidden' : 'visibility';
+			if ( $zwssgr_column === ZWSSGR_META_PREFIX . 'user_login' ) {
+				$zwssgr_is_hidden = get_post_meta( $post_id, '_is_hidden', true );
+				$zwssgr_icon = $zwssgr_is_hidden ? 'hidden' : 'visibility';
 
 				// Display the toggle button with the current state
 				echo '<a href="#" class="zwssgr-toggle-visibility" data-post-id="' . esc_attr( $post_id ) . '">';
-				echo '<span class="dashicons dashicons-' . esc_attr( $icon ) . '"></span>';
+				echo '<span class="dashicons dashicons-' . esc_attr( $zwssgr_icon ) . '"></span>';
 				echo '</a>';
 			}
 		}
@@ -909,24 +909,24 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				wp_send_json_error( array( 'message' => 'Not authorized' ) );
 			}
 		
-			$is_hidden = get_post_meta( $post_id, '_is_hidden', true );
+			$zwssgr_is_hidden = get_post_meta( $post_id, '_is_hidden', true );
 		
-			if ( $is_hidden ) {
+			if ( $zwssgr_is_hidden ) {
 				// If currently hidden, set to visibility and delete meta
 				delete_post_meta( $post_id, '_is_hidden' );
-				$new_state = 'show';
-				$icon = 'visibility';
+				$zwssgr_new_state = 'show';
+				$zwssgr_icon = 'visibility';
 			} else {
 				// If currently visibility, set to hidden
 				update_post_meta( $post_id, '_is_hidden', 1 );
-				$new_state = 'hidden';
-				$icon = 'hidden';
+				$zwssgr_new_state = 'hidden';
+				$zwssgr_icon = 'hidden';
 			}
 		
 			// Send JSON response back to the front-end
 			wp_send_json_success( array(
-				'icon' => $icon,
-				'state' => $new_state // Send the current state (hidden/show)
+				'icon' => $zwssgr_icon,
+				'state' => $zwssgr_new_state // Send the current state (hidden/show)
 			));
 		}
 
@@ -988,22 +988,22 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		// Notifications callback
 		function zwssgr_admin_notification_enabled_callback()
 		{
-			$value = get_option('zwssgr_admin_notification_enabled', '0');
+			$zwssgr_value = get_option('zwssgr_admin_notification_enabled', '0');
 			echo '<label class="switch zwssgr-switch">';
-			echo '<input type="checkbox" id="zwssgr_admin_notification_enabled" name="zwssgr_admin_notification_enabled" value="1" ' . checked(0, $value, false) . ' />';
+			echo '<input type="checkbox" id="zwssgr_admin_notification_enabled" name="zwssgr_admin_notification_enabled" value="1" ' . checked(0, $zwssgr_value, false) . ' />';
 			echo '<span class="slider zwssgr-toggle-slider"></span>';
 			echo '</label>';
 		}
 
 		function zwssgr_admin_notification_emails_callback()
 		{
-			$value = get_option('zwssgr_admin_notification_emails', '');
+			$zwssgr_value = get_option('zwssgr_admin_notification_emails', '');
 			echo '<div class="zwssgr-notification-field">';
 			echo '<div class="zwssgr-th-label">';
 			echo '<label class="zwssgr-th">Custom Email Addresses</label>';
 			echo '</div>';
 			echo '<div class="zwssgr-field">';
-			echo '<input type="text" id="zwssgr_admin_notification_emails" name="zwssgr_admin_notification_emails" class="zwssgr-input-text" rows="5" cols="50" value="' . esc_attr($value) . '" />';
+			echo '<input type="text" id="zwssgr_admin_notification_emails" name="zwssgr_admin_notification_emails" class="zwssgr-input-text" rows="5" cols="50" value="' . esc_attr($zwssgr_value) . '" />';
 			echo '<p class="zwssgr-description">' . esc_html('Enter email addresses separated by commas.', 'smart-showcase-for-google-reviews') . '</p>';
 			echo '</div>';
 			echo '</div>';
@@ -1011,21 +1011,21 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 		function zwssgr_admin_notification_emails_subject_callback()
 		{
-			$value = get_option('zwssgr_admin_notification_emails_subject', '');
+			$zwssgr_value = get_option('zwssgr_admin_notification_emails_subject', '');
 			echo '<div class="zwssgr-notification-field">';
 			echo '<div class="zwssgr-th-label">';
 			echo '<label class="zwssgr-th">Custom Email Subject</label>';
 			echo '</div>';
 			echo '<div class="zwssgr-field">';
 			echo '<input type="text" id="zwssgr_admin_notification_emails_subject" class="zwssgr-input-text" name="zwssgr_admin_notification_emails_subject" rows="5" cols="50" value="' . esc_attr(
-				$value) . '" />';
+				$zwssgr_value) . '" />';
 			echo '</div>';
 			echo '</div>';
 		}
 
 		function zwssgr_admin_notofication_email_body_callback() {
 			// Get the current value from the database
-			$value = get_option('zwssgr_admin_notification_email_body', '');
+			$zwssgr_value = get_option('zwssgr_admin_notification_email_body', '');
 		
 			// Set up the WYSIWYG editor settings
 			$settings = array(
@@ -1043,7 +1043,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				echo '<label for="zwssgr_admin_notification_email_body" class="zwssgr-th">' . esc_html('Email Body', 'smart-showcase-for-google-reviews') . '</label>';
 				echo '</div>';
 				echo '<div class="zwssgr-field">';
-				wp_editor($value, 'zwssgr_admin_notification_email_body', $settings);
+				wp_editor($zwssgr_value, 'zwssgr_admin_notification_email_body', $settings);
 				echo '<p class="zwssgr-description">' . esc_html('Enter your custom email body content here.', 'smart-showcase-for-google-reviews') . '</p>';
 				echo '</div>';
 			echo '</div>';
@@ -1052,11 +1052,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		//Advance Section 
 		function zwssgr_sync_reviews_callback()
 		{
-			$value = get_option('zwssgr_sync_reviews', 'daily');
+			$zwssgr_value = get_option('zwssgr_sync_reviews', 'daily');
 			echo '<select id="zwssgr_sync_reviews" name="zwssgr_sync_reviews" class="zwssgr-input-text">
-					<option value="daily" ' . selected($value, 'daily', false) . '>Daily</option>
-					<option value="weekly" ' . selected($value, 'weekly', false) . '>Weekly</option>
-					<option value="monthly" ' . selected($value, 'monthly', false) . '>Monthly</option>
+					<option value="daily" ' . selected($zwssgr_value, 'daily', false) . '>Daily</option>
+					<option value="weekly" ' . selected($zwssgr_value, 'weekly', false) . '>Weekly</option>
+					<option value="monthly" ' . selected($zwssgr_value, 'monthly', false) . '>Monthly</option>
 				</select>';
 		}
 
@@ -1125,11 +1125,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				if (isset($_POST['zwssgr_advanced_nonce_field'])) {
 					$nonce = isset($_POST['zwssgr_advanced_nonce_field']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_advanced_nonce_field'])) : '';
-					$value = isset($_POST['zwssgr_sync_reviews']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_sync_reviews'])) : 'daily'; // Default to 'daily' if not set
+					$zwssgr_value = isset($_POST['zwssgr_sync_reviews']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_sync_reviews'])) : 'daily'; // Default to 'daily' if not set
 					if (wp_verify_nonce($nonce, 'zwssgr_advanced_nonce')) {
 						// Handle advanced settings form submission
 						if (isset($_POST['advance_submit_buttons'])) {
-							update_option('zwssgr_sync_reviews', $value);
+							update_option('zwssgr_sync_reviews', $zwssgr_value);
 							add_settings_error('zwssgr_advanced_account_settings', 'settings_updated', 'Advanced settings saved successfully!', 'updated');
 						}
 					}
@@ -1137,26 +1137,26 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 		
 			// Now render the form and tabs
-			$current_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'google';
+			$zwssgr_current_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'google';
 			?>
 			<div class="wrap">
 				<h1 class="zwssgr-page-title"><?php echo esc_html(get_admin_page_title()); ?></h1>
 				<div class="zwssgr-section-wrap">
 					<h2 class="nav-tab-wrapper zwssgr-nav-tab-wrapper">
-						<a href="?page=zwssgr_settings&tab=google" class="nav-tab <?php echo ($current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
+						<a href="?page=zwssgr_settings&tab=google" class="nav-tab <?php echo ($zwssgr_current_tab === 'google') ? 'nav-tab-active' : ''; ?>">
 							<?php esc_html_e('Google', 'smart-showcase-for-google-reviews'); ?>
 						</a>
-						<a href="?page=zwssgr_settings&tab=notifications" class="nav-tab <?php echo ($current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
+						<a href="?page=zwssgr_settings&tab=notifications" class="nav-tab <?php echo ($zwssgr_current_tab === 'notifications') ? 'nav-tab-active' : ''; ?>">
 							<?php esc_html_e('SEO & Notifications', 'smart-showcase-for-google-reviews'); ?>
 						</a>
-						<a href="?page=zwssgr_settings&tab=advanced" class="nav-tab <?php echo ($current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
+						<a href="?page=zwssgr_settings&tab=advanced" class="nav-tab <?php echo ($zwssgr_current_tab === 'advanced') ? 'nav-tab-active' : ''; ?>">
 							<?php esc_html_e('Advanced', 'smart-showcase-for-google-reviews'); ?>
 						</a>
-						<a href="?page=zwssgr_settings&tab=smtp-settings" class="nav-tab <?php echo ($current_tab === 'smtp-settings') ? 'nav-tab-active' : ''; ?>">
+						<a href="?page=zwssgr_settings&tab=smtp-settings" class="nav-tab <?php echo ($zwssgr_current_tab === 'smtp-settings') ? 'nav-tab-active' : ''; ?>">
 							<?php esc_html_e('SMTP Settings', 'smart-showcase-for-google-reviews'); ?>
 						</a>
 					</h2>
-					<?php if ($current_tab === 'google'):
+					<?php if ($zwssgr_current_tab === 'google'):
 
 					$zwssgr_disconnect_text = 'Disconnect'; // Default value
 
@@ -1182,10 +1182,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							</div>
 						</div>
 					<?php } else { ?>
-						<p class="zwssgr-google-tab-text">Please connect to Google!</p>
+						<p class="zwssgr-google-tab-text"><?php echo esc_html__('Please connect to Google!', 'smart-showcase-for-google-reviews'); ?></p>
 					<?php } ?>
 
-					<?php elseif ($current_tab === 'notifications'): ?>
+					<?php elseif ($zwssgr_current_tab === 'notifications'): ?>
 						<form id="notification-form" action="" method="post" class="zwssgr-setting-form">
 							<?php
 							wp_nonce_field('zwssgr_notification_nonce', 'zwssgr_notification_nonce_field');
@@ -1207,7 +1207,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							submit_button( 'Send Notification Emails', 'zwssgr-submit-btn zwssgr-notification-submit-btn', 'submit_buttons' );
 							?>
 						</form>
-					<?php elseif ($current_tab === 'advanced'): ?>
+					<?php elseif ($zwssgr_current_tab === 'advanced'): ?>
 						<form action="" method="post" class="zwssgr-setting-form">
 							<?php
 							wp_nonce_field('zwssgr_advanced_nonce', 'zwssgr_advanced_nonce_field');
@@ -1217,7 +1217,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							submit_button( 'Save Advanced Settings', 'zwssgr-submit-btn', 'advance_submit_buttons' );
 							?>
 						</form>
-						<?php elseif ($current_tab === 'smtp-settings'):
+						<?php elseif ($zwssgr_current_tab === 'smtp-settings'):
 							// SMTP settings
 							require_once( ZWSSGR_DIR . '/inc/admin/' . ZWSSGR_PREFIX . '.smtp.settings.template.php' );
 						endif; ?> 
@@ -1225,9 +1225,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			</div>
 			<?php
 		}
-		function translate_read_more($language) 
+		function zwssgr_translate_read_more($zwssgr_language) 
 		{
-			$translations = [
+			$zwssgr_translations = [
 				'en' => 'Read more',
 				'es' => 'Leer más',
 				'fr' => 'Lire la suite',
@@ -1248,10 +1248,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'sv' => 'Läs mer',
 				'th' => 'อ่านเพิ่มเติม',
 			];
-			return $translations[$language] ?? 'Read more'; // Fallback to English
+			return $zwssgr_translations[$zwssgr_language] ?? 'Read more'; // Fallback to English
 		}
-		function translate_months($language) {
-			$month_translations = [
+		function zwssgr_translate_months($zwssgr_language) {
+			$zwssgr_month_translations = [
 				'en' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 				'es' => ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
 				'fr' => ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
@@ -1273,7 +1273,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'th' => ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
 			];
 		
-			return $month_translations[$language] ?? $month_translations['en']; // Fallback to English
+			return $zwssgr_month_translations[$zwssgr_language] ?? $zwssgr_month_translations['en']; // Fallback to English
 		}
 
 		/**
@@ -1327,36 +1327,36 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 
 			// Get stored widget settings
-			$display_option = get_post_meta($post_id, 'display_option', true);
-			$layout_option = get_post_meta($post_id, 'layout_option', true);
-			$selected_elements = get_post_meta($post_id, 'selected_elements', true);
-			$keywords = get_post_meta($post_id, 'keywords', true);
-			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
-			$char_limit = get_post_meta($post_id, 'char_limit', true);
-			$language = get_post_meta($post_id, 'language', true);
-			$sort_by = get_post_meta($post_id, 'sort_by', true);
-			$enable_load_more = get_post_meta($post_id, 'enable_load_more', true)?'checked':'';
-			$google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
+			$zwssgr_display_option = get_post_meta($post_id, 'display_option', true);
+			$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
+			$zwssgr_selected_elements = get_post_meta($post_id, 'selected_elements', true);
+			$zwssgr_keywords = get_post_meta($post_id, 'keywords', true);
+			$zwssgr_date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$zwssgr_char_limit = get_post_meta($post_id, 'char_limit', true);
+			$zwssgr_language = get_post_meta($post_id, 'language', true);
+			$zwssgr_sort_by = get_post_meta($post_id, 'sort_by', true);
+			$zwssgr_enable_load_more = get_post_meta($post_id, 'enable_load_more', true)?'checked':'';
+			$zwssgr_google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
 			$bg_color = get_post_meta($post_id, 'bg_color', true);
 			$text_color = get_post_meta($post_id, 'text_color', true);
 			$bg_color_load = get_post_meta($post_id, 'bg_color_load', true);
 			$text_color_load = get_post_meta($post_id, 'text_color_load', true);
-			$posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
+			$zwssgr_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
 			// Set default value to 10 if no value is found
-			if (empty($posts_per_page)) {
-				$posts_per_page = 10;
+			if (empty($zwssgr_posts_per_page)) {
+				$zwssgr_posts_per_page = 10;
 			}
-			$selected_elements = is_array($selected_elements) ? $selected_elements : [];
-			$selected_display_option = !empty($display_option) ? $display_option : 'all'; 
-			$selected_layout_option = !empty($layout_option) ? $layout_option : '';
-			$custom_css = get_post_meta($post_id, '_zwssgr_custom_css', true);
+			$zwssgr_selected_elements = is_array($zwssgr_selected_elements) ? $zwssgr_selected_elements : [];
+			$zwssgr_selected_display_option = !empty($zwssgr_display_option) ? $zwssgr_display_option : 'all'; 
+			$zwssgr_selected_layout_option = !empty($zwssgr_layout_option) ? $zwssgr_layout_option : '';
+			$zwssgr_custom_css = get_post_meta($post_id, '_zwssgr_custom_css', true);
 	
 			// Generate the shortcode by calling the new function
-			$generated_shortcode = $this->generate_shortcode($post_id);
+			$zwssgr_generated_shortcode = $this->generate_shortcode($post_id);
 			$current_tab = get_post_meta($post_id, 'tab-options', true); 
-			$current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
-			$rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
-			$enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
+			$zwssgr_current_tab2 = get_post_meta($post_id, 'tab-selected', true); 
+			$zwssgr_rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+			$zwssgr_enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
 			$zwssgr_location_new_review_uri = get_post_meta($post_id, 'zwssgr_location_new_review_uri', true);
 			$zwssgr_location_name = get_post_meta($post_id, 'zwssgr_location_name', true);
 			$zwssgr_location_all_review_uri =  get_post_meta($post_id, 'zwssgr_location_all_review_uri', true);
@@ -1364,7 +1364,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 
 			// Define the mapping from numeric values to words.
-			$rating_mapping = array(
+			$zwssgr_rating_mapping = array(
 				1 => 'ONE',
 				2 => 'TWO',
 				3 => 'THREE',
@@ -1373,19 +1373,19 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			);
 
 			// Convert the rating filter to a word.
-			$rating_filter_word = isset($rating_mapping[$rating_filter]) ? $rating_mapping[$rating_filter] : '';
+			$zwssgr_rating_filter_word = isset($zwssgr_rating_mapping[$zwssgr_rating_filter]) ? $zwssgr_rating_mapping[$zwssgr_rating_filter] : '';
 
-			$ratings_to_include = array();
-			if ($rating_filter_word == 'TWO') {
-				$ratings_to_include = array('TWO');
-			} elseif ($rating_filter_word == 'THREE') {
-				$ratings_to_include = array('THREE');
-			} elseif ($rating_filter_word == 'FOUR') {
-				$ratings_to_include = array('FOUR');
-			} elseif ($rating_filter_word == 'FIVE') {
-				$ratings_to_include = array('FIVE');
-			} elseif ($rating_filter_word == 'ONE') {
-				$ratings_to_include = array('ONE');
+			$zwssgr_ratings_to_include = array();
+			if ($zwssgr_rating_filter_word == 'TWO') {
+				$zwssgr_ratings_to_include = array('TWO');
+			} elseif ($zwssgr_rating_filter_word == 'THREE') {
+				$zwssgr_ratings_to_include = array('THREE');
+			} elseif ($zwssgr_rating_filter_word == 'FOUR') {
+				$zwssgr_ratings_to_include = array('FOUR');
+			} elseif ($zwssgr_rating_filter_word == 'FIVE') {
+				$zwssgr_ratings_to_include = array('FIVE');
+			} elseif ($zwssgr_rating_filter_word == 'ONE') {
+				$zwssgr_ratings_to_include = array('ONE');
 			}
 
 			$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
@@ -1399,7 +1399,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'relation' => 'AND',  // Ensure all conditions are met
 					array(
 						'key'     => 'zwssgr_review_star_rating',
-						'value'   => $ratings_to_include,  // Apply the word-based rating filter
+						'value'   => $zwssgr_ratings_to_include,  // Apply the word-based rating filter
 						'compare' => 'IN',
 						'type'    => 'CHAR'
 					),
@@ -1435,7 +1435,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}			
 
 			// Add sort_by filters
-			switch ($sort_by) {
+			switch ($zwssgr_sort_by) {
 				case 'newest':
 					$zwssgr_reviews_args['orderby'] = 'date';
 					$zwssgr_reviews_args['order'] = 'DESC';
@@ -1443,10 +1443,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				case 'highest':
 					// Sort from FIVE to ONE
-					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+					add_filter('posts_orderby', function ($orderby, $query) use ($zwssgr_rating_mapping) {
 						global $wpdb;
 						if ($query->get('post_type') === ZWSSGR_POST_REVIEW_TYPE) {
-							$custom_order = "'" . implode("','", array_reverse($rating_mapping)) . "'";
+							$custom_order = "'" . implode("','", array_reverse($zwssgr_rating_mapping)) . "'";
 							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
 						}
 						return $orderby;
@@ -1455,10 +1455,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				case 'lowest':
 					// Sort from ONE to FIVE
-					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+					add_filter('posts_orderby', function ($orderby, $query) use ($zwssgr_rating_mapping) {
 						global $wpdb;
 						if ($query->get('post_type') === ZWSSGR_POST_REVIEW_TYPE) {
-							$custom_order = "'" . implode("','", $rating_mapping) . "'";
+							$custom_order = "'" . implode("','", $zwssgr_rating_mapping) . "'";
 							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
 						}
 						return $orderby;
@@ -1486,30 +1486,30 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$zwssgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$published_date  = get_the_date('F j, Y');
-					$months = $this->translate_months($language);
+					$months = $this->zwssgr_translate_months($zwssgr_language);
 
 					// Determine if content is trimmed based on character limit
-					$is_trimmed = $char_limit > 0 && mb_strlen($zwssgr_review_comment) > $char_limit; // Check if the content length exceeds the character limit
-					$trimmed_content = $is_trimmed ? mb_substr($zwssgr_review_comment, 0, $char_limit) . '...' : $zwssgr_review_comment; // Trim the content if necessary
+					$is_trimmed = $zwssgr_char_limit > 0 && mb_strlen($zwssgr_review_comment) > $zwssgr_char_limit; // Check if the content length exceeds the character limit
+					$trimmed_content = $is_trimmed ? mb_substr($zwssgr_review_comment, 0, $zwssgr_char_limit) . '...' : $zwssgr_review_comment; // Trim the content if necessary
 
 
 					$formatted_date = '';
 					$timestamp = strtotime($published_date); // Calculate the timestamp once for better performance
 
-					if ($date_format === 'DD/MM/YYYY') {
+					if ($zwssgr_date_format === 'DD/MM/YYYY') {
 						$formatted_date = gmdate('d/m/Y', $timestamp);
-					} elseif ($date_format === 'MM-DD-YYYY') {
+					} elseif ($zwssgr_date_format === 'MM-DD-YYYY') {
 						$formatted_date = gmdate('m-d-Y', $timestamp);
-					} elseif ($date_format === 'YYYY/MM/DD') {
+					} elseif ($zwssgr_date_format === 'YYYY/MM/DD') {
 						$formatted_date = gmdate('Y/m/d', $timestamp);
-					} elseif ($date_format === 'full') {
+					} elseif ($zwssgr_date_format === 'full') {
 						$day = gmdate('j', $timestamp);
 						$month = $months[(int)gmdate('n', $timestamp) - 1];
 						$year = gmdate('Y', $timestamp);
 
 						// Construct the full date
 						$formatted_date = "$month $day, $year";
-					} elseif ($date_format === 'hide') {
+					} elseif ($zwssgr_date_format === 'hide') {
 						$formatted_date = ''; // No display for "hide"
 					}
 
@@ -1554,7 +1554,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 								' .
 									( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ). '
 							</div>
 						</div>';
@@ -1568,7 +1568,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 											? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '') . '
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									<div class="zwssgr-slide-wrap">
 										<div class="zwssgr-profile">
@@ -1588,7 +1588,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="zwssgr-slide-item">
 								<div class="zwssgr-list-inner">
 								' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 									<div class="zwssgr-slide-wrap4">
 										<div class="zwssgr-profile">
@@ -1611,7 +1611,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="zwssgr-slide-item">
 								<div class="zwssgr-list-inner">
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '	
 									<div class="zwssgr-slide-wrap4">
 										<div class="zwssgr-profile">
@@ -1642,7 +1642,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									<div class="zwssgr-contnt-wrap">
 										' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '	
 										' . (!empty($published_date)
 										? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '') . '
@@ -1668,7 +1668,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -1691,7 +1691,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -1714,7 +1714,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-list-content-wrap">
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 										' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>
@@ -1725,7 +1725,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-list-inner">
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 									<div class="zwssgr-slide-wrap4 zwssgr-list-wrap3">
 										<div class="zwssgr-profile">
@@ -1759,7 +1759,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 								</div>
 							</div>';
@@ -1785,7 +1785,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 												</div>
 											</div>
 											' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 										</div>
 									</div>
@@ -1809,7 +1809,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -1834,7 +1834,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										</div>
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -1858,7 +1858,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 											</div>
 										</div>
 										' . ( !empty($trimmed_content) ? '<div class="zwssgr-content-wrap"><p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</div></p>' : '' ) . '
 									</div>
 								</div>
@@ -1878,7 +1878,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '') . '
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 								</div>
 							</div>';
@@ -1898,7 +1898,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -1917,7 +1917,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -1940,7 +1940,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-list-content-wrap">
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 										' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_comment) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>
@@ -2274,11 +2274,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				<ul class="tab-nav zwssgr-custom-tab">
 					<li class="tab-item zwssgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwssgr-step">1. </span>Fetch Data</li>
 					<span class="zwssgr-step-arrow"></span>
-					<li class="tab-item zwssgr-tab-item  <?php echo ($layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwssgr-step">2. </span>Select Display Options</li>
+					<li class="tab-item zwssgr-tab-item  <?php echo ($zwssgr_layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwssgr-step">2. </span>Select Display Options</li>
 					<span class="zwssgr-step-arrow"></span>
-					<li class="tab-item zwssgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwssgr-step">3. </span>Selected Option</li>
+					<li class="tab-item zwssgr-tab-item <?php echo ($zwssgr_current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwssgr-step">3. </span>Selected Option</li>
 					<span class="zwssgr-step-arrow"></span>
-					<li class="tab-item zwssgr-tab-item <?php echo ($current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwssgr-step">4. </span>Generated Shortcode</li>
+					<li class="tab-item zwssgr-tab-item <?php echo ($zwssgr_current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwssgr-step">4. </span>Generated Shortcode</li>
 				</ul>
 
 				<!-- Tab Data Fetch Areas -->
@@ -2311,13 +2311,13 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								$element_id = $option_type . '-' . $layout_count;
 
 								// Only show layouts for the selected display option
-								$display_style = ($selected_display_option === $option_type || $selected_display_option === 'all') ? 'block' : 'block';
-								$selected_class = ($element_id === $layout_option) ? ' selected' : ''; // Check if this layout is selected
+								$display_style = ($zwssgr_selected_display_option === $option_type || $zwssgr_selected_display_option === 'all') ? 'block' : 'block';
+								$selected_class = ($element_id === $zwssgr_layout_option) ? ' selected' : ''; // Check if this layout is selected
 								
 								echo '<div id="' . esc_attr($element_id) . '" class="zwssgr-option-item' . esc_attr($selected_class) . '" data-type="' . esc_attr($option_type) . '" style="display: ' . esc_attr($display_style) . ';">';
 									echo '<div class="zwssgr-layout-title-wrap">';
 										echo '<h3 class="zwssgr-layout-title">Layout: '. esc_html($option_type) .' '.esc_html($layout_count).'</h3>';
-										echo '<button class="select-btn zwssgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $selected_layout_option ? ' selected' : '') . '>Select Option</button>';
+										echo '<button class="select-btn zwssgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $zwssgr_selected_layout_option ? ' selected' : '') . '>Select Option</button>';
 									echo '</div>';
 									$allowed_html = wp_kses_allowed_html('post');
 
@@ -2371,7 +2371,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<div class="zwssgr-toogle-display">
 							<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwssgr-google-toggle" target="_blank">Review Us On G</a>
 					</div>
-					<?php if (!in_array($layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
+					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
 						<div class="zwssgr-widget-settings">
 							<h2 class="zwssgr-page-title">Widget Settings</h2>
 							<div class="zwssgr-widget-wrap">
@@ -2380,8 +2380,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<div class="filter-rating">
 											<?php
 											for ($i = 1; $i <= 5; $i++) {
-												$selected = ($i <= $rating_filter) ? 'selected' : '';  // Check if the current star is selected
-												$fillColor = ($i <= $rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
+												$selected = ($i <= $zwssgr_rating_filter) ? 'selected' : '';  // Check if the current star is selected
+												$fillColor = ($i <= $zwssgr_rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
 												?>
 												<span class="star-filter <?php echo esc_attr($selected); ?>" data-rating="<?php echo esc_attr($i); ?>" title="<?php echo esc_attr($i); ?> Star">
 													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2400,32 +2400,32 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<ul class="zwssgr-widget-eleemt-list">
 										<li>
 											<input type="checkbox" id="review-title" class="zwssgr-checkbox" name="review-element" value="review-title" 
-											<?php echo in_array('review-title', $selected_elements) ? 'checked' : ''; ?>>
+											<?php echo in_array('review-title', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
 											<label for="review-title" class="zwssgr-chechbox-label">Reviewer Name</label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-rating" class="zwssgr-checkbox" name="review-element" value="review-rating" 
-											<?php echo in_array('review-rating', $selected_elements) ? 'checked' : ''; ?>>
+											<?php echo in_array('review-rating', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
 											<label for="review-rating" class="zwssgr-chechbox-label">Rating</label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-days-ago" class="zwssgr-checkbox" name="review-element" value="review-days-ago" 
-											<?php echo in_array('review-days-ago', $selected_elements) ? 'checked' : ''; ?>>
+											<?php echo in_array('review-days-ago', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
 											<label for="review-days-ago" class="zwssgr-chechbox-label">Date</label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-content" class="zwssgr-checkbox" name="review-element" value="review-content" 
-											<?php echo in_array('review-content', $selected_elements) ? 'checked' : ''; ?>>
+											<?php echo in_array('review-content', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
 											<label for="review-content" class="zwssgr-chechbox-label">Review Content</label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-photo" class="zwssgr-checkbox" name="review-element" value="review-photo" 
-											<?php echo in_array('review-photo', $selected_elements) ? 'checked' : ''; ?>>
+											<?php echo in_array('review-photo', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
 											<label for="review-photo" class="zwssgr-chechbox-label">Reviewer Photo</label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-g-icon" class="zwssgr-checkbox" name="review-element" value="review-g-icon" 
-											<?php echo in_array('review-g-icon', $selected_elements) ? 'checked' : ''; ?>>
+											<?php echo in_array('review-g-icon', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
 											<label for="review-g-icon" class="zwssgr-chechbox-label">G Icon</label>
 										</li>
 										<!-- Add more elements as needed -->
@@ -2442,10 +2442,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 									<!-- Display the list of saved keywords -->
 									<?php
-									$keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
-									if (is_array($keywords) && !empty($keywords)) {
+									$zwssgr_keywords = get_post_meta($post_id, 'keywords', true); // Retrieves the array of keywords
+									if (is_array($zwssgr_keywords) && !empty($zwssgr_keywords)) {
 										echo '<div id="keywords-list" class="keywords-list">';
-										foreach ($keywords as $keyword) {
+										foreach ($zwssgr_keywords as $keyword) {
 											echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
 										}
 										echo '</div>';
@@ -2462,11 +2462,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label">Review us on Google</h3>
 									<label class="switch zwssgr-switch">
-										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($google_review_toggle) ? 'checked' : ''; ?>>
+										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($zwssgr_google_review_toggle) ? 'checked' : ''; ?>>
 										<span class="slider zwssgr-toggle-slider"></span>
 									</label>
 
-									<div id="color-picker-options" style="display: <?php echo ($google_review_toggle) ? 'flex' : 'none'; ?>" class="zwssgr-color-options">
+									<div id="color-picker-options" style="display: <?php echo ($zwssgr_google_review_toggle) ? 'flex' : 'none'; ?>" class="zwssgr-color-options">
 										<div class="zwssgr-color-picker">
 											<label for="bg-color-picker" class="zwssgr-chechbox-label">Background Color:</label>
 											<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#3780ff'); ?>">
@@ -2480,32 +2480,32 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label">Trim long reviews with a "read more" link</h3>
-									<input type="number" class="zwssgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($char_limit) ? esc_attr($char_limit) : ''; ?>">
+									<input type="number" class="zwssgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($zwssgr_char_limit) ? esc_attr($zwssgr_char_limit) : ''; ?>">
 									<p id="char-limit-error" class="error-message"></p>
 								</div>
 
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label">Language</h3>
 									<select id="language-select" name="language" class="zwssgr-input-text">
-										<option value="en" <?php echo ($language === 'en') ? 'selected' : ''; ?>>English</option>
-										<option value="es" <?php echo ($language === 'es') ? 'selected' : ''; ?>>Spanish</option>
-										<option value="fr" <?php echo ($language === 'fr') ? 'selected' : ''; ?>>French</option>
-										<option value="de" <?php echo ($language === 'de') ? 'selected' : ''; ?>>German</option>
-										<option value="it" <?php echo ($language === 'it') ? 'selected' : ''; ?>>Italian</option>
-										<option value="pt" <?php echo ($language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
-										<option value="ru" <?php echo ($language === 'ru') ? 'selected' : ''; ?>>Russian</option>
-										<option value="zh" <?php echo ($language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
-										<option value="ja" <?php echo ($language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
-										<option value="hi" <?php echo ($language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
-										<option value="ar" <?php echo ($language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
-										<option value="ko" <?php echo ($language === 'ko') ? 'selected' : ''; ?>>Korean</option>
-										<option value="tr" <?php echo ($language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
-										<option value="bn" <?php echo ($language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
-										<option value="ms" <?php echo ($language === 'ms') ? 'selected' : ''; ?>>Malay</option>
-										<option value="nl" <?php echo ($language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
-										<option value="pl" <?php echo ($language === 'pl') ? 'selected' : ''; ?>>Polish</option>
-										<option value="sv" <?php echo ($language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
-										<option value="th" <?php echo ($language === 'th') ? 'selected' : ''; ?>>Thai</option>
+										<option value="en" <?php echo ($zwssgr_language === 'en') ? 'selected' : ''; ?>>English</option>
+										<option value="es" <?php echo ($zwssgr_language === 'es') ? 'selected' : ''; ?>>Spanish</option>
+										<option value="fr" <?php echo ($zwssgr_language === 'fr') ? 'selected' : ''; ?>>French</option>
+										<option value="de" <?php echo ($zwssgr_language === 'de') ? 'selected' : ''; ?>>German</option>
+										<option value="it" <?php echo ($zwssgr_language === 'it') ? 'selected' : ''; ?>>Italian</option>
+										<option value="pt" <?php echo ($zwssgr_language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
+										<option value="ru" <?php echo ($zwssgr_language === 'ru') ? 'selected' : ''; ?>>Russian</option>
+										<option value="zh" <?php echo ($zwssgr_language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
+										<option value="ja" <?php echo ($zwssgr_language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
+										<option value="hi" <?php echo ($zwssgr_language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
+										<option value="ar" <?php echo ($zwssgr_language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
+										<option value="ko" <?php echo ($zwssgr_language === 'ko') ? 'selected' : ''; ?>>Korean</option>
+										<option value="tr" <?php echo ($zwssgr_language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
+										<option value="bn" <?php echo ($zwssgr_language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
+										<option value="ms" <?php echo ($zwssgr_language === 'ms') ? 'selected' : ''; ?>>Malay</option>
+										<option value="nl" <?php echo ($zwssgr_language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
+										<option value="pl" <?php echo ($zwssgr_language === 'pl') ? 'selected' : ''; ?>>Polish</option>
+										<option value="sv" <?php echo ($zwssgr_language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
+										<option value="th" <?php echo ($zwssgr_language === 'th') ? 'selected' : ''; ?>>Thai</option>
 										<!-- Add more languages as needed -->
 									</select>
 								</div>
@@ -2513,12 +2513,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label">Sort By</h3>
 									<select id="sort-by-select" name="sort_by" class="zwssgr-input-text">
-										<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-										<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-										<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+										<option value="newest" <?php echo ($zwssgr_sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
+										<option value="highest" <?php echo ($zwssgr_sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
+										<option value="lowest" <?php echo ($zwssgr_sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
 									</select>
 									<div class="zwssgr-sort-by-checkbox">
-											<input type="checkbox" class="zwssgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($enable_sort_by ? 'checked' : ''); ?> />
+											<input type="checkbox" class="zwssgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($zwssgr_enable_sort_by ? 'checked' : ''); ?> />
 											<label for="enable-sort-by-filter" class="zwssgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
 									</div>
 								</div>
@@ -2526,18 +2526,18 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label">Date Format</h3>
 									<select id="date-format-select" name="date-format" class="zwssgr-input-text">
-										<option value="DD/MM/YYYY" <?php echo ($date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
-										<option value="MM-DD-YYYY" <?php echo ($date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
-										<option value="YYYY/MM/DD" <?php echo ($date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
-										<option value="full" <?php echo ($date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
-										<option value="hide" <?php echo ($date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
+										<option value="DD/MM/YYYY" <?php echo ($zwssgr_date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
+										<option value="MM-DD-YYYY" <?php echo ($zwssgr_date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
+										<option value="YYYY/MM/DD" <?php echo ($zwssgr_date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
+										<option value="full" <?php echo ($zwssgr_date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
+										<option value="hide" <?php echo ($zwssgr_date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
 									</select>
 								</div>
 								<?php
 
-									if ($current_tab2 == '' && $enable_load_more == '') {
+									if ($zwssgr_current_tab2 == '' && $zwssgr_enable_load_more == '') {
 										$is_checked = 'checked';
-									} else if ($current_tab2 == 'tab-selected' && $enable_load_more === true) {
+									} else if ($zwssgr_current_tab2 == 'tab-selected' && $zwssgr_enable_load_more === true) {
 										$is_checked = 'checked';
 									} else {
 										$enable_background_color = '';
@@ -2548,18 +2548,18 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								?>
 								<div class="zwssgr-widget-setting">
 									<?php 
-									$layout_option = get_post_meta($post_id, 'layout_option', true);
+									$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
 									// Check if layout option is not in 'slider-1' to 'slider-6'
 									$exclude_slider_options = array('slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6');
-									if (!in_array($layout_option, $exclude_slider_options)) :
+									if (!in_array($zwssgr_layout_option, $exclude_slider_options)) :
 									?>
 										<div class="zwssgr-load-more-wrapper">
 											<h3 class="zwssgr-label">Load More</h3>
 											<label class="switch zwssgr-switch">
-												<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
+												<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($zwssgr_enable_load_more ? 'checked' : ''); echo esc_attr($is_checked);?> />
 												<span class="slider zwssgr-toggle-slider"></span>
 											</label>
-											<div id="zwssgr-load-color-picker-options" style="display: <?php echo ($enable_load_more) ? 'flex' : 'none'; ?>" class="zwssgr-color-options_load">
+											<div id="zwssgr-load-color-picker-options" style="display: <?php echo ($zwssgr_enable_load_more) ? 'flex' : 'none'; ?>" class="zwssgr-color-options_load">
 												<div class="zwssgr-color-picker-load">
 													<label for="bg-color-picker_load" class="zwssgr-chechbox-label">Background Color:</label>
 													<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
@@ -2576,7 +2576,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div id="load-more-settings">
 										<h3 class="zwssgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
 										<div class="zwssgr-tooltip">
-											<input type="number" id="posts-per-page" name="posts_per_page" class="zwssgr-input-text" value="<?php echo esc_attr($posts_per_page); ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
+											<input type="number" id="posts-per-page" name="posts_per_page" class="zwssgr-input-text" value="<?php echo esc_attr($zwssgr_posts_per_page); ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 											<span class="zwssgr-tooltip-container">
 												<div class="zwssgr-wrapper">
 													<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
@@ -2593,10 +2593,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				
 					<div class="zwssgr-widget-settings">
 						<h2 class="zwssgr-page-title">Custom CSS Support</h2>
-						<textarea class="zwssgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($custom_css); ?></textarea>
+						<textarea class="zwssgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($zwssgr_custom_css); ?></textarea>
 					</div>
 					<button id="save-get-code-btn" class="zwssgr-btn" data-zwssgr-btn='zwssgr-btn'>
-						<?php echo !empty($current_tab2) ? 'Update' : 'Save & Get Code'; ?>
+						<?php echo !empty($zwssgr_current_tab2) ? 'Update' : 'Save & Get Code'; ?>
 					</button>
 				</div>
 
@@ -2604,7 +2604,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<h3>Generated Shortcode</h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display">
 						<div class="zwssgr-shortcode">
-							<input type="text" class="zwssgr-input-text zwssgr-shortcode-input" value="<?php echo esc_attr($generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($post_id); ?>">
+							<input type="text" class="zwssgr-input-text zwssgr-shortcode-input" value="<?php echo esc_attr($zwssgr_generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($post_id); ?>">
 							<span class="dashicons dashicons-admin-page zwssgr-copy-shortcode-icon" data-target="shortcode-<?php echo esc_attr($post_id); ?>" title="<?php echo esc_attr__('Copy Shortcode', 'smart-showcase-for-google-reviews'); ?>"></span>
 						</div>
 					</div>
@@ -2657,11 +2657,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$setting_tb = ( isset( $_POST['settings'] ) && ! empty( $_POST['settings'] ) ) ? sanitize_text_field( wp_unslash( $_POST['settings'] ) ) : '';
 
 			if(  $setting_tb == 'tab-options' ){
-			$display_option = isset( $_POST['display_option'] ) ? sanitize_text_field( wp_unslash( $_POST['display_option'] ) ) : get_post_meta( $post_id, 'display_option', true );
-			update_post_meta($post_id, 'display_option', $display_option);	
+			$zwssgr_display_option = isset( $_POST['display_option'] ) ? sanitize_text_field( wp_unslash( $_POST['display_option'] ) ) : get_post_meta( $post_id, 'display_option', true );
+			update_post_meta($post_id, 'display_option', $zwssgr_display_option);	
 
-			$layout_option = isset( $_POST['layout_option'] ) ? sanitize_text_field( wp_unslash( $_POST['layout_option'] ) ) : get_post_meta( $post_id, 'layout_option', true );
-			update_post_meta($post_id, 'layout_option', $layout_option);
+			$zwssgr_layout_option = isset( $_POST['layout_option'] ) ? sanitize_text_field( wp_unslash( $_POST['layout_option'] ) ) : get_post_meta( $post_id, 'layout_option', true );
+			update_post_meta($post_id, 'layout_option', $zwssgr_layout_option);
 			
 			$current_tab = isset( $_POST['current_tab'] ) ? sanitize_text_field( wp_unslash( $_POST['current_tab'] ) ) : '';
 			update_post_meta($post_id, 'tab-options', $current_tab); // Save the active tab state
@@ -2669,41 +2669,41 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 
 			else if(  $setting_tb == 'tab-selected' ){
-				$selected_elements = isset( $_POST['selected_elements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['selected_elements'] ) ) : array();
-				$keywords = isset( $_POST['keywords'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['keywords'] ) ) : [];
-				$date_format = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
-				$char_limit = isset($_POST['char_limit']) ? intval(wp_unslash($_POST['char_limit'])) : '';
-				$language = isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : '';
-				$sort_by = isset( $_POST['sort_by'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_by'] ) ) : '';
-				$enable_load_more = isset( $_POST['enable_load_more'] ) ? intval( wp_unslash( $_POST['enable_load_more'] ) ) : 0;
-				$google_review_toggle = isset( $_POST['google_review_toggle'] ) ? intval( wp_unslash( $_POST['google_review_toggle'] ) ) : 0;
+				$zwssgr_selected_elements = isset( $_POST['selected_elements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['selected_elements'] ) ) : array();
+				$zwssgr_keywords = isset( $_POST['keywords'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['keywords'] ) ) : [];
+				$zwssgr_date_format = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
+				$zwssgr_char_limit = isset($_POST['char_limit']) ? intval(wp_unslash($_POST['char_limit'])) : '';
+				$zwssgr_language = isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : '';
+				$zwssgr_sort_by = isset( $_POST['sort_by'] ) ? sanitize_text_field( wp_unslash( $_POST['sort_by'] ) ) : '';
+				$zwssgr_enable_load_more = isset( $_POST['enable_load_more'] ) ? intval( wp_unslash( $_POST['enable_load_more'] ) ) : 0;
+				$zwssgr_google_review_toggle = isset( $_POST['google_review_toggle'] ) ? intval( wp_unslash( $_POST['google_review_toggle'] ) ) : 0;
 				$bg_color = isset( $_POST['bg_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['bg_color'] ) ) : '';
 				$text_color = isset( $_POST['text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color'] ) ) : '';
 				$bg_color_load = isset( $_POST['bg_color_load'] ) ? sanitize_hex_color( wp_unslash( $_POST['bg_color_load'] ) ) : '';
 				$text_color_load = isset( $_POST['text_color_load'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color_load'] ) ) : '';
-				$posts_per_page = isset( $_POST['posts_per_page'] ) ? intval( wp_unslash( $_POST['posts_per_page'] ) ) : 10; // Default to 10
-				$rating_filter = isset( $_POST['rating_filter'] ) ? intval( wp_unslash( $_POST['rating_filter'] ) ) : 0;
-				$custom_css = isset( $_POST['custom_css'] ) ? sanitize_textarea_field( wp_unslash( $_POST['custom_css'] ) ) : '';
-				$current_tab2 = sanitize_text_field( wp_unslash( $_POST['settings'] ) ); // The active tab
-				$enable_sort_by = isset( $_POST['enable_sort_by'] ) ? intval( wp_unslash( $_POST['enable_sort_by'] ) ) : 0;
+				$zwssgr_posts_per_page = isset( $_POST['posts_per_page'] ) ? intval( wp_unslash( $_POST['posts_per_page'] ) ) : 10; // Default to 10
+				$zwssgr_rating_filter = isset( $_POST['rating_filter'] ) ? intval( wp_unslash( $_POST['rating_filter'] ) ) : 0;
+				$zwssgr_custom_css = isset( $_POST['custom_css'] ) ? sanitize_textarea_field( wp_unslash( $_POST['custom_css'] ) ) : '';
+				$zwssgr_current_tab2 = sanitize_text_field( wp_unslash( $_POST['settings'] ) ); // The active tab
+				$zwssgr_enable_sort_by = isset( $_POST['enable_sort_by'] ) ? intval( wp_unslash( $_POST['enable_sort_by'] ) ) : 0;
 
-				update_post_meta($post_id, 'tab-selected', $current_tab2); // Save the active tab state
-				update_post_meta($post_id, 'selected_elements', $selected_elements);
-				update_post_meta($post_id, 'rating_filter', $rating_filter);
-				update_post_meta($post_id, 'keywords', $keywords);
-				update_post_meta($post_id, 'date_format', $date_format);
-				update_post_meta($post_id, 'char_limit', $char_limit);
-				update_post_meta($post_id, 'language', $language);
-				update_post_meta($post_id, 'sort_by', $sort_by);
-				update_post_meta($post_id, 'enable_load_more', $enable_load_more);
-				update_post_meta($post_id, 'google_review_toggle', $google_review_toggle);
+				update_post_meta($post_id, 'tab-selected', $zwssgr_current_tab2); // Save the active tab state
+				update_post_meta($post_id, 'selected_elements', $zwssgr_selected_elements);
+				update_post_meta($post_id, 'rating_filter', $zwssgr_rating_filter);
+				update_post_meta($post_id, 'keywords', $zwssgr_keywords);
+				update_post_meta($post_id, 'date_format', $zwssgr_date_format);
+				update_post_meta($post_id, 'char_limit', $zwssgr_char_limit);
+				update_post_meta($post_id, 'language', $zwssgr_language);
+				update_post_meta($post_id, 'sort_by', $zwssgr_sort_by);
+				update_post_meta($post_id, 'enable_load_more', $zwssgr_enable_load_more);
+				update_post_meta($post_id, 'google_review_toggle', $zwssgr_google_review_toggle);
 				update_post_meta($post_id, 'bg_color', $bg_color);
 				update_post_meta($post_id, 'text_color', $text_color);
 				update_post_meta($post_id, 'bg_color_load', $bg_color_load);
 				update_post_meta($post_id, 'text_color_load', $text_color_load);
-				update_post_meta($post_id, 'posts_per_page', $posts_per_page);
-				update_post_meta($post_id, '_zwssgr_custom_css', $custom_css);
-				update_post_meta($post_id, 'enable_sort_by', $enable_sort_by);
+				update_post_meta($post_id, 'posts_per_page', $zwssgr_posts_per_page);
+				update_post_meta($post_id, '_zwssgr_custom_css', $zwssgr_custom_css);
+				update_post_meta($post_id, 'enable_sort_by', $zwssgr_enable_sort_by);
 			}
 		
 			// Respond with success message
@@ -2738,16 +2738,16 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				die('Invalid filter value');
 			}
 		
-			$rating_filter = array_map('intval', $_POST['rating_filter']); // Ensure all values are integers
-			$sort_by = isset($_POST['sort_by']) ? sanitize_text_field(wp_unslash($_POST['sort_by'])) : 'newest';
-			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
-			$language = get_post_meta($post_id, 'language', true);
-			$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+			$zwssgr_rating_filter = array_map('intval', $_POST['rating_filter']); // Ensure all values are integers
+			$zwssgr_sort_by = isset($_POST['sort_by']) ? sanitize_text_field(wp_unslash($_POST['sort_by'])) : 'newest';
+			$zwssgr_date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$zwssgr_language = get_post_meta($post_id, 'language', true);
+			$zwssgr_char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 			$zwssgr_location_all_review_uri =  get_post_meta($post_id, 'zwssgr_location_all_review_uri', true);
 			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
 			$zwssgr_location_thumbnail_url = get_post_meta($post_id, 'zwssgr_location_thumbnail_url', true);
 			$image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
-			$rating_mapping = array(
+			$zwssgr_rating_mapping = array(
 				1 => 'ONE',
 				2 => 'TWO',
 				3 => 'THREE',
@@ -2757,9 +2757,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			// Create an array of string values based on the selected numeric ratings
 			$rating_strings = array();
-			foreach ($rating_filter as $filter) {
-				if (isset($rating_mapping[$filter])) {
-					$rating_strings[] = $rating_mapping[$filter];
+			foreach ($zwssgr_rating_filter as $filter) {
+				if (isset($zwssgr_rating_mapping[$filter])) {
+					$rating_strings[] = $zwssgr_rating_mapping[$filter];
 				}
 			}
 		
@@ -2771,7 +2771,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
 			$zwssgr_account_number = get_post_meta($post_id, 'zwssgr_account_number', true);
 			$zwssgr_account_location =get_post_meta($post_id, 'zwssgr_location_number', true);
-			$layout_option = get_post_meta($post_id, 'layout_option', true);
+			$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
 
 
 			// Query reviews with the selected string-based filters
@@ -2819,7 +2819,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				);
 			}			
 			// Add sorting logic
-			switch ($sort_by) {
+			switch ($zwssgr_sort_by) {
 				case 'newest':
 					$args['orderby'] = 'date';
 					$args['order'] = 'DESC';
@@ -2827,10 +2827,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				case 'highest':
 					// Sort from FIVE to ONE
-					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+					add_filter('posts_orderby', function ($orderby, $query) use ($zwssgr_rating_mapping) {
 						global $wpdb;
 						if ($query->get('post_type') === ZWSSGR_POST_REVIEW_TYPE) {
-							$custom_order = "'" . implode("','", array_reverse($rating_mapping)) . "'";
+							$custom_order = "'" . implode("','", array_reverse($zwssgr_rating_mapping)) . "'";
 							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
 						}
 						return $orderby;
@@ -2839,10 +2839,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				case 'lowest':
 					// Sort from ONE to FIVE
-					add_filter('posts_orderby', function ($orderby, $query) use ($rating_mapping) {
+					add_filter('posts_orderby', function ($orderby, $query) use ($zwssgr_rating_mapping) {
 						global $wpdb;
 						if ($query->get('post_type') === ZWSSGR_POST_REVIEW_TYPE) {
-							$custom_order = "'" . implode("','", $rating_mapping) . "'";
+							$custom_order = "'" . implode("','", $zwssgr_rating_mapping) . "'";
 							$orderby = "FIELD({$wpdb->postmeta}.meta_value, $custom_order) ASC, {$wpdb->posts}.post_date DESC";
 						}
 						return $orderby;
@@ -2870,28 +2870,28 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$zwssgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$published_date = get_the_date('F j, Y');
-					$months = $this->translate_months($language);
+					$months = $this->zwssgr_translate_months($zwssgr_language);
 					// Determine if content is trimmed based on character limit
-					$is_trimmed = $char_limit > 0 && mb_strlen($zwssgr_review_content) > $char_limit; // Check if the content length exceeds the character limit
-					$trimmed_content = $is_trimmed ? mb_substr($zwssgr_review_content, 0, $char_limit) . '...' : $zwssgr_review_content; // Trim the content if necessary
+					$is_trimmed = $zwssgr_char_limit > 0 && mb_strlen($zwssgr_review_content) > $zwssgr_char_limit; // Check if the content length exceeds the character limit
+					$trimmed_content = $is_trimmed ? mb_substr($zwssgr_review_content, 0, $zwssgr_char_limit) . '...' : $zwssgr_review_content; // Trim the content if necessary
 
 					$formatted_date = '';
 					$timestamp = strtotime($published_date); // Calculate the timestamp once for better performance
 
-					if ($date_format === 'DD/MM/YYYY') {
+					if ($zwssgr_date_format === 'DD/MM/YYYY') {
 						$formatted_date = gmdate('d/m/Y', $timestamp);
-					} elseif ($date_format === 'MM-DD-YYYY') {
+					} elseif ($zwssgr_date_format === 'MM-DD-YYYY') {
 						$formatted_date = gmdate('m-d-Y', $timestamp);
-					} elseif ($date_format === 'YYYY/MM/DD') {
+					} elseif ($zwssgr_date_format === 'YYYY/MM/DD') {
 						$formatted_date = gmdate('Y/m/d', $timestamp);
-					} elseif ($date_format === 'full') {
+					} elseif ($zwssgr_date_format === 'full') {
 						$day = gmdate('j', $timestamp);
 						$month = $months[(int)gmdate('n', $timestamp) - 1];
 						$year = gmdate('Y', $timestamp);
 
 						// Construct the full date
 						$formatted_date = "$month $day, $year";
-					} elseif ($date_format === 'hide') {
+					} elseif ($zwssgr_date_format === 'hide') {
 						$formatted_date = ''; // No display for "hide"
 					}
 
@@ -2937,7 +2937,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								</div>
 								' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 								' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 							</div>
 						</div>';
@@ -2951,7 +2951,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 											? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '') . '
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									<div class="zwssgr-slide-wrap">
 										<div class="zwssgr-profile">
@@ -2971,7 +2971,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="zwssgr-slide-item">
 								<div class="zwssgr-list-inner">
 								' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 									<div class="zwssgr-slide-wrap4">
 										<div class="zwssgr-profile">
@@ -2994,7 +2994,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="zwssgr-slide-item">
 								<div class="zwssgr-list-inner">
 								' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 									<div class="zwssgr-slide-wrap4">
 										<div class="zwssgr-profile">
@@ -3025,7 +3025,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									<div class="zwssgr-contnt-wrap">
 										' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '	
 										' . (!empty($published_date)
 										? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '') . '
@@ -3051,7 +3051,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -3074,7 +3074,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -3097,7 +3097,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-list-content-wrap">
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 										' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>
@@ -3108,7 +3108,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-list-inner">
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 									<div class="zwssgr-slide-wrap4 zwssgr-list-wrap3">
 										<div class="zwssgr-profile">
@@ -3142,7 +3142,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 								</div>
 							</div>';
@@ -3168,7 +3168,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 												</div>
 											</div>
 											' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '	
 										</div>
 									</div>
@@ -3192,7 +3192,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-									? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+									? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 									: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -3217,7 +3217,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										</div>
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -3241,7 +3241,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 											</div>
 										</div>
 										' . ( !empty($trimmed_content) ? '<div class="zwssgr-content-wrap"><p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</div></p>' : '' ) . '
 									</div>
 								</div>
@@ -3261,7 +3261,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($published_date) . '">' . esc_html($formatted_date) . ' </h3>' : '') . '
 									' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '	
 								</div>
 							</div>';
@@ -3281,7 +3281,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -3300,7 +3300,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 									</div>
 									' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -3323,7 +3323,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-list-content-wrap">
 										' . (!empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '') . '
 										' . ( !empty($trimmed_content) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>
@@ -3356,7 +3356,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				wp_reset_postdata();
 			} 
 			else {
-				if ($layout_option != "popup-1" && $layout_option != "popup-2") {
+				if ($zwssgr_layout_option != "popup-1" && $zwssgr_layout_option != "popup-2") {
 					echo '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>';
 				}				
 				
@@ -3561,15 +3561,15 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				]
 			];
 			
-			$layout_option = get_post_meta($post_id, 'layout_option', true);
-			$layout_option_divide = explode('-', $layout_option);
+			$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
+			$zwssgr_layout_option_divide = explode('-', $zwssgr_layout_option);
 			
-			$layout_option_key = $layout_option_divide[0]; 
-			$layout_option_value = $layout_option_divide[1];
-			$reviews_html = $filter_layout[$layout_option_key][$layout_option_value-1];
+			$zwssgr_layout_option_key = $zwssgr_layout_option_divide[0]; 
+			$zwssgr_layout_option_value = $zwssgr_layout_option_divide[1];
+			$reviews_html = $filter_layout[$zwssgr_layout_option_key][$zwssgr_layout_option_value-1];
 
 			if($post_count > 0){
-				echo '<h3 class="zwssgr-layout-title">Layout: ' . esc_html($layout_option_key) . ' ' . esc_html($layout_option_value) . '</h3>';
+				echo '<h3 class="zwssgr-layout-title">Layout: ' . esc_html($zwssgr_layout_option_key) . ' ' . esc_html($zwssgr_layout_option_value) . '</h3>';
 			}
 
 			// Return the filtered reviews HTML as the response
