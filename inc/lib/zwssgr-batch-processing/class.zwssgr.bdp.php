@@ -289,7 +289,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
                         $zwssgr_gmb_email     = get_option('zwssgr_gmb_email');
                         $zwssgr_review_dp_url = isset($zwssgr_review['reviewer']['profilePhotoUrl']) ? $zwssgr_review['reviewer']['profilePhotoUrl'] : null;
-                        $zwssgr_save_path     = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_save_path     = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
                         
                         if (!empty($zwssgr_gmb_email)) {
                             update_post_meta($zwssgr_wp_review_id, 'zwssgr_gmb_email', $zwssgr_gmb_email);

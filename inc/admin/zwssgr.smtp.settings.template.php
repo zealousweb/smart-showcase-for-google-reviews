@@ -26,7 +26,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 	if ( isset( $_POST['zwssgr_smtp_test_submit'] ) ) {
 
 		// check nounce
-		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ) ) {
+		if ( ! check_admin_referer( ZWSSGR_PLUGIN_BASENAME, '_smtptest_nonce_name' ) ) {
 			$custom_error [] =  __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
 		}
 		global $wp_version;
@@ -132,7 +132,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 	if ( isset( $_POST['zwssgr_smtp_submit'] ) ) {
 
-		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtp_nonce_name' ) ) {
+		if ( ! check_admin_referer( ZWSSGR_PLUGIN_BASENAME, '_smtp_nonce_name' ) ) {
 			$custom_error[]  .= ' ' . __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
 		}
 
@@ -373,7 +373,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 							class="button zwssgr-submit-btn"
 							value="<?php esc_attr_e( 'Save SMTP Settings', 'smart-showcase-for-google-reviews' ); ?>"
 						/>
-						<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtp_nonce_name' ); ?>
+						<?php wp_nonce_field( ZWSSGR_PLUGIN_BASENAME, '_smtp_nonce_name' ); ?>
 					</td>
 				</tr>
 
@@ -462,7 +462,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 								class="button zwssgr-submit-btn"
 								value="<?php esc_attr_e( 'Send Test Email', 'smart-showcase-for-google-reviews' ); ?>"
 							/>
-							<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ); ?>
+							<?php wp_nonce_field( ZWSSGR_PLUGIN_BASENAME, '_smtptest_nonce_name' ); ?>
 						</td>
 					</tr>
 
