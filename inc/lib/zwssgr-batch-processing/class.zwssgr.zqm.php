@@ -9,6 +9,10 @@
  * @since 1.0.0
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+
 require_once( ZWSSGR_DIR . '/inc/lib/zwssgr-batch-processing/class.' . ZWSSGR_PREFIX . '.bdp.php' );
 require_once( ZWSSGR_DIR . '/inc/lib/api/class.' . ZWSSGR_PREFIX . '.api.php' );
 

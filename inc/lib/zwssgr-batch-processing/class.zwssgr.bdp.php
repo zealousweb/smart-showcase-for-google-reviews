@@ -1,4 +1,17 @@
 <?php
+/**
+ * Zwssgr_GMB_Background_Data_Processor Class
+ *
+ * Handles the GMB Background functionality.
+ *
+ * @package WordPress
+ * @subpackage Smart Showcase for Google Reviews
+ * @since 1.0.0
+ */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 
 require_once( ZWSSGR_DIR . '/inc/lib/zwssgr-background-processing/vendor/autoload.php' );
 
