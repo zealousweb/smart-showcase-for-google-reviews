@@ -333,7 +333,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             // Build the select dropdown
             $data_filter_output = '<div id="gmb-data-filter" class="gmb-data-filter">
                 <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
-                    <option value="">Select an Account</option>';
+                    <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews').'</option>';
                     foreach ($zwssgr_request_data as $zwssgr_widget_id) {
                         $zwssgr_account_number = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
                         $zwssgr_account_name   = get_the_title($zwssgr_widget_id);
@@ -519,28 +519,28 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     '</h4>
                     <div class="zwssgr_outer_wrapper">
                         <div id="zwssgr_chart_wrapper" class="zwssgr_chart_wrapper">
-                            <div class="zwssgr-dashboard-text">No enough data available</div>
+                            <div class="zwssgr-dashboard-text">'. esc_html__('No enough data available', 'smart-showcase-for-google-reviews').'</div>
                         </div>
                         <div id="zwsr_chart_legend_wrapper" class="zwsr_chart_legend_wrapper">
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-orange"></div>
-                                <div class="guide">5 Star</div>
+                                <div class="guide">'.esc_html__('5 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-cian"></div>
-                                <div class="guide">4 Star</div>
+                                <div class="guide">'.esc_html__('4 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-grey"></div>
-                                <div class="guide">3 Star</div>
+                                <div class="guide">'.esc_html__('3 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
-                            <div class="zwssgr_chart_legend">
+                            <div class="zwssgr_chart_legend">   
                                 <div class="marker zwssgr-chart-lengend-blue"></div>
-                                <div class="guide">2 Star</div>
+                                <div class="guide">'.esc_html__('2 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-red"></div>
-                                <div class="guide">1 Star</div>
+                                <div class="guide">'.esc_html__('1 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                         </div>
                     </div>
@@ -583,7 +583,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             // Check if the custom field has a value
             if ($zwssgr_account_locations) {
                 $output .= '<select id="zwssgr-location-select" name="zwssgr_location" class="zwssgr-input-text zwssgr-location-select">';
-                $output .= '<option value="">Select a Location</option>';
+                $output .= '<option value="">'. esc_html__('Select a Location', 'smart-showcase-for-google-reviews').'</option>';
                 
                 foreach ($zwssgr_account_locations as $zwssgr_account_location) {
                     // Use the title field for the location name

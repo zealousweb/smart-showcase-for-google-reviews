@@ -35,7 +35,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_action('add_meta_boxes', array($this, 'zwssgr_add_review_meta_box'));
 			add_action('init', array($this, 'zwssgr_register_request_data_cpt'));
-			add_action('add_meta_boxes', array($this, 'zwssgr_add_account_number_meta_box'));
 
 			add_filter('manage_' . ZWSSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwssgr_manage_data_posts_columns'), 10, 3);
 			add_action('manage_' . ZWSSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
@@ -119,7 +118,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'custom-admin-font',
 				'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
 				false,
-				null
+				ZWSSGR_VERSION
 			);
 		}
 		
@@ -715,7 +714,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			// Account dropdown
 			echo '<select id="zwssgr-account-select" name="zwssgr_account">';
-			echo '<option value="">Select an Account</option>';
+			echo '<option value="">' . esc_html__('Select an Account', 'smart-showcase-for-google-reviews') . '</option>';
 			foreach ($accounts as $account) {
 				$selected = ($account->account_number === $selected_account) ? ' selected' : '';
 				echo '<option value="' . esc_attr($account->account_number) . '"' . esc_attr( $selected ). '>' . esc_html($account->account_name) . '</option>';
@@ -743,7 +742,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				// Location dropdown
 				echo '<select id="zwssgr-location-select" name="zwssgr_location">';
-				echo '<option value="">Select a Location</option>';
+				echo '<option value="">' . esc_html__('Select a Location', 'smart-showcase-for-google-reviews') . '</option>';
 
 					// Parse and output location options
 					foreach ($locations as $location) {
@@ -805,19 +804,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 		}
 
-		// Register the meta box
-		function zwssgr_add_account_number_meta_box() 
-		{
-			add_meta_box(
-				'zwssgr_account_number_meta_box', // Meta box ID
-				__('Account Number', 'smart-showcase-for-google-reviews'), // Title
-				array($this, 'zwssgr_display_account_number_meta_box'), // Callback function to display the meta box content
-				'zwssgr_request_data', // Post type
-				'normal', 
-				'high' 
-			);
-		}
-
 		// Add the custom "Shortcode" column
 		function zwssgr_add_shortcode_column($zwssgr_columns) 
 		{
@@ -832,7 +818,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 			return $zwssgr_new_columns;
 		}
-
 
 		function zwssgr_populate_shortcode_column($zwssgr_column, $post_id) 
 		{
@@ -1000,7 +985,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_value = get_option('zwssgr_admin_notification_emails', '');
 			echo '<div class="zwssgr-notification-field">';
 			echo '<div class="zwssgr-th-label">';
-			echo '<label class="zwssgr-th">Custom Email Addresses</label>';
+			echo '<label class="zwssgr-th">' . esc_html__('Custom Email Addresses', 'smart-showcase-for-google-reviews') . '</label>';
 			echo '</div>';
 			echo '<div class="zwssgr-field">';
 			echo '<input type="text" id="zwssgr_admin_notification_emails" name="zwssgr_admin_notification_emails" class="zwssgr-input-text" rows="5" cols="50" value="' . esc_attr($zwssgr_value) . '" />';
@@ -1014,7 +999,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_value = get_option('zwssgr_admin_notification_emails_subject', '');
 			echo '<div class="zwssgr-notification-field">';
 			echo '<div class="zwssgr-th-label">';
-			echo '<label class="zwssgr-th">Custom Email Subject</label>';
+			echo '<label class="zwssgr-th">' . esc_html__('Custom Email Subject', 'smart-showcase-for-google-reviews') . '</label>';
 			echo '</div>';
 			echo '<div class="zwssgr-field">';
 			echo '<input type="text" id="zwssgr_admin_notification_emails_subject" class="zwssgr-input-text" name="zwssgr_admin_notification_emails_subject" rows="5" cols="50" value="' . esc_attr(
@@ -2267,12 +2252,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			
 			<div class="zwssgr-dashboard">
 
-				<h1 class="zwssgr-page-title">Widget Configuration</h1>
+				<h1 class="zwssgr-page-title"><?php echo esc_html__('Widget Configuration', 'smart-showcase-for-google-reviews'); ?></h1>
 
 
 				<!-- Tab Navigation -->
 				<ul class="tab-nav zwssgr-custom-tab">
-					<li class="tab-item zwssgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwssgr-step">1. </span>Fetch Data</li>
+					<li class="tab-item zwssgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwssgr-step"><?php echo esc_html__('1.', 'smart-showcase-for-google-reviews'); ?> </span><?php echo esc_html__('Fetch Data', 'smart-showcase-for-google-reviews'); ?></li>
 					<span class="zwssgr-step-arrow"></span>
 					<li class="tab-item zwssgr-tab-item  <?php echo ($zwssgr_layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwssgr-step">2. </span>Select Display Options</li>
 					<span class="zwssgr-step-arrow"></span>
@@ -2290,7 +2275,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				<div class="tab-content" id="tab-options">
 					<!-- Dynamically Render Radio Buttons -->
 					<div class="zwssgr-layout-radio"> 
-						<label><input type="radio" name="display_option" class="zwssgr-radio" value="all" checked> <span>All</span></label>
+						<label><input type="radio" name="display_option" class="zwssgr-radio" value="all" checked> <span><?php echo esc_html__('All', 'smart-showcase-for-google-reviews'); ?></span></label>
 						<?php foreach ($options as $key => $layouts) : ?>
 							<label><input type="radio" name="display_option" class="zwssgr-radio" id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($key); ?>"><span for="<?php echo esc_attr($key); ?>"> <?php echo esc_html(ucfirst($key)); ?></span></label>
 						<?php endforeach; ?>
@@ -2366,17 +2351,17 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				</div>
 
 				<div class="tab-content zwssgr-tab-content-display" id="tab-selected">
-					<h3>Selected Option</h3>
+					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="selected-option-display" class="selected-option-display"></div>
 					<div class="zwssgr-toogle-display">
-							<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwssgr-google-toggle" target="_blank">Review Us On G</a>
+							<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($bg_color); ?>; color:<?php echo esc_attr($text_color); ?>;" class="zwssgr-google-toggle" target="_blank"><?php echo esc_html__('Review Us On G', 'smart-showcase-for-google-reviews'); ?></a>
 					</div>
 					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
 						<div class="zwssgr-widget-settings">
-							<h2 class="zwssgr-page-title">Widget Settings</h2>
+							<h2 class="zwssgr-page-title"><?php echo esc_html__('Widget Settings', 'smart-showcase-for-google-reviews'); ?></h2>
 							<div class="zwssgr-widget-wrap">
 								<div class="zwssgr-widget-setting">
-										<h3 class="zwssgr-label">Filter Rating</h3>
+										<h3 class="zwssgr-label"><?php echo esc_html__('Filter Rating', 'smart-showcase-for-google-reviews'); ?></h3>
 										<div class="filter-rating">
 											<?php
 											for ($i = 1; $i <= 5; $i++) {
@@ -2396,7 +2381,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Hide Element</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Hide Element', 'smart-showcase-for-google-reviews'); ?></h3>
 									<ul class="zwssgr-widget-eleemt-list">
 										<li>
 											<input type="checkbox" id="review-title" class="zwssgr-checkbox" name="review-element" value="review-title" 
@@ -2433,9 +2418,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								</div>
 
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Keywords</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Keywords', 'smart-showcase-for-google-reviews'); ?></h3>
 									<input type="text" id="keywords-input" name="keywords-input" class="zwssgr-input-text" placeholder="e.g., keyword1, keyword2, keyword3">
-									<p class="zwssgr-description">Type keywords separated by commas</p>
+									<p class="zwssgr-description"><?php echo esc_html__('Type keywords separated by commas', 'smart-showcase-for-google-reviews'); ?></p>
 
 									<!-- Hidden input field to store comma-separated keywords for submission -->
 									<input type="hidden" id="keywords-input-hidden" name="keywords_input_hidden" value="">
@@ -2455,12 +2440,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									?>
 
 									<div id="error-message" class="error-message zwssgr-keyword-error-message">
-										You can only enter a maximum of 5 keywords.
+										<?php echo esc_html__('You can only enter a maximum of 5 keywords.', 'smart-showcase-for-google-reviews'); ?>
 									</div> 
 								</div>
 
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Review us on Google</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Review us on Google', 'smart-showcase-for-google-reviews'); ?></h3>
 									<label class="switch zwssgr-switch">
 										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($zwssgr_google_review_toggle) ? 'checked' : ''; ?>>
 										<span class="slider zwssgr-toggle-slider"></span>
@@ -2468,11 +2453,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 									<div id="color-picker-options" style="display: <?php echo ($zwssgr_google_review_toggle) ? 'flex' : 'none'; ?>" class="zwssgr-color-options">
 										<div class="zwssgr-color-picker">
-											<label for="bg-color-picker" class="zwssgr-chechbox-label">Background Color:</label>
+											<label for="bg-color-picker" class="zwssgr-chechbox-label"><?php echo esc_html__('Background Color:', 'smart-showcase-for-google-reviews'); ?></label>
 											<input type="color" id="bg-color-picker" name="bg_color_picker" value="<?php echo esc_attr($bg_color ? $bg_color : '#3780ff'); ?>">
 										</div>
 										<div class="zwssgr-color-picker">
-											<label for="text-color-picker" class="zwssgr-chechbox-label">Text Color:</label>
+											<label for="text-color-picker" class="zwssgr-chechbox-label"><?php echo esc_html__('Text Color:', 'smart-showcase-for-google-reviews'); ?></label>
 											<input type="color" id="text-color-picker" name="text_color_picker" value="<?php echo esc_attr($text_color ? $text_color : '#ffffff'); ?>">
 										</div>
 									</div>
@@ -2485,7 +2470,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								</div>
 
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Language</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Language', 'smart-showcase-for-google-reviews'); ?></h3>
 									<select id="language-select" name="language" class="zwssgr-input-text">
 										<option value="en" <?php echo ($zwssgr_language === 'en') ? 'selected' : ''; ?>>English</option>
 										<option value="es" <?php echo ($zwssgr_language === 'es') ? 'selected' : ''; ?>>Spanish</option>
@@ -2506,7 +2491,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<option value="pl" <?php echo ($zwssgr_language === 'pl') ? 'selected' : ''; ?>>Polish</option>
 										<option value="sv" <?php echo ($zwssgr_language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
 										<option value="th" <?php echo ($zwssgr_language === 'th') ? 'selected' : ''; ?>>Thai</option>
-										<!-- Add more languages as needed -->
 									</select>
 								</div>
 
@@ -2561,11 +2545,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 											</label>
 											<div id="zwssgr-load-color-picker-options" style="display: <?php echo ($zwssgr_enable_load_more) ? 'flex' : 'none'; ?>" class="zwssgr-color-options_load">
 												<div class="zwssgr-color-picker-load">
-													<label for="bg-color-picker_load" class="zwssgr-chechbox-label">Background Color:</label>
+													<label for="bg-color-picker_load" class="zwssgr-chechbox-label"><?php echo esc_html__('Background Color:', 'smart-showcase-for-google-reviews'); ?></label>
 													<input type="color" id="bg-color-picker_load" name="bg_color_picker_load" value="<?php echo esc_attr($bg_color_load ? $bg_color_load : '#000000'); ?>">
 												</div>
 												<div class="zwssgr-color-picker-load">
-													<label for="text-color-picker_load" class="zwssgr-chechbox-label">Text Color:</label>
+													<label for="text-color-picker_load" class="zwssgr-chechbox-label"><?php echo esc_html__('Text Color:', 'smart-showcase-for-google-reviews'); ?></label>
 													<input type="color" id="text-color-picker_load" name="text_color_picker_load" value="<?php echo esc_attr($text_color_load ? $text_color_load : '#ffffff'); ?>">
 												</div>
 											</div>
@@ -2574,14 +2558,14 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<?php endif; ?>
 
 									<div id="load-more-settings">
-										<h3 class="zwssgr-label">Reviews Per Page for List, Grid, and Popup:</h3>
+										<h3 class="zwssgr-label"><?php echo esc_html__('Reviews Per Page for List, Grid, and Popup:', 'smart-showcase-for-google-reviews'); ?></h3>
 										<div class="zwssgr-tooltip">
 											<input type="number" id="posts-per-page" name="posts_per_page" class="zwssgr-input-text" value="<?php echo esc_attr($zwssgr_posts_per_page); ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
 											<span class="zwssgr-tooltip-container">
 												<div class="zwssgr-wrapper">
 													<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
 													<path d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M16,21h-2v-7h2V21z M15,11.5 c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5s1.5,0.672,1.5,1.5S15.828,11.5,15,11.5z"></path></svg>
-													<span class="zwssgr-tooltip-text">We recommend a maximum of 100 reviews for the best experience.</span>
+													<span class="zwssgr-tooltip-text"><?php echo esc_html__('We recommend a maximum of 100 reviews for the best experience.', 'smart-showcase-for-google-reviews'); ?></span>
 												</div>
 											</span>
 										</div>
@@ -2601,7 +2585,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				</div>
 
 				<div class="tab-content zwssgr-tab-content-display" id="tab-shortcode">
-					<h3>Generated Shortcode</h3>
+					<h3><?php echo esc_html__('Generated Shortcode', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display">
 						<div class="zwssgr-shortcode">
 							<input type="text" class="zwssgr-input-text zwssgr-shortcode-input" value="<?php echo esc_attr($zwssgr_generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($post_id); ?>">
