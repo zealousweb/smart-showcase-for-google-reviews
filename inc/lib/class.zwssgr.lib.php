@@ -378,14 +378,14 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							$zwssgr_review_star_rating = get_post_meta(get_the_ID(), 'zwssgr_review_star_rating', true);
 							$zwssgr_review_content   = get_post_meta(get_the_ID(), 'zwssgr_review_comment', true);
 							$zwssgr_review_id= get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
-							$zwssgr_gmb_reviewer_image_path=wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-							$zwssgr_gmb_reviewer_image_uri =wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+							$zwssgr_gmb_reviewer_image_path=ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+							$zwssgr_gmb_reviewer_image_uri =ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 							$zwssgr_location_name = get_post_meta($post_id, 'zwssgr_location_name', true);
 							$published_date  = get_the_date('F j, Y');
 							$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 							$zwssgr_location_all_review_uri =  get_post_meta($post_id, 'zwssgr_location_all_review_uri', true);
 							$char_limit = (int) $char_limit ; 
-							$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+							$plugin_dir_path = ZWSSGR_URL;
 							$zwssgr_location_thumbnail_url = get_post_meta($post_id, 'zwssgr_location_thumbnail_url', true);
 							$image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
@@ -1678,13 +1678,13 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 						$zwssgr_review_star_rating = get_post_meta(get_the_ID(), 'zwssgr_review_star_rating', true);
 						$zwssgr_review_content   = get_post_meta(get_the_ID(), 'zwssgr_review_comment', true);
 						$zwssgr_review_id= get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
-						$zwssgr_gmb_reviewer_image_path=wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-						$zwssgr_gmb_reviewer_image_uri =wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+						$zwssgr_gmb_reviewer_image_path=ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+						$zwssgr_gmb_reviewer_image_uri =ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 						$zwssgr_location_name = get_post_meta($post_id, 'zwssgr_location_name', true);
 						$published_date  = get_the_date('F j, Y');
 						$char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 						$char_limit = (int) $char_limit ;
-						$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+						$plugin_dir_path = ZWSSGR_URL;
 						$zwssgr_location_thumbnail_url = get_post_meta($post_id, 'zwssgr_location_thumbnail_url', true);
 						$image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 

@@ -404,7 +404,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             $output .= '<div class="zwssgr-header-container">
                 <h4>' . esc_html__('Top Reviews', 'smart-showcase-for-google-reviews') . '</h4>
             </div>';
-            $plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+            $plugin_dir_path = ZWSSGR_URL;
             // Check if there are reviews to display
             if ($zwssgr_data_render_query->have_posts()) {
                 $output .= '<div class="zwssgr-reviews-container">';
@@ -430,8 +430,8 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
                         $zwssgr_numeric_rating = isset($zwssgr_rating_map[$zwssgr_review_star_rating]) ? $zwssgr_rating_map[$zwssgr_review_star_rating] : 0;
 
-                        $zwssgr_gmb_reviewer_image_dir = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-                        $zwssgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_gmb_reviewer_image_dir = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
                         // Generate stars HTML
                         $zwssgr_stars_html = '';
