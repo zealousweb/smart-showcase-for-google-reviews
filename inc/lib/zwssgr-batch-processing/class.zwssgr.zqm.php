@@ -364,18 +364,17 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                 $this->zwssgr_debug_function("ZQM: Batch processing error: Failed for" . $this->zwssgr_gmb_data_type .' & Widget ID ' . $this->zwssgr_widget_id .'& current index ' . $this->zwssgr_current_index);
 
                 // Define a default error message
-                $zwssgr_error_message = 'An unknown error occurred. Please try again.';
-
+                $zwssgr_error_message = esc_html__('An unknown error occurred. Please try again.', 'smart-showcase-for-google-reviews');
                 // Use a switch statement for better clarity
                 switch ($this->zwssgr_gmb_data_type) {
                     case 'zwssgr_gmb_accounts':
-                        $zwssgr_error_message = 'It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.';
+                        $zwssgr_error_message = esc_html__('It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.', 'smart-showcase-for-google-reviews');
                         break;
                     case 'zwssgr_gmb_locations':
-                        $zwssgr_error_message = 'No locations found under this Google My Business account. Please verify your account or try again with a different one.';
+                        $zwssgr_error_message = esc_html__('No locations found under this Google My Business account. Please verify your account or try again with a different one.', 'smart-showcase-for-google-reviews');
                         break;
                     case 'zwssgr_gmb_reviews':
-                        $zwssgr_error_message = 'There are no reviews available for this location at the moment. Please try again later or choose a different location.';
+                        $zwssgr_error_message = esc_html__('There are no reviews available for this location at the moment. Please try again later or choose a different location.', 'smart-showcase-for-google-reviews');
                         break;
                 }
                 

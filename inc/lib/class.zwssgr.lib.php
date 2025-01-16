@@ -141,9 +141,9 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				<div class="zwssgr-widget-setting-font">
 					<h3 class="zwssgr-label-font">Sort By</h3>
 					<select id="front-sort-by-select-<?php echo esc_attr( $post_id ); ?>" name="front_sort_by" class="zwssgr-input-text front-sort-by-select">
-						<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-						<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-						<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+						<option value="newest" <?php echo ($sort_by === 'newest') ? 'selected' : ''; ?>><?php echo esc_html__('Newest', 'smart-showcase-for-google-reviews'); ?></option>
+						<option value="highest" <?php echo ($sort_by === 'highest') ? 'selected' : ''; ?>><?php echo esc_html__('Highest Rating', 'smart-showcase-for-google-reviews'); ?></option>
+						<option value="lowest" <?php echo ($sort_by === 'lowest') ? 'selected' : ''; ?>><?php echo esc_html__('Lowest Rating', 'smart-showcase-for-google-reviews'); ?></option>
 					</select>
 				</div>
 				<?php
