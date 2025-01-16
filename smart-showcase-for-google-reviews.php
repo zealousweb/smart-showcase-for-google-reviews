@@ -4,16 +4,20 @@
  * Plugin URL: https://wordpress.org/plugins/smart-showcase-for-google-reviews/
  * Description: The Smart Showcase for Google Reviews enables users to easily embed Google Reviews on your WordPress site.
  * Version: 1.0.0
+ * Requires at least: 5.8
+ * Requires PHP: 5.8
  * Author: ZealousWeb
  * Author URI: https://www.zealousweb.com/
- * Developer: The ZealousWeb Team
- * Developer E-Mail: support@zealousweb.com
+ * License: GPLv3 or later
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * Update URI: https://wordpress.org/plugins/smart-showcase-for-google-reviews/ 
  * Text Domain: smart-showcase-for-google-reviews
  * Domain Path: /languages
- *
- * Copyright: © 2009-2020 ZealousWeb.
- * License: GNU General Public License v3.0
- * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * 
+ * @package   Smart-Showcase-for-Google-Reviews
+ * @author    ZealousWeb
+ * @copyright 2025 ZealousWeb
+ * @license   GPLv3 or later
  */
 
 // Exit if accessed directly

@@ -3,13 +3,14 @@
 Contributors: zealopensource
 Donate Link: http://www.zealousweb.com/payment/
 Tags: google reviews
-Requires at least: 3.5
+Requires at least: 5.8
 Tested up to: 6.7
 Stable tag: 1.0.0
-Requires PHP: 5.6
+Requires PHP: 5.8
 License: GPLv3 or later
-Version: 1.0.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Version: 1.0.0
+
 
 Smart Showcase for Google Reviews is a WordPress plugin that lets businesses display Google customer reviews on their websites easily.
 
