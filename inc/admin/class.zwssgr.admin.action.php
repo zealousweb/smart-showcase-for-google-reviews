@@ -35,7 +35,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_action('add_meta_boxes', array($this, 'zwssgr_add_review_meta_box'));
 			add_action('init', array($this, 'zwssgr_register_request_data_cpt'));
-			add_action('add_meta_boxes', array($this, 'zwssgr_add_account_number_meta_box'));
 
 			add_filter('manage_' . ZWSSGR_POST_REVIEW_TYPE . '_posts_columns', array($this, 'filter__zwssgr_manage_data_posts_columns'), 10, 3);
 			add_action('manage_' . ZWSSGR_POST_REVIEW_TYPE . '_posts_custom_column', array($this, 'render_hide_column_content'), 10, 2);
@@ -805,19 +804,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 		}
 
-		// Register the meta box
-		function zwssgr_add_account_number_meta_box() 
-		{
-			add_meta_box(
-				'zwssgr_account_number_meta_box', // Meta box ID
-				__('Account Number', 'smart-showcase-for-google-reviews'), // Title
-				array($this, 'zwssgr_display_account_number_meta_box'), // Callback function to display the meta box content
-				'zwssgr_request_data', // Post type
-				'normal', 
-				'high' 
-			);
-		}
-
 		// Add the custom "Shortcode" column
 		function zwssgr_add_shortcode_column($columns) 
 		{
@@ -832,7 +818,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 			return $new_columns;
 		}
-
 
 		function zwssgr_populate_shortcode_column($column, $post_id) 
 		{
