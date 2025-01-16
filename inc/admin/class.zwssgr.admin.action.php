@@ -444,7 +444,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 */
 		function zwssgr_debug_function( $message ) {
 			// Define the custom log directory path.
-			$log_dir = WP_CONTENT_DIR . '/plugins/smart-showcase-for-google-reviews'; // wp-content/plugins/smart-showcase-for-google-reviews
+
+			$log_dir = ZWSSGR_UPLOAD_DIR;
 		
 			// Define the log file path.
 			$log_file = $log_dir . '/smart-showcase-for-google-reviews-debug.log';
