@@ -64,6 +64,17 @@ if( !defined( 'ZWSSGR_POST_REVIEW_TYPE' ) ) {
 if( !defined( 'ZWSSGR_POST_WIDGET_TYPE' ) ) {
 	define( 'ZWSSGR_POST_WIDGET_TYPE', 'zwssgr_data_widget' ); // Plugin Google Widget post type name
 }
+// Define the upload directory constant for plugin logs
+if ( ! defined( 'ZWSSGR_UPLOAD_DIR' ) ) {
+    $zwssgr_upload_dir = wp_upload_dir();
+    define( 'ZWSSGR_UPLOAD_DIR', $zwssgr_upload_dir['basedir']); // Path to store logs
+}
+if ( !defined( 'ZWSSGR_UPLOAD_URL' ) ) {
+    $zwssgr_upload_url = wp_upload_dir(); // Get the upload directory details
+    define( 'ZWSSGR_UPLOAD_URL', $zwssgr_upload_url['baseurl'] ); // Define constant for the base URL
+}
+
+
 
 /**
  * Initialize the main class
