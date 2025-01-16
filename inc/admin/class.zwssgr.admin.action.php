@@ -1458,7 +1458,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			$latest_zwssgr_reviews = new WP_Query($zwssgr_reviews_args);
 			$post_count = $latest_zwssgr_reviews->found_posts;
-			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+			$plugin_dir_path = ZWSSGR_URL;
 			$image_url = '';
 			$image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 			if ($latest_zwssgr_reviews->have_posts()) {
@@ -2729,7 +2729,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_language = get_post_meta($post_id, 'language', true);
 			$zwssgr_char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
 			$zwssgr_location_all_review_uri =  get_post_meta($post_id, 'zwssgr_location_all_review_uri', true);
-			$plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+			$plugin_dir_path = ZWSSGR_URL;
 			$zwssgr_location_thumbnail_url = get_post_meta($post_id, 'zwssgr_location_thumbnail_url', true);
 			$image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $plugin_dir_path . 'assets/images/Google_G_Logo.png';
 			$zwssgr_rating_mapping = array(
