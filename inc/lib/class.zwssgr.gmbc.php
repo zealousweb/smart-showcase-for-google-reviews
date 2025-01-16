@@ -10,6 +10,10 @@
  * @subpackage Smart Showcase for Google Reviews
  * @since 1.0.0
  */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
     class Zwssgr_Google_My_Business_Connector {

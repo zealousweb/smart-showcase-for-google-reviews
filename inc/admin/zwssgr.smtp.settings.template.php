@@ -1,5 +1,17 @@
 <?php
-	
+/**
+ * SMTP Settings Template
+ *
+ * Handles the SMTP functionality.
+ *
+ * @package WordPress
+ * @subpackage Smart Showcase for Google Reviews
+ * @since 1.0.0
+ */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 	$message = $message_smtp = $debug_msg = $success = '';
 	$custom_error = array();
 	$error = array();
