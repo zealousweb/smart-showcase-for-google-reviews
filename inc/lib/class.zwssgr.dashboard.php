@@ -404,7 +404,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             $output .= '<div class="zwssgr-header-container">
                 <h4>' . esc_html__('Top Reviews', 'smart-showcase-for-google-reviews') . '</h4>
             </div>';
-            $plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+            $plugin_dir_path = ZWSSGR_URL;
             // Check if there are reviews to display
             if ($zwssgr_data_render_query->have_posts()) {
                 $output .= '<div class="zwssgr-reviews-container">';
