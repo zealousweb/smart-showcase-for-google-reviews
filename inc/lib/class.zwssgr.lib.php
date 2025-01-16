@@ -81,9 +81,9 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 		}
 		
 		
-		function translate_read_more($language) 
+		function zwssgr_translate_read_more($zwssgr_language) 
 		{
-			$translations = [
+			$zwssgr_translations = [
 				'en' => 'Read more',
 				'es' => 'Leer más',
 				'fr' => 'Lire la suite',
@@ -104,10 +104,10 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				'sv' => 'Läs mer',
 				'th' => 'อ่านเพิ่มเติม',
 			];
-			return $translations[$language] ?? 'Read more'; // Fallback to English
+			return $zwssgr_translations[$zwssgr_language] ?? 'Read more'; // Fallback to English
 		}
-		function translate_months($language) {
-			$month_translations = [
+		function zwssgr_translate_months($zwssgr_language) {
+			$zwssgr_month_translations = [
 				'en' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 				'es' => ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
 				'fr' => ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
@@ -129,7 +129,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				'th' => ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
 			];
 		
-			return $month_translations[$language] ?? $month_translations['en']; // Fallback to English
+			return $zwssgr_month_translations[$zwssgr_language] ?? $zwssgr_month_translations['en']; // Fallback to English
 		}
 
 		function frontend_sortby($post_id){
@@ -248,9 +248,9 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			}
 
 			$sort_by = get_post_meta($post_id, 'sort_by', true)?: 'newest';
-			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
+			$zwssgr_language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
-			$months = $this->translate_months($language);
+			$months = $this->zwssgr_translate_months($zwssgr_language);
 			$display_option = get_post_meta($post_id, 'display_option', true);
 			$layout_option = get_post_meta($post_id, 'layout_option', true);
 			$enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
@@ -467,7 +467,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											? (!empty($trimmed_content) 
 												? '<p class="zwssgr-content">' . esc_html($trimmed_content) .
 													($is_trimmed 
-														? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+														? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 														: '') .
 												'</p>' 
 												: '') 
@@ -488,7 +488,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . 
 										
 										'<div class="zwssgr-slide-wrap">'.	
@@ -519,7 +519,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<div class="zwssgr-list-inner">
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
@@ -555,7 +555,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<div class="zwssgr-list-inner">
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
@@ -609,7 +609,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwssgr-content">' . esc_html($trimmed_content) .
 														($is_trimmed 
-															? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+															? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 															: '') .
 													'</p>' 
 													: '') .
@@ -651,7 +651,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -698,7 +698,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											$zwssgr_list_item1 .= '<p class="zwssgr-content">' . esc_html($trimmed_content);
 
 											if ($is_trimmed) {
-												$zwssgr_list_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+												$zwssgr_list_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>';
 											}
 
 											$zwssgr_list_item1 .= '</p>';
@@ -738,7 +738,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											
 											' . 
 												( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										</div>':'').'
 									</div>
@@ -751,7 +751,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										<div class="zwssgr-slide-wrap4 zwssgr-list-wrap3">
 											'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
@@ -806,7 +806,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -845,7 +845,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 												</div>':'').'
 												' . 
 													( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 											</div>
 										</div>
@@ -899,7 +899,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											$zwssgr_grid_item1 .= '<p class="zwssgr-content">' . esc_html($trimmed_content);
 	
 											if ($is_trimmed) {
-												$zwssgr_grid_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+												$zwssgr_grid_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>';
 											}
 	
 											$zwssgr_grid_item1 .= '</p>';
@@ -941,7 +941,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										' . 
 											
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -975,7 +975,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											</div>
 											' . 
 												( !in_array('review-content', $selected_elements) && !empty($trimmed_content) ? '<div class="zwssgr-content-wrap"><p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</div></p>' : '' ) . '
 											
 										</div>
@@ -1005,7 +1005,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-												? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+												? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 												: '') . '</p>' : '' ) . '  
 									</div>
 								</div>';
@@ -1033,7 +1033,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										</div>
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -1076,7 +1076,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											$zwssgr_popup_item1 .= '<p class="zwssgr-content">' . esc_html($trimmed_content);
 	
 											if ($is_trimmed) {
-												$zwssgr_popup_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+												$zwssgr_popup_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>';
 											}
 											$zwssgr_popup_item1 .= '</p>';
 										}
@@ -1114,7 +1114,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 												( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 											' .
 												( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-												? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+												? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 												: '') . '</p>' : '' ). '
 										</div>':'') .'
 									</div>
@@ -1556,9 +1556,9 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			$front_keyword = isset($_POST['front_keyword']) ? sanitize_text_field(wp_unslash($_POST['front_keyword'])) : '';
 
 			
-			$language = get_post_meta($post_id, 'language', true) ?: 'en'; 
+			$zwssgr_language = get_post_meta($post_id, 'language', true) ?: 'en'; 
 			$date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
-			$months = $this->translate_months($language);
+			$months = $this->zwssgr_translate_months($zwssgr_language);
 
 			$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
 			$zwssgr_account_number = get_post_meta($post_id, 'zwssgr_account_number', true);
@@ -1764,7 +1764,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										? (!empty($trimmed_content) 
 											? '<p class="zwssgr-content">' . esc_html($trimmed_content) .
 												($is_trimmed 
-													? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+													? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 													: '') .
 											'</p>' 
 											: '') 
@@ -1785,7 +1785,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									
 									' . 
 										( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . 
 									
 									'<div class="zwssgr-slide-wrap">'.	
@@ -1816,7 +1816,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<div class="zwssgr-list-inner">
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
@@ -1852,7 +1852,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<div class="zwssgr-list-inner">
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
@@ -1906,7 +1906,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 												(!in_array('review-content', $selected_elements) && !empty($trimmed_content) 
 													? '<p class="zwssgr-content">' . esc_html($trimmed_content) .
 														($is_trimmed 
-															? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+															? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 															: '') .
 													'</p>' 
 													: '') .
@@ -1948,7 +1948,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -1995,7 +1995,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										$zwssgr_list_item1 .= '<p class="zwssgr-content">' . esc_html($trimmed_content);
 
 										if ($is_trimmed) {
-											$zwssgr_list_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+											$zwssgr_list_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>';
 										}
 
 										$zwssgr_list_item1 .= '</p>';
@@ -2035,7 +2035,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											
 											' . 
 												( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										</div>':'').'
 									</div>
@@ -2048,7 +2048,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										<div class="zwssgr-slide-wrap4 zwssgr-list-wrap3">
 											'.((!in_array('review-photo', $selected_elements)||!in_array('review-g-icon', $selected_elements))?'
@@ -2103,7 +2103,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 										' . 
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -2142,7 +2142,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 												</div>':'').'
 												' . 
 													( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-												? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+												? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 												: '') . '</p>' : '' ) . '
 											</div>
 										</div>
@@ -2196,7 +2196,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											$zwssgr_grid_item1 .= '<p class="zwssgr-content">' . esc_html($trimmed_content);
 	
 											if ($is_trimmed) {
-												$zwssgr_grid_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+												$zwssgr_grid_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>';
 											}
 	
 											$zwssgr_grid_item1 .= '</p>';
@@ -2238,7 +2238,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										' . 
 											
 											( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 									</div>
 								</div>';
@@ -2272,7 +2272,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											</div>
 											' . 
 												( !in_array('review-content', $selected_elements) && !empty($trimmed_content) ? '<div class="zwssgr-content-wrap"><p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</div></p>' : '' ) . '
 											
 										</div>
@@ -2302,7 +2302,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 									' . 
 										( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '  
 								</div>
 							</div>';
@@ -2330,7 +2330,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									</div>
 									' . 
 										( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+										? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 										: '') . '</p>' : '' ) . '
 								</div>
 							</div>';
@@ -2373,7 +2373,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											$zwssgr_popup_item1 .= '<p class="zwssgr-content">' . esc_html($trimmed_content);
 	
 											if ($is_trimmed) {
-												$zwssgr_popup_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>';
+												$zwssgr_popup_item1 .= ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>';
 											}
 											$zwssgr_popup_item1 .= '</p>';
 										}
@@ -2411,7 +2411,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 													( !in_array('review-rating', $selected_elements) && !empty($stars_html) ? '<div class="zwssgr-rating">' . $stars_html . '</div>' : '' ) . '
 												' .
 													( !in_array('review-content', $selected_elements) ? '<p class="zwssgr-content">' . esc_html($trimmed_content) . ($is_trimmed 
-													? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->translate_read_more($language)) . '</a>' 
+													? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 													: '') . '</p>' : '' ). '
 											</div>':'') .'
 										</div>
