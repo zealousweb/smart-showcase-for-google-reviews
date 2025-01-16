@@ -530,7 +530,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_filled_star 		  	  = str_repeat($zwssgr_filled_star, $numeric_rating);
 			$zwssgr_empty_star 		  	  = str_repeat($zwssgr_empty_star, 5 - $numeric_rating);
 			$zwssgr_review_id 		  	  = get_post_meta($zwssgr_review->ID, 'zwssgr_review_id', true);
-			$zwssgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+			$zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
 			echo '<table class="form-table test gmb-review-data" id="gmb-review-data" zwssgr-review-id="'.esc_attr( $zwssgr_review->ID ).'">
 				<tr>
@@ -1469,8 +1469,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_review_star_rating 	   = get_post_meta(get_the_ID(), 'zwssgr_review_star_rating', true);
 					$zwssgr_review_comment  	  	   = get_post_meta(get_the_ID(), 'zwssgr_review_comment', true);
 					$zwssgr_review_id		  	   = get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
-					$zwssgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-					$zwssgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_path = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_uri  = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$published_date  = get_the_date('F j, Y');
 					$months = $this->zwssgr_translate_months($zwssgr_language);
 
@@ -2852,8 +2852,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_review_content = get_post_meta(get_the_ID(), 'zwssgr_review_comment', true);
 					$zwssgr_review_star_rating = get_post_meta(get_the_ID(), 'zwssgr_review_star_rating', true);
 					$zwssgr_review_id= get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
-					$zwssgr_gmb_reviewer_image_path = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-					$zwssgr_gmb_reviewer_image_uri  = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_path = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_uri  = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$published_date = get_the_date('F j, Y');
 					$months = $this->zwssgr_translate_months($zwssgr_language);
 					// Determine if content is trimmed based on character limit
