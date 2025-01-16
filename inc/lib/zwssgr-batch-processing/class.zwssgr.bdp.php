@@ -101,8 +101,9 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                             'zwssgr_gmb_email'   => $zwssgr_gmb_email
                         ),
                     );
-            
-                    $zwssgr_existing_post        = get_page_by_title($zwssgr_request_data['post_title'], OBJECT, 'zwssgr_request_data');
+
+                    $zwssgr_existing_posts       = get_posts($zwssgr_request_data);
+                    $zwssgr_existing_posts       = !empty($zwssgr_existing_posts) ? $zwssgr_existing_posts[0] : null;
                     $zwssgr_account_name         = isset($zwssgr_account['name']) ? sanitize_text_field($zwssgr_account['name']) : '';
                     $this->zwssgr_account_number = $zwssgr_account_name ? ltrim(strrchr($zwssgr_account_name, '/'), '/') : '';
                     
