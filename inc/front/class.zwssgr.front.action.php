@@ -2,7 +2,7 @@
 /**
  * ZWSSGR_Front_Action Class
  *
- * Handles the admin functionality.
+ * Handles the Frontend functionality.
  *
  * @package WordPress
  * @subpackage Smart Showcase for Google Reviews
