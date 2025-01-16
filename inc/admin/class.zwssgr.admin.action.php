@@ -924,10 +924,24 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		{
 
 			// SEO & Notifications Settings
-			register_setting('zwssgr_notification_settings', 'zwssgr_admin_notification_enabled');
+			register_setting(
+				'zwssgr_notification_settings',
+				'zwssgr_admin_notification_enabled',
+				array(
+					'type'              => 'boolean',
+					'sanitize_callback' => 'rest_sanitize_boolean',
+				)
+			);
 
-			//Advance Setting
-			register_setting('zwssgr_advanced_account_settings', 'zwssgr_sync_reviews');
+			// Advanced Setting
+			register_setting(
+				'zwssgr_advanced_account_settings',
+				'zwssgr_sync_reviews',
+				array(
+					'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+				)
+			);
 
 			// Google setting section & fields
 			add_settings_section(
