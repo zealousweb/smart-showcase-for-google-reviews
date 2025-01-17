@@ -333,7 +333,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             // Build the select dropdown
             $data_filter_output = '<div id="gmb-data-filter" class="gmb-data-filter">
                 <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
-                    <option value="">Select an Account</option>';
+                    <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews').'</option>';
                     foreach ($zwssgr_request_data as $zwssgr_widget_id) {
                         $zwssgr_account_number = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
                         $zwssgr_account_name   = get_the_title($zwssgr_widget_id);
@@ -404,7 +404,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             $output .= '<div class="zwssgr-header-container">
                 <h4>' . esc_html__('Top Reviews', 'smart-showcase-for-google-reviews') . '</h4>
             </div>';
-            $plugin_dir_path = plugin_dir_url(dirname(__FILE__, 2));
+            $plugin_dir_path = ZWSSGR_URL;
             // Check if there are reviews to display
             if ($zwssgr_data_render_query->have_posts()) {
                 $output .= '<div class="zwssgr-reviews-container">';
@@ -430,8 +430,8 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
                         $zwssgr_numeric_rating = isset($zwssgr_rating_map[$zwssgr_review_star_rating]) ? $zwssgr_rating_map[$zwssgr_review_star_rating] : 0;
 
-                        $zwssgr_gmb_reviewer_image_dir = wp_upload_dir()['basedir'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-                        $zwssgr_gmb_reviewer_image_uri = wp_upload_dir()['baseurl'] . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_gmb_reviewer_image_dir = ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
                         // Generate stars HTML
                         $zwssgr_stars_html = '';
@@ -519,28 +519,28 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     '</h4>
                     <div class="zwssgr_outer_wrapper">
                         <div id="zwssgr_chart_wrapper" class="zwssgr_chart_wrapper">
-                            <div class="zwssgr-dashboard-text">No enough data available</div>
+                            <div class="zwssgr-dashboard-text">'. esc_html__('No enough data available', 'smart-showcase-for-google-reviews').'</div>
                         </div>
                         <div id="zwsr_chart_legend_wrapper" class="zwsr_chart_legend_wrapper">
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-orange"></div>
-                                <div class="guide">5 Star</div>
+                                <div class="guide">'.esc_html__('5 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-cian"></div>
-                                <div class="guide">4 Star</div>
+                                <div class="guide">'.esc_html__('4 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-grey"></div>
-                                <div class="guide">3 Star</div>
+                                <div class="guide">'.esc_html__('3 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
-                            <div class="zwssgr_chart_legend">
+                            <div class="zwssgr_chart_legend">   
                                 <div class="marker zwssgr-chart-lengend-blue"></div>
-                                <div class="guide">2 Star</div>
+                                <div class="guide">'.esc_html__('2 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                             <div class="zwssgr_chart_legend">
                                 <div class="marker zwssgr-chart-lengend-red"></div>
-                                <div class="guide">1 Star</div>
+                                <div class="guide">'.esc_html__('1 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
                         </div>
                     </div>
@@ -583,7 +583,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             // Check if the custom field has a value
             if ($zwssgr_account_locations) {
                 $output .= '<select id="zwssgr-location-select" name="zwssgr_location" class="zwssgr-input-text zwssgr-location-select">';
-                $output .= '<option value="">Select a Location</option>';
+                $output .= '<option value="">'. esc_html__('Select a Location', 'smart-showcase-for-google-reviews').'</option>';
                 
                 foreach ($zwssgr_account_locations as $zwssgr_account_location) {
                     // Use the title field for the location name

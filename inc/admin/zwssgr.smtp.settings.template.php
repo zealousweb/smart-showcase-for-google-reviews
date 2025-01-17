@@ -1,8 +1,20 @@
 <?php
-	
-	$message = $message_smtp = $debug_msg = $success = '';
-	$custom_error = array();
-	$error = array();
+/**
+ * SMTP Settings Template
+ *
+ * Handles the SMTP functionality.
+ *
+ * @package WordPress
+ * @subpackage Smart Showcase for Google Reviews
+ * @since 1.0.0
+ */
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
+	$zwssgr_message = $zwssgr_message_smtp = $zwssgr_debug_msg = $zwssgr_success = '';
+	$zwssgr_custom_error = array();
+	// $error = array();
 	$zwssgr_smtp_option = get_option( 'zwssgr_smtp_option' );
 	$zwssgr_general_option = get_option( 'zwssgr_general_option' );
 	$zwssgr_smtp_option = is_array($zwssgr_smtp_option) ? $zwssgr_smtp_option : []; 
@@ -14,8 +26,8 @@
 	if ( isset( $_POST['zwssgr_smtp_test_submit'] ) ) {
 
 		// check nounce
-		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ) ) {
-			$custom_error [] =  __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
+		if ( ! check_admin_referer( ZWSSGR_PLUGIN_BASENAME, '_smtptest_nonce_name' ) ) {
+			$zwssgr_custom_error [] =  __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
 		}
 		global $wp_version;
 		if ( version_compare( $wp_version, '5.5.1', '>=' ) ) {
@@ -23,105 +35,105 @@
 			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 			require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-			$mail = new PHPMailer\PHPMailer\PHPMailer();
+			$zwssgr_mail = new PHPMailer\PHPMailer\PHPMailer();
             
 		}  else {
 			require_once ABSPATH . WPINC . '/class-phpmailer.php';
-			$mail = new PHPMailer( true );
+			$zwssgr_mail = new PHPMailer( true );
 		}
 
-		$to_email = isset( $_POST['zwssgr_test_to_email'] ) ? sanitize_email( wp_unslash( $_POST['zwssgr_test_to_email'] ) ) : '';
-		$subject = isset( $_POST['zwssgr_test_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_test_subject'] ) ) : '';
-		$body = isset( $_POST['zwssgr_test_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['zwssgr_test_message'] ) ) : '';
-		$ret = array();
+		$zwssgr_to_email = isset( $_POST['zwssgr_test_to_email'] ) ? sanitize_email( wp_unslash( $_POST['zwssgr_test_to_email'] ) ) : '';
+		$zwssgr_subject = isset( $_POST['zwssgr_test_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_test_subject'] ) ) : '';
+		$zwssgr_body = isset( $_POST['zwssgr_test_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['zwssgr_test_message'] ) ) : '';
+		$zwssgr_ret = array();
 
 		try {
 			$zwssgr_smtp_opt = get_option('zwssgr_smtp_option',[]);
 			if(!empty($zwssgr_smtp_opt)){
-				$charset       = get_bloginfo( 'charset' );
-				$mail->CharSet = $charset;
+				$zwssgr_charset       = get_bloginfo( 'charset' );
+				$zwssgr_mail->CharSet = $zwssgr_charset;
 				
 
-				$from_name  = $this->zwssgr_smtp_opt['zwssgr_from_name'];
-				$from_email = $this->zwssgr_smtp_opt['zwssgr_from_email'];
+				$zwssgr_from_name  = $this->zwssgr_smtp_opt['zwssgr_from_name'];
+				$zwssgr_from_email = $this->zwssgr_smtp_opt['zwssgr_from_email'];
 
-				$mail->IsSMTP();
+				$zwssgr_mail->IsSMTP();
 
 				// send plain text test email
-				$mail->ContentType = 'text/plain';
-				$mail->IsHTML( false );
+				$zwssgr_mail->ContentType = 'text/plain';
+				$zwssgr_mail->IsHTML( false );
 
 				/* If using smtp auth, set the username & password */
 				if ( 'yes' === $this->zwssgr_smtp_opt['zwssgr_smtp_auth'] ) {
-					$mail->SMTPAuth = true;
-					$mail->Username = $this->zwssgr_smtp_opt['zwssgr_smtp_username'];
-					$mail->Password = $this->zwssgr_smtp_opt['zwssgr_smtp_password'];
+					$zwssgr_mail->SMTPAuth = true;
+					$zwssgr_mail->Username = $this->zwssgr_smtp_opt['zwssgr_smtp_username'];
+					$zwssgr_mail->Password = $this->zwssgr_smtp_opt['zwssgr_smtp_password'];
 				}
 
 				/* Set the SMTPSecure value, if set to none, leave this blank */
 				if ( 'none' !== $this->zwssgr_smtp_opt['zwssgr_smtp_ency_type'] ) {
-					$mail->SMTPSecure = $this->zwssgr_smtp_opt['zwssgr_smtp_ency_type'];
+					$zwssgr_mail->SMTPSecure = $this->zwssgr_smtp_opt['zwssgr_smtp_ency_type'];
 				}
 
 				/* PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate. */
-				$mail->SMTPAutoTLS = false;
+				$zwssgr_mail->SMTPAutoTLS = false;
 
 				/* Set the other options */
-				$mail->Host = $this->zwssgr_smtp_opt['zwssgr_smtp_host'];
-				$mail->Port = $this->zwssgr_smtp_opt['zwssgr_smtp_port'];
+				$zwssgr_mail->Host = $this->zwssgr_smtp_opt['zwssgr_smtp_host'];
+				$zwssgr_mail->Port = $this->zwssgr_smtp_opt['zwssgr_smtp_port'];
 
-				$mail->SetFrom( $from_email, $from_name );
+				$zwssgr_mail->SetFrom( $zwssgr_from_email, $zwssgr_from_name );
 				//This should set Return-Path header for servers that are not properly handling it, but needs testing first
-				//$mail->Sender		 = $mail->From;
-				$mail->Subject = $subject;
-				$mail->Body    = $body;
-				$mail->AddAddress( $to_email );
-				global $debug_msg;
-				$debug_msg = '';
-				$mail->Debugoutput = function ( $str, $level ) {
-					global $debug_msg;
-					$debug_msg .= $str.'<br>';
+				//$zwssgr_mail->Sender		 = $zwssgr_mail->From;
+				$zwssgr_mail->Subject = $zwssgr_subject;
+				$zwssgr_mail->Body    = $zwssgr_body;
+				$zwssgr_mail->AddAddress( $zwssgr_to_email );
+				global $zwssgr_debug_msg;
+				$zwssgr_debug_msg = '';
+				$zwssgr_mail->Debugoutput = function ( $zwssgr_str, $zwssgr_level ) {
+					global $zwssgr_debug_msg;
+					$zwssgr_debug_msg .= $zwssgr_str.'<br>';
 				};
-				$mail->SMTPDebug = 1;
+				$zwssgr_mail->SMTPDebug = 1;
 				//set reasonable timeout
-				$mail->Timeout = 10;
+				$zwssgr_mail->Timeout = 10;
 
 				/* Send mail and return result */
-				$mail->Send();
-				$mail->ClearAddresses();
-				$mail->ClearAllRecipients();
-				if ( $mail->ErrorInfo != ""){
-					$success = 0;
-					$ret['error'] = $mail->ErrorInfo;
+				$zwssgr_mail->Send();
+				$zwssgr_mail->ClearAddresses();
+				$zwssgr_mail->ClearAllRecipients();
+				if ( $zwssgr_mail->ErrorInfo != ""){
+					$zwssgr_success = 0;
+					$zwssgr_ret['error'] = $zwssgr_mail->ErrorInfo;
 				} else { 
-					$success = 1;
+					$zwssgr_success = 1;
 				}
 			}else{
-				$custom_error [] = __( 'First, configure and save the SMTP settings.', 'smart-showcase-for-google-reviews' );
+				$zwssgr_custom_error [] = __( 'First, configure and save the SMTP settings.', 'smart-showcase-for-google-reviews' );
 			}
 		} catch ( Exception $e ) {
-			$success = 0;
-			$ret['error'] = $mail->ErrorInfo;
+			$zwssgr_success = 0;
+			$zwssgr_ret['error'] = $zwssgr_mail->ErrorInfo;
 		}
 
-		$ret['debug_log'] = $debug_msg;
+		$zwssgr_ret['debug_log'] = $zwssgr_debug_msg;
 
-		if( $success == 0 ) {
-			$custom_error [] = __( 'Error on send mail.', 'smart-showcase-for-google-reviews' );
-			$custom_error [] = $ret['error'];
-			$custom_error [] = $ret['debug_log'];
+		if( $zwssgr_success == 0 ) {
+			$zwssgr_custom_error [] = __( 'Error on send mail.', 'smart-showcase-for-google-reviews' );
+			$zwssgr_custom_error [] = $zwssgr_ret['error'];
+			$zwssgr_custom_error [] = $zwssgr_ret['debug_log'];
 		}
 
-		if ( empty( $custom_error  ) ) {
-			$message .= __( 'Test email was successfully sent.', 'smart-showcase-for-google-reviews' );
+		if ( empty( $zwssgr_custom_error  ) ) {
+			$zwssgr_message .= __( 'Test email was successfully sent.', 'smart-showcase-for-google-reviews' );
 		}
 
 	}
 
 	if ( isset( $_POST['zwssgr_smtp_submit'] ) ) {
 
-		if ( ! check_admin_referer( plugin_basename( __FILE__ ), '_smtp_nonce_name' ) ) {
-			$custom_error[]  .= ' ' . __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
+		if ( ! check_admin_referer( ZWSSGR_PLUGIN_BASENAME, '_smtp_nonce_name' ) ) {
+			$zwssgr_custom_error[]  .= ' ' . __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
 		}
 
 		
@@ -147,7 +159,7 @@
 			// Validate that the port is a number and greater than zero
 			if ( empty( $smtp_port ) || 1 > intval( $smtp_port ) || ! preg_match( '/^\d+$/', $smtp_port ) ) {
 				$zwssgr_smtp_option['zwssgr_smtp_port'] = '25';
-				$custom_error .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'smart-showcase-for-google-reviews' );
+				$zwssgr_custom_error .= ' ' . __( "Please enter a valid port in the 'SMTP Port' field.", 'smart-showcase-for-google-reviews' );
 			} else {
 				$zwssgr_smtp_option['zwssgr_smtp_port'] = $smtp_port;
 			}
@@ -158,11 +170,11 @@
 
 		/* Update settings in the database */
 		
-		if ( empty( $custom_error  ) && $zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] !== 0) {
+		if ( empty( $zwssgr_custom_error  ) && $zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] !== 0) {
 			update_option( 'zwssgr_smtp_option', $zwssgr_smtp_option );
-			$message_smtp .= __( 'SMTP Settings saved.', 'smart-showcase-for-google-reviews' );
+			$zwssgr_message_smtp .= __( 'SMTP Settings saved.', 'smart-showcase-for-google-reviews' );
 		} else {
-			$message_smtp  .= ' ' . __( 'SMTP Settings saved.', 'smart-showcase-for-google-reviews' );
+			$zwssgr_message_smtp  .= ' ' . __( 'SMTP Settings saved.', 'smart-showcase-for-google-reviews' );
 		}
 
 		$zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] = isset( $_POST['zwssgr_admin_smtp_enabled'] ) && sanitize_text_field(wp_unslash($_POST['zwssgr_admin_smtp_enabled'] ) ) == '1' ? 1 : 0;
@@ -178,9 +190,9 @@
 
 	}
 
-	if( !empty( $message_smtp ) )  { ?>
+	if( !empty( $zwssgr_message_smtp ) )  { ?>
 		<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible">
-			<p><strong><?php echo esc_html( $message_smtp ); ?></strong></p>
+			<p><strong><?php echo esc_html( $zwssgr_message_smtp ); ?></strong></p>
 		</div>
 		<?php } ?>
 
@@ -361,7 +373,7 @@
 							class="button zwssgr-submit-btn"
 							value="<?php esc_attr_e( 'Save SMTP Settings', 'smart-showcase-for-google-reviews' ); ?>"
 						/>
-						<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtp_nonce_name' ); ?>
+						<?php wp_nonce_field( ZWSSGR_PLUGIN_BASENAME, '_smtp_nonce_name' ); ?>
 					</td>
 				</tr>
 
@@ -370,17 +382,17 @@
 		</form>
 
 		<?php
-		if( !empty( $message ) )  { ?>
+		if( !empty( $zwssgr_message ) )  { ?>
 			<div id="setting-error-settings_updated" class="notice notice-success settings-error is-dismissible">
-				<p><strong><?php echo esc_html( $message ); ?></strong></p>
+				<p><strong><?php echo esc_html( $zwssgr_message ); ?></strong></p>
 			</div>
 		<?php } ?>
 
-		<?php if( !empty( $custom_error  ) )  { 
-			if ( is_array( $custom_error ) ) { ?>
+		<?php if( !empty( $zwssgr_custom_error  ) )  { 
+			if ( is_array( $zwssgr_custom_error ) ) { ?>
 			<div id="setting-error-settings_updated" class="notice notice-error settings-error is-dismissible">
 				<?php
-				foreach( $custom_error  as $key=>$val) {
+				foreach( $zwssgr_custom_error  as $key=>$val) {
 					echo '<p><strong>'.  esc_html( $val ) .'</strong></p>';
 				}
 			}
@@ -450,7 +462,7 @@
 								class="button zwssgr-submit-btn"
 								value="<?php esc_attr_e( 'Send Test Email', 'smart-showcase-for-google-reviews' ); ?>"
 							/>
-							<?php wp_nonce_field( plugin_basename( __FILE__ ), '_smtptest_nonce_name' ); ?>
+							<?php wp_nonce_field( ZWSSGR_PLUGIN_BASENAME, '_smtptest_nonce_name' ); ?>
 						</td>
 					</tr>
 
