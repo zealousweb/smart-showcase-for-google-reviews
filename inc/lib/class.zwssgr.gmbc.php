@@ -60,8 +60,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
             if (empty($zwssgr_gmb_email) || (isset($_GET['auth_code']) && isset($_GET['user_email']) && isset($_GET['consent']) && $_GET['consent'] === 'true')) {
                 add_submenu_page (
                     'zwssgr_dashboard',
-                    'Connect Google',
-                    'Connect Google',
+                    __('Connect Google', 'smart-showcase-for-google-reviews'),
+                    __('Connect Google', 'smart-showcase-for-google-reviews'),
                     'manage_options',
                     'zwssgr_connect_google',
                     [$this, 'zwssgr_connect_google_callback'],

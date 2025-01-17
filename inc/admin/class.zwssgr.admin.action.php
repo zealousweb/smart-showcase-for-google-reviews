@@ -1033,7 +1033,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'editor_class'  => 'zwssgr_email_body_editor', // Add a custom class if needed
 				'media_buttons' => false, // Set to true to show media buttons
 				'tinymce'       => array(
-					'toolbar1' => 'bold,italic,underline,|,bullist,numlist,|,link,unlink,|,removeformat', // Customize toolbar buttons
+					'toolbar1' => 'bold,italic,underline,|,bullist,numlist,|,link,unlink,|,removeformat', 
 				),
 				'textarea_rows' => 10, // Set the number of rows for the editor
 			);
@@ -1054,9 +1054,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		{
 			$zwssgr_value = get_option('zwssgr_sync_reviews', 'daily');
 			echo '<select id="zwssgr_sync_reviews" name="zwssgr_sync_reviews" class="zwssgr-input-text">
-					<option value="daily" ' . selected($zwssgr_value, 'daily', false) . '>Daily</option>
-					<option value="weekly" ' . selected($zwssgr_value, 'weekly', false) . '>Weekly</option>
-					<option value="monthly" ' . selected($zwssgr_value, 'monthly', false) . '>Monthly</option>
+					<option value="daily" ' . selected($zwssgr_value, 'daily', false) . '>'. esc_html__('Daily', 'smart-showcase-for-google-reviews').'</option>
+					<option value="weekly" ' . selected($zwssgr_value, 'weekly', false) . '>'. esc_html__('Weekly', 'smart-showcase-for-google-reviews').'</option>
+					<option value="monthly" ' . selected($zwssgr_value, 'monthly', false) . '>'. esc_html__('Monthly', 'smart-showcase-for-google-reviews').'</option>
 				</select>';
 		}
 
@@ -2037,84 +2037,84 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'slider' => [
 					'<div class="zwssgr-slider zwssgr-slider1" id="zwssgr-slider1"> 
 						<div class="zwssgr-slider-1">
-							' . (($post_count > 0) ? $zwssgr_slider_content1  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+							' . (($post_count > 0) ? $zwssgr_slider_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 						</div>
 					</div>',
 					'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">
 						<div class="zwssgr-slider-2">
-							' . (($post_count > 0) ? $zwssgr_slider_content2  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+							' . (($post_count > 0) ? $zwssgr_slider_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 						</div>
 					</div>',
 					'<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
 						<div class="zwssgr-slider-badge">
 							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item" id="zwssgr-badge1">
-									<h3 class="zwssgr-average">Good</h3>
+									<h3 class="zwssgr-average">'.esc_html__('Good', 'smart-showcase-for-google-reviews').'</h3>
 									' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-									<p class="zwssgr-based-on">Based on <b>  '.$zwssgr_reviews_ratings['reviews'].' reviews </b></p>
+									<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b>  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews ', 'smart-showcase-for-google-reviews').' </b></p>
 									<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 								</div>
 							</a>
 						</div>
 						<div class="zwssgr-slider-3">
-							' . (($post_count > 0) ? $zwssgr_slider_content3  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+							' . (($post_count > 0) ? $zwssgr_slider_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 						</div>
 					</div>',
 					'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
 						<div class="zwssgr-slider-4">
-							' . (($post_count > 0) ? $zwssgr_slider_content4  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+							' . (($post_count > 0) ? $zwssgr_slider_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 						</div>
 					</div>',
 					'<div class="zwssgr-slider zwssgr-slider5" id="zwssgr-slider5">
 						<div class="zwssgr-slider-5">
-							' . (($post_count > 0) ? $zwssgr_slider_content5  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+							' . (($post_count > 0) ? $zwssgr_slider_content5  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 						</div>
 					</div>',
 					'<div class="zwssgr-slider zwssgr-slider6" id="zwssgr-slider6">
 						<div class="zwssgr-slider-6">
-							' . (($post_count > 0) ? $zwssgr_slider_content6  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+							' . (($post_count > 0) ? $zwssgr_slider_content6  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 						</div>
 					</div>'
 				],
 				'grid' => [
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid1" id="zwssgr-grid1">
-						' . (($post_count > 0) ? $zwssgr_grid_content1  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_grid_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid2" id="zwssgr-grid2">
-						' . (($post_count > 0) ? $zwssgr_grid_content2  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_grid_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid3" id="zwssgr-grid3">
-						' . (($post_count > 0) ? $zwssgr_grid_content3  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_grid_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid4" id="zwssgr-grid4">
-						' . (($post_count > 0) ? $zwssgr_grid_content4  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_grid_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid5" id="zwssgr-grid5">
-						' . (($post_count > 0) ? $zwssgr_grid_content5  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_grid_content5  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>'
 				],
 				'list' => [
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list1" id="zwssgr-list1">
-						' . (($post_count > 0) ? $zwssgr_list_content1  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_list_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list2" id="zwssgr-list2">
-						' . (($post_count > 0) ? $zwssgr_list_content2  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_list_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list3" id="zwssgr-list3">
-						' . (($post_count > 0) ? $zwssgr_list_content3  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_list_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list4" id="zwssgr-list4">
-						' . (($post_count > 0) ? $zwssgr_list_content4  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_list_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list5" id="zwssgr-list5">
-						' . (($post_count > 0) ? $zwssgr_list_content5  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+						' . (($post_count > 0) ? $zwssgr_list_content5  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 					</div>'
 				],
 				'badge' => [
 					'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link"><div class="zwssgr-badge-item zwssgr-badge1" id="zwssgr-badge1">
-						<h3 class="zwssgr-average">Good</h3>
+						<h3 class="zwssgr-average">'.esc_html__('Good', 'smart-showcase-for-google-reviews').'</h3>
 						' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-						<p class="zwssgr-based-on">Based on <b>  '.$zwssgr_reviews_ratings['reviews'].' reviews </b></p>
+						<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b>  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews ', 'smart-showcase-for-google-reviews').' </b></p>
 						<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 					</div></a>',
 
@@ -2123,9 +2123,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 						</div>
 						<div class="zwssgr-badge-info">
-							<h3 class="zwssgr-average">Good</h3>
+							<h3 class="zwssgr-average">'.esc_html__('Good', 'smart-showcase-for-google-reviews').'</h3>
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-							<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' reviews</b></p>
+							<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
 						</div>
 					</div></a>',
 
@@ -2143,8 +2143,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<div class="zwssgr-badge4-info">
-							<h3 class="zwssgr-google">Google</h3>
-							<p class="zwssgr-avg-note">Average Rating</p>
+							<h3 class="zwssgr-google">'.esc_html__('Google', 'smart-showcase-for-google-reviews').'</h3>
+							<p class="zwssgr-avg-note">'.esc_html__('Average Rating', 'smart-showcase-for-google-reviews').'</p>
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 						</div>
 					</div></a>',
@@ -2153,8 +2153,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 						</div>
 						<div class="zwssgr-badge5-info">
-							<h3 class="zwssgr-google">Google</h3>
-							<p class="zwssgr-avg-note">Average Rating</p>
+							<h3 class="zwssgr-google">'.esc_html__('Google', 'smart-showcase-for-google-reviews').'</h3>
+							<p class="zwssgr-avg-note">'.esc_html__('Average Rating', 'smart-showcase-for-google-reviews').'</p>
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 					</div></a>',
@@ -2165,8 +2165,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
 						</div>
 						<div class="zwssgr-badge6-info">
-							<h3 class="zwssgr-google">Google</h3>
-							<p class="zwssgr-avg-note">Average Rating</p>
+							<h3 class="zwssgr-google">'.esc_html__('Google', 'smart-showcase-for-google-reviews').'</h3>
+							<p class="zwssgr-avg-note">'.esc_html__('Average Rating', 'smart-showcase-for-google-reviews').'</p>
 						</div>
 					</div></a>',
 
@@ -2181,11 +2181,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link"><div class="zwssgr-badge-item zwssgr-badge8" id="zwssgr-badge8">
 						<div class="zwssgr-logo-wrap">
 							<img src="' . $plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
-							<p class="zwssgr-avg-note">Google Reviews</p>
+							<p class="zwssgr-avg-note">'.esc_html__('Google Reviews', 'smart-showcase-for-google-reviews').'</p>
 						</div>
 						<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 						' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-						<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' reviews</b></p>
+						<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
 					</div></a>',
 
 					'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link"><div class="zwssgr-badge-item zwssgr-badge9" id="zwssgr-badge9">
@@ -2195,7 +2195,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="zwssgr-badge-info">
 							<h3 class="zwssgr-average">' . $zwssgr_location_name .'</h3>
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-							<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' reviews</b></p>
+							<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
 						</div>
 					</div></a>',
 				],
@@ -2207,7 +2207,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="zwssgr-profile-info">
 							<h3>'.$zwssgr_location_name.'</h3>
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-total-review"> '.$zwssgr_reviews_ratings['reviews'].' Google reviews</a>
+							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-total-review"> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google Reviews', 'smart-showcase-for-google-reviews').'</a>
 						</div>
 					</div>
 					<div id="zwssgrpopup1" class="zwssgr-popup-overlay zwssgrpopup1">
@@ -2221,11 +2221,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-profile-info">
 										<h3>'.$zwssgr_location_name.'</h3>
 										' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-										<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' Google reviews</b></p>
+										<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+									' . (($post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2252,11 +2252,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-profile-info">
 										<h3>'.$zwssgr_location_name.'</h3>
 										' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-										<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' Google reviews</b></p>
+										<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+									' . (($post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2274,11 +2274,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				<ul class="tab-nav zwssgr-custom-tab">
 					<li class="tab-item zwssgr-tab-item active done" data-tab="tab-fetch-data"><span class="zwssgr-step"><?php echo esc_html__('1.', 'smart-showcase-for-google-reviews'); ?> </span><?php echo esc_html__('Fetch Data', 'smart-showcase-for-google-reviews'); ?></li>
 					<span class="zwssgr-step-arrow"></span>
-					<li class="tab-item zwssgr-tab-item  <?php echo ($zwssgr_layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwssgr-step">2. </span>Select Display Options</li>
+					<li class="tab-item zwssgr-tab-item  <?php echo ($zwssgr_layout_option) ? 'done' : ''; ?>" data-tab="tab-options"><span class="zwssgr-step"><?php echo esc_html__('2.', 'smart-showcase-for-google-reviews'); ?></span><?php echo esc_html__('Select Display Options', 'smart-showcase-for-google-reviews'); ?></li>
 					<span class="zwssgr-step-arrow"></span>
-					<li class="tab-item zwssgr-tab-item <?php echo ($zwssgr_current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwssgr-step">3. </span>Selected Option</li>
+					<li class="tab-item zwssgr-tab-item <?php echo ($zwssgr_current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-selected"><span class="zwssgr-step"><?php echo esc_html__('3.', 'smart-showcase-for-google-reviews'); ?></span><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></li>
 					<span class="zwssgr-step-arrow"></span>
-					<li class="tab-item zwssgr-tab-item <?php echo ($zwssgr_current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwssgr-step">4. </span>Generated Shortcode</li>
+					<li class="tab-item zwssgr-tab-item <?php echo ($zwssgr_current_tab2 === 'tab-selected') ? 'done' : 'disable'; ?>" data-tab="tab-shortcode"><span class="zwssgr-step"><?php echo esc_html__('4.', 'smart-showcase-for-google-reviews'); ?></span><?php echo esc_html__('Generated Shortcode', 'smart-showcase-for-google-reviews'); ?></li>
 				</ul>
 
 				<!-- Tab Data Fetch Areas -->
@@ -2317,7 +2317,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								echo '<div id="' . esc_attr($element_id) . '" class="zwssgr-option-item' . esc_attr($selected_class) . '" data-type="' . esc_attr($option_type) . '" style="display: ' . esc_attr($display_style) . ';">';
 									echo '<div class="zwssgr-layout-title-wrap">';
 										echo '<h3 class="zwssgr-layout-title">Layout: '. esc_html($option_type) .' '.esc_html($layout_count).'</h3>';
-										echo '<button class="select-btn zwssgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $zwssgr_selected_layout_option ? ' selected' : '') . '>Select Option</button>';
+										echo '<button class="select-btn zwssgr-btn" data-option="' . esc_attr($element_id) . '"' . ($element_id === $zwssgr_selected_layout_option ? ' selected' : '') . '>'. esc_html__('Select Option', 'smart-showcase-for-google-reviews').'</button>';
 									echo '</div>';
 									$allowed_html = wp_kses_allowed_html('post');
 
@@ -2401,32 +2401,32 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<li>
 											<input type="checkbox" id="review-title" class="zwssgr-checkbox" name="review-element" value="review-title" 
 											<?php echo in_array('review-title', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-title" class="zwssgr-chechbox-label">Reviewer Name</label>
+											<label for="review-title" class="zwssgr-chechbox-label"><?php echo esc_html__('Reviewer Name', 'smart-showcase-for-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-rating" class="zwssgr-checkbox" name="review-element" value="review-rating" 
 											<?php echo in_array('review-rating', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-rating" class="zwssgr-chechbox-label">Rating</label>
+											<label for="review-rating" class="zwssgr-chechbox-label"><?php echo esc_html__('Rating', 'smart-showcase-for-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-days-ago" class="zwssgr-checkbox" name="review-element" value="review-days-ago" 
 											<?php echo in_array('review-days-ago', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-days-ago" class="zwssgr-chechbox-label">Date</label>
+											<label for="review-days-ago" class="zwssgr-chechbox-label"><?php echo esc_html__('Date', 'smart-showcase-for-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-content" class="zwssgr-checkbox" name="review-element" value="review-content" 
 											<?php echo in_array('review-content', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-content" class="zwssgr-chechbox-label">Review Content</label>
+											<label for="review-content" class="zwssgr-chechbox-label"><?php echo esc_html__('Review Content', 'smart-showcase-for-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-photo" class="zwssgr-checkbox" name="review-element" value="review-photo" 
 											<?php echo in_array('review-photo', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-photo" class="zwssgr-chechbox-label">Reviewer Photo</label>
+											<label for="review-photo" class="zwssgr-chechbox-label"><?php echo esc_html__('Reviewer Photo', 'smart-showcase-for-google-reviews'); ?></label>
 										</li>
 										<li>
 											<input type="checkbox" id="review-g-icon" class="zwssgr-checkbox" name="review-element" value="review-g-icon" 
 											<?php echo in_array('review-g-icon', $zwssgr_selected_elements) ? 'checked' : ''; ?>>
-											<label for="review-g-icon" class="zwssgr-chechbox-label">G Icon</label>
+											<label for="review-g-icon" class="zwssgr-chechbox-label"><?php echo esc_html__('G Icon', 'smart-showcase-for-google-reviews'); ?></label>
 										</li>
 										<!-- Add more elements as needed -->
 									</ul>
@@ -2479,7 +2479,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								</div>
 
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Trim long reviews with a "read more" link</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Trim long reviews with a "read more" link', 'smart-showcase-for-google-reviews'); ?></h3>
 									<input type="number" class="zwssgr-input-text" id="review-char-limit" name="review-char-limit" min="10" placeholder="Enter character limit" value="<?php echo !empty($zwssgr_char_limit) ? esc_attr($zwssgr_char_limit) : ''; ?>">
 									<p id="char-limit-error" class="error-message"></p>
 								</div>
@@ -2487,49 +2487,49 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label"><?php echo esc_html__('Language', 'smart-showcase-for-google-reviews'); ?></h3>
 									<select id="language-select" name="language" class="zwssgr-input-text">
-										<option value="en" <?php echo ($zwssgr_language === 'en') ? 'selected' : ''; ?>>English</option>
-										<option value="es" <?php echo ($zwssgr_language === 'es') ? 'selected' : ''; ?>>Spanish</option>
-										<option value="fr" <?php echo ($zwssgr_language === 'fr') ? 'selected' : ''; ?>>French</option>
-										<option value="de" <?php echo ($zwssgr_language === 'de') ? 'selected' : ''; ?>>German</option>
-										<option value="it" <?php echo ($zwssgr_language === 'it') ? 'selected' : ''; ?>>Italian</option>
-										<option value="pt" <?php echo ($zwssgr_language === 'pt') ? 'selected' : ''; ?>>Portuguese</option>
-										<option value="ru" <?php echo ($zwssgr_language === 'ru') ? 'selected' : ''; ?>>Russian</option>
-										<option value="zh" <?php echo ($zwssgr_language === 'zh') ? 'selected' : ''; ?>>Chinese</option>
-										<option value="ja" <?php echo ($zwssgr_language === 'ja') ? 'selected' : ''; ?>>Japanese</option>
-										<option value="hi" <?php echo ($zwssgr_language === 'hi') ? 'selected' : ''; ?>>Hindi</option>
-										<option value="ar" <?php echo ($zwssgr_language === 'ar') ? 'selected' : ''; ?>>Arabic</option>
-										<option value="ko" <?php echo ($zwssgr_language === 'ko') ? 'selected' : ''; ?>>Korean</option>
-										<option value="tr" <?php echo ($zwssgr_language === 'tr') ? 'selected' : ''; ?>>Turkish</option>
-										<option value="bn" <?php echo ($zwssgr_language === 'bn') ? 'selected' : ''; ?>>Bengali</option>
-										<option value="ms" <?php echo ($zwssgr_language === 'ms') ? 'selected' : ''; ?>>Malay</option>
-										<option value="nl" <?php echo ($zwssgr_language === 'nl') ? 'selected' : ''; ?>>Dutch</option>
-										<option value="pl" <?php echo ($zwssgr_language === 'pl') ? 'selected' : ''; ?>>Polish</option>
-										<option value="sv" <?php echo ($zwssgr_language === 'sv') ? 'selected' : ''; ?>>Swedish</option>
-										<option value="th" <?php echo ($zwssgr_language === 'th') ? 'selected' : ''; ?>>Thai</option>
+										<option value="en" <?php echo ($zwssgr_language === 'en') ? 'selected' : ''; ?>><?php echo esc_html__('English', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="es" <?php echo ($zwssgr_language === 'es') ? 'selected' : ''; ?>><?php echo esc_html__('Spanish', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="fr" <?php echo ($zwssgr_language === 'fr') ? 'selected' : ''; ?>><?php echo esc_html__('French', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="de" <?php echo ($zwssgr_language === 'de') ? 'selected' : ''; ?>><?php echo esc_html__('German', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="it" <?php echo ($zwssgr_language === 'it') ? 'selected' : ''; ?>><?php echo esc_html__('Italian', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="pt" <?php echo ($zwssgr_language === 'pt') ? 'selected' : ''; ?>><?php echo esc_html__('Portuguese', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="ru" <?php echo ($zwssgr_language === 'ru') ? 'selected' : ''; ?>><?php echo esc_html__('Russian', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="zh" <?php echo ($zwssgr_language === 'zh') ? 'selected' : ''; ?>><?php echo esc_html__('Chinese', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="ja" <?php echo ($zwssgr_language === 'ja') ? 'selected' : ''; ?>><?php echo esc_html__('Japanese', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="hi" <?php echo ($zwssgr_language === 'hi') ? 'selected' : ''; ?>><?php echo esc_html__('Hindi', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="ar" <?php echo ($zwssgr_language === 'ar') ? 'selected' : ''; ?>><?php echo esc_html__('Arabic', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="ko" <?php echo ($zwssgr_language === 'ko') ? 'selected' : ''; ?>><?php echo esc_html__('Korean', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="tr" <?php echo ($zwssgr_language === 'tr') ? 'selected' : ''; ?>><?php echo esc_html__('Turkish', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="bn" <?php echo ($zwssgr_language === 'bn') ? 'selected' : ''; ?>><?php echo esc_html__('Bengali', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="ms" <?php echo ($zwssgr_language === 'ms') ? 'selected' : ''; ?>><?php echo esc_html__('Malay', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="nl" <?php echo ($zwssgr_language === 'nl') ? 'selected' : ''; ?>><?php echo esc_html__('Dutch', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="pl" <?php echo ($zwssgr_language === 'pl') ? 'selected' : ''; ?>><?php echo esc_html__('Polish', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="sv" <?php echo ($zwssgr_language === 'sv') ? 'selected' : ''; ?>><?php echo esc_html__('Swedish', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="th" <?php echo ($zwssgr_language === 'th') ? 'selected' : ''; ?>><?php echo esc_html__('Thai', 'smart-showcase-for-google-reviews'); ?></option>
 									</select>
 								</div>
 
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Sort By</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Sort By', 'smart-showcase-for-google-reviews'); ?></h3>
 									<select id="sort-by-select" name="sort_by" class="zwssgr-input-text">
-										<option value="newest" <?php echo ($zwssgr_sort_by === 'newest') ? 'selected' : ''; ?>>Newest</option>
-										<option value="highest" <?php echo ($zwssgr_sort_by === 'highest') ? 'selected' : ''; ?>>Highest Rating</option>
-										<option value="lowest" <?php echo ($zwssgr_sort_by === 'lowest') ? 'selected' : ''; ?>>Lowest Rating</option>
+										<option value="newest" <?php echo ($zwssgr_sort_by === 'newest') ? 'selected' : ''; ?>><?php echo esc_html__('Newest', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="highest" <?php echo ($zwssgr_sort_by === 'highest') ? 'selected' : ''; ?>><?php echo esc_html__('Highest Rating', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="lowest" <?php echo ($zwssgr_sort_by === 'lowest') ? 'selected' : ''; ?>><?php echo esc_html__('Lowest Rating', 'smart-showcase-for-google-reviews'); ?></option>
 									</select>
 									<div class="zwssgr-sort-by-checkbox">
 											<input type="checkbox" class="zwssgr-checkbox" id="enable-sort-by-filter" name="enable_sort_by" <?php echo ($zwssgr_enable_sort_by ? 'checked' : ''); ?> />
-											<label for="enable-sort-by-filter" class="zwssgr-chechbox-label">Do you want to show "Sort By" filter on front side?</label>
+											<label for="enable-sort-by-filter" class="zwssgr-chechbox-label"><?php echo esc_html__('Do you want to show "Sort By" filter on front side?', 'smart-showcase-for-google-reviews'); ?></label>
 									</div>
 								</div>
 		
 								<div class="zwssgr-widget-setting">
-									<h3 class="zwssgr-label">Date Format</h3>
+									<h3 class="zwssgr-label"><?php echo esc_html__('Date Format', 'smart-showcase-for-google-reviews'); ?></h3>
 									<select id="date-format-select" name="date-format" class="zwssgr-input-text">
-										<option value="DD/MM/YYYY" <?php echo ($zwssgr_date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>>DD/MM/YYYY</option>
-										<option value="MM-DD-YYYY" <?php echo ($zwssgr_date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>>MM-DD-YYYY</option>
-										<option value="YYYY/MM/DD" <?php echo ($zwssgr_date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>>YYYY/MM/DD</option>
-										<option value="full" <?php echo ($zwssgr_date_format === 'full') ? 'selected' : ''; ?>>Full Date (e.g., January 1, 2024)</option>
-										<option value="hide" <?php echo ($zwssgr_date_format === 'hide') ? 'selected' : ''; ?>>Hide</option>
+										<option value="DD/MM/YYYY" <?php echo ($zwssgr_date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>><?php echo esc_html__('DD/MM/YYYY', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="MM-DD-YYYY" <?php echo ($zwssgr_date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>><?php echo esc_html__('MM-DD-YYYY', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="YYYY/MM/DD" <?php echo ($zwssgr_date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>><?php echo esc_html__('YYYY/MM/DD', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="full" <?php echo ($zwssgr_date_format === 'full') ? 'selected' : ''; ?>><?php echo esc_html__('Full Date (e.g., January 1, 2024)', 'smart-showcase-for-google-reviews'); ?></option>
+										<option value="hide" <?php echo ($zwssgr_date_format === 'hide') ? 'selected' : ''; ?>><?php echo esc_html__('Hide', 'smart-showcase-for-google-reviews'); ?></option>
 									</select>
 								</div>
 								<?php
@@ -2591,11 +2591,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<?php endif; ?>
 				
 					<div class="zwssgr-widget-settings">
-						<h2 class="zwssgr-page-title">Custom CSS Support</h2>
+						<h2 class="zwssgr-page-title"><?php echo esc_html__('Custom CSS Support', 'smart-showcase-for-google-reviews'); ?></h2>
 						<textarea class="zwssgr-textarea" rows="5" cols="40" placeholder="Enter your custom CSS here"><?php echo esc_textarea($zwssgr_custom_css); ?></textarea>
 					</div>
 					<button id="save-get-code-btn" class="zwssgr-btn" data-zwssgr-btn='zwssgr-btn'>
-						<?php echo !empty($zwssgr_current_tab2) ? 'Update' : 'Save & Get Code'; ?>
+						<?php echo !empty($zwssgr_current_tab2) ? esc_html__('Update', 'smart-showcase-for-google-reviews') : esc_html__('Save & Get Code', 'smart-showcase-for-google-reviews');?>
 					</button>
 				</div>
 
@@ -3356,7 +3356,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			} 
 			else {
 				if ($zwssgr_layout_option != "popup-1" && $zwssgr_layout_option != "popup-2") {
-					echo '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>';
+					echo '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>';
 				}				
 				
 			}
@@ -3434,9 +3434,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="zwssgr-slider-badge">
 							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item" id="zwssgr-badge1">
-									<h3 class="zwssgr-average">Good</h3>
+									<h3 class="zwssgr-average">'.esc_html__('Good', 'smart-showcase-for-google-reviews').'</h3>
 									' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-									<p class="zwssgr-based-on">Based on <b>  '.$zwssgr_reviews_ratings['reviews'].' reviews </b></p>
+									<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b>  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews ', 'smart-showcase-for-google-reviews').' </b></p>
 									<img src="' . $plugin_dir_path . 'assets/images/google.png" alt="Google">
 								</div>
 							</a>
@@ -3503,7 +3503,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="zwssgr-profile-info">
 							<h3>'.$zwssgr_location_name.'</h3>
 							' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-total-review"> '.$zwssgr_reviews_ratings['reviews'].' Google reviews</a>
+							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-total-review"> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google Reviews', 'smart-showcase-for-google-reviews').'</a>
 						</div>
 					</div>
 					<div id="zwssgrpopup1" class="zwssgr-popup-overlay">
@@ -3517,11 +3517,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-profile-info">
 										<h3>'.$zwssgr_location_name.'</h3>
 										' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-										<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' Google reviews</b></p>
+										<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+									' . (($post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 								</div>
 							</div>
 						</div>
@@ -3548,11 +3548,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-profile-info">
 										<h3>'.$zwssgr_location_name.'</h3>
 										' . (!empty($final_rating) ? '<div class="zwssgr-rating">' . $final_rating . '</div>' : '') . '
-										<p class="zwssgr-based-on">Based on <b> '.$zwssgr_reviews_ratings['reviews'].' Google reviews</b></p>
+										<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">No reviews found for the selected ratings</p>') . '
+									' . (($post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 								</div>
 							</div>
 						</div>
