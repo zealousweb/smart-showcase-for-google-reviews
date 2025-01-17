@@ -42,7 +42,7 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 			$this->zwssgr_general_opt = get_option( 'zwssgr_general_option' );
 
 			if( $this->zwssgr_admin_smtp_enabled == 1) {
-				add_action( 'phpmailer_init', array( $this, 'action__init_smtp_mailer' ), 9999 );
+				add_action( 'phpmailer_init', array( $this, 'zwssgr_action__init_smtp_mailer' ), 9999 );
 			}
 			
 		}
@@ -52,43 +52,43 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 		 *
 		 * Set SMTP parameters if SMTP mailer.
 		 *
-		 * @method action__init_smtp_mailer
+		 * @method zwssgr_action__init_smtp_mailer
 		 *
-		 * @param  mailer object  $phpmailer
+		 * @param  mailer object  $zwssgr_phpmailer
 		 *
 		 */
-		function action__init_smtp_mailer(  $phpmailer ) {
+		function zwssgr_action__init_smtp_mailer(  $zwssgr_phpmailer ) {
 
-			$phpmailer->IsSMTP();
+			$zwssgr_phpmailer->IsSMTP();
 
-			$from_email = $this->zwssgr_smtp_opt['zwssgr_from_email'];
-			$from_name = $this->zwssgr_smtp_opt['zwssgr_from_name'];
+			$zwssgr_from_email = $this->zwssgr_smtp_opt['zwssgr_from_email'];
+			$zwssgr_from_name = $this->zwssgr_smtp_opt['zwssgr_from_name'];
 
-			$phpmailer->From     = $from_email;
-			$phpmailer->FromName = $from_name;
-			$phpmailer->SetFrom( $phpmailer->From, $phpmailer->FromName );
+			$zwssgr_phpmailer->From     = $zwssgr_from_email;
+			$zwssgr_phpmailer->FromName = $zwssgr_from_name;
+			$zwssgr_phpmailer->SetFrom( $zwssgr_phpmailer->From, $zwssgr_phpmailer->FromName );
 
 			/* Set the SMTP Secure value */
 			if ( 'none' !== $this->zwssgr_smtp_opt['zwssgr_smtp_ency_type'] ) {
-				$phpmailer->SMTPSecure = $this->zwssgr_smtp_opt['zwssgr_smtp_ency_type'];
+				$zwssgr_phpmailer->SMTPSecure = $this->zwssgr_smtp_opt['zwssgr_smtp_ency_type'];
 			}
 
 			/* Set the other options */
-			$phpmailer->Host = $this->zwssgr_smtp_opt['zwssgr_smtp_host'];
-			$phpmailer->Port = $this->zwssgr_smtp_opt['zwssgr_smtp_port'];
+			$zwssgr_phpmailer->Host = $this->zwssgr_smtp_opt['zwssgr_smtp_host'];
+			$zwssgr_phpmailer->Port = $this->zwssgr_smtp_opt['zwssgr_smtp_port'];
 
 			/* If we're using smtp auth, set the username & password */
 			if ( 'yes' == $this->zwssgr_smtp_opt['zwssgr_smtp_auth'] ) {
-				$phpmailer->SMTPAuth = true;
-				$phpmailer->Username = $this->zwssgr_smtp_opt['zwssgr_smtp_username'];
-				$phpmailer->Password = $this->zwssgr_smtp_opt['zwssgr_smtp_password'];
+				$zwssgr_phpmailer->SMTPAuth = true;
+				$zwssgr_phpmailer->Username = $this->zwssgr_smtp_opt['zwssgr_smtp_username'];
+				$zwssgr_phpmailer->Password = $this->zwssgr_smtp_opt['zwssgr_smtp_password'];
 			}
 			//PHPMailer 5.2.10 introduced this option. However, this might cause issues if the server is advertising TLS with an invalid certificate.
-			$phpmailer->SMTPAutoTLS = false;
+			$zwssgr_phpmailer->SMTPAutoTLS = false;
 
 			//set reasonable timeout
-			$phpmailer->Timeout = 10;
-			$phpmailer->CharSet  = "utf-8";
+			$zwssgr_phpmailer->Timeout = 10;
+			$zwssgr_phpmailer->CharSet  = "utf-8";
 		}
 
 		function action__plugins_loaded() {
