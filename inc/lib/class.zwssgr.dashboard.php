@@ -430,8 +430,8 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
                         $zwssgr_numeric_rating = isset($zwssgr_rating_map[$zwssgr_review_star_rating]) ? $zwssgr_rating_map[$zwssgr_review_star_rating] : 0;
 
-                        $zwssgr_gmb_reviewer_image_dir = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-                        $zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_gmb_reviewer_image_dir = ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
                         // Generate stars HTML
                         $zwssgr_stars_html = '';

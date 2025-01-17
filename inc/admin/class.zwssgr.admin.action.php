@@ -400,17 +400,17 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 *
 		 * @param string $message The message to log.
 		 */
-		function zwssgr_debug_function( $message ) {
+		function zwssgr_debug_function( $zwssgr_message ) {
 			// Define the custom log directory path.
 
-			$log_dir = ZWSSGR_UPLOAD_DIR;
+			$zwssgr_log_dir = ZWSSGR_UPLOAD_DIR.'/smart-showcase-for-google-reviews/';
 		
 			// Define the log file path.
-			$log_file = $log_dir . '/smart-showcase-for-google-reviews-debug.log';
+			$zwssgr_log_file = $zwssgr_log_dir . '/smart-showcase-for-google-reviews-debug.log';
 		
 			// Check if the directory exists, if not create it.
-			if ( ! file_exists( $log_dir ) ) {
-				wp_mkdir_p( $log_dir );
+			if ( ! file_exists( $zwssgr_log_dir ) ) {
+				wp_mkdir_p( $zwssgr_log_dir );
 			}
 		
 			// Initialize the WP_Filesystem.
@@ -422,11 +422,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			global $wp_filesystem;
 		
 			// Format the log entry with UTC timestamp using gmdate().
-			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
+			$zwssgr_log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $zwssgr_message );
 		
 			// Write the log entry to the file using WP_Filesystem.
-			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
-				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
+			if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
+				$wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
 			}
 		}
 		
@@ -488,7 +488,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_filled_star 		  	  = str_repeat($zwssgr_filled_star, $numeric_rating);
 			$zwssgr_empty_star 		  	  = str_repeat($zwssgr_empty_star, 5 - $numeric_rating);
 			$zwssgr_review_id 		  	  = get_post_meta($zwssgr_review->ID, 'zwssgr_review_id', true);
-			$zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+			$zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
 			echo '<table class="form-table test gmb-review-data" id="gmb-review-data" zwssgr-review-id="'.esc_attr( $zwssgr_review->ID ).'">
 				<tr>
@@ -1441,8 +1441,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_review_star_rating 	   = get_post_meta(get_the_ID(), 'zwssgr_review_star_rating', true);
 					$zwssgr_review_comment  	  	   = get_post_meta(get_the_ID(), 'zwssgr_review_comment', true);
 					$zwssgr_review_id		  	   = get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
-					$zwssgr_gmb_reviewer_image_path = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-					$zwssgr_gmb_reviewer_image_uri  = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_path = ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_uri  = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$published_date  = get_the_date('F j, Y');
 					$months = $this->zwssgr_translate_months($zwssgr_language);
 
@@ -2824,8 +2824,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_review_content = get_post_meta(get_the_ID(), 'zwssgr_review_comment', true);
 					$zwssgr_review_star_rating = get_post_meta(get_the_ID(), 'zwssgr_review_star_rating', true);
 					$zwssgr_review_id= get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
-					$zwssgr_gmb_reviewer_image_path = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-					$zwssgr_gmb_reviewer_image_uri  = ZWSSGR_UPLOAD_URL . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_path = ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+					$zwssgr_gmb_reviewer_image_uri  = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 					$published_date = get_the_date('F j, Y');
 					$months = $this->zwssgr_translate_months($zwssgr_language);
 					// Determine if content is trimmed based on character limit
