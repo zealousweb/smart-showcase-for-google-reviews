@@ -36,17 +36,22 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 		}
 		function ZWSSGR_lib_public_enqueue() 
 		{
-			wp_enqueue_script( ZWSSGR_PREFIX . '_script_js', ZWSSGR_URL . 'assets/js/script.js', array( 'jquery-core' ), ZWSSGR_VERSION, true );
+			// script js
+			wp_register_script( ZWSSGR_PREFIX . '_script_js', ZWSSGR_URL .'assets/js/script.js', array('jquery-core'), false, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '_script_js' );
 
 			// style css
-			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', array(), ZWSSGR_VERSION );
+			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
 
 			// Slick js
-			wp_enqueue_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL . 'assets/js/slick.min.js', array( 'jquery-core' ), ZWSSGR_VERSION ,true);
+			wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), false, true );
+    		wp_enqueue_script( ZWSSGR_PREFIX . '-slick-min-js' );
 			
 			// Slick css
-			wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', array(), ZWSSGR_VERSION );
-			
+			wp_register_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css' );
+
 			wp_localize_script(ZWSSGR_PREFIX . '_script_js', 'load_more', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('zwssgr_load_more_nonce')
