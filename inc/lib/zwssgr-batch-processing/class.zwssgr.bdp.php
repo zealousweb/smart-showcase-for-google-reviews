@@ -27,34 +27,35 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 		 *
 		 * @param string $message The message to log.
 		 */
-		function zwssgr_debug_function( $message ) {
-			// Define the custom log directory path.
-			$log_dir = ZWSSGR_UPLOAD_DIR;
-		
-			// Define the log file path.
-			$log_file = $log_dir . '/smart-showcase-for-google-reviews-debug.log';
-		
-			// Check if the directory exists, if not create it.
-			if ( ! file_exists( $log_dir ) ) {
-				wp_mkdir_p( $log_dir );
-			}
-		
-			// Initialize the WP_Filesystem.
-			if ( ! function_exists( 'WP_Filesystem' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/file.php';
-			}
-			WP_Filesystem();
-		
-			global $wp_filesystem;
-		
-			// Format the log entry with UTC timestamp using gmdate().
-			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
-		
-			// Write the log entry to the file using WP_Filesystem.
-			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
-				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
-			}
-		}
+		function zwssgr_debug_function( $zwssgr_message ) {
+            // Define the custom log directory path.
+
+            $zwssgr_log_dir = ZWSSGR_UPLOAD_DIR.'/smart-showcase-for-google-reviews/';
+        
+            // Define the log file path.
+            $zwssgr_log_file = $zwssgr_log_dir . '/smart-showcase-for-google-reviews-debug.log';
+        
+            // Check if the directory exists, if not create it.
+            if ( ! file_exists( $zwssgr_log_dir ) ) {
+                wp_mkdir_p( $zwssgr_log_dir );
+            }
+        
+            // Initialize the WP_Filesystem.
+            if ( ! function_exists( 'WP_Filesystem' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+            }
+            WP_Filesystem();
+        
+            global $wp_filesystem;
+        
+            // Format the log entry with UTC timestamp using gmdate().
+            $zwssgr_log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $zwssgr_message );
+        
+            // Write the log entry to the file using WP_Filesystem.
+            if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
+                $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
+            }
+        }
 
         // Process each file by logging account names
         protected function task($zwsr_batch_data) {
@@ -289,7 +290,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
                         $zwssgr_gmb_email     = get_option('zwssgr_gmb_email');
                         $zwssgr_review_dp_url = isset($zwssgr_review['reviewer']['profilePhotoUrl']) ? $zwssgr_review['reviewer']['profilePhotoUrl'] : null;
-                        $zwssgr_save_path     = ZWSSGR_UPLOAD_DIR . '/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
+                        $zwssgr_save_path     = ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
                         
                         if (!empty($zwssgr_gmb_email)) {
                             update_post_meta($zwssgr_wp_review_id, 'zwssgr_gmb_email', $zwssgr_gmb_email);
