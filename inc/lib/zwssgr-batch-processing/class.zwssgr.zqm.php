@@ -350,7 +350,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
 
                     $zwssgr_get_location_thumbnail_response = $this->zwssgr_gmb_api->zwssgr_get_location_thumbnail($this->zwssgr_account_number, $this->zwssgr_location_number);
 
-                    if (isset($zwssgr_get_location_thumbnail_response) && $zwssgr_get_location_thumbnail_response['success'] && !empty($zwssgr_get_location_thumbnail_response['data'])) {
+                    if (isset($zwssgr_get_location_thumbnail_response) && isset($zwssgr_get_location_thumbnail_response['success']) && $zwssgr_get_location_thumbnail_response['success'] && !empty($zwssgr_get_location_thumbnail_response['data'])) {
                         update_post_meta($this->zwssgr_widget_id, 'zwssgr_location_thumbnail_url', $zwssgr_get_location_thumbnail_response['data']['sourceUrl']);
                     }
 
