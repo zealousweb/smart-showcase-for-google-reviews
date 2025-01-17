@@ -33,8 +33,8 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 
 		function __construct() {
 
-			add_action( 'setup_theme',   array( $this, 'action__setup_theme' ) );
-			add_action( 'plugins_loaded', array( $this, 'action__plugins_loaded' ), 1 );
+			add_action( 'setup_theme',   array( $this, 'zwssgr_action__setup_theme' ) );
+			add_action( 'plugins_loaded', array( $this, 'zwssgr_action__plugins_loaded' ), 1 );
 			add_filter( 'plugin_action_links',array( $this,'action__zwssgr_plugin_action_links'), 10, 2 );
 			
 			$this->zwssgr_admin_smtp_enabled = get_option('zwssgr_admin_smtp_enabled');
@@ -91,12 +91,12 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 			$zwssgr_phpmailer->CharSet  = "utf-8";
 		}
 
-		function action__plugins_loaded() {
+		function zwssgr_action__plugins_loaded() {
 			ob_start();
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 
-		function action__setup_theme() {
+		function zwssgr_action__setup_theme() {
 			if ( is_admin() ) {
 				ZWSSGR()->admin = new ZWSSGR_Admin;
 				ZWSSGR()->admin->action = new ZWSSGR_Admin_Action;
