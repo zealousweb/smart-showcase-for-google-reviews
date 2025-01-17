@@ -28,7 +28,6 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			add_shortcode( 'zwssgr_widget', array($this,'shortcode_load_more'));
 			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
 			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
-			add_action('wp_head', array($this, 'enqueue_custom_plugin_styles'));
 			
 			// Initialize dashboard class
 			$this->zwssgr_dashboard = ZWSSGR_Dashboard::get_instance();
@@ -52,14 +51,8 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			wp_register_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css' );
 
-			wp_localize_script(ZWSSGR_PREFIX . '_script_js', 'load_more', array(
-				'ajax_url' => admin_url('admin-ajax.php'),
-				'nonce'    => wp_create_nonce('zwssgr_load_more_nonce')
-			));
-		}
+			// custom css
 
-	
-		function enqueue_custom_plugin_styles() {
 			$zwssgr_wd_posts_args = array(
 				'post_type'			=> 'zwssgr_data_widget',
 				'posts_per_page'	=> -1,
@@ -80,11 +73,17 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			if( ! empty( $zwssgr_wd_posts ) ){
 				foreach( $zwssgr_wd_posts as $zwssgr_wd_posts_single_id ){
 					$zwssgr_wd_dy_style .= get_post_meta($zwssgr_wd_posts_single_id, '_zwssgr_custom_css', true);
-					echo '<style type="text/css">' . esc_html($zwssgr_wd_dy_style) . '</style>';
+					wp_add_inline_style(ZWSSGR_PREFIX . '-style-css', $zwssgr_wd_dy_style);
+
+					
 				}
 			}
+
+			wp_localize_script(ZWSSGR_PREFIX . '_script_js', 'load_more', array(
+				'ajax_url' => admin_url('admin-ajax.php'),
+				'nonce'    => wp_create_nonce('zwssgr_load_more_nonce')
+			));
 		}
-		
 		
 		function zwssgr_translate_read_more($zwssgr_language) 
 		{
@@ -354,7 +353,6 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 			echo '<div class="zwssgr-main-wrapper" data-widget-id="' . esc_attr( $post_id ) . '">';
 
-				//$this->enqueue_custom_plugin_styles($post_id);
 				echo '<div class="zwssgr-front-review-filter-wrap" data-widget-id="' . esc_attr( $post_id ) . '">';
 					if ($badge_layout_option === 'badge') {
 					}else{
