@@ -90,7 +90,45 @@ Initial Release
 * Automatic replies to users based on their star rating (positive or negative) (Using AI)
 * Integration with Google Analytics to track user interaction with reviews
 
-<strong>[Demo for Smart Showcase for Google Reviews Pro]()</strong>
+<strong>[Demo for Smart Showcase for Google Reviews Pro](https://demo.zealousweb.com/wordpress-plugins/smart-showcase-for-google-reviews/)</strong>
+
+## Background Processing  
+
+- This plugin utilizes the [WP Background Processing](https://github.com/deliciousbrains/wp-background-processing) library by Delicious Brains to efficiently handle background tasks without affecting the user experience or website performance.  
+
+- The library enables asynchronous processing of large datasets and operations by leveraging the WordPress Cron system. This ensures that critical tasks such as API data fetching, batch processing, or heavy computations are handled smoothly and reliably.  
+
+- We extend and integrate this library to manage the background processing of:  
+  - Fetching accounts, locations, and reviews in batches.  
+  - Importing large datasets into WordPress.  
+  - Performing other time-intensive operations.  
+
+- For more information on this library, visit its [GitHub repository](https://github.com/deliciousbrains/wp-background-processing).  
+
+== Use of External Services ==  
+
+## Google My Business API
+
+   **Purpose** The plugin uses the Google My Business API to fetch Google My Business account-related locations and reviews, as well as to manage review replies. This includes adding, updating, editing, and deleting review replies.  
+   
+   **Data Sent** Upon user authorization, the plugin collects and sends a refresh token to enable API interactions for retrieving location and review data, as well as for managing review replies.  
+   
+   **Conditions** This data is only transmitted after explicit user consent during the "Connect with Google" process. No other personal or business information is shared or used.  
+   
+   **Terms and Privacy**  
+     - [Google Terms of Service](https://policies.google.com/terms)  
+     - [Google Privacy Policy](https://policies.google.com/privacy)  
+
+**ZealousWeb Third-Party API Service (https://sgr.zealousweb.com/)**
+   
+   **Purpose** The plugin saves the Google My Business API refresh token in a secure third-party API service to generate temporary access tokens. These tokens are provided to the user's site, which uses them to securely fetch data from Google My Business and perform operations such as retrieving locations, reviews, and managing review replies.
+   
+   **Data Sent** The Google My Business refresh token is stored securely in the third-party service solely to facilitate access token generation. No additional personal or business information is shared.
+   
+   **Conditions** The data is transmitted only after user consent and is used exclusively for enabling the plugin's functionality. All operations are performed directly by the user's site.
+   
+   **Terms and Privacy**
+     - [ZealousWeb Privacy Policy](https://sgr.zealousweb.com/privacy-policy)
 
 **OUR OTHER PLUGINS**
 
