@@ -525,7 +525,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
-											'.( (!in_array('review-photo', $zwssgr_selected_elements) ||  !in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.( (!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -561,7 +561,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
-											'.( (!in_array('review-photo', $zwssgr_selected_elements) ||  !in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.( (!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -756,7 +756,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										<div class="zwssgr-slide-wrap4 zwssgr-list-wrap3">
-											'.((!in_array('review-photo', $zwssgr_selected_elements)||!in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.((!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -783,7 +783,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								<div class="zwssgr-slide-item">
 									<div class="zwssgr-list-inner">
 										<div class="zwssgr-slide-wrap4 zwssgr-list-wrap4">
-											'.((!in_array('review-photo', $zwssgr_selected_elements)||!in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.((!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -987,7 +987,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							$zwssgr_grid_item4 = '
 								<div class="zwssgr-slide-item">
 									<div class="zwssgr-grid-inner">
-										'.((!in_array('review-photo', $zwssgr_selected_elements)||!in_array('review-g-icon', $zwssgr_selected_elements))?'
+										'.((!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -1822,7 +1822,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
-											'.( (!in_array('review-photo', $zwssgr_selected_elements) ||  !in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.( (!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -1858,7 +1858,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											: '') . '</p>' : '' ) . '
 										
 										<div class="zwssgr-slide-wrap4">
-											'.( (!in_array('review-photo', $zwssgr_selected_elements) ||  !in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.( (!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -2053,7 +2053,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' 
 											: '') . '</p>' : '' ) . '
 										<div class="zwssgr-slide-wrap4 zwssgr-list-wrap3">
-											'.((!in_array('review-photo', $zwssgr_selected_elements)||!in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.((!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -2080,7 +2080,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								<div class="zwssgr-slide-item">
 									<div class="zwssgr-list-inner">
 										<div class="zwssgr-slide-wrap4 zwssgr-list-wrap4">
-											'.((!in_array('review-photo', $zwssgr_selected_elements)||!in_array('review-g-icon', $zwssgr_selected_elements))?'
+											'.((!in_array('review-photo', $zwssgr_selected_elements))?'
 											<div class="zwssgr-profile">
 												' . 
 													( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
@@ -2284,7 +2284,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 						$zwssgr_grid_item4 = '
 							<div class="zwssgr-slide-item">
 								<div class="zwssgr-grid-inner">
-									'.((!in_array('review-photo', $zwssgr_selected_elements)||!in_array('review-g-icon', $zwssgr_selected_elements))?'
+									'.((!in_array('review-photo', $zwssgr_selected_elements))?'
 									<div class="zwssgr-profile">
 										' . 
 											( !in_array('review-photo', $zwssgr_selected_elements) ? '	'.	''.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name) .'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name) .'">').''.'' : '' ) . '
