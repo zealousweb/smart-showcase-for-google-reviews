@@ -127,7 +127,7 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 			if ( is_plugin_active( 'smart-showcase-for-google-reviews/smart-showcase-for-google-reviews.php' )  )
 			{
 				$support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'smart-showcase-for-google-reviews' ). '</a>';
-				$document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-google-review/" target="_blank">' .__( 'Document', 'smart-showcase-for-google-reviews' ). '</a>';
+				$document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-showcase-for-google-reviews/" target="_blank">' .__( 'Document', 'smart-showcase-for-google-reviews' ). '</a>';
 				$donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'smart-showcase-for-google-reviews' ) . '</a>';
 
 				array_unshift( $links , $support_link, $document_link, $donateLink );

@@ -1410,12 +1410,12 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<div class="zwssgr-popup-item zwssgr-popup2" id="zwssgr-popup2"  data-popup="zwssgrpopup2">
 								<div class="zwssgr-title-wrap">
 									<img src="' . $zwssgr_plugin_dir_path . 'assets/images/google.png" alt="Google">
-									<h3>Reviews</h3>
+									<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
 								</div>
 								<div class="zwssgr-info-wrap">
 									<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-									<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' reviews )</a>
+									<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
 								</div>
 							</div>
 							<div id="zwssgrpopup2" class="zwssgr-popup-overlay zwssgrpopup2">

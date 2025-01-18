@@ -511,7 +511,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<input type="text" value="' . esc_attr($zwssgr_reviewer_name) . '" readonly class="zwssgr-regular-text" />
 					</td>
 				</tr>
-								<tr>
+				<tr>
 					<th>
 						<label for="zwssgr_review_published_date">' . esc_html('Publish Date', 'smart-showcase-for-google-reviews') . '</label>
 					</th>
@@ -767,12 +767,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_add_shortcode_column($zwssgr_columns) 
 		{
 			$zwssgr_new_columns = array();
-			foreach ($zwssgr_columns as $key => $title) {
+			foreach ($zwssgr_columns as $key => $zwssgr_title) {
 				if ($key === 'title') {
-					$zwssgr_new_columns[$key] = $title; // Keep the Title column
+					$zwssgr_new_columns[$key] = $zwssgr_title; // Keep the Title column
 					$zwssgr_new_columns['shortcode'] = __('Shortcode', 'smart-showcase-for-google-reviews'); // Add Shortcode column after Title
 				} else {
-					$zwssgr_new_columns[$key] = $title; // Add other columns
+					$zwssgr_new_columns[$key] = $zwssgr_title; // Add other columns
 				}
 			}
 			return $zwssgr_new_columns;
@@ -1279,8 +1279,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 
 			$zwssgr_post_id = isset($_GET['zwssgr_widget_id']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_widget_id'])) : '';
-			$post_objct = get_post($zwssgr_post_id);
-			if (!isset($zwssgr_post_id) || !$post_objct ) {
+			$zwssgr_post_objct = get_post($zwssgr_post_id);
+			if (!isset($zwssgr_post_id) || !$zwssgr_post_objct ) {
 				wp_die( 'Invalid post ID.' ) ;
 			}
 
@@ -2191,12 +2191,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<div class="zwssgr-popup-item zwssgr-popup2" id="zwssgr-popup2"  data-popup="zwssgrpopup2">
 						<div class="zwssgr-title-wrap">
 							<img src="' . $zwssgr_plugin_dir_path . 'assets/images/google.png" alt="Google">
-							<h3>Reviews</h3>
+							<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
 						</div>
 						<div class="zwssgr-info-wrap">
 							<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' reviews )</a>
+							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
 						</div>
 					</div>
 					<div id="zwssgrpopup2" class="zwssgr-popup-overlay zwssgrpopup2">
@@ -2338,10 +2338,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<div class="filter-rating">
 											<?php
 											for ($i = 1; $i <= 5; $i++) {
-												$selected = ($i <= $zwssgr_rating_filter) ? 'selected' : '';  // Check if the current star is selected
+												$zwssgr_selected = ($i <= $zwssgr_rating_filter) ? 'selected' : '';  // Check if the current star is selected
 												$zwssgr_fillColor = ($i <= $zwssgr_rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
 												?>
-												<span class="star-filter <?php echo esc_attr($selected); ?>" data-rating="<?php echo esc_attr($i); ?>" title="<?php echo esc_attr($i); ?> Star">
+												<span class="star-filter <?php echo esc_attr($zwssgr_selected); ?>" data-rating="<?php echo esc_attr($i); ?>" title="<?php echo esc_attr($i); ?> Star">
 													<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 														<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo esc_attr($zwssgr_fillColor); ?>" />
 													</svg>
@@ -2679,8 +2679,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			
 			$zwssgr_post_id = isset($_POST['zwssgr_widget_id']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_widget_id'])) : '';
 
-			$post_objct = get_post($zwssgr_post_id);
-			if (!isset($zwssgr_post_id) || !$post_objct ) {
+			$zwssgr_post_objct = get_post($zwssgr_post_id);
+			if (!isset($zwssgr_post_id) || !$zwssgr_post_objct ) {
 				wp_die( 'Invalid post ID.' ) ;
 			}
 
@@ -3487,12 +3487,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<div class="zwssgr-popup-item zwssgr-popup2" id="zwssgr-popup2"  data-popup="zwssgrpopup2">
 						<div class="zwssgr-title-wrap">
 							<img src="' . $zwssgr_plugin_dir_path . 'assets/images/google.png" alt="Google">
-							<h3>Reviews</h3>
+							<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
 						</div>
 						<div class="zwssgr-info-wrap">
 							<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 							' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' reviews )</a>
+							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
 						</div>
 					</div>
 					<div id="zwssgrpopup2" class="zwssgr-popup-overlay">
@@ -3526,7 +3526,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_reviews_html = $zwssgr_filter_layout[$zwssgr_layout_option_key][$zwssgr_layout_option_value-1];
 
 			if($zwssgr_post_count > 0){
-				echo '<h3 class="zwssgr-layout-title">Layout: ' . esc_html($zwssgr_layout_option_key) . ' ' . esc_html($zwssgr_layout_option_value) . '</h3>';
+				echo '<h3 class="zwssgr-layout-title">'.esc_html__('Layout:', 'smart-showcase-for-google-reviews').' ' . esc_html($zwssgr_layout_option_key) . ' ' . esc_html($zwssgr_layout_option_value) . '</h3>';
 			}
 
 			// Return the filtered reviews HTML as the response
