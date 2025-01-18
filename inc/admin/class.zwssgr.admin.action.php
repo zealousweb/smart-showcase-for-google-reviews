@@ -42,11 +42,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_filter('wp_kses_allowed_html', array($this, 'zwssgr_action_allow_svg_in_post_content'));;
 
-			add_action('wp_ajax_save_widget_data',array($this, 'save_widget_data'));
-			add_action('wp_ajax_nopriv_save_widget_data', array($this, 'save_widget_data'));
+			add_action('wp_ajax_zwssgr_save_widget_data',array($this, 'zwssgr_save_widget_data'));
+			add_action('wp_ajax_nopriv_zwssgr_save_widget_data', array($this, 'zwssgr_save_widget_data'));
 
-			add_action('wp_ajax_filter_reviews', array($this,'filter_reviews_ajax_handler'));
-			add_action('wp_ajax_nopriv_filter_reviews', array($this,'filter_reviews_ajax_handler'));
+			add_action('wp_ajax_zwssgr_filter_reviews', array($this,'zwssgr_filter_reviews_ajax_handler'));
+			add_action('wp_ajax_nopriv_zwssgr_filter_reviews', array($this,'zwssgr_filter_reviews_ajax_handler'));
 
 			add_filter('manage_' . ZWSSGR_POST_WIDGET_TYPE . '_posts_columns', array($this,'zwssgr_add_shortcode_column'));
 			add_action('manage_' . ZWSSGR_POST_WIDGET_TYPE . '_posts_custom_column', array($this,'zwssgr_populate_shortcode_column'), 10, 2);
@@ -188,9 +188,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
                 'nonce' => wp_create_nonce('my_widget_nonce'),
             ));
 
-			wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'filter_reviews', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'zwssgr_filter_reviews', array(
 				'ajax_url' => admin_url('admin-ajax.php'), // The AJAX handler URL
-				'nonce' => wp_create_nonce('filter_reviews_nonce') // Security nonce
+				'nonce' => wp_create_nonce('zwssgr_filter_reviews_nonce') // Security nonce
 			));
 		
 		}
@@ -2572,7 +2572,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		}
 
 		// Handle AJAX Request to Save Dashboard Data
-		function save_widget_data() 
+		function zwssgr_save_widget_data() 
 		{
 			// Check security nonce
 			check_ajax_referer('my_widget_nonce', 'security');
@@ -2675,7 +2675,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			return $zwssgr_shortcode;	
 		}
 
-		function filter_reviews_ajax_handler() {
+		function zwssgr_filter_reviews_ajax_handler() {
 			
 			$zwssgr_post_id = isset($_POST['zwssgr_widget_id']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_widget_id'])) : '';
 
@@ -2685,7 +2685,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 
 			// Verify nonce for security
-			if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'filter_reviews_nonce')) {
+			if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'zwssgr_filter_reviews_nonce')) {
 				die(esc_html__('Permission Denied', 'smart-showcase-for-google-reviews'));
 			}
 			

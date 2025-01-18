@@ -26,8 +26,8 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			add_action('wp_enqueue_scripts', array($this, 'ZWSSGR_lib_public_enqueue'));  
 
 			add_shortcode( 'zwssgr_widget', array($this,'zwssgr_shortcode_load_more'));
-			add_action('wp_ajax_load_more_meta_data', array($this,'load_more_meta_data'));
-			add_action('wp_ajax_nopriv_load_more_meta_data', array($this,'load_more_meta_data'));
+			add_action('wp_ajax_zwssgr_load_more_meta_data', array($this,'zwssgr_load_more_meta_data'));
+			add_action('wp_ajax_nopriv_zwssgr_load_more_meta_data', array($this,'zwssgr_load_more_meta_data'));
 			
 			// Initialize dashboard class
 			$this->zwssgr_dashboard = ZWSSGR_Dashboard::get_instance();
@@ -136,15 +136,15 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			return $zwssgr_month_translations[$zwssgr_language] ?? $zwssgr_month_translations['en']; // Fallback to English
 		}
 
-		function zwssgr_frontend_sortby($post_id){
+		function zwssgr_frontend_sortby($zwssgr_post_id){
 
-			$zwssgr_sort_by = get_post_meta($post_id, 'sort_by', true);
-			$zwssgr_rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+			$zwssgr_sort_by = get_post_meta($zwssgr_post_id, 'sort_by', true);
+			$zwssgr_rating_filter = intval(get_post_meta($zwssgr_post_id, 'rating_filter', true)) ?: 0;
 			if ($zwssgr_rating_filter === 0) {
 				?>
 				<div class="zwssgr-widget-setting-font">
 					<h3 class="zwssgr-label-font"><?php echo esc_html__('Sort By', 'smart-showcase-for-google-reviews'); ?></h3>
-					<select id="front-sort-by-select-<?php echo esc_attr( $post_id ); ?>" name="front_sort_by" class="zwssgr-input-text front-sort-by-select">
+					<select id="front-sort-by-select-<?php echo esc_attr( $zwssgr_post_id ); ?>" name="front_sort_by" class="zwssgr-input-text front-sort-by-select">
 						<option value="newest" <?php echo ($zwssgr_sort_by === 'newest') ? 'selected' : ''; ?>><?php echo esc_html__('Newest', 'smart-showcase-for-google-reviews'); ?></option>
 						<option value="highest" <?php echo ($zwssgr_sort_by === 'highest') ? 'selected' : ''; ?>><?php echo esc_html__('Highest Rating', 'smart-showcase-for-google-reviews'); ?></option>
 						<option value="lowest" <?php echo ($zwssgr_sort_by === 'lowest') ? 'selected' : ''; ?>><?php echo esc_html__('Lowest Rating', 'smart-showcase-for-google-reviews'); ?></option>
@@ -154,13 +154,13 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			}
 		}
 
-		function zwssgr_keyword_search($post_id) {
+		function zwssgr_keyword_search($zwssgr_post_id) {
 			// Get the keywords meta data for the given post ID
-			$zwssgr_keywords = get_post_meta($post_id, 'keywords', true);
+			$zwssgr_keywords = get_post_meta($zwssgr_post_id, 'keywords', true);
 		
 			// Check if keywords are available and is an array
 			if (is_array($zwssgr_keywords) && !empty($zwssgr_keywords)) {
-				echo "<div id='zwssgr-front-keywords-list-" . esc_attr( $post_id ) . "' class='zwssgr-front-keywords-list zwssgr-front-keyword-list'>";
+				echo "<div id='zwssgr-front-keywords-list-" . esc_attr( $zwssgr_post_id ) . "' class='zwssgr-front-keywords-list zwssgr-front-keyword-list'>";
 				echo '<h3 class="zwssgr-label-font">'.esc_html__('Keywords', 'smart-showcase-for-google-reviews').'</h3>';
 				echo '<ul>';  // Start an unordered list
 		
@@ -191,20 +191,20 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			);
 
 			// Retrieve the post ID from the shortcode attributes
-			$post_id = $zwssgr_atts['post-id'];
+			$zwssgr_post_id = $zwssgr_atts['post-id'];
 
 			// Check if a post ID is provided and it exists
-			if (empty($post_id) || !get_post($post_id)) {
+			if (empty($zwssgr_post_id) || !get_post($zwssgr_post_id)) {
 				return esc_html__('Invalid post ID.', 'smart-showcase-for-google-reviews');
 			}
 
 			// Check if a valid post ID is provided
-			if (empty($post_id) || !is_numeric($post_id)) {
+			if (empty($zwssgr_post_id) || !is_numeric($zwssgr_post_id)) {
 				return ''; // Return nothing if the post ID is invalid
 			}
 
 			// Get the post object for the specified post ID
-			$zwssgr_post = get_post($post_id);
+			$zwssgr_post = get_post($zwssgr_post_id);
 
 			// Check if the post exists and is of the correct post type and published
 			if (!$zwssgr_post || $zwssgr_post->post_type !== 'zwssgr_data_widget' || $zwssgr_post->post_status !== 'publish') {
@@ -212,18 +212,18 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			}
 
 			// Retrieve the 'enable_load_more' setting from post meta
-			$zwssgr_enable_load_more = get_post_meta($post_id, 'enable_load_more', true);
-			$zwssgr_google_review_toggle = get_post_meta($post_id, 'google_review_toggle', true);
-			$zwssgr_bg_color = get_post_meta($post_id, 'bg_color', true);
-			$zwssgr_text_color = get_post_meta($post_id, 'text_color', true);
-			$zwssgr_bg_color_load = get_post_meta($post_id, 'bg_color_load', true);
-			$zwssgr_text_color_load = get_post_meta($post_id, 'text_color_load', true);
+			$zwssgr_enable_load_more = get_post_meta($zwssgr_post_id, 'enable_load_more', true);
+			$zwssgr_google_review_toggle = get_post_meta($zwssgr_post_id, 'google_review_toggle', true);
+			$zwssgr_bg_color = get_post_meta($zwssgr_post_id, 'bg_color', true);
+			$zwssgr_text_color = get_post_meta($zwssgr_post_id, 'text_color', true);
+			$zwssgr_bg_color_load = get_post_meta($zwssgr_post_id, 'bg_color_load', true);
+			$zwssgr_text_color_load = get_post_meta($zwssgr_post_id, 'text_color_load', true);
 
 			// Retrieve dynamic 'posts_per_page' from post meta
-			$zwssgr_stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
+			$zwssgr_stored_posts_per_page = get_post_meta($zwssgr_post_id, 'posts_per_page', true);
 
 			// Retrieve the 'rating_filter' value from the post meta
-			$zwssgr_rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+			$zwssgr_rating_filter = intval(get_post_meta($zwssgr_post_id, 'rating_filter', true)) ?: 0;
 
 			// Define the mapping from numeric values to words
 			$zwssgr_rating_mapping = array(
@@ -251,19 +251,19 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				$zwssgr_ratings_to_include = array('ONE');
 			}
 
-			$zwssgr_sort_by	 = get_post_meta($post_id, 'sort_by', true)?: 'newest';
-			$zwssgr_language = get_post_meta($post_id, 'language', true) ?: 'en'; 
-			$zwssgr_date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$zwssgr_sort_by	 = get_post_meta($zwssgr_post_id, 'sort_by', true)?: 'newest';
+			$zwssgr_language = get_post_meta($zwssgr_post_id, 'language', true) ?: 'en'; 
+			$zwssgr_date_format = get_post_meta($zwssgr_post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$zwssgr_months = $this->zwssgr_translate_months($zwssgr_language);
-			$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
-			$zwssgr_enable_sort_by = get_post_meta($post_id, 'enable_sort_by', true);
-			$zwssgr_location_new_review_uri = get_post_meta($post_id, 'zwssgr_location_new_review_uri', true);
+			$zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
+			$zwssgr_enable_sort_by = get_post_meta($zwssgr_post_id, 'enable_sort_by', true);
+			$zwssgr_location_new_review_uri = get_post_meta($zwssgr_post_id, 'zwssgr_location_new_review_uri', true);
 
 			$zwssgr_badge_layout_option = preg_match('/^badge-\d+$/', $zwssgr_layout_option) ? substr($zwssgr_layout_option, 0, -2) : $zwssgr_layout_option;
 			
 			$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
-			$zwssgr_account_number = get_post_meta($post_id, 'zwssgr_account_number', true);
-			$zwssgr_location_number =get_post_meta($post_id, 'zwssgr_location_number', true);
+			$zwssgr_account_number = get_post_meta($zwssgr_post_id, 'zwssgr_account_number', true);
+			$zwssgr_location_number =get_post_meta($zwssgr_post_id, 'zwssgr_location_number', true);
 
 			// Query for posts
 			$zwssgr_args = array(
@@ -350,27 +350,27 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			$zwssgr_query = new WP_Query($zwssgr_args);
 			ob_start();  // Start output buffering
 
-			echo '<div class="zwssgr-main-wrapper" data-widget-id="' . esc_attr( $post_id ) . '">';
+			echo '<div class="zwssgr-main-wrapper" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '">';
 
-				echo '<div class="zwssgr-front-review-filter-wrap" data-widget-id="' . esc_attr( $post_id ) . '">';
+				echo '<div class="zwssgr-front-review-filter-wrap" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '">';
 					if ($zwssgr_badge_layout_option === 'badge') {
 					}else{
 						if ($zwssgr_enable_sort_by) { // Check if "Sort By" is not enabled
-							$this->zwssgr_frontend_sortby($post_id);
+							$this->zwssgr_frontend_sortby($zwssgr_post_id);
 						}
-						$this->zwssgr_keyword_search($post_id);
+						$this->zwssgr_keyword_search($zwssgr_post_id);
 					}
 				echo '</div>';
 
-				echo '<div class="main-div-wrapper zwssgr-main-div-wrapper" data-widget-id="' . esc_attr( $post_id ) . '" data-rating-filter="' . esc_attr( $zwssgr_rating_filter ) . '" data-layout-type="' . esc_attr( $zwssgr_layout_option ) . '" data-bg-color="' . esc_attr( $zwssgr_bg_color_load ) . '" data-text-color="' . esc_attr( $zwssgr_text_color_load ) . '" data-enable-load-more="' . esc_attr( $zwssgr_enable_load_more ) . '">';
+				echo '<div class="main-div-wrapper zwssgr-main-div-wrapper" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '" data-rating-filter="' . esc_attr( $zwssgr_rating_filter ) . '" data-layout-type="' . esc_attr( $zwssgr_layout_option ) . '" data-bg-color="' . esc_attr( $zwssgr_bg_color_load ) . '" data-text-color="' . esc_attr( $zwssgr_text_color_load ) . '" data-enable-load-more="' . esc_attr( $zwssgr_enable_load_more ) . '">';
 				if ($zwssgr_query->have_posts()) {
 
 					// Fetch selected elements from post meta
 					$zwssgr_reviews_html = '';
-					$zwssgr_selected_elements = get_post_meta($post_id, 'selected_elements', true);
+					$zwssgr_selected_elements = get_post_meta($zwssgr_post_id, 'selected_elements', true);
 					$zwssgr_selected_elements = maybe_unserialize($zwssgr_selected_elements);
 
-					$zwssgr_reviews_html .= '<div id="div-container" class="zwssgr-front-container" data-widget-id="' . esc_attr( $post_id ) . '">';
+					$zwssgr_reviews_html .= '<div id="div-container" class="zwssgr-front-container" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '">';
 						// Loop through the posts and display them
 						while ($zwssgr_query->have_posts()) {
 							$zwssgr_query->the_post();
@@ -382,13 +382,13 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							$zwssgr_review_id= get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
 							$zwssgr_gmb_reviewer_image_path=ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 							$zwssgr_gmb_reviewer_image_uri =ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-							$zwssgr_location_name = get_post_meta($post_id, 'zwssgr_location_name', true);
+							$zwssgr_location_name = get_post_meta($zwssgr_post_id, 'zwssgr_location_name', true);
 							$zwssgr_published_date  = get_the_date('F j, Y');
-							$zwssgr_char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
-							$zwssgr_location_all_review_uri =  get_post_meta($post_id, 'zwssgr_location_all_review_uri', true);
+							$zwssgr_char_limit = get_post_meta($zwssgr_post_id, 'char_limit', true); // Retrieve character limit meta value
+							$zwssgr_location_all_review_uri =  get_post_meta($zwssgr_post_id, 'zwssgr_location_all_review_uri', true);
 							$zwssgr_char_limit = (int) $zwssgr_char_limit ; 
 							$zwssgr_plugin_dir_path = ZWSSGR_URL;
-							$zwssgr_location_thumbnail_url = get_post_meta($post_id, 'zwssgr_location_thumbnail_url', true);
+							$zwssgr_location_thumbnail_url = get_post_meta($zwssgr_post_id, 'zwssgr_location_thumbnail_url', true);
 							$zwssgr_image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 							// Determine if content is trimmed based on character limit
@@ -1171,8 +1171,8 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					$zwssgr_popup_content1 = implode('', (array) $zwssgr_popup_content1);
 					$zwssgr_popup_content2 = implode('', (array) $zwssgr_popup_content2);
 
-					$zwssgr_gmb_account_number = get_post_meta($post_id, 'zwssgr_account_number', true);
-					$zwssgr_gmb_account_location =get_post_meta($post_id, 'zwssgr_location_number', true);
+					$zwssgr_gmb_account_number = get_post_meta($zwssgr_post_id, 'zwssgr_account_number', true);
+					$zwssgr_gmb_account_location =get_post_meta($zwssgr_post_id, 'zwssgr_location_number', true);
 
 					$zwssgr_filter_data = [
 						'zwssgr_gmb_account_number'   => $zwssgr_gmb_account_number,
@@ -1402,7 +1402,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											' . $zwssgr_popup_content1 . '
 										</div>' .
 										($zwssgr_enable_load_more && $zwssgr_query->max_num_pages >= 2 && in_array($zwssgr_layout_option, ['popup-1', 'popup-2']) ?
-											'<button class="load-more-meta zwssgr-load-more-btn" style="background-color:' . esc_attr($zwssgr_bg_color_load) . '; color:' . esc_attr($zwssgr_text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($zwssgr_rating_filter) . '">' . esc_html__('Load More', 'smart-showcase-for-google-reviews') . '</button>'
+											'<button class="load-more-meta zwssgr-load-more-btn" style="background-color:' . esc_attr($zwssgr_bg_color_load) . '; color:' . esc_attr($zwssgr_text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($zwssgr_post_id) . '" data-rating-filter="' . esc_attr($zwssgr_rating_filter) . '">' . esc_html__('Load More', 'smart-showcase-for-google-reviews') . '</button>'
 											: '') .
 									'</div>
 								</div>
@@ -1436,14 +1436,14 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 											' . $zwssgr_popup_content2 . '
 										</div>' .
 											($zwssgr_enable_load_more && $zwssgr_query->max_num_pages >= 2 && in_array($zwssgr_layout_option, ['popup-1', 'popup-2']) ?
-												'<button class="load-more-meta zwssgr-load-more-btn" style="background-color:' . esc_attr($zwssgr_bg_color_load) . '; color:' . esc_attr($zwssgr_text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($zwssgr_rating_filter) . '">' . esc_html__('Load More', 'smart-showcase-for-google-reviews') . '</button>'
+												'<button class="load-more-meta zwssgr-load-more-btn" style="background-color:' . esc_attr($zwssgr_bg_color_load) . '; color:' . esc_attr($zwssgr_text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($zwssgr_post_id) . '" data-rating-filter="' . esc_attr($zwssgr_rating_filter) . '">' . esc_html__('Load More', 'smart-showcase-for-google-reviews') . '</button>'
 												: '') .'
 									</div>
 								</div>
 							</div>'
 						]
 					];
-					$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
+					$zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
 					$zwssgr_layout_option_divide = explode('-', $zwssgr_layout_option);
 					
 					$zwssgr_layout_option_key = $zwssgr_layout_option_divide[0]; 
@@ -1484,7 +1484,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					
 					// Add the Load More button only if 'enable_load_more' is true
 					if ($zwssgr_enable_load_more && $zwssgr_query->max_num_pages >= 2 && in_array($zwssgr_layout_option, ['list-1','list-2','','list-3','list-4','list-5','grid-1','grid-2','grid-3','grid-4','grid-5'])) {
-						echo '<button class="load-more-meta zwssgr-load-more-btn" style="background-color:' . esc_attr($zwssgr_bg_color_load) . '; color:' . esc_attr($zwssgr_text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($post_id) . '" data-rating-filter="' . esc_attr($zwssgr_rating_filter) . '">' . esc_html__('Load More', 'smart-showcase-for-google-reviews') . '</button>';
+						echo '<button class="load-more-meta zwssgr-load-more-btn" style="background-color:' . esc_attr($zwssgr_bg_color_load) . '; color:' . esc_attr($zwssgr_text_color_load) . ';" data-page="2" data-post-id="' . esc_attr($zwssgr_post_id) . '" data-rating-filter="' . esc_attr($zwssgr_rating_filter) . '">' . esc_html__('Load More', 'smart-showcase-for-google-reviews') . '</button>';
 					}
 					
 				echo '</div>';
@@ -1502,7 +1502,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			return ob_get_clean();  // Return the buffered content
 		}
 		
-		function load_more_meta_data() 
+		function zwssgr_load_more_meta_data() 
 		{
 			// Verify nonce for security
 			if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['nonce'])), 'zwssgr_load_more_nonce' ) ) {
@@ -1512,19 +1512,19 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 			// Retrieve the page number and post_id
 			$zwssgr_page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-			$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+			$zwssgr_post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
 
 			// Ensure the post_id exists
-			if (empty($post_id) || !get_post($post_id)) {
+			if (empty($zwssgr_post_id) || !get_post($zwssgr_post_id)) {
 				wp_send_json_error(esc_html__('Invalid post ID.', 'smart-showcase-for-google-reviews'));
 				return;
 			}
 
 			// Retrieve dynamic 'posts_per_page' from post meta
-			$zwssgr_stored_posts_per_page = get_post_meta($post_id, 'posts_per_page', true);
+			$zwssgr_stored_posts_per_page = get_post_meta($zwssgr_post_id, 'posts_per_page', true);
 
 			// Retrieve the 'rating_filter' value from the post meta
-			$zwssgr_rating_filter = intval(get_post_meta($post_id, 'rating_filter', true)) ?: 0;
+			$zwssgr_rating_filter = intval(get_post_meta($zwssgr_post_id, 'rating_filter', true)) ?: 0;
 
 			// Define the mapping from numeric values to words
 			$zwssgr_rating_mapping = array(
@@ -1554,18 +1554,18 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				$zwssgr_ratings_to_include = array('ONE', 'TWO', 'THREE', 'FOUR', 'FIVE');
 			}
 
-			$zwssgr_sort_by = isset($_POST['front_sort_by']) ? sanitize_text_field(wp_unslash($_POST['front_sort_by'])) : (get_post_meta($post_id, 'sort_by', true) ?: 'newest');
+			$zwssgr_sort_by = isset($_POST['front_sort_by']) ? sanitize_text_field(wp_unslash($_POST['front_sort_by'])) : (get_post_meta($zwssgr_post_id, 'sort_by', true) ?: 'newest');
 			$zwssgr_front_keyword = isset($_POST['front_keyword']) ? sanitize_text_field(wp_unslash($_POST['front_keyword'])) : '';
 
 			
-			$zwssgr_language = get_post_meta($post_id, 'language', true) ?: 'en'; 
-			$zwssgr_date_format = get_post_meta($post_id, 'date_format', true) ?: 'DD/MM/YYYY';
+			$zwssgr_language = get_post_meta($zwssgr_post_id, 'language', true) ?: 'en'; 
+			$zwssgr_date_format = get_post_meta($zwssgr_post_id, 'date_format', true) ?: 'DD/MM/YYYY';
 			$zwssgr_months = $this->zwssgr_translate_months($zwssgr_language);
 
 			$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
-			$zwssgr_account_number = get_post_meta($post_id, 'zwssgr_account_number', true);
-			$zwssgr_location_number =get_post_meta($post_id, 'zwssgr_location_number', true);
-			$zwssgr_location_all_review_uri =  get_post_meta($post_id, 'zwssgr_location_all_review_uri', true);
+			$zwssgr_account_number = get_post_meta($zwssgr_post_id, 'zwssgr_account_number', true);
+			$zwssgr_location_number =get_post_meta($zwssgr_post_id, 'zwssgr_location_number', true);
+			$zwssgr_location_all_review_uri =  get_post_meta($zwssgr_post_id, 'zwssgr_location_all_review_uri', true);
 
 			// Query for posts based on the current page
 			$zwssgr_args = array(
@@ -1668,7 +1668,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				$zwssgr_output = '';
 
 				// Fetch selected elements from post meta
-				$zwssgr_selected_elements = get_post_meta($post_id, 'selected_elements', true);
+				$zwssgr_selected_elements = get_post_meta($zwssgr_post_id, 'selected_elements', true);
 				$zwssgr_selected_elements = maybe_unserialize($zwssgr_selected_elements);
 
 					// Loop through the posts and append the HTML content
@@ -1682,12 +1682,12 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 						$zwssgr_review_id= get_post_meta(get_the_ID(), 'zwssgr_review_id', true);
 						$zwssgr_gmb_reviewer_image_path=ZWSSGR_UPLOAD_DIR . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 						$zwssgr_gmb_reviewer_image_uri =ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
-						$zwssgr_location_name = get_post_meta($post_id, 'zwssgr_location_name', true);
+						$zwssgr_location_name = get_post_meta($zwssgr_post_id, 'zwssgr_location_name', true);
 						$zwssgr_published_date  = get_the_date('F j, Y');
-						$zwssgr_char_limit = get_post_meta($post_id, 'char_limit', true); // Retrieve character limit meta value
+						$zwssgr_char_limit = get_post_meta($zwssgr_post_id, 'char_limit', true); // Retrieve character limit meta value
 						$zwssgr_char_limit = (int) $zwssgr_char_limit ;
 						$zwssgr_plugin_dir_path = ZWSSGR_URL;
-						$zwssgr_location_thumbnail_url = get_post_meta($post_id, 'zwssgr_location_thumbnail_url', true);
+						$zwssgr_location_thumbnail_url = get_post_meta($zwssgr_post_id, 'zwssgr_location_thumbnail_url', true);
 						$zwssgr_image_url = $zwssgr_location_thumbnail_url ? $zwssgr_location_thumbnail_url : $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png';
 
 						$zwssgr_is_trimmed = $zwssgr_char_limit > 0 && mb_strlen($zwssgr_review_content) > $zwssgr_char_limit; // Check if the content length exceeds the character limit
@@ -2465,8 +2465,8 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				$zwssgr_popup_content1 = implode('', (array) $zwssgr_popup_content1);
 				$zwssgr_popup_content2 = implode('', (array) $zwssgr_popup_content2);
 
-				$zwssgr_gmb_account_number = get_post_meta($post_id, 'zwssgr_account_number', true);
-				$zwssgr_gmb_account_location =get_post_meta($post_id, 'zwssgr_location_number', true);
+				$zwssgr_gmb_account_number = get_post_meta($zwssgr_post_id, 'zwssgr_account_number', true);
+				$zwssgr_gmb_account_location =get_post_meta($zwssgr_post_id, 'zwssgr_location_number', true);
 
 				$zwssgr_filter_data = [
 					'zwssgr_gmb_account_number'   => $zwssgr_gmb_account_number,
@@ -2561,7 +2561,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					]
 				];
 
-				$zwssgr_layout_option = get_post_meta($post_id, 'layout_option', true);
+				$zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
 				$zwssgr_layout_option_divide = explode('-', $zwssgr_layout_option);
 				
 				$zwssgr_layout_option_key = $zwssgr_layout_option_divide[0]; 
