@@ -101,12 +101,10 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 				ZWSSGR()->admin = new ZWSSGR_Admin;
 				ZWSSGR()->admin->action = new ZWSSGR_Admin_Action;
 				ZWSSGR()->admin->filter = new ZWSSGR_Admin_Filter;
-				
 			} else {
 				ZWSSGR()->front = new ZWSSGR_Front;
 				ZWSSGR()->front->action = new ZWSSGR_Front_Action;
 				ZWSSGR()->front->filter = new ZWSSGR_Front_Filter;
-				
 			}
 			ZWSSGR()->lib = new ZWSSGR_Lib;
 				

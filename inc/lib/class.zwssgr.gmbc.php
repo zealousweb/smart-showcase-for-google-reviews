@@ -29,16 +29,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
             // Hook to handle auth_code during connect google redirection
             add_action('admin_init', [$this, 'zwssgr_handle_auth_code']);
-
             add_action('admin_notices', [$this, 'zwssgr_connect_google_popup_callback']);
-
             add_action('admin_notices', [$this, 'zwssgr_connect_google_success_callback']);
 
-
             $this->client = new ZWSSGR_GMB_API('');
-
             $this->zwssgr_zqm = new Zwssgr_Queue_Manager();
-
         }
 
         // Method to get the single instance of the class
@@ -68,7 +63,6 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     1
                 );
             }
-
         }
         
         // Display the "Connect with Google" button and process oAuth connection request
@@ -151,16 +145,13 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     if (empty($zwssgr_jwt_token)) {
                         $this->zwssgr_connect_google_callback();
                     }
-
                 }
 
                 // Safely check for 'tab' and 'settings' in the query string
                 if (isset($_GET['tab'], $_GET['settings']) && $_GET['tab'] === 'google' && $_GET['settings'] === 'disconnect-auth') {
                     $this->zwssgr_connect_google_callback();
                 }
-
             }
-
         }       
 
         // Handle the 'auth_code' flow during admin_init
@@ -174,7 +165,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
                 $zwssgr_auth_code = sanitize_text_field(wp_unslash($_GET['auth_code']));
                 $zwssgr_gmb_email = sanitize_text_field(wp_unslash($_GET['user_email']));
-                
+
                 update_option('zwssgr_gmb_email', $zwssgr_gmb_email);
 
                 // Fetch the JWT token
@@ -202,7 +193,6 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     ));
 
                     if ($zwssgr_new_widget_id) {
-
                         $this->zwssgr_zqm->zwssgr_fetch_gmb_data(true, false, 'zwssgr_gmb_accounts');
 
                         // Store a flag or message in a transient or session to show the notice
@@ -211,25 +201,18 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                         // Redirect back to fetch gmb data page with the widget ID as a parameter
                         wp_redirect(admin_url('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data&zwssgr_widget_id=' . $zwssgr_new_widget_id));
                         exit;
-
                     } else {
                         wp_redirect(admin_url('edit.php?post_type=zwssgr_data_widget'));
                         exit;
-
                     }
-
                 } else {
-
                     set_transient('zwssgr_auth_status', false, 600);
 
                     // Redirect back to the submenu page with error notice
                     wp_redirect(admin_url('admin.php?page=zwssgr_connect_google'));
                     exit;
-
                 }
-
             }
-
         }
         
         public function zwssgr_fetch_gmb_data_callback() {
@@ -254,9 +237,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 if (empty($zwssgr_batch_progress)) {
                     $zwssgr_batch_progress = 0;
                 }
-
             }            
-        
+
             echo '<div id="fetch-gmb-data" class="fetch-gmb-data">
                 <div class="response"></div>
                 <div class="progress-bar '. esc_attr( $zwgr_data_processing_init ) .'">
@@ -269,8 +251,6 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
 
                         // Get the post meta for the widget ID
                         $zwssgr_account_number = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
-
-                        
 
                         // Get posts where the zwssgr_gmb_email meta key matches the value from options
                         $zwssgr_request_data = get_posts(array(
@@ -304,7 +284,6 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                                 // Output each account option, with the selected attribute if matching
                                 echo '<option value="' . esc_attr($account_number) . '" ' . esc_attr( $selected ) . '>' . esc_html($account_name) . '</option>';
                             }
-
                             echo '</select>';
 
                             // Retrieve the selected location number from the post meta
@@ -354,13 +333,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                                     ' . esc_html($zwssgr_button_text) . '
                                 </a>';
                             }
-
                         } else {
                             echo ' <a href="#" class="button button-secondary zwssgr-submit-btn ' . esc_attr($zwssgr_disabled_class) . '" id="fetch-gmd-accounts" data-fetch-type="zwssgr_gmb_accounts">
                                 '. esc_html__('Fetch Accounts', 'smart-showcase-for-google-reviews').'
                             </a>';
                         }
-
                     } else {
                         echo esc_html__('There was an error while trying to edit the widget', 'smart-showcase-for-google-reviews');
                     }
@@ -378,9 +355,6 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 delete_transient('zwssgr_success_notice');
             }
         }
-
     }
-
     Zwssgr_Google_My_Business_Connector::get_instance();
-        
 }
