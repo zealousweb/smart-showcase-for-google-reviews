@@ -99,6 +99,8 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
         public function process_zwssgr_gmb_accounts($zwssgr_gmb_data) {
             
+            $zwssgr_existing_post = '';
+            
             if (isset($zwssgr_gmb_data['accounts'])) {
 
                 foreach ($zwssgr_gmb_data['accounts'] as $zwssgr_account) {
