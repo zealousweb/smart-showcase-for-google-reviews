@@ -47,8 +47,6 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 check_ajax_referer( 'zwssgr_data_render', 'security' );
 
                 $zwssgr_filter_data = isset( $_POST['zwssgr_filter_data'] ) && is_array( $_POST['zwssgr_filter_data'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['zwssgr_filter_data'] ) ) : [];
-
-                
             } else {
 
                 $zwssgr_filter_data = [
@@ -78,23 +76,20 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
             </div>';
 
             if (defined('DOING_AJAX') && DOING_AJAX) {
-
                 wp_send_json_success([
                     'html' => $zwssgr_data_render_output, 
                     'zwssgr_chart_data' => $zwssgr_chart_data
                 ]);
-
             } else {
                 return $zwssgr_data_render_output;
             }
-
         }
 
         public function zwssgr_data_render_query($zwssgr_filter_data) {
 
             $zwssgr_data_render_args = array();
 
-            $zwssgr_gmb_email            = get_option('zwssgr_gmb_email');
+            $zwssgr_gmb_email = get_option('zwssgr_gmb_email');
 
             // Sanitize data from user input
             $zwssgr_gmb_account_number   = isset($zwssgr_filter_data['zwssgr_gmb_account_number'])   ? sanitize_text_field($zwssgr_filter_data['zwssgr_gmb_account_number']) : '';
@@ -141,7 +136,6 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                         ),
                     );
                 }
-
             } else if (!empty($zwssgr_range_filter_data) && $zwssgr_range_filter_type == 'rangeofdate') {
 
                 $zwssgr_range_dates = explode(' - ', $zwssgr_range_filter_data);
@@ -224,9 +218,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 'reviews'  => $zwssgr_total_reviews,
                 'ratings'  => $zwssgr_average_rating
             );
-
             return $zwssgr_reviews_ratings;
-
         }
 
         public function zwssgr_total_reviews($zwssgr_data_render_args) {
@@ -246,9 +238,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     <p class="zwssgr-card-value">' . esc_html( number_format( $zwssgr_reviews_ratings['reviews'] ) ) . '</p>
                 </div>
             </div>';
-
         }
-        
 
         public function zwssgr_average_ratings($zwssgr_data_render_args) {
 
@@ -267,9 +257,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     <p class="zwssgr-card-value">' . esc_html( $zwssgr_reviews_ratings['ratings'] ) . '</p> <!-- Ensure to define $average_rating in your function -->
                 </div>
             </div>';
-
         }
-        
 
         public function zwssgr_date_range_filter() {
             return '
@@ -341,9 +329,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     }
                 $data_filter_output .= '</select>
             </div>';
-
             return $data_filter_output;
-
         }        
 
         public function zwssgr_top_reviews($zwssgr_data_render_args) {
@@ -484,31 +470,23 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                                 '.$zwssgr_stars_html.'
                             </div>';
                         }
-        
                         // Review content
                         if (!empty($zwssgr_review_content)) {
                             $output .= '<p class="zwssgr-content">' . esc_html($zwssgr_review_content) . '</p>';
                         }
-
                         $output .= '</div>';
-
                     }
 
                 wp_reset_postdata();
         
                 $output .= '</div>';
-
             } else {
-
                 $output .= '<p>' . esc_html__('No reviews available.', 'smart-showcase-for-google-reviews') . '</p>';
-
             }
 
             $output .= '</div>
             </div>';
-            
             return $output;
-
         }        
         
         public function zwssgr_reviews_statics_chart($zwssgr_chart_data) {
@@ -591,12 +569,10 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim(strrchr($zwssgr_account_location['name'], '/'), '/') : '';
                     $output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($location_title) . '</option>';
                 }
-        
                 $output .= '</select>';
             }
-        
+
             wp_send_json_success($output);
-        
             die();
         }
 
@@ -630,13 +606,8 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 ['2 Stars', $zwssgr_ratings_count['TWO']],
                 ['1 Star', $zwssgr_ratings_count['ONE']],
             ];
-        
             return $zwssgr_chart_data;
         }
-                
-
 	}
-
     new ZWSSGR_Dashboard();
-
 }

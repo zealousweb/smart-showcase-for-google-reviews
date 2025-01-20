@@ -21,12 +21,12 @@ if ( !class_exists( 'ZWSSGR_Front_Action' ) ){
 
 		function __construct()  
 		{
-			
+
 		}
 
 		function ZWSSGR_public_enqueue() 
 		{
-			
+
 		}
 		
 	}

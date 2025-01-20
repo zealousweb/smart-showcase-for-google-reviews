@@ -23,14 +23,12 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
         public function __construct( $zwssgr_access_token ) {
 
             $this->zwssgr_access_token = $zwssgr_access_token;
-            
             $this->zwssgr_base_url = "https://mybusiness.googleapis.com/{$this->zwssgr_api_version}/";
 
             add_action('wp_ajax_zwssgr_fetch_oauth_url', array($this, 'zwssgr_fetch_oauth_url'));
             add_action('wp_ajax_zwssgr_delete_oauth_connection', array($this, 'zwssgr_delete_oauth_connection'));
             add_action('wp_ajax_zwssgr_add_update_review_reply', array($this, 'zwssgr_add_update_review_reply'));
             add_action('wp_ajax_zwssgr_delete_review_reply', array($this, 'zwssgr_delete_review_reply'));
-
         }
 
         /**
@@ -67,15 +65,14 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             }
 
             try {
-
                 // Make the API request
                 $zwssgr_api_response = wp_remote_request( $zwssgr_api_url, $zwssgr_api_args );
-        
+
                 // Check if there was an error with the request
                 if ( is_wp_error( $zwssgr_api_response ) ) {
                     throw new Exception( 'Request failed: ' . $zwssgr_api_response );
                 }
-        
+
                 // Check the response status code
                 $zwssgr_api_status_code = wp_remote_retrieve_response_code( $zwssgr_api_response );
 
@@ -98,27 +95,20 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                 $zwssgr_response_error = json_decode($zwssgr_response_error->getMessage(), true);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
-
                     // For AJAX requests, send a JSON error response    
                     wp_send_json_error(array(
                         'error'  => $zwssgr_response_error['error']['status'],
                         'message' => $zwssgr_response_error['error']['message'],
                     ), 400);
-                    
-
                 } else {
-
                     return array(
                         'error'  => $zwssgr_response_error['error']['status'],
                         'message' => $zwssgr_response_error['error']['message'],
                     );
                     
                 }
-
                 return false;
-
             }
-
         }
 
         /**
@@ -171,7 +161,6 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                 $this->zwssgr_access_token = $zwssgr_access_token;
                 return true;
             }
-            
             return false;
         }
 
@@ -194,24 +183,19 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             // Make the API request to get oauth URl.
             $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-access-token', $zwssgr_payload_data, 'POST', '', 'https://sgr.zealousweb.com/wp-json/');
 
-                // Check if the response is successful and contains the oauth URL
-                if (isset($zwssgr_response['success']) && $zwssgr_response['success'] === true && isset($zwssgr_response['data']['access_token'])) {
-                
+            // Check if the response is successful and contains the oauth URL
+            if (isset($zwssgr_response['success']) && $zwssgr_response['success'] === true && isset($zwssgr_response['data']['access_token'])) {
+
                 $access_token = $zwssgr_response['data']['access_token'];
-                
+
                 // Store the new access token in a transient for future use.
                 set_transient('zwssgr_access_token', $access_token, 3600); // Store for 1 hour or as needed.
-                
+
                 // Return the access token.
                 return $access_token;
-
             } else {
-
                 return false;
-
             }
-            
-
         }
 
         /**
@@ -226,12 +210,11 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
 
             // Add page token to parameters if provided.
             $zwssgr_api_params = $zwssgr_page_token ? [ 'pageToken' => $zwssgr_page_token ] : [];
-            
+
             // Make the API request to the 'accounts' endpoint.
             $zwssgr_response = $this->zwssgr_api_request( 'accounts', $zwssgr_api_params, 'GET', 'v1' );
 
             return $zwssgr_response;
-
         }
 
         /**
@@ -376,16 +359,13 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                 );
 
             } else {
-
                 // If there's an error in the response, send a JSON error response
                 wp_send_json_error(
                     array(
                         'error'  => 'gmb_api_error',
                         'message' => $zwssgr_response['error']['message'] ?? 'An Unknown error occurred.',
                 ), 400);
-
             }
-            
         }
         
         /**
@@ -496,9 +476,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                         'zwssgr_oauth_url' => esc_url_raw($zwssgr_oauth_url)
                     )
                 );
-
             } else {
-
                 // Return a failure message
                 wp_send_json_error(
                     array(
@@ -506,11 +484,8 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                         'code' => 'oauth_url_error'
                     )
                 );
-
             }
-
             wp_die();
-
         }
         
         public function zwssgr_fetch_jwt_token($zwssgr_request) {
@@ -530,7 +505,6 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-jwt-token', $zwssgr_payload_data, 'POST', '', 'https://sgr.zealousweb.com/wp-json/');
 
             return $zwssgr_response;
-
         }
 
         /**
@@ -639,9 +613,8 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                         )
                     );
                 }
-
             }
-        
+
             // If all operations succeeded, send success message
             wp_send_json_success(
                 array(
@@ -649,10 +622,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                     'code' => 'delete_request_success'
                 )
             );
-        
             wp_die();
         }
-        
-        
     }
 }

@@ -53,7 +53,6 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 
             // Hook into the 'zwssgr_data_sync' action to trigger the data sync task.
             add_action( 'zwssgr_data_sync', [$this, 'zwssgr_data_sync_callback'] );
-        
         }
 
         /**
@@ -119,7 +118,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             return $zwssgr_cron_schedules;
         }
 
-         /**
+        /**
          * Sets the default cron schedule to 'monthly' if no option is selected already.
          * This method checks the value of the 'zwssgr_sync_reviews' option and schedules 
          * the cron job accordingly.
@@ -135,7 +134,6 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             }
 
             $this->zwssgr_sync_reviews_scheduler_callback( '', $zwssgr_new_frequency );
-
         }
 
         /**
@@ -176,7 +174,6 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             $this->zwssgr_debug_function( "New cron scheduled with frequency: $zwssgr_new_frequency, starting at: " . gmdate( 'Y-m-d H:i:s', $zwssgr_start_time ) );
 
         }
-
 
         /**
          * Callback function for the 'zwssgr_data_sync' cron event.
@@ -226,18 +223,13 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
                     } else {
                         $this->zwssgr_debug_function('There was an error while Data sync for widget:' . $zwssgr_widget_id);
                     }
-                    
                 }
                 wp_reset_postdata();
             } else {
                 return;
             }
-
         }
-
     }
-
     // Instantiate the ZWSSGR_Cron_Scheduler class to ensure cron jobs are scheduled.
     new ZWSSGR_Cron_Scheduler();
-
 }
