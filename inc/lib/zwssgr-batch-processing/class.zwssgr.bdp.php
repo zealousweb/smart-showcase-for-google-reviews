@@ -138,6 +138,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
                         // Update the account number for the existing post
                         update_post_meta($zwssgr_existing_post->ID, 'zwssgr_account_number', $this->zwssgr_account_number);
+
                     } else {
                         // Create a new post
                         $zwssgr_insert_account = wp_insert_post($zwssgr_request_data);
@@ -238,6 +239,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                     'message'   => 'Locations for Processed successfully'
                 ),
             );
+
         }              
 
         protected function process_zwssgr_gmb_reviews($zwssgr_gmb_data, $zwssgr_location_number,$zwssgr_account_number = null) {
@@ -469,11 +471,12 @@ function zwssgr_get_batch_processing_status() {
     }
 
     $zwssgr_response = [
-        'zwssgr_data_processing_init'  => $zwssgr_data_processing_init,
-        'zwssgr_data_sync_once'        => $zwssgr_data_sync_once,
+        'zwssgr_data_processing_init' => $zwssgr_data_processing_init,
+        'zwssgr_data_sync_once'       => $zwssgr_data_sync_once,
         'zwssgr_gmb_data_type'        => $zwssgr_gmb_data_type,
-        'zwssgr_batch_progress'      => $zwssgr_batch_progress
+        'zwssgr_batch_progress'       => $zwssgr_batch_progress
     ];
 
     wp_send_json_success($zwssgr_response);
+    
 }

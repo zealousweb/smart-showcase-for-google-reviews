@@ -89,7 +89,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
                 $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
             }
-            
+
         }
 
         /**
@@ -137,6 +137,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             }
 
             $this->zwssgr_sync_reviews_scheduler_callback( '', $zwssgr_new_frequency );
+            
         }
 
         /**
@@ -233,6 +234,8 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             }
         }
     }
+
     // Instantiate the ZWSSGR_Cron_Scheduler class to ensure cron jobs are scheduled.
     new ZWSSGR_Cron_Scheduler();
+
 }

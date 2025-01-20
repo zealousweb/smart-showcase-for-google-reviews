@@ -19,7 +19,7 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 	 */
 	class ZWSSGR {
 		
-		public $admin,$lib,$front = null;
+		public $zwssgr_admin, $zwssgr_lib, $zwssgr_front = null;
 		public $zwssgr_admin_smtp_enabled,$zwssgr_smtp_opt,$zwssgr_general_opt;
 		private static $_instance = null;
 
@@ -98,15 +98,15 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 
 		function zwssgr_action__setup_theme() {
 			if ( is_admin() ) {
-				ZWSSGR()->admin = new ZWSSGR_Admin;
-				ZWSSGR()->admin->action = new ZWSSGR_Admin_Action;
-				ZWSSGR()->admin->filter = new ZWSSGR_Admin_Filter;
+				ZWSSGR()->zwssgr_admin = new ZWSSGR_Admin;
+				ZWSSGR()->zwssgr_admin->action = new ZWSSGR_Admin_Action;
+				ZWSSGR()->zwssgr_admin->filter = new ZWSSGR_Admin_Filter;
 			} else {
-				ZWSSGR()->front = new ZWSSGR_Front;
-				ZWSSGR()->front->action = new ZWSSGR_Front_Action;
-				ZWSSGR()->front->filter = new ZWSSGR_Front_Filter;
+				ZWSSGR()->zwssgr_front = new ZWSSGR_Front;
+				ZWSSGR()->zwssgr_front->action = new ZWSSGR_Front_Action;
+				ZWSSGR()->zwssgr_front->filter = new ZWSSGR_Front_Filter;
 			}
-			ZWSSGR()->lib = new ZWSSGR_Lib;
+			ZWSSGR()->zwssgr_lib = new ZWSSGR_Lib;
 				
 		}
 
