@@ -19,9 +19,10 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
     class Zwssgr_GMB_Background_Data_Processor extends WP_Background_Process {
 
-        protected $action = 'Zwssgr_GMB_Background_Data_Processor';
-        private $zwsr_batch_data, $zwssgr_widget_id, $zwssgr_current_index, $zwssgr_account_number, $zwssgr_location_number, $next_page_token, $zwssgr_total_reviews, $zwssgr_average_rating;
+        protected $zwssgr_action = 'Zwssgr_GMB_Background_Data_Processor';
+        private $zwssgr_batch_data, $zwssgr_widget_id, $zwssgr_current_index, $zwssgr_account_number, $zwssgr_location_number, $zwssgr_next_page_token, $zwssgr_total_reviews, $zwssgr_average_rating;
         public $zwssgr_gmb_data_type;
+
         /**
 		 * Custom log function for debugging.
 		 *
@@ -44,6 +45,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
             if ( ! function_exists( 'WP_Filesystem' ) ) {
                 require_once ABSPATH . 'wp-admin/includes/file.php';
             }
+            
             WP_Filesystem();
         
             global $wp_filesystem;
@@ -55,18 +57,19 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
             if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
                 $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
             }
+
         }
 
         // Process each file by logging account names
-        protected function task($zwsr_batch_data) {
+        protected function task($zwssgr_batch_data) {
 
-            $zwssgr_gmb_data              = isset($zwsr_batch_data['zwssgr_gmb_data'])        ? $zwsr_batch_data['zwssgr_gmb_data']        : [];
-            $this->zwssgr_widget_id       = isset($zwsr_batch_data['zwssgr_widget_id'])       ? $zwsr_batch_data['zwssgr_widget_id']       : null;
-            $this->zwssgr_account_number  = isset($zwsr_batch_data['zwssgr_account_number'])  ? $zwsr_batch_data['zwssgr_account_number']  : [];
-            $this->zwssgr_location_number = isset($zwsr_batch_data['zwssgr_location_number']) ? $zwsr_batch_data['zwssgr_location_number'] : [];
-            $this->next_page_token       = isset($zwssgr_gmb_data['nextPageToken'])          ? $zwssgr_gmb_data['nextPageToken']          : null;
-            $this->zwssgr_total_reviews   = isset($zwssgr_gmb_data['totalReviewCount'])       ? $zwssgr_gmb_data['totalReviewCount']       : null;
-            $this->zwssgr_average_rating  = isset($zwssgr_gmb_data['averageRating'])          ? $zwssgr_gmb_data['averageRating']          : null;
+            $zwssgr_gmb_data              = isset($zwssgr_batch_data['zwssgr_gmb_data'])        ? $zwssgr_batch_data['zwssgr_gmb_data']        : [];
+            $this->zwssgr_widget_id       = isset($zwssgr_batch_data['zwssgr_widget_id'])       ? $zwssgr_batch_data['zwssgr_widget_id']       : null;
+            $this->zwssgr_account_number  = isset($zwssgr_batch_data['zwssgr_account_number'])  ? $zwssgr_batch_data['zwssgr_account_number']  : [];
+            $this->zwssgr_location_number = isset($zwssgr_batch_data['zwssgr_location_number']) ? $zwssgr_batch_data['zwssgr_location_number'] : [];
+            $this->zwssgr_next_page_token = isset($zwssgr_gmb_data['nextPageToken'])            ? $zwssgr_gmb_data['nextPageToken']            : null;
+            $this->zwssgr_total_reviews   = isset($zwssgr_gmb_data['totalReviewCount'])         ? $zwssgr_gmb_data['totalReviewCount']         : null;
+            $this->zwssgr_average_rating  = isset($zwssgr_gmb_data['averageRating'])            ? $zwssgr_gmb_data['averageRating']            : null;
 
             if (!empty($zwssgr_gmb_data)) {
 
@@ -396,9 +399,9 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
             $zwssgr_queue_manager = new Zwssgr_Queue_Manager();
 
-            if (!empty($this->next_page_token)) {
+            if (!empty($this->zwssgr_next_page_token)) {
 
-                update_post_meta($this->zwssgr_widget_id, 'zwgr_data_processing_init', 'true');
+                update_post_meta($this->zwssgr_widget_id, 'zwssgr_data_processing_init', 'true');
 
                 if (!empty($this->zwssgr_total_reviews)) {
                     $zwssgr_batch_pages   = ceil($this->zwssgr_total_reviews / 50);
@@ -415,15 +418,15 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                 $zwssgr_queue_manager->zwssgr_update_current_batch_index($this->zwssgr_widget_id, ($this->zwssgr_current_index + 1));
                 sleep(1);
 
-                $zwssgr_queue_manager->zwssgr_fetch_gmb_data(true, $this->next_page_token, $this->zwssgr_gmb_data_type, $this->zwssgr_account_number, $this->zwssgr_location_number, $this->zwssgr_widget_id);
+                $zwssgr_queue_manager->zwssgr_fetch_gmb_data(true, $this->zwssgr_next_page_token, $this->zwssgr_gmb_data_type, $this->zwssgr_account_number, $this->zwssgr_location_number, $this->zwssgr_widget_id);
 
             } else {
 
                 $zwssgr_queue_manager->zwssgr_reset_current_batch_index($this->zwssgr_widget_id);
                 delete_option('zwssgr_widget_id');
                 delete_option('zwssgr_batch_in_processing');
-                update_post_meta($this->zwssgr_widget_id, 'zwgr_data_processing_init', 'false');
-                update_post_meta($this->zwssgr_widget_id, 'zwgr_data_sync_once', 'true');
+                update_post_meta($this->zwssgr_widget_id, 'zwssgr_data_processing_init', 'false');
+                update_post_meta($this->zwssgr_widget_id, 'zwssgr_data_sync_once', 'true');
                 update_post_meta($this->zwssgr_widget_id, 'zwssgr_gmb_data_type', $this->zwssgr_gmb_data_type);
                 delete_post_meta($this->zwssgr_widget_id, 'zwssgr_batch_pages');
                 delete_post_meta($this->zwssgr_widget_id, 'zwssgr_batch_progress');
@@ -456,18 +459,18 @@ function zwssgr_get_batch_processing_status() {
     check_ajax_referer('zwssgr_queue_manager_nounce', 'security');
 
     $zwssgr_widget_id = isset($_POST['zwssgr_widget_id']) ? intval($_POST['zwssgr_widget_id']) : 0;
-    $zwgr_data_processing_init = get_post_meta($zwssgr_widget_id, 'zwgr_data_processing_init', true);
-    $zwgr_data_sync_once       = get_post_meta($zwssgr_widget_id, 'zwgr_data_sync_once', true);
+    $zwssgr_data_processing_init = get_post_meta($zwssgr_widget_id, 'zwssgr_data_processing_init', true);
+    $zwssgr_data_sync_once       = get_post_meta($zwssgr_widget_id, 'zwssgr_data_sync_once', true);
     $zwssgr_gmb_data_type       = get_post_meta($zwssgr_widget_id, 'zwssgr_gmb_data_type', true);
     $zwssgr_batch_progress      = get_post_meta($zwssgr_widget_id, 'zwssgr_batch_progress', true);
 
-    if ($zwgr_data_processing_init == 'false') {
-        delete_post_meta($zwssgr_widget_id, 'zwgr_data_processing_init');    
+    if ($zwssgr_data_processing_init == 'false') {
+        delete_post_meta($zwssgr_widget_id, 'zwssgr_data_processing_init');    
     }
 
     $zwssgr_response = [
-        'zwgr_data_processing_init'  => $zwgr_data_processing_init,
-        'zwgr_data_sync_once'        => $zwgr_data_sync_once,
+        'zwssgr_data_processing_init'  => $zwssgr_data_processing_init,
+        'zwssgr_data_sync_once'        => $zwssgr_data_sync_once,
         'zwssgr_gmb_data_type'        => $zwssgr_gmb_data_type,
         'zwssgr_batch_progress'      => $zwssgr_batch_progress
     ];
