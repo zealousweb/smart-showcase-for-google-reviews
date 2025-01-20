@@ -114,23 +114,23 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 		 * Action: plugin_action_links
 		 * Add Subscription link after active links.
 		 * @method action__zwssgr_plugin_action_links
-		 * @return $links
+		 * @return $zwssgr_links
 		*/
-		function action__zwssgr_plugin_action_links( $links, $file ) 
+		function action__zwssgr_plugin_action_links( $zwssgr_links, $zwssgr_file ) 
 		{
 
-			if ( $file != ZWSSGR_PLUGIN_BASENAME ) {
-				return $links;
+			if ( $zwssgr_file != ZWSSGR_PLUGIN_BASENAME ) {
+				return $zwssgr_links;
 			}
 			if ( is_plugin_active( 'smart-showcase-for-google-reviews/smart-showcase-for-google-reviews.php' )  )
 			{
-				$support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'smart-showcase-for-google-reviews' ). '</a>';
-				$document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-showcase-for-google-reviews/" target="_blank">' .__( 'Document', 'smart-showcase-for-google-reviews' ). '</a>';
-				$donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'smart-showcase-for-google-reviews' ) . '</a>';
+				$zwssgr_support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'smart-showcase-for-google-reviews' ). '</a>';
+				$zwssgr_document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-showcase-for-google-reviews/" target="_blank">' .__( 'Document', 'smart-showcase-for-google-reviews' ). '</a>';
+				$zwssgr_donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'smart-showcase-for-google-reviews' ) . '</a>';
 
-				array_unshift( $links , $support_link, $document_link, $donateLink );
+				array_unshift( $zwssgr_links , $zwssgr_support_link, $zwssgr_document_link, $zwssgr_donateLink );
 			}
-			return $links;
+			return $zwssgr_links;
 		}
 	}
 }
