@@ -19,7 +19,7 @@ if ( !class_exists( 'ZWSSGR_Front' ) ) {
 	 */
 	class ZWSSGR_Front {
 
-		public $front,$action,$filter = null;
+		public $zwssgr_front, $zwssgr_action, $zwssgr_filter = null;
 
 		function __construct() 
 		{
