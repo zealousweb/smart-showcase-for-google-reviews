@@ -119,15 +119,15 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_admin_enqueue() 
 		{
 			// admin js
-			wp_register_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL .'assets/js/admin.js', array('jquery-core'), false, true );
+			wp_register_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL .'assets/js/admin.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-admin-js' );
 
 			// Google chart JS
-			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/js/google-chart.js', array('jquery-core'), false, true );
+			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
 
 			// Enqueue Daterangepicker JS
-			wp_register_script( ZWSSGR_PREFIX . '-daterangepicker-min-js', ZWSSGR_URL .'assets/js/daterangepicker.min.js', array('jquery-core','moment'), false, true );
+			wp_register_script( ZWSSGR_PREFIX . '-daterangepicker-min-js', ZWSSGR_URL .'assets/js/daterangepicker.min.js', array('jquery-core','moment'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-daterangepicker-min-js' );
 
 			// admin css
@@ -143,7 +143,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_enqueue_style( ZWSSGR_PREFIX . '-daterangepicker-css' );
 		
 			// Slick js
-			wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), false, true );
+			wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-slick-min-js' );
 			
 			// Slick css
