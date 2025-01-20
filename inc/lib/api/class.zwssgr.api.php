@@ -39,7 +39,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
          * @param array  $zwssgr_api_params   Optional query parameters for GET requests or body parameters for POST requests.
          * @param string $method             The HTTP method to use ('GET', 'POST', 'DELETE', etc.), default is 'GET'.
          * @param string $zwssgr_api_version  The API version to use (default: 'v4').
-         * @param string $base_url           Optional base URL to override the default API URL.
+         * @param string $zwssgr_base_url           Optional base URL to override the default API URL.
          * @return array The decoded JSON response from the API.
          * @throws Exception If the API request fails or returns an error.
          */
@@ -114,17 +114,17 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
         /**
          * Helper function to build the full API URL from base URL, version, and endpoint.
          * 
-         * @param string $endpoint    The API endpoint.
-         * @param string $api_version The API version to use.
-         * @param string $base_url    The base URL to use; defaults to Google My Business API if not provided.
+         * @param string $zwssgr_endpoint    The API endpoint.
+         * @param string $zwssgr_api_version The API version to use.
+         * @param string $zwssgr_base_url    The base URL to use; defaults to Google My Business API if not provided.
          * @return string The constructed API URL.
          */
-        private function build_api_url( $endpoint, $api_version, $base_url = '' ) {
+        private function build_api_url( $zwssgr_endpoint, $zwssgr_api_version, $zwssgr_base_url = '' ) {
             // Set default base URL if not provided
-            $base_url = $base_url ?: "https://mybusiness.googleapis.com/{$api_version}/";
+            $zwssgr_base_url = $zwssgr_base_url ?: "https://mybusiness.googleapis.com/{$zwssgr_api_version}/";
 
             // Concatenate the base URL and endpoint, ensuring correct formatting
-            return rtrim( $base_url, '/' ) . '/' . ltrim( $endpoint, '/' );
+            return rtrim( $zwssgr_base_url, '/' ) . '/' . ltrim( $zwssgr_endpoint, '/' );
         }
 
         public function set_access_token($zwssgr_access_token) {
@@ -186,13 +186,13 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             // Check if the response is successful and contains the oauth URL
             if (isset($zwssgr_response['success']) && $zwssgr_response['success'] === true && isset($zwssgr_response['data']['access_token'])) {
 
-                $access_token = $zwssgr_response['data']['access_token'];
+                $zwssgr_access_token = $zwssgr_response['data']['access_token'];
 
                 // Store the new access token in a transient for future use.
-                set_transient('zwssgr_access_token', $access_token, 3600); // Store for 1 hour or as needed.
+                set_transient('zwssgr_access_token', $zwssgr_access_token, 3600); // Store for 1 hour or as needed.
 
                 // Return the access token.
-                return $access_token;
+                return $zwssgr_access_token;
             } else {
                 return false;
             }
@@ -384,7 +384,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             // Retrieve POST values
             $zwssgr_wp_review_id    = isset($_POST['zwssgr_wp_review_id']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_wp_review_id'])) : '';
             $zwssgr_account_number  = get_post_meta($zwssgr_wp_review_id, 'zwssgr_account_number', true);
-            $zwssgr_location_number   = get_post_meta($zwssgr_wp_review_id, 'zwssgr_location_number', true);
+            $zwssgr_location_number = get_post_meta($zwssgr_wp_review_id, 'zwssgr_location_number', true);
             $zwssgr_review_id       = get_post_meta($zwssgr_wp_review_id, 'zwssgr_review_id', true);
 
             // Check that all parameters are provided

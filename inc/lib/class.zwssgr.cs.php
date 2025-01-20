@@ -29,7 +29,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
      */
     class ZWSSGR_Cron_Scheduler {
 
-        private $client;
+        private $zwssgr_client;
 
         /**
          * Constructor for the ZWSSGR_Cron_Scheduler class.
@@ -41,7 +41,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
          */
         function __construct() {
 
-            $this->client = new zwssgr_Queue_Manager();
+            $this->zwssgr_client = new zwssgr_Queue_Manager();
 
             add_action( 'cron_schedules', [$this, 'zwssgr_add_custom_cron_schedules'] );
 
@@ -77,6 +77,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             if ( ! function_exists( 'WP_Filesystem' ) ) {
                 require_once ABSPATH . 'wp-admin/includes/file.php';
             }
+
             WP_Filesystem();
         
             global $wp_filesystem;
@@ -88,6 +89,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
                 $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
             }
+            
         }
 
         /**
@@ -116,6 +118,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 
             // Return the modified list of schedules
             return $zwssgr_cron_schedules;
+            
         }
 
         /**
@@ -214,7 +217,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
                         continue;
                     }
 
-                    $zwssgr_is_data_sync = $this->client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
+                    $zwssgr_is_data_sync = $this->zwssgr_client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
 
                     sleep(20);
 
