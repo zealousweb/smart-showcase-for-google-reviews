@@ -486,6 +486,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
             $zwssgr_output .= '</div>
             </div>';
+
             return $zwssgr_output;
         }        
         
@@ -560,6 +561,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
         
             // Check if the custom field has a value
             if ($zwssgr_account_locations) {
+                
                 $zwssgr_output .= '<select id="zwssgr-location-select" name="zwssgr_location" class="zwssgr-input-text zwssgr-location-select">';
                 $zwssgr_output .= '<option value="">'. esc_html__('Select a Location', 'smart-showcase-for-google-reviews').'</option>';
                 
@@ -569,6 +571,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim(strrchr($zwssgr_account_location['name'], '/'), '/') : '';
                     $zwssgr_output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($zwssgr_location_title) . '</option>';
                 }
+
                 $zwssgr_output .= '</select>';
             }
 
@@ -604,7 +607,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 ['4 Stars', $zwssgr_ratings_count['FOUR']],
                 ['3 Stars', $zwssgr_ratings_count['THREE']],
                 ['2 Stars', $zwssgr_ratings_count['TWO']],
-                ['1 Star', $zwssgr_ratings_count['ONE']],
+                ['1 Star',  $zwssgr_ratings_count['ONE']],
             ];
             return $zwssgr_chart_data;
         }
