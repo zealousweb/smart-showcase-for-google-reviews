@@ -481,11 +481,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'ZERO' => 0,
 			];
 
-			$zwssgr_rating_value 	  	  = strtoupper($zwssgr_review_star_rating);
-			$zwssgr_numeric_rating 		  	  = isset($zwssgr_rating_map[$zwssgr_rating_value]) ? $zwssgr_rating_map[$zwssgr_rating_value] : 0;
-			$zwssgr_filled_star 		  	  = str_repeat($zwssgr_filled_star, $zwssgr_numeric_rating);
-			$zwssgr_empty_star 		  	  = str_repeat($zwssgr_empty_star, 5 - $zwssgr_numeric_rating);
-			$zwssgr_review_id 		  	  = get_post_meta($zwssgr_review->ID, 'zwssgr_review_id', true);
+			$zwssgr_rating_value 	  	   = strtoupper($zwssgr_review_star_rating);
+			$zwssgr_numeric_rating 		   = isset($zwssgr_rating_map[$zwssgr_rating_value]) ? $zwssgr_rating_map[$zwssgr_rating_value] : 0;
+			$zwssgr_filled_star 		   = str_repeat($zwssgr_filled_star, $zwssgr_numeric_rating);
+			$zwssgr_empty_star 		  	   = str_repeat($zwssgr_empty_star, 5 - $zwssgr_numeric_rating);
+			$zwssgr_review_id 		  	   = get_post_meta($zwssgr_review->ID, 'zwssgr_review_id', true);
 			$zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
 			echo '<table class="form-table test gmb-review-data" id="gmb-review-data" zwssgr-review-id="'.esc_attr( $zwssgr_review->ID ).'">
@@ -631,10 +631,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			global $wpdb;
 
 			// Get current post type
-			$current_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
+			$zwssgr_current_post_type = isset($_GET['post_type']) ? sanitize_text_field(wp_unslash($_GET['post_type'])) : '';
 
 			// Check if we are on the correct post type pages
-			if (!in_array($current_post_type, [ZWSSGR_POST_REVIEW_TYPE, ZWSSGR_POST_WIDGET_TYPE])) {
+			if (!in_array($zwssgr_current_post_type, [ZWSSGR_POST_REVIEW_TYPE, ZWSSGR_POST_WIDGET_TYPE])) {
 				return;
 			}
 
@@ -644,11 +644,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			// Get saved email and selected filters from URL parameters
 			$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
-			$selected_account = isset($_GET['zwssgr_account']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_account'])) : '';
-			$selected_location = isset( $_GET['zwssgr_location'] ) ? sanitize_text_field( wp_unslash( $_GET['zwssgr_location'] ) ) : '';
+			$zwssgr_selected_account = isset($_GET['zwssgr_account']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_account'])) : '';
+			$zwssgr_selected_location = isset( $_GET['zwssgr_location'] ) ? sanitize_text_field( wp_unslash( $_GET['zwssgr_location'] ) ) : '';
 
 			// Fetch accounts using SQL query
-			$accounts_query = $wpdb->prepare("
+			$zwssgr_accounts_query = $wpdb->prepare("
 				SELECT pm.meta_value AS account_number, p.ID AS post_id, p.post_title AS account_name
 				FROM {$wpdb->postmeta} pm
 				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
@@ -661,25 +661,25 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				)
 			", 'zwssgr_account_number', 'zwssgr_request_data', $zwssgr_gmb_email);
 
-			$accounts = $wpdb->get_results($accounts_query);
+			$zwssgr_accounts = $wpdb->get_results($zwssgr_accounts_query);
 
 			// Begin the form
 			echo '<form method="GET">';
 			wp_nonce_field('zwssgr_get_form', 'security-zwssgr-get-form');
-			echo '<input type="hidden" name="post_type" value="' . esc_attr($current_post_type) . '">';
+			echo '<input type="hidden" name="post_type" value="' . esc_attr($zwssgr_current_post_type) . '">';
 
 			// Account dropdown
 			echo '<select id="zwssgr-account-select" name="zwssgr_account">';
 			echo '<option value="">' . esc_html__('Select an Account', 'smart-showcase-for-google-reviews') . '</option>';
-			foreach ($accounts as $account) {
-				$selected = ($account->account_number === $selected_account) ? ' selected' : '';
-				echo '<option value="' . esc_attr($account->account_number) . '"' . esc_attr( $selected ). '>' . esc_html($account->account_name) . '</option>';
+			foreach ($zwssgr_accounts as $zwssgr_account) {
+				$zwssgr_selected = ($zwssgr_account->account_number === $zwssgr_selected_account) ? ' selected' : '';
+				echo '<option value="' . esc_attr($zwssgr_account->account_number) . '"' . esc_attr( $zwssgr_selected ). '>' . esc_html($zwssgr_account->account_name) . '</option>';
 			}
 			echo '</select>';
 
 			
 			// Fetch locations using SQL query
-			$locations_query = $wpdb->prepare("
+			$zwssgr_locations_query = $wpdb->prepare("
 				SELECT pm.meta_value AS location_data, p.ID AS post_id
 				FROM {$wpdb->postmeta} pm
 				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
@@ -690,25 +690,25 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					SELECT 1 FROM {$wpdb->postmeta} pm2
 					WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwssgr_account_number' AND pm2.meta_value = %s
 				)
-			", 'zwssgr_account_locations', 'zwssgr_request_data', $selected_account);
+			", 'zwssgr_account_locations', 'zwssgr_request_data', $zwssgr_selected_account);
 
-			$locations = $wpdb->get_results($locations_query);
+			$zwssgr_locations = $wpdb->get_results($zwssgr_locations_query);
 
-			if (!empty($locations)){
+			if (!empty($zwssgr_locations)){
 
 				// Location dropdown
 				echo '<select id="zwssgr-location-select" name="zwssgr_location">';
 				echo '<option value="">' . esc_html__('Select a Location', 'smart-showcase-for-google-reviews') . '</option>';
 
 					// Parse and output location options
-					foreach ($locations as $location) {
-						$location_data = maybe_unserialize($location->location_data);
-						if (is_array($location_data)) {
-							foreach ($location_data as $loc) {
-								$loc_title = $loc['title'] ?? '';
-								$loc_value = ltrim(strrchr($loc['name'], '/'), '/');
-								$selected = ($loc_value === $selected_location) ? ' selected' : '';
-								echo '<option value="' . esc_attr($loc_value) . '"' . esc_attr($selected) . '>' . esc_html($loc_title) . '</option>';
+					foreach ($zwssgr_locations as $zwssgr_location) {
+						$zwssgr_location_data = maybe_unserialize($zwssgr_location->location_data);
+						if (is_array($zwssgr_location_data)) {
+							foreach ($zwssgr_location_data as $zwssgr_loc) {
+								$zwssgr_loc_title = $zwssgr_loc['title'] ?? '';
+								$zwssgr_loc_value = ltrim(strrchr($zwssgr_loc['name'], '/'), '/');
+								$zwssgr_selected = ($zwssgr_loc_value === $zwssgr_selected_location) ? ' selected' : '';
+								echo '<option value="' . esc_attr($zwssgr_loc_value) . '"' . esc_attr($zwssgr_selected) . '>' . esc_html($zwssgr_loc_title) . '</option>';
 							}
 						}
 					}
@@ -720,7 +720,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		}
 
 		// Filter posts based on custom meta for ZWSSGR_POST_REVIEW_TYPE
-		function zwssgr_filter_posts_by_custom_meta($query)
+		function zwssgr_filter_posts_by_custom_meta($zwssgr_query)
 		{
 			global $pagenow;
 
@@ -729,11 +729,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 
 			if (is_admin() && $pagenow === 'edit.php' && isset($_GET['post_type']) && in_array($_GET['post_type'], [ZWSSGR_POST_REVIEW_TYPE, ZWSSGR_POST_WIDGET_TYPE])) {
-				$meta_query = array();
+				
+				$zwssgr_meta_query = array();
 				
 				if (isset($_GET['zwssgr_account']) && !empty($_GET['zwssgr_account'])) {
 					$zwssgr_account = isset($_GET['zwssgr_account']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_account'])) : '';
-					$meta_query[] = [
+					$zwssgr_meta_query[] = [
 						'key'     => 'zwssgr_account_number',
 						'value'   => $zwssgr_account,
 						'compare' => '='
@@ -743,7 +744,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				if (isset($_GET['zwssgr_location']) && !empty($_GET['zwssgr_location'])) {
 					$zwssgr_location = isset($_GET['zwssgr_location']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_location'])) : '';
-					$meta_query[] = [
+					$zwssgr_meta_query[] = [
 						'key'     => 'zwssgr_location_number',
 						'value'   => $zwssgr_location,
 						'compare' => '='
@@ -751,10 +752,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				}
 				
 
-				if (!empty($meta_query)) {
-					$query->set('meta_query', array_merge([
+				if (!empty($zwssgr_meta_query)) {
+					$zwssgr_query->set('meta_query', array_merge([
 						'relation' => 'AND',
-					], $meta_query));
+					], $zwssgr_meta_query));
 				}
 			}
 		}
@@ -763,12 +764,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_add_shortcode_column($zwssgr_columns) 
 		{
 			$zwssgr_new_columns = array();
-			foreach ($zwssgr_columns as $key => $zwssgr_title) {
-				if ($key === 'title') {
-					$zwssgr_new_columns[$key] = $zwssgr_title; // Keep the Title column
+			foreach ($zwssgr_columns as $zwssgr_key => $zwssgr_title) {
+				if ($zwssgr_key === 'title') {
+					$zwssgr_new_columns[$zwssgr_key] = $zwssgr_title; // Keep the Title column
 					$zwssgr_new_columns['shortcode'] = __('Shortcode', 'smart-showcase-for-google-reviews'); // Add Shortcode column after Title
 				} else {
-					$zwssgr_new_columns[$key] = $zwssgr_title; // Add other columns
+					$zwssgr_new_columns[$zwssgr_key] = $zwssgr_title; // Add other columns
 				}
 			}
 			return $zwssgr_new_columns;
@@ -2223,8 +2224,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<!-- Dynamically Render Radio Buttons -->
 					<div class="zwssgr-layout-radio"> 
 						<label><input type="radio" name="display_option" class="zwssgr-radio" value="all" checked> <span><?php echo esc_html__('All', 'smart-showcase-for-google-reviews'); ?></span></label>
-						<?php foreach ($zwssgr_options as $key => $zwssgr_layouts) : ?>
-							<label><input type="radio" name="display_option" class="zwssgr-radio" id="<?php echo esc_attr($key); ?>" value="<?php echo esc_attr($key); ?>"><span for="<?php echo esc_attr($key); ?>"> <?php echo esc_html(ucfirst($key)); ?></span></label>
+						<?php foreach ($zwssgr_options as $zwssgr_key => $zwssgr_layouts) : ?>
+							<label><input type="radio" name="display_option" class="zwssgr-radio" id="<?php echo esc_attr($zwssgr_key); ?>" value="<?php echo esc_attr($zwssgr_key); ?>"><span for="<?php echo esc_attr($zwssgr_key); ?>"> <?php echo esc_html(ucfirst($zwssgr_key)); ?></span></label>
 						<?php endforeach; ?>
 					</div>
 
@@ -2375,8 +2376,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									$zwssgr_keywords = get_post_meta($zwssgr_post_id, 'keywords', true);
 									if (is_array($zwssgr_keywords) && !empty($zwssgr_keywords)) {
 										echo '<div id="keywords-list" class="keywords-list">';
-											foreach ($zwssgr_keywords as $keyword) {
-												echo '<div class="keyword-item">' . esc_html($keyword) . '<span class="remove-keyword"> ✖</span></div>';
+											foreach ($zwssgr_keywords as $zwssgr_keyword) {
+												echo '<div class="keyword-item">' . esc_html($zwssgr_keyword) . '<span class="remove-keyword"> ✖</span></div>';
 											}
 										echo '</div>';
 									} else {
