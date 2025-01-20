@@ -187,7 +187,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			async: false,  // Make the request synchronous
 			data: {
-				action: 'save_widget_data',
+				action: 'zwssgr_save_widget_data',
 				security: my_widget.nonce,
 				display_option: option,
 				layout_option: selectedLayout, // Send selected layout
@@ -319,7 +319,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			async: false,  // Make the request synchronous
 			data: {
-				action: 'save_widget_data',
+				action: 'zwssgr_save_widget_data',
 				security: my_widget.nonce,
 				layout_option: optionId,
 				display_option: displayOption, // The selected display option
@@ -742,7 +742,7 @@ jQuery(document).ready(function($) {
 		de: 'Mehr lesen',
 		it: 'Leggi di più',
 		pt: 'Leia mais',
-		ru: 'Читать далее',
+		ru: 'Читать дальше',
 		zh: '阅读更多',
 		ja: '続きを読む',
 		hi: 'और पढ़ें',
@@ -751,7 +751,7 @@ jQuery(document).ready(function($) {
 		tr: 'Daha fazla oku',
 		bn: 'আরও পড়ুন',
 		ms: 'Baca lagi',
-		nl: 'Lees meer',
+		nl: 'Lees verder',
 		pl: 'Czytaj więcej',
 		sv: 'Läs mer',
 		th: 'อ่านเพิ่มเติม',
@@ -992,7 +992,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			async: false,  // Make the request synchronous
 			data: {
-				action: 'save_widget_data',
+				action: 'zwssgr_save_widget_data',
 				security: my_widget.nonce,
 				post_id: postId,
 				display_option: displayOption,
@@ -1755,7 +1755,7 @@ jQuery(document).ready(function($) {
 
 	// Event listener for clicking on a star filter
 	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
-		let nonce = filter_reviews.nonce;
+		let nonce = zwssgr_filter_reviews.nonce;
 		let postId = getQueryParam('zwssgr_widget_id');
 		let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
 		let selectedOption = getQueryParam('selectedOption');
@@ -1783,9 +1783,9 @@ jQuery(document).ready(function($) {
 		// Make the AJAX request to filter reviews based on selected ratings
 		$.ajax({
 			type: 'POST',
-			url: filter_reviews.ajax_url,
+			url: zwssgr_filter_reviews.ajax_url,
 			data: {
-				action: 'filter_reviews', // The action for the PHP handler
+				action: 'zwssgr_filter_reviews', // The action for the PHP handler
 				zwssgr_widget_id: postId,
 				rating_filter: selectedRatings, // Pass the selected ratings array
 				sort_by: sortBy, // Pass sort by parameter

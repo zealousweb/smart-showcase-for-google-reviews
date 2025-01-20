@@ -123,9 +123,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' =>  'There was an error while trying to reset batch index.',
                         ), 
                     400);
-
                 }
-
             }
 
             $this->zwssgr_access_token =  $this->zwssgr_gmb_api->zwssgr_get_access_token();
@@ -145,7 +143,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                     }
 
                 }
-
             } else {
 
                 $this->zwssgr_debug_function('ZQM: Invalid Access Token for' . $this->zwssgr_gmb_data_type .' & Widget ID ' . $this->zwssgr_widget_id .'& current index ' . $this->zwssgr_current_index);
@@ -343,7 +340,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' =>  'Batch Processing started.',
                         ), 
                     200);
-                
                 }
 
                 if ( !isset($this->zwssgr_gmb_data['nextPageToken']) || empty($this->zwssgr_gmb_data['nextPageToken']) ) {
@@ -360,9 +356,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message'   => 'Batch Processing Completed'
                         ),
                     );
-
                 }
-            
             } else if (isset($this->zwssgr_gmb_response) && $this->zwssgr_gmb_response['success'] && empty($this->zwssgr_gmb_response['data'])) {
                 
                 // Log the error before resetting the index and deleting options
@@ -390,8 +384,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                         'error'  => 'empty_api_response',
                         'message' => $zwssgr_error_message
                     ], 200);
-                    
-
                 } else {
 
                     return array(
@@ -401,23 +393,17 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' => $zwssgr_error_message
                         ),
                     );
-                    
                 }
-
             } {
-
                 // Log the error before resetting the index and deleting options
                 $this->zwssgr_debug_function("ZQM: Batch processing" . 'error:' . $this->zwssgr_gmb_response['error']['status'] . 'message:' . $this->zwssgr_gmb_response['error']['message'] . $this->zwssgr_gmb_data_type .' & Widget ID ' . $this->zwssgr_widget_id .'& current index ' . $this->zwssgr_current_index);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
-
                     // For AJAX requests, send a JSON error response    
                     wp_send_json_error([
                         'error'  => $this->zwssgr_gmb_response['error']['status'],
                         'message' => $this->zwssgr_gmb_response['error']['message'],
                     ], 400);
-                    
-
                 } else {
 
                     return array(
@@ -427,13 +413,9 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' => $this->zwssgr_gmb_response['error']['message'],
                         ),
                     );
-                    
                 }
-
             }
-
             return false;
-        
         }
 
         // Helper function to get the current index from the database
@@ -451,9 +433,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
         public function zwssgr_reset_current_batch_index($zwssgr_widget_id) {
             return delete_post_meta($zwssgr_widget_id, 'zwssgr_current_index');
         }
-
     }
-
     Zwssgr_Queue_Manager::get_instance();
-
 }

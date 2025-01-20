@@ -24,7 +24,7 @@ if ( !class_exists( 'ZWSSGR_Admin' ) ) {
 		
 		function __construct() 
 		{
-			
+
 		}
 	}
 }

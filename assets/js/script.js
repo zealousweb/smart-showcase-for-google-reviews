@@ -47,7 +47,7 @@ jQuery(document).ready(function($) {
             url: load_more.ajax_url,  // Use the localized ajax_url
             method: 'POST',
             data: {
-                action: 'load_more_meta_data',  // Action hook for AJAX
+                action: 'zwssgr_load_more_meta_data',  // Action hook for AJAX
                 post_id: postId,  // Pass the post-id from the button
                 page: page,  // Pass the current page number
 				front_sort_by: selectedValue,
@@ -253,7 +253,7 @@ jQuery(document).ready(function($) {
 			url: load_more.ajax_url,
 			method: 'POST',
 			data: {
-				action: 'load_more_meta_data',
+				action: 'zwssgr_load_more_meta_data',
 				front_keyword: keyword,
 				post_id: postId,
 				front_sort_by: selectedValue,
@@ -380,7 +380,7 @@ jQuery(document).ready(function($) {
 			url: load_more.ajax_url,
 			method: 'POST',
 			data: {
-				action: 'load_more_meta_data',
+				action: 'zwssgr_load_more_meta_data',
 				front_sort_by: selectedValue,
 				post_id: postId,
 				front_keyword: keyword,

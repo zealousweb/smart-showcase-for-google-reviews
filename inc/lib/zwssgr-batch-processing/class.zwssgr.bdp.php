@@ -91,9 +91,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'message'  => 'Empty GMb data'
                     ),
                 );
-
             }
-
             return false;
         }
 
@@ -127,7 +125,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         
                         // Update existing post
                         $zwssgr_request_data['ID'] = $zwssgr_existing_post->ID;
-
                         $zwssgr_update_result = wp_update_post($zwssgr_request_data);
                         
                         if (is_wp_error($zwssgr_update_result)) {
@@ -138,9 +135,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
                         // Update the account number for the existing post
                         update_post_meta($zwssgr_existing_post->ID, 'zwssgr_account_number', $this->zwssgr_account_number);
-
                     } else {
-                        
                         // Create a new post
                         $zwssgr_insert_account = wp_insert_post($zwssgr_request_data);
 
@@ -152,9 +147,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                             // Add the account number for the new post
                             update_post_meta($zwssgr_insert_account, 'zwssgr_account_number', $this->zwssgr_account_number);
                         }
-
                     }
-
                 }
 
                 return array(
@@ -175,9 +168,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'message'  => 'Unexpected error for zwssgr_gmb_data'
                     ),
                 );
-
             }
-
         }
 
         protected function process_zwssgr_gmb_locations($zwssgr_gmb_data, $zwssgr_account_number = null) {
@@ -244,7 +235,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                     'message'   => 'Locations for Processed successfully'
                 ),
             );
-
         }              
 
         protected function process_zwssgr_gmb_reviews($zwssgr_gmb_data, $zwssgr_location_number,$zwssgr_account_number = null) {
@@ -326,14 +316,13 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                     } else {
                         $this->zwssgr_debug_function( "BDP: Failed to insert/update review: " . ( is_wp_error( $zwssgr_wp_review_id ) ? $zwssgr_wp_review_id->get_error_message() : "Unknown error" ) );   
                     }
-            
                     // Reset post data after each query
                     wp_reset_postdata();
                 }
             } else {
 
                 $this->zwssgr_debug_function('BDP: Unexpected zwssgr_data for reviews & Widget ID '. $this->zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
-                
+
                 return array(
                     'success' => false,
                     'data'    => array (
@@ -341,9 +330,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'message'  => 'Unexpected error for zwssgr_gmb_data'
                     ),
                 );
-
             }
-
         }
 
         /**
@@ -383,7 +370,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
             if ($zwssgr_put_image_content === false) {
 
                 $this->zwssgr_debug_function("Error: Failed to save the image to the specified path: " . $zwssgr_save_path . " for Widget ID " . $this->$zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
-                
+
                 return array(
                     'success' => false,
                     'data'    => array (
@@ -401,7 +388,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                     'zwssgr_save_path'   => $zwssgr_save_path
                 ),
             );
-            
         }
 
         protected function complete() {
@@ -427,7 +413,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                 }
 
                 $zwssgr_queue_manager->zwssgr_update_current_batch_index($this->zwssgr_widget_id, ($this->zwssgr_current_index + 1));
-                
                 sleep(1);
 
                 $zwssgr_queue_manager->zwssgr_fetch_gmb_data(true, $this->next_page_token, $this->zwssgr_gmb_data_type, $this->zwssgr_account_number, $this->zwssgr_location_number, $this->zwssgr_widget_id);
@@ -450,13 +435,9 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'message'   => 'Data processed successfully.'
                     ),
                 );
-
             }
-
         }
-
     }
-    
 }
 
 // Register AJAX action for authenticated users only
@@ -492,5 +473,4 @@ function zwssgr_get_batch_processing_status() {
     ];
 
     wp_send_json_success($zwssgr_response);
-
 }
