@@ -303,7 +303,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             $zwssgr_wp_review_id    = isset($_POST['zwssgr_wp_review_id']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_wp_review_id'])) : '';
             $zwssgr_reply_comment   = isset($_POST['zwssgr_reply_comment']) ? sanitize_text_field(wp_unslash($_POST['zwssgr_reply_comment'])) : '';
             $zwssgr_account_number  = get_post_meta($zwssgr_wp_review_id, 'zwssgr_account_number', true);
-            $zwssgr_location_number   = get_post_meta($zwssgr_wp_review_id, 'zwssgr_location_number', true);
+            $zwssgr_location_number = get_post_meta($zwssgr_wp_review_id, 'zwssgr_location_number', true);
             $zwssgr_review_id       = get_post_meta($zwssgr_wp_review_id, 'zwssgr_review_id', true);
 
             // Check that all parameters are provided
