@@ -214,11 +214,11 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
                         continue;
                     }
 
-                    $is_data_sync = $this->client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
+                    $zwssgr_is_data_sync = $this->client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
 
                     sleep(20);
 
-                    if (!$is_data_sync) {
+                    if (!$zwssgr_is_data_sync) {
                         $this->zwssgr_debug_function('Data sync for widget:' . $zwssgr_widget_id . 'has been successfully processed');
                     } else {
                         $this->zwssgr_debug_function('There was an error while Data sync for widget:' . $zwssgr_widget_id);
