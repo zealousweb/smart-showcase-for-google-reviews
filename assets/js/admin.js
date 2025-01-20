@@ -1362,7 +1362,7 @@ jQuery(document).ready(function($) {
 				zwssgr_widget_id: zwssgr_widget_id
 			},
 			success: function (response) {
-				if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
+				if (response.success && response.data.zwssgr_data_processing_init == 'false' && response.data.zwssgr_data_sync_once == 'true') {
 					
 					$('#fetch-gmb-data .progress-bar #progress').val(100);
 					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
