@@ -648,7 +648,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_selected_location = isset( $_GET['zwssgr_location'] ) ? sanitize_text_field( wp_unslash( $_GET['zwssgr_location'] ) ) : '';
 
 			// Fetch accounts using SQL query
-			$zwssgr_accounts_query = $wpdb->prepare("
+			$zwssgr_accounts = $wpdb->get_results( $wpdb->prepare("
 				SELECT pm.meta_value AS account_number, p.ID AS post_id, p.post_title AS account_name
 				FROM {$wpdb->postmeta} pm
 				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
@@ -659,9 +659,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					SELECT 1 FROM {$wpdb->postmeta} pm2
 					WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwssgr_gmb_email' AND pm2.meta_value = %s
 				)
-			", 'zwssgr_account_number', 'zwssgr_request_data', $zwssgr_gmb_email);
-
-			$zwssgr_accounts = $wpdb->get_results($zwssgr_accounts_query);
+			", 'zwssgr_account_number', 'zwssgr_request_data', $zwssgr_gmb_email)
+			);
 
 			// Begin the form
 			echo '<form method="GET">';
@@ -679,20 +678,21 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			
 			// Fetch locations using SQL query
-			$zwssgr_locations_query = $wpdb->prepare("
-				SELECT pm.meta_value AS location_data, p.ID AS post_id
-				FROM {$wpdb->postmeta} pm
-				INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-				WHERE pm.meta_key = %s
-				AND p.post_type = %s
-				AND p.post_status = 'publish'
-				AND EXISTS (
-					SELECT 1 FROM {$wpdb->postmeta} pm2
-					WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwssgr_account_number' AND pm2.meta_value = %s
-				)
-			", 'zwssgr_account_locations', 'zwssgr_request_data', $zwssgr_selected_account);
+			$zwssgr_locations = $wpdb->get_results( 
+				$wpdb->prepare("
+					SELECT pm.meta_value AS location_data, p.ID AS post_id
+					FROM {$wpdb->postmeta} pm
+					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+					WHERE pm.meta_key = %s
+					AND p.post_type = %s
+					AND p.post_status = 'publish'
+					AND EXISTS (
+						SELECT 1 FROM {$wpdb->postmeta} pm2
+						WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwssgr_account_number' AND pm2.meta_value = %s
+					)
+				", 'zwssgr_account_locations', 'zwssgr_request_data', $zwssgr_selected_account)
+			);
 
-			$zwssgr_locations = $wpdb->get_results($zwssgr_locations_query);
 
 			if (!empty($zwssgr_locations)){
 
