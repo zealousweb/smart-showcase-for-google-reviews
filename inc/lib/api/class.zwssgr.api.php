@@ -60,7 +60,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             if ( $zwssgr_api_method === 'GET' && ! empty( $zwssgr_api_params ) ) {
                 $zwssgr_api_url = add_query_arg( $zwssgr_api_params, $zwssgr_api_url );
             } elseif ( in_array( $zwssgr_api_method, ['POST', 'PUT', 'DELETE'] ) && ! empty( $zwssgr_api_params ) ) {
-                $zwssgr_api_args['body'] = json_encode( $zwssgr_api_params );
+                $zwssgr_api_args['body'] = wp_json_encode( $zwssgr_api_params );
                 $zwssgr_api_args['headers']['Content-Type'] = 'application/json';
             }
 
