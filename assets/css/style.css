@@ -62,7 +62,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
 }
 
 .zwssgr-logo-wrap img {
@@ -1096,6 +1095,7 @@
     color: #6A6A6A;
     font-size: 56px;
     font-weight: 400;
+    line-height: 60px;
 }
 
 .selected-option-display .zwssgr-badge-item {
@@ -1110,6 +1110,7 @@
 
 .zwssgr-badge-link:focus {
     outline: none;
+    box-shadow: none;
 }
 
 .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info .zwssgr-final-review-wrap {

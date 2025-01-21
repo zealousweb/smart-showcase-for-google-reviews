@@ -12,7 +12,6 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-
 require_once( ZWSSGR_DIR . '/inc/lib/zwssgr-batch-processing/class.' . ZWSSGR_PREFIX . '.bdp.php' );
 require_once( ZWSSGR_DIR . '/inc/lib/api/class.' . ZWSSGR_PREFIX . '.api.php' );
 
@@ -38,11 +37,11 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
         }
 
         /**
-		 * Custom log function for debugging.
-		 *
-		 * @param string $message The message to log.
-		 */
-		function zwssgr_debug_function( $zwssgr_message ) {
+         * Custom log function for debugging.
+         *
+         * @param string $message The message to log.
+         */
+        function zwssgr_debug_function( $zwssgr_message ) {
             // Define the custom log directory path.
 
             $zwssgr_log_dir = ZWSSGR_UPLOAD_DIR.'/smart-showcase-for-google-reviews/';
@@ -123,9 +122,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' =>  'There was an error while trying to reset batch index.',
                         ), 
                     400);
-
                 }
-
             }
 
             $this->zwssgr_access_token =  $this->zwssgr_gmb_api->zwssgr_get_access_token();
@@ -139,7 +136,9 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                 if ($this->zwssgr_widget_id && $this->zwssgr_account_number) {
                     
                     update_option('zwssgr_widget_id', $this->zwssgr_widget_id);
+
                     update_post_meta($this->zwssgr_widget_id, 'zwssgr_account_number', $this->zwssgr_account_number);
+
                     if (!empty($this->zwssgr_location_number)) {
                         update_post_meta($this->zwssgr_widget_id, 'zwssgr_location_number', $this->zwssgr_location_number);
                     }
@@ -272,7 +271,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
-                    $zwssgr_account_name = !empty($this->zwssgr_account_name) ? $this->zwssgr_account_name : get_post_meta($this->zwssgr_widget_id, 'zwssgr_account_name', true);
+                    $zwssgr_account_name  = !empty($this->zwssgr_account_name)  ? $this->zwssgr_account_name  : get_post_meta($this->zwssgr_widget_id, 'zwssgr_account_name', true);
                     $zwssgr_location_name = !empty($this->zwssgr_location_name) ? $this->zwssgr_location_name : get_post_meta($this->zwssgr_widget_id, 'zwssgr_location_name', true);
 
                     $zwssgr_widget_title = $zwssgr_account_name;
@@ -294,23 +293,23 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
 
                     if ($this->zwssgr_gmb_data_type == 'zwssgr_gmb_reviews') {
 
-                        $missing_data = [];
+                        $zwssgr_missing_data = [];
                     
                         // Check if any required fields are empty and log the missing fields.
                         if (empty($this->zwssgr_location_all_review_uri)) {
-                            $missing_data[] = 'zwssgr_location_all_review_uri';
+                            $zwssgr_missing_data[] = 'zwssgr_location_all_review_uri';
                         }
                     
                         if (empty($this->zwssgr_location_new_review_uri)) {
-                            $missing_data[] = 'zwssgr_location_new_review_uri';
+                            $zwssgr_missing_data[] = 'zwssgr_location_new_review_uri';
                         }
                     
                         if (empty($this->zwssgr_location_name)) {
-                            $missing_data[] = 'zwssgr_location_name';
+                            $zwssgr_missing_data[] = 'zwssgr_location_name';
                         }
                     
-                        if (!empty($missing_data)) {
-                            $this->zwssgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwssgr_widget_id . " - Missing: " . implode(', ', $missing_data));
+                        if (!empty($zwssgr_missing_data)) {
+                            $this->zwssgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwssgr_widget_id . " - Missing: " . implode(', ', $zwssgr_missing_data));
                             return;
                         }
 
@@ -343,7 +342,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' =>  'Batch Processing started.',
                         ), 
                     200);
-                
+
                 }
 
                 if ( !isset($this->zwssgr_gmb_data['nextPageToken']) || empty($this->zwssgr_gmb_data['nextPageToken']) ) {
@@ -362,7 +361,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                     );
 
                 }
-            
+
             } else if (isset($this->zwssgr_gmb_response) && $this->zwssgr_gmb_response['success'] && empty($this->zwssgr_gmb_response['data'])) {
                 
                 // Log the error before resetting the index and deleting options
@@ -370,6 +369,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
 
                 // Define a default error message
                 $zwssgr_error_message = esc_html__('An unknown error occurred. Please try again.', 'smart-showcase-for-google-reviews');
+
                 // Use a switch statement for better clarity
                 switch ($this->zwssgr_gmb_data_type) {
                     case 'zwssgr_gmb_accounts':
@@ -390,8 +390,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                         'error'  => 'empty_api_response',
                         'message' => $zwssgr_error_message
                     ], 200);
-                    
-
                 } else {
 
                     return array(
@@ -401,23 +399,17 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' => $zwssgr_error_message
                         ),
                     );
-                    
                 }
-
             } {
-
                 // Log the error before resetting the index and deleting options
                 $this->zwssgr_debug_function("ZQM: Batch processing" . 'error:' . $this->zwssgr_gmb_response['error']['status'] . 'message:' . $this->zwssgr_gmb_response['error']['message'] . $this->zwssgr_gmb_data_type .' & Widget ID ' . $this->zwssgr_widget_id .'& current index ' . $this->zwssgr_current_index);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
-
                     // For AJAX requests, send a JSON error response    
                     wp_send_json_error([
                         'error'  => $this->zwssgr_gmb_response['error']['status'],
                         'message' => $this->zwssgr_gmb_response['error']['message'],
                     ], 400);
-                    
-
                 } else {
 
                     return array(
@@ -427,13 +419,12 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' => $this->zwssgr_gmb_response['error']['message'],
                         ),
                     );
-                    
                 }
 
             }
 
             return false;
-        
+            
         }
 
         // Helper function to get the current index from the database
@@ -451,7 +442,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
         public function zwssgr_reset_current_batch_index($zwssgr_widget_id) {
             return delete_post_meta($zwssgr_widget_id, 'zwssgr_current_index');
         }
-
     }
 
     Zwssgr_Queue_Manager::get_instance();

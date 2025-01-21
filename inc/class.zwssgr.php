@@ -19,7 +19,7 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 	 */
 	class ZWSSGR {
 		
-		public $admin,$lib,$front = null;
+		public $zwssgr_admin, $zwssgr_lib, $zwssgr_front = null;
 		public $zwssgr_admin_smtp_enabled,$zwssgr_smtp_opt,$zwssgr_general_opt;
 		private static $_instance = null;
 
@@ -98,17 +98,15 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 
 		function zwssgr_action__setup_theme() {
 			if ( is_admin() ) {
-				ZWSSGR()->admin = new ZWSSGR_Admin;
-				ZWSSGR()->admin->action = new ZWSSGR_Admin_Action;
-				ZWSSGR()->admin->filter = new ZWSSGR_Admin_Filter;
-				
+				ZWSSGR()->zwssgr_admin = new ZWSSGR_Admin;
+				ZWSSGR()->zwssgr_admin->action = new ZWSSGR_Admin_Action;
+				ZWSSGR()->zwssgr_admin->filter = new ZWSSGR_Admin_Filter;
 			} else {
-				ZWSSGR()->front = new ZWSSGR_Front;
-				ZWSSGR()->front->action = new ZWSSGR_Front_Action;
-				ZWSSGR()->front->filter = new ZWSSGR_Front_Filter;
-				
+				ZWSSGR()->zwssgr_front = new ZWSSGR_Front;
+				ZWSSGR()->zwssgr_front->action = new ZWSSGR_Front_Action;
+				ZWSSGR()->zwssgr_front->filter = new ZWSSGR_Front_Filter;
 			}
-			ZWSSGR()->lib = new ZWSSGR_Lib;
+			ZWSSGR()->zwssgr_lib = new ZWSSGR_Lib;
 				
 		}
 
@@ -116,23 +114,23 @@ if ( !class_exists( 'ZWSSGR' ) ) {
 		 * Action: plugin_action_links
 		 * Add Subscription link after active links.
 		 * @method action__zwssgr_plugin_action_links
-		 * @return $links
+		 * @return $zwssgr_links
 		*/
-		function action__zwssgr_plugin_action_links( $links, $file ) 
+		function action__zwssgr_plugin_action_links( $zwssgr_links, $zwssgr_file ) 
 		{
 
-			if ( $file != ZWSSGR_PLUGIN_BASENAME ) {
-				return $links;
+			if ( $zwssgr_file != ZWSSGR_PLUGIN_BASENAME ) {
+				return $zwssgr_links;
 			}
 			if ( is_plugin_active( 'smart-showcase-for-google-reviews/smart-showcase-for-google-reviews.php' )  )
 			{
-				$support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'smart-showcase-for-google-reviews' ). '</a>';
-				$document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-google-review/" target="_blank">' .__( 'Document', 'smart-showcase-for-google-reviews' ). '</a>';
-				$donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'smart-showcase-for-google-reviews' ) . '</a>';
+				$zwssgr_support_link = '<a href="https://support.zealousweb.com/" target="_blank">' .__( 'Support', 'smart-showcase-for-google-reviews' ). '</a>';
+				$zwssgr_document_link = '<a href="https://store.zealousweb.com/documentation/wordpress-plugins/smart-showcase-for-google-reviews/" target="_blank">' .__( 'Document', 'smart-showcase-for-google-reviews' ). '</a>';
+				$zwssgr_donateLink = '<a target="_blank" href="http://www.zealousweb.com/payment/">' . __( 'Donate', 'smart-showcase-for-google-reviews' ) . '</a>';
 
-				array_unshift( $links , $support_link, $document_link, $donateLink );
+				array_unshift( $zwssgr_links , $zwssgr_support_link, $zwssgr_document_link, $zwssgr_donateLink );
 			}
-			return $links;
+			return $zwssgr_links;
 		}
 	}
 }

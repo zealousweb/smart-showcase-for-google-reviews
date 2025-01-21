@@ -12,15 +12,14 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-	$zwssgr_message = $zwssgr_message_smtp = $zwssgr_debug_msg = $zwssgr_success = '';
-	$zwssgr_custom_error = array();
-	// $error = array();
-	$zwssgr_smtp_option = get_option( 'zwssgr_smtp_option' );
+	$zwssgr_message 	   = $zwssgr_message_smtp = $zwssgr_debug_msg = $zwssgr_success = '';
+	$zwssgr_custom_error   = array();
+	$zwssgr_smtp_option    = get_option( 'zwssgr_smtp_option' );
 	$zwssgr_general_option = get_option( 'zwssgr_general_option' );
-	$zwssgr_smtp_option = is_array($zwssgr_smtp_option) ? $zwssgr_smtp_option : []; 
+	$zwssgr_smtp_option    = is_array($zwssgr_smtp_option) ? $zwssgr_smtp_option : []; 
 	
 	if (!is_array($zwssgr_smtp_option)) {
-	    $zwssgr_smtp_option = [];
+		$zwssgr_smtp_option = [];
 	}
 
 	if ( isset( $_POST['zwssgr_smtp_test_submit'] ) ) {
@@ -29,6 +28,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		if ( ! check_admin_referer( ZWSSGR_PLUGIN_BASENAME, '_smtptest_nonce_name' ) ) {
 			$zwssgr_custom_error [] =  __( 'Nonce check failed.', 'smart-showcase-for-google-reviews' );
 		}
+
 		global $wp_version;
 		if ( version_compare( $wp_version, '5.5.1', '>=' ) ) {
 			// WordPress version is greater than 4.3
@@ -48,11 +48,12 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		$zwssgr_ret = array();
 
 		try {
+
 			$zwssgr_smtp_opt = get_option('zwssgr_smtp_option',[]);
+			
 			if(!empty($zwssgr_smtp_opt)){
 				$zwssgr_charset       = get_bloginfo( 'charset' );
 				$zwssgr_mail->CharSet = $zwssgr_charset;
-				
 
 				$zwssgr_from_name  = $this->zwssgr_smtp_opt['zwssgr_from_name'];
 				$zwssgr_from_email = $this->zwssgr_smtp_opt['zwssgr_from_email'];
@@ -88,6 +89,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 				$zwssgr_mail->Subject = $zwssgr_subject;
 				$zwssgr_mail->Body    = $zwssgr_body;
 				$zwssgr_mail->AddAddress( $zwssgr_to_email );
+
 				global $zwssgr_debug_msg;
 				$zwssgr_debug_msg = '';
 				$zwssgr_mail->Debugoutput = function ( $zwssgr_str, $zwssgr_level ) {
@@ -127,7 +129,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		if ( empty( $zwssgr_custom_error  ) ) {
 			$zwssgr_message .= __( 'Test email was successfully sent.', 'smart-showcase-for-google-reviews' );
 		}
-
 	}
 
 	if ( isset( $_POST['zwssgr_smtp_submit'] ) ) {
@@ -145,10 +146,10 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		}
 		
 		$zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] = isset( $_POST['zwssgr_admin_smtp_enabled'] ) && sanitize_text_field(wp_unslash($_POST['zwssgr_admin_smtp_enabled'] ) ) == '1' ? 1 : 0;
-		$zwssgr_smtp_option['zwssgr_from_name'] = isset( $_POST['zwssgr_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_from_name'] ) ) : '';
-		$zwssgr_smtp_option['zwssgr_smtp_host'] = isset( $_POST['zwssgr_smtp_host'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_host'] ) ) : '';
-		$zwssgr_smtp_option['zwssgr_smtp_ency_type'] = isset( $_POST['zwssgr_smtp_ency_type'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_ency_type'] ) ) : 'none';
-		$zwssgr_smtp_option['zwssgr_smtp_auth'] = isset( $_POST['zwssgr_smtp_auth'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_auth'] ) ) : 'no';
+		$zwssgr_smtp_option['zwssgr_from_name'] 		 = isset( $_POST['zwssgr_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_from_name'] ) ) : '';
+		$zwssgr_smtp_option['zwssgr_smtp_host'] 		 = isset( $_POST['zwssgr_smtp_host'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_host'] ) ) : '';
+		$zwssgr_smtp_option['zwssgr_smtp_ency_type'] 	 = isset( $_POST['zwssgr_smtp_ency_type'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_ency_type'] ) ) : 'none';
+		$zwssgr_smtp_option['zwssgr_smtp_auth'] 		 = isset( $_POST['zwssgr_smtp_auth'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_auth'] ) ) : 'no';
 
 		
 		$zwssgr_smtp_option['zwssgr_smtp_port']	= '25';
@@ -169,7 +170,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		$zwssgr_smtp_option['zwssgr_smtp_password'] = isset( $_POST['zwssgr_smtp_password'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_password'] ) ) : '';
 
 		/* Update settings in the database */
-		
 		if ( empty( $zwssgr_custom_error  ) && $zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] !== 0) {
 			update_option( 'zwssgr_smtp_option', $zwssgr_smtp_option );
 			$zwssgr_message_smtp .= __( 'SMTP Settings saved.', 'smart-showcase-for-google-reviews' );
@@ -186,6 +186,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 			$zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] = 0;
 			update_option( 'zwssgr_smtp_option', '');
 		}
+		
 		update_option('zwssgr_admin_smtp_enabled', $zwssgr_smtp_option['zwssgr_admin_smtp_enabled']);
 
 	}
@@ -271,9 +272,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
 						</label>
 					</th>
 					<td>
-					<?php
-					$zwssgr_smtp_option['zwssgr_smtp_ency_type'] = isset( $zwssgr_smtp_option['zwssgr_smtp_ency_type'] ) ? $zwssgr_smtp_option['zwssgr_smtp_ency_type'] : 'none';
-					?>
+						<?php
+						$zwssgr_smtp_option['zwssgr_smtp_ency_type'] = isset( $zwssgr_smtp_option['zwssgr_smtp_ency_type'] ) ? $zwssgr_smtp_option['zwssgr_smtp_ency_type'] : 'none';
+						?>
 						<label for="zwssgr_smtp_ency_type_1">
 							<input id="zwssgr_smtp_ency_type_1" name="zwssgr_smtp_ency_type" type="radio" value="none"  <?php checked( $zwssgr_smtp_option['zwssgr_smtp_ency_type'], 'none' ); ?> ><?php esc_html_e( 'None', 'smart-showcase-for-google-reviews' ); ?>
 						</label>
@@ -313,9 +314,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
 						</label>
 					</th>
 					<td>
-					<?php
-					$zwssgr_smtp_option['zwssgr_smtp_auth'] = isset( $zwssgr_smtp_option['zwssgr_smtp_auth'] ) ? $zwssgr_smtp_option['zwssgr_smtp_auth'] : 'yes';
-					?>
+						<?php
+						$zwssgr_smtp_option['zwssgr_smtp_auth'] = isset( $zwssgr_smtp_option['zwssgr_smtp_auth'] ) ? $zwssgr_smtp_option['zwssgr_smtp_auth'] : 'yes';
+						?>
 						<label for="zwssgr_smtp_auth_1">
 							<input id="zwssgr_smtp_auth_1" name="zwssgr_smtp_auth" type="radio" value="no" <?php checked( $zwssgr_smtp_option['zwssgr_smtp_auth'], 'no' ); ?> ><?php esc_html_e( 'No', 'smart-showcase-for-google-reviews' ); ?>
 						</label>
@@ -364,8 +365,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 			</tbody>
 			<tbody>
 				<tr valign="top">
-					<th scope="row" valign="top">
-					</th>
+					<th scope="row" valign="top"></th>
 					<td>
 						<input
 							name="zwssgr_smtp_submit"
@@ -376,7 +376,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 						<?php wp_nonce_field( ZWSSGR_PLUGIN_BASENAME, '_smtp_nonce_name' ); ?>
 					</td>
 				</tr>
-
 			</tbody>
 			</table>
 		</form>
@@ -405,7 +404,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		<form class="zwssgr-setting-form" method="post" action="">
 			<table class="form-table tooltip-table">
 				<tbody class="zwssgr-admin-enable-smtp">
-
 					<tr valign="top">
 						<th scope="row" valign="top">
 							<?php esc_html_e( 'To Email', 'smart-showcase-for-google-reviews' ); ?>
@@ -437,6 +435,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 							/>
 						</td>
 					</tr>
+
 					<tr valign="top">
 						<th scope="row" valign="top">
 							<?php esc_html_e( 'Message', 'smart-showcase-for-google-reviews' ); ?>
@@ -453,8 +452,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 					</tr>
 
 					<tr valign="top">
-						<th scope="row" valign="top">
-						</th>
+						<th scope="row" valign="top"></th>
 						<td>
 							<input
 								name="zwssgr_smtp_test_submit"
@@ -465,7 +463,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
 							<?php wp_nonce_field( ZWSSGR_PLUGIN_BASENAME, '_smtptest_nonce_name' ); ?>
 						</td>
 					</tr>
-
 				</tbody>
 			</table>
 		</form>
