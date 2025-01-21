@@ -1110,6 +1110,7 @@
 
 .zwssgr-badge-link:focus {
     outline: none;
+    box-shadow: none;
 }
 
 .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info .zwssgr-final-review-wrap {
