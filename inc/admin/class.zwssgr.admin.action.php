@@ -64,6 +64,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			if( $this->zwssgr_admin_smtp_enabled == 1) {
 				add_action( 'phpmailer_init', array( $this, 'zwssgr_action__init_smtp_mailer' ), 9999 );
 			}
+
+			add_action('admin_enqueue_scripts', array( $this,'zwssgr_enqueue_admin_scripts'));
+			add_action('admin_footer', array( $this,'zwssgr_custom_deactivation_popup'));
 		}
 
 		/**
@@ -194,6 +197,56 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			));
 		
 		}
+
+		function zwssgr_enqueue_admin_scripts($hook) {
+			// Ensure the script is only loaded on the plugins page
+			if ($hook === 'plugins.php') {
+				
+				// wp_register_script('zwssgr-admin-js', plugin_dir_url(__FILE__) . 'js/admin.js', ['jquery'], null, true);
+				// wp_enqueue_script('zwssgr-admin-js');
+				
+				// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', false, ZWSSGR_VERSION );
+				// wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );	
+				
+				wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'ZWSSGR_Popup_Data', [
+					'nonce' => wp_create_nonce('zwssgr_deactivation_nonce'),
+					'deactivateUrl' => admin_url('plugins.php?action=deactivate&plugin=smart-showcase-for-google-reviews/smart-showcase.php'),
+				]);
+			}
+		}
+
+		// Add a custom JavaScript function to handle the popup
+		function zwssgr_custom_deactivation_popup() {
+			?>
+			<div id="zwssgr-plugin-deactivation-popup" class="zwssgr-plugin-popup" style="display:none;">
+				<div class="zwssgr-plugin-popup-content">
+					<div class="zwssgr-plugin-popup-header">
+						<h2><?php esc_html_e('Confirm Deactivation', 'smart-showcase-for-google-reviews'); ?></h2>
+					</div>
+					<div class="zwssgr-plugin-popup-body">
+						<div class="zwssgr-plugin-wrapper-outer">
+							<div class="zwssgr-plugin-wrapper-container">
+								<div id="zwssgr-plugin-disconnect-wrapper" class="zwssgr-plugin-inner-wrapper">
+									<div class="zwssgr-plugin-caution-div">
+										<input type="checkbox" id="zwssgr-delete-plugin-data" name="zwssgr_delete_plugin_data" class="zwssgr-delete-plugin-data">
+										<label for="zwssgr-delete-plugin-data">
+											<?php esc_html_e('Caution: Check this box to permanently delete all data.', 'smart-showcase-for-google-reviews'); ?>
+										</label>
+									</div>
+									<div class="zwssgr-plugin-danger-note">
+										<?php esc_html_e('This action cannot be undone. Ensure you want to proceed.', 'smart-showcase-for-google-reviews'); ?>
+									</div>
+									<a href="javascript:void(0);" class="button button-danger" id="zwssgr-plugin-confirm-deactivate"><?php esc_html_e('Deactivate', 'smart-showcase-for-google-reviews'); ?></a>
+									<a href="javascript:void(0);" class="button" id="zwssgr-plugin-cancel-deactivate"><?php esc_html_e('Cancel', 'smart-showcase-for-google-reviews'); ?></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
 
 		/**
 		 * Action: admin_menu
