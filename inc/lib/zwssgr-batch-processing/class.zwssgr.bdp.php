@@ -364,7 +364,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
             }
 
-            $zwssgr_review_image_data = wp_remote_retrieve_body($response);
+            $zwssgr_review_image_data = wp_remote_retrieve_body($zwssgr_response);
 
             if (empty($zwssgr_review_image_data)) {
 
@@ -380,12 +380,19 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
             }
 
-            // Check if the save path's directory exists, create it if not
             $zwssgr_temp_directory = dirname($zwssgr_save_path);
 
             if (!is_dir($zwssgr_temp_directory)) {
                 wp_mkdir_p($zwssgr_temp_directory);
             }
+
+            if ( ! function_exists( 'WP_Filesystem' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+            }
+            
+            WP_Filesystem();
+        
+            global $wp_filesystem;
 
             if ( $wp_filesystem->put_contents( $zwssgr_save_path, $zwssgr_review_image_data, FS_CHMOD_FILE ) ) {
                 $this->zwssgr_debug_function("Image saved successfully to: " . $zwssgr_save_path);
