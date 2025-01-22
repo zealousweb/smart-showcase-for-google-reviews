@@ -1641,17 +1641,3 @@ input.zwssgr-radio {
     color: #d9534f;
     margin-bottom: 15px;
 }
-
-.zwssgr-plugin-deactivate-btn {
-    background-color: #d9534f;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-.zwssgr-plugin-deactivate-btn:hover {
-    background-color: #c9302c;
-}

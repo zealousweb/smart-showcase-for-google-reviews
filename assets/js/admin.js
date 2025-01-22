@@ -2074,119 +2074,6 @@ jQuery(document).ready(function($) {
 		$(this).closest('form').submit();
 	});
 
-	// $('.deactivate a').on('click', function (e) {
-    //     const deactivateUrl = $(this).attr('href');
-
-    //     if (deactivateUrl.includes('smart-showcase-for-google-reviews')) {
-    //         e.preventDefault(); // Prevent default action
-    //         $('#zwssgr-deactivation-popup').show(); // Show the popup
-    //     }
-    // });
-
-    // // Close the popup
-    // $('.zwssgr-popup-close').on('click', function () {
-    //     $('#zwssgr-deactivation-popup').hide();
-    // });
-
-    // // Handle the Deactivate button click
-    // $('#zwssgr-confirm-deactivation').on('click', function () {
-    //     const nonce = ZWSSGR_Popup_Data.nonce;
-    //     const deleteAllData = $('#delete-all-data').is(':checked') ? '1' : '0';
-
-    //     // Send Ajax request
-    //     $.post(ZWSSGR_Popup_Data.deactivateUrl, {
-    //         nonce: nonce,
-    //         delete_all_data: deleteAllData,
-    //     }).done(function (response) {
-    //         if (response.success) {
-    //             alert(response.data.message);
-    //             location.reload(); // Refresh the plugins page
-    //         } else {
-    //             alert(response.data.message || 'An error occurred.');
-    //         }
-    //     }).fail(function () {
-    //         alert('An error occurred during deactivation.');
-    //     });
-    // });
-
-	// $(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
-	// 	e.preventDefault(); // Prevent default action
-	
-	// 	const deactivateUrl = $(this).attr('href'); // Get the deactivation URL from the link
-	
-	// 	// Show the deactivation confirmation popup
-	// 	$('#zwssgr-plugin-deactivation-popup').show(); // Show the popup
-	
-	// 	// Close popup on cancel
-	// 	$('#zwssgr-plugin-cancel-deactivate').on('click', function () {
-	// 		$('#zwssgr-plugin-deactivation-popup').hide(); // Hide the popup when cancel is clicked
-	// 	});
-	
-	// 	// Proceed with deactivation
-	// 	$('#zwssgr-plugin-confirm-deactivate').on('click', function () {
-	// 		$('#zwssgr-plugin-deactivation-popup').hide(); // Remove the popup
-	// 		window.location.href = deactivateUrl; // Redirect to the plugin deactivation URL
-	// 	});
-	// });
-
-
-
-
-	// $(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
-	// 	e.preventDefault(); // Prevent default action
-	
-	// 	const deactivateUrl = $(this).attr('href'); // Get the deactivation URL from the link
-	
-	// 	// Show the deactivation confirmation popup
-	// 	$('#zwssgr-plugin-deactivation-popup').show();
-	
-	// 	// Cancel Deactivation
-	// 	$('#zwssgr-plugin-cancel-deactivate').off('click').on('click', function () {
-	// 		$('#zwssgr-plugin-deactivation-popup').hide();
-	// 	});
-	
-	// 	// Handle Data Deletion
-	// 	$('#zwssgr-delete-plugin-data').off('change').on('change', function () {
-	// 		const zwssgrDeletePluginData = $(this).prop('checked') ? 1 : 0;
-	
-	// 		$.ajax({
-	// 			url: zwssgr_admin.ajax_url,
-	// 			type: "POST",
-	// 			dataType: "json",
-	// 			data: {
-	// 				action: "zwssgr_delete_oauth_connection",
-	// 				zwssgr_delete_plugin_data: zwssgrDeletePluginData,
-	// 				security: zwssgr_admin.zwssgr_delete_oauth_connection,
-	// 			},
-	// 			success: function (response) {
-	// 				// console.log("Data deletion response:", response);
-	// 			},
-	// 			error: function (xhr, status, error) {
-	// 				// console.error("Data deletion failed:", error);
-	// 			}
-	// 		});
-	// 	});
-	
-	// 	// Confirm Deactivation
-	// 	$('#zwssgr-plugin-confirm-deactivate').off('click').on('click', function () {
-	// 		$('#zwssgr-plugin-deactivation-popup').hide(); // Hide the popup
-	// 		window.location.href = deactivateUrl; // Redirect to deactivation URL
-	// 	});
-	// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	$(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
 		e.preventDefault(); // Prevent default action
@@ -2197,12 +2084,12 @@ jQuery(document).ready(function($) {
 		$('#zwssgr-plugin-deactivation-popup').show();
 	
 		// Cancel Deactivation
-		$('#zwssgr-plugin-cancel-deactivate').off('click').on('click', function () {
+		$(document).off('click', '#zwssgr-plugin-cancel-deactivate').on('click', '#zwssgr-plugin-cancel-deactivate', function () {
 			$('#zwssgr-plugin-deactivation-popup').hide();
 		});
 	
 		// Confirm Deactivation
-		$('#zwssgr-plugin-confirm-deactivate').off('click').on('click', function () {
+		$(document).off('click', '#zwssgr-plugin-confirm-deactivate').on('click', '#zwssgr-plugin-confirm-deactivate', function () {
 			// Check if the "Delete Plugin Data" checkbox is checked
 			const zwssgrDeletePluginData = $('#zwssgr-delete-plugin-data').prop('checked') ? 1 : 0;
 	
@@ -2218,10 +2105,10 @@ jQuery(document).ready(function($) {
 						security: zwssgr_admin.zwssgr_delete_oauth_connection,
 					},
 					success: function (response) {
-						console.log("Data deletion response:", response);
+						// console.log("Data deletion response:", response);
 					},
 					error: function (xhr, status, error) {
-						console.error("Data deletion failed:", error);
+						// console.error("Data deletion failed:", error);
 					},
 					complete: function () {
 						// Proceed to deactivate the plugin after AJAX completes

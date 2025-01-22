@@ -65,7 +65,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				add_action( 'phpmailer_init', array( $this, 'zwssgr_action__init_smtp_mailer' ), 9999 );
 			}
 
-			add_action('admin_enqueue_scripts', array( $this,'zwssgr_enqueue_admin_scripts'));
+			add_action('admin_enqueue_scripts', array( $this,'zwssgr_deactivate_hook'));
 			add_action('admin_footer', array( $this,'zwssgr_custom_deactivation_popup'));
 		}
 
@@ -198,15 +198,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		
 		}
 
-		function zwssgr_enqueue_admin_scripts($hook) {
+		function zwssgr_deactivate_hook($zwssgr_hook) {
 			// Ensure the script is only loaded on the plugins page
-			if ($hook === 'plugins.php') {
-				
-				// wp_register_script('zwssgr-admin-js', plugin_dir_url(__FILE__) . 'js/admin.js', ['jquery'], null, true);
-				// wp_enqueue_script('zwssgr-admin-js');
-				
-				// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', false, ZWSSGR_VERSION );
-				// wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );	
+			if ($zwssgr_hook === 'plugins.php') {
 				
 				wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'ZWSSGR_Popup_Data', [
 					'nonce' => wp_create_nonce('zwssgr_deactivation_nonce'),
