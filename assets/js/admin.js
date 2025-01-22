@@ -1031,25 +1031,33 @@ jQuery(document).ready(function($) {
 
 	$("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (zwssgrEv) {
 
+		"use strict";
+		
 		zwssgrEv.preventDefault();
 		const zwssgrButton = $(this);
 		const zwssgrGmbDataType = zwssgrButton.data("fetch-type");
+		const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
 
-		$('#fetch-gmb-data .progress-bar').css('display', 'block');
-	
-		zwssgrButton.prop("disabled", true);
+		$('#fetch-gmb-data .progress-bar').addClass('active');
+		zwssgrButton.addClass('disabled');
+
 		zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
-	
-		zwssgrProcessBatch(zwssgrGmbDataType);
+
+		try {
+			zwssgrProcessBatch(zwssgrGmbDataType, null, null, zwssgrWidgetId, null, null, null, null);
+		} catch (error) {
+			console.error("Error processing batch:", error);
+		}
 
 	});
 	
 	$("#fetch-gmb-auth-url").on("click", function (zwssgrEv) {
-		
+		"use strict";
+	
 		zwssgrEv.preventDefault();
-
-		$("#fetch-gmb-auth-url").prop('disabled', true);
-		$("#fetch-gmb-auth-url").html("Connecting...");
+		const zwssgrAuthButton 	 = $("#fetch-gmb-auth-url");
+		const zwssgrAuthResponse = $("#fetch-gmb-auth-url-response");
+		zwssgrAuthButton.prop('disabled', true).html("Connecting...");
 
 		$.ajax({
 			url: zwssgr_admin.ajax_url,
@@ -1059,42 +1067,32 @@ jQuery(document).ready(function($) {
 				action: "zwssgr_fetch_oauth_url"
 			},
 			success: function (response) {
-
 				if (response.success) {
-					
-					$("#fetch-gmb-auth-url").prop('disabled', false);
-					$("#fetch-gmb-auth-url").html("Redirecting...");
-
-					// Redirect to the OAuth URL
+					zwssgrAuthButton.prop('disabled', false).html("Redirecting...");
 					window.location.href = response.data.zwssgr_oauth_url;
-
 				} else {
-
-					$("#fetch-gmb-auth-url-response").html("<p class='error response''>Error generating OAuth URL: " + (response.data?.message || "Unknown error") + "</p>");
-
+					const errorMessage = $("<p>")
+						.addClass("error response")
+						.text("Error generating OAuth URL: " + (response.data?.message || "Unknown error"));
+					zwssgrAuthResponse.html(errorMessage);
 				}
 			},
 			error: function (xhr, status, error) {
-
-				$("#fetch-gmb-auth-url").prop('disabled', false);
-				$("#fetch-gmb-auth-url").html("Connect with Google");
-
-				// Log and alert errors
-				$("#fetch-gmb-auth-url-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
-				
+				zwssgrAuthButton.prop('disabled', false).html("Connect with Google");
+				const unexpectedError = $("<p>")
+					.addClass("error response")
+					.text("An unexpected error occurred: " + error);
+				zwssgrAuthResponse.html(unexpectedError);
 			}
 		});
-		
+	
 	});
 
 	$("#disconnect-gmb-auth #disconnect-auth").on("click", function (zwssgrEv) {
 		
 		zwssgrEv.preventDefault();
-
 		$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', true);
 		$("#disconnect-gmb-auth #disconnect-auth").html("Disconnecting...");
-
-		// Get the checkbox value
 		var zwssgrDeletePluginData = $('#disconnect-gmb-auth #delete-all-data').prop('checked') ? '1' : '0';
 
 		$.ajax({
@@ -1135,8 +1133,6 @@ jQuery(document).ready(function($) {
 
 				$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
 				$("#disconnect-gmb-auth #disconnect-auth").html("Disconnect");
-
-				// Log and alert errors
 				$("#disconnect-gmb-auth-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
 				
 			}
