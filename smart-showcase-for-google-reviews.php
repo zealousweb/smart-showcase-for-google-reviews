@@ -10,7 +10,6 @@
  * Author URI: https://www.zealousweb.com/
  * License: GPLv3 or later
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
- * Update URI: https://wordpress.org/plugins/smart-showcase-for-google-reviews/ 
  * Text Domain: smart-showcase-for-google-reviews
  * Domain Path: /languages
  * 

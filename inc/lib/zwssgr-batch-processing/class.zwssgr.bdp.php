@@ -348,29 +348,50 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
         */
         protected function zwssgr_download_review_image($zwssgr_review_dp_url, $zwssgr_save_path) {
 
-            // Fetch image data
-            $zwssgr_review_image_data = file_get_contents($zwssgr_review_dp_url);
+            $zwssgr_response = wp_remote_get($zwssgr_review_dp_url);
 
-            // Check if the image was downloaded successfully
-            if ($zwssgr_review_image_data === false) {
-                $this->zwssgr_debug_function("BDP: Unable to download the image from URL: " . $zwssgr_review_dp_url . " for Widget ID " . $this->$zwssgr_widget_id  . ' & current index ' . $this->zwssgr_current_index);
+            if (is_wp_error($zwssgr_response)) {
+
+                $this->zwssgr_debug_function("BDP: Unable to download the image from URL: " . $zwssgr_review_dp_url . " for Widget ID " . $this->zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
+
                 return array(
                     'success' => false,
-                    'data'    => array (
+                    'data'    => array(
                         'error'   => 'failed_to_download_image',
-                        'message'  => 'Failed to download image from specified path'
+                        'message' => 'Failed to download image from specified path'
                     ),
                 );
+
             }
 
+            $zwssgr_review_image_data = wp_remote_retrieve_body($response);
+
+            if (empty($zwssgr_review_image_data)) {
+
+                $this->zwssgr_debug_function("BDP: Received empty image data from URL: " . $zwssgr_review_dp_url . " for Widget ID " . $this->zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
+
+                return array(
+                    'success' => false,
+                    'data'    => array(
+                        'error'   => 'invalid_image_data',
+                        'message' => 'Received empty image data from the specified path'
+                    ),
+                );
+
+            }
+
+            // Check if the save path's directory exists, create it if not
             $zwssgr_temp_directory = dirname($zwssgr_save_path);
 
             if (!is_dir($zwssgr_temp_directory)) {
                 wp_mkdir_p($zwssgr_temp_directory);
             }
 
-            // Save the image data to the file system
-            $zwssgr_put_image_content = file_put_contents($zwssgr_save_path, $zwssgr_review_image_data);
+            if ( $wp_filesystem->put_contents( $zwssgr_save_path, $zwssgr_review_image_data, FS_CHMOD_FILE ) ) {
+                $this->zwssgr_debug_function("Image saved successfully to: " . $zwssgr_save_path);
+            } else {
+                $this->zwssgr_debug_function("Failed to save image to: " . $zwssgr_save_path);
+            }
 
             if ($zwssgr_put_image_content === false) {
 
