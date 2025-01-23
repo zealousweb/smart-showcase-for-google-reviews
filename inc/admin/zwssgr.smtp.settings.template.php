@@ -12,11 +12,11 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-	$zwssgr_message = $zwssgr_message_smtp = $zwssgr_debug_msg = $zwssgr_success = '';
-	$zwssgr_custom_error = array();
-	$zwssgr_smtp_option = get_option( 'zwssgr_smtp_option' );
+	$zwssgr_message 	   = $zwssgr_message_smtp = $zwssgr_debug_msg = $zwssgr_success = '';
+	$zwssgr_custom_error   = array();
+	$zwssgr_smtp_option    = get_option( 'zwssgr_smtp_option' );
 	$zwssgr_general_option = get_option( 'zwssgr_general_option' );
-	$zwssgr_smtp_option = is_array($zwssgr_smtp_option) ? $zwssgr_smtp_option : []; 
+	$zwssgr_smtp_option    = is_array($zwssgr_smtp_option) ? $zwssgr_smtp_option : []; 
 	
 	if (!is_array($zwssgr_smtp_option)) {
 		$zwssgr_smtp_option = [];
@@ -48,7 +48,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		$zwssgr_ret = array();
 
 		try {
+
 			$zwssgr_smtp_opt = get_option('zwssgr_smtp_option',[]);
+			
 			if(!empty($zwssgr_smtp_opt)){
 				$zwssgr_charset       = get_bloginfo( 'charset' );
 				$zwssgr_mail->CharSet = $zwssgr_charset;
@@ -144,10 +146,10 @@ if ( !defined( 'ABSPATH' ) ) exit;
 		}
 		
 		$zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] = isset( $_POST['zwssgr_admin_smtp_enabled'] ) && sanitize_text_field(wp_unslash($_POST['zwssgr_admin_smtp_enabled'] ) ) == '1' ? 1 : 0;
-		$zwssgr_smtp_option['zwssgr_from_name'] = isset( $_POST['zwssgr_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_from_name'] ) ) : '';
-		$zwssgr_smtp_option['zwssgr_smtp_host'] = isset( $_POST['zwssgr_smtp_host'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_host'] ) ) : '';
-		$zwssgr_smtp_option['zwssgr_smtp_ency_type'] = isset( $_POST['zwssgr_smtp_ency_type'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_ency_type'] ) ) : 'none';
-		$zwssgr_smtp_option['zwssgr_smtp_auth'] = isset( $_POST['zwssgr_smtp_auth'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_auth'] ) ) : 'no';
+		$zwssgr_smtp_option['zwssgr_from_name'] 		 = isset( $_POST['zwssgr_from_name'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_from_name'] ) ) : '';
+		$zwssgr_smtp_option['zwssgr_smtp_host'] 		 = isset( $_POST['zwssgr_smtp_host'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_host'] ) ) : '';
+		$zwssgr_smtp_option['zwssgr_smtp_ency_type'] 	 = isset( $_POST['zwssgr_smtp_ency_type'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_ency_type'] ) ) : 'none';
+		$zwssgr_smtp_option['zwssgr_smtp_auth'] 		 = isset( $_POST['zwssgr_smtp_auth'] ) ? sanitize_text_field( wp_unslash( $_POST['zwssgr_smtp_auth'] ) ) : 'no';
 
 		
 		$zwssgr_smtp_option['zwssgr_smtp_port']	= '25';
@@ -184,7 +186,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
 			$zwssgr_smtp_option['zwssgr_admin_smtp_enabled'] = 0;
 			update_option( 'zwssgr_smtp_option', '');
 		}
+		
 		update_option('zwssgr_admin_smtp_enabled', $zwssgr_smtp_option['zwssgr_admin_smtp_enabled']);
+
 	}
 
 	if( !empty( $zwssgr_message_smtp ) )  { ?>

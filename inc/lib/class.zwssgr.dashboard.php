@@ -141,8 +141,8 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 $zwssgr_range_dates = explode(' - ', $zwssgr_range_filter_data);
                 $zwssgr_start_date  = $zwssgr_range_dates[0]; 
                 $zwssgr_end_date    = isset($zwssgr_range_dates[1]) ? $zwssgr_range_dates[1] : ''; 
-                $zwssgr_start_date = gmdate('Y-m-d', strtotime($zwssgr_start_date));
-                $zwssgr_end_date = gmdate('Y-m-d', strtotime($zwssgr_end_date));
+                $zwssgr_start_date  = gmdate('Y-m-d', strtotime($zwssgr_start_date));
+                $zwssgr_end_date    = gmdate('Y-m-d', strtotime($zwssgr_end_date));
                 $zwssgr_data_render_args['date_query'] = array(
                     'relation' => 'AND',
                     array(
@@ -218,7 +218,9 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 'reviews'  => $zwssgr_total_reviews,
                 'ratings'  => $zwssgr_average_rating
             );
+
             return $zwssgr_reviews_ratings;
+
         }
 
         public function zwssgr_total_reviews($zwssgr_data_render_args) {
@@ -238,6 +240,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     <p class="zwssgr-card-value">' . esc_html( number_format( $zwssgr_reviews_ratings['reviews'] ) ) . '</p>
                 </div>
             </div>';
+
         }
 
         public function zwssgr_average_ratings($zwssgr_data_render_args) {
@@ -257,6 +260,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     <p class="zwssgr-card-value">' . esc_html( $zwssgr_reviews_ratings['ratings'] ) . '</p> <!-- Ensure to define $average_rating in your function -->
                 </div>
             </div>';
+
         }
 
         public function zwssgr_date_range_filter() {
@@ -323,13 +327,15 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
                     <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews').'</option>';
                     foreach ($zwssgr_request_data as $zwssgr_widget_id) {
-                        $zwssgr_account_number = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
-                        $zwssgr_account_name   = get_the_title($zwssgr_widget_id);
+                        $zwssgr_account_number      = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
+                        $zwssgr_account_name        = get_the_title($zwssgr_widget_id);
                         $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
                     }
                 $zwssgr_data_filter_output .= '</select>
             </div>';
+            
             return $zwssgr_data_filter_output;
+
         }        
 
         public function zwssgr_top_reviews($zwssgr_data_render_args) {
@@ -486,6 +492,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
             $zwssgr_output .= '</div>
             </div>';
+
             return $zwssgr_output;
         }        
         
@@ -560,6 +567,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
         
             // Check if the custom field has a value
             if ($zwssgr_account_locations) {
+                
                 $zwssgr_output .= '<select id="zwssgr-location-select" name="zwssgr_location" class="zwssgr-input-text zwssgr-location-select">';
                 $zwssgr_output .= '<option value="">'. esc_html__('Select a Location', 'smart-showcase-for-google-reviews').'</option>';
                 
@@ -569,6 +577,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim(strrchr($zwssgr_account_location['name'], '/'), '/') : '';
                     $zwssgr_output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($zwssgr_location_title) . '</option>';
                 }
+
                 $zwssgr_output .= '</select>';
             }
 
@@ -604,7 +613,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 ['4 Stars', $zwssgr_ratings_count['FOUR']],
                 ['3 Stars', $zwssgr_ratings_count['THREE']],
                 ['2 Stars', $zwssgr_ratings_count['TWO']],
-                ['1 Star', $zwssgr_ratings_count['ONE']],
+                ['1 Star',  $zwssgr_ratings_count['ONE']],
             ];
             return $zwssgr_chart_data;
         }
