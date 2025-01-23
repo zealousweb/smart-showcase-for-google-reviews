@@ -156,8 +156,23 @@ Installing the plugin is easy. Just follow these steps:
 
 == Screenshots ==
 
-1. Smart Showcase for Google Reviews
-2. Displayed Google Reviews on a website.
+1. Connect your Google account to seamlessly fetch and google reviews, enhancing your credibility and customer trust.
+2. Display total reviews, average rating, and provide filtering options.
+3. Create customizable widgets to display reviews on your website.
+4. Configure fetched data for widgets to control what and how reviews are displayed.
+5. Slider: google reviews in an interactive slider format.
+6. Grid: Arrange reviews in a structured grid layout. 
+7. List: Display reviews in a simple, vertical list format.
+8. Badge: Highlight reviews in a compact, eye-catching badge.
+9. Popup: Use a popup design to display reviews dynamically.
+10. Customize widget appearance and functionality with detailed settings.
+11. Generate shortcodes to easily embed widgets and reviews anywhere on your site.
+12. Provide an organized listing of all reviews for easy browsing and management.
+13. Options to connect or disconnect your Google account directly from the plugin.
+14. Optimize reviews for search engines and set up notifications for new reviews or updates.
+15. Sync reviews periodically or on demand for real-time updates.
+16. Configure SMTP settings for seamless email functionality.
+17. Send test emails to ensure email notifications and integrations work properly.
 
 == Changelog ==
 
