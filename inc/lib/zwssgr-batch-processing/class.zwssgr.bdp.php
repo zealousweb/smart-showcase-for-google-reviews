@@ -106,7 +106,22 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
                 foreach ($zwssgr_gmb_data['accounts'] as $zwssgr_account) {
 
-                    $zwssgr_gmb_email = get_option('zwssgr_gmb_email');
+                    $zwssgr_gmb_email            = get_option('zwssgr_gmb_email');
+                    $zwssgr_account_name         = isset($zwssgr_account['name']) ? sanitize_text_field($zwssgr_account['name']) : '';
+                    $this->zwssgr_account_number = $zwssgr_account_name ? ltrim(strrchr($zwssgr_account_name, '/'), '/') : '';
+
+                    $zwssgr_existing_post_query = new WP_Query(array(
+                        'post_type'   => 'zwssgr_request_data',
+                        'title'       => sanitize_text_field($zwssgr_account['accountName']),
+                        'meta_query'  => array(
+                            array(
+                                'key'     => 'zwssgr_account_number',
+                                'value'   => strval($this->zwssgr_account_number),
+                                'compare' => '='
+                            )
+                        ),
+                        'posts_per_page' => 1
+                    ));
 
                     $zwssgr_request_data = array(
                         'post_title'   => sanitize_text_field($zwssgr_account['accountName']),
@@ -115,16 +130,11 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'post_type'    => 'zwssgr_request_data',
                         'post_name'    => sanitize_title($zwssgr_account['name']),
                         'meta_input'   => array(
-                            'zwssgr_gmb_email'   => $zwssgr_gmb_email
+                            'zwssgr_account_number' => strval($this->zwssgr_account_number),
                         ),
                     );
 
-                    $zwssgr_existing_posts       = get_posts($zwssgr_request_data);
-                    $zwssgr_existing_posts       = !empty($zwssgr_existing_posts) ? $zwssgr_existing_posts[0] : null;
-                    $zwssgr_account_name         = isset($zwssgr_account['name']) ? sanitize_text_field($zwssgr_account['name']) : '';
-                    $this->zwssgr_account_number = $zwssgr_account_name ? ltrim(strrchr($zwssgr_account_name, '/'), '/') : '';
-                    
-                    if ($zwssgr_existing_post) {
+                    if ($zwssgr_existing_post_query->have_posts()) {
                         
                         // Update existing post
                         $zwssgr_request_data['ID'] = $zwssgr_existing_post->ID;
@@ -137,7 +147,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         }
 
                         // Update the account number for the existing post
-                        update_post_meta($zwssgr_existing_post->ID, 'zwssgr_account_number', $this->zwssgr_account_number);
+                        update_post_meta($zwssgr_existing_post->ID, 'zwssgr_gmb_email', $zwssgr_gmb_email);
 
                     } else {
                         // Create a new post
@@ -149,7 +159,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                             $this->zwssgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->$zwssgr_widget_id);
                         } else {
                             // Add the account number for the new post
-                            update_post_meta($zwssgr_insert_account, 'zwssgr_account_number', $this->zwssgr_account_number);
+                            update_post_meta($zwssgr_insert_account, 'zwssgr_gmb_email', $zwssgr_gmb_email);
                         }
                     }
                 }
