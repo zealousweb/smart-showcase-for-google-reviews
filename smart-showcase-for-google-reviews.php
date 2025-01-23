@@ -5,7 +5,7 @@
  * Description: The Smart Showcase for Google Reviews enables users to easily embed Google Reviews on your WordPress site.
  * Version: 1.0.0
  * Requires at least: 5.8
- * Requires PHP: 5.8
+ * Requires PHP: 7.0
  * Author: ZealousWeb
  * Author URI: https://www.zealousweb.com/
  * License: GPLv3 or later
