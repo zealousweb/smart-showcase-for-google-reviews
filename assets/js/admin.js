@@ -1040,7 +1040,6 @@ jQuery(document).ready(function($) {
 
 		$('#fetch-gmb-data .progress-bar').addClass('active');
 		zwssgrButton.addClass('disabled');
-
 		zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
 
 		try {
@@ -1234,11 +1233,10 @@ jQuery(document).ready(function($) {
 	}
 
 	$("#fetch-gmb-data #zwssgr-account-select").on("change", function () {
-
 		"use strict";
 	
 		const zwssgrAccountNumber = $(this).val();
-		const zwssgrAccountName = $(this).find("option:selected").text();
+		const zwssgrAccountName   = $(this).find("option:selected").text();
 		const zwssgrDataContainer = $("#fetch-gmb-data");
 	
 		zwssgrDataContainer.find("#zwssgr-location-select, .zwssgr-submit-btn, #fetch-gmd-reviews").remove();
