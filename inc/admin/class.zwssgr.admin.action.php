@@ -224,14 +224,14 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div class="zwssgr-plugin-caution-div">
 										<input type="checkbox" id="zwssgr-delete-plugin-data" name="zwssgr_delete_plugin_data" class="zwssgr-delete-plugin-data">
 										<label for="zwssgr-delete-plugin-data">
-											<?php esc_html_e('Caution: Check this box to permanently delete all data.', 'smart-showcase-for-google-reviews'); ?>
+											<?php esc_html_e('Attention: Select this box to permanently delete all data.', 'smart-showcase-for-google-reviews'); ?>
 										</label>
 									</div>
 									<div class="zwssgr-plugin-danger-note">
-										<?php esc_html_e('This action cannot be undone. Ensure you want to proceed.', 'smart-showcase-for-google-reviews'); ?>
+										<?php esc_html_e('This action is irreversible. Please double-check before proceeding.', 'smart-showcase-for-google-reviews'); ?>
 									</div>
-									<a href="javascript:void(0);" class="button button-danger" id="zwssgr-plugin-confirm-deactivate"><?php esc_html_e('Deactivate', 'smart-showcase-for-google-reviews'); ?></a>
-									<a href="javascript:void(0);" class="button" id="zwssgr-plugin-cancel-deactivate"><?php esc_html_e('Cancel', 'smart-showcase-for-google-reviews'); ?></a>
+									<span class="zwssgr-btn button-danger" id="zwssgr-plugin-confirm-deactivate"><?php esc_html_e('Deactivate', 'smart-showcase-for-google-reviews'); ?></span>
+									<span class="zwssgr-btn" id="zwssgr-plugin-cancel-deactivate"><?php esc_html_e('Cancel', 'smart-showcase-for-google-reviews'); ?></span>
 								</div>
 							</div>
 						</div>
