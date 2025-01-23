@@ -131,6 +131,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'post_name'    => sanitize_title($zwssgr_account['name']),
                         'meta_input'   => array(
                             'zwssgr_account_number' => strval($this->zwssgr_account_number),
+                            'zwssgr_gmb_email'      => sanitize_email($zwssgr_gmb_email)
                         ),
                     );
 
@@ -146,9 +147,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                             $this->zwssgr_debug_function("BDP: Failed to update account ID {$zwssgr_existing_post->ID}: for Widget ID " . $this->$zwssgr_widget_id . ' Unknown error ');
                         }
 
-                        // Update the account number for the existing post
-                        update_post_meta($zwssgr_existing_post->ID, 'zwssgr_gmb_email', $zwssgr_gmb_email);
-
                     } else {
                         // Create a new post
                         $zwssgr_insert_account = wp_insert_post($zwssgr_request_data);
@@ -158,9 +156,8 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         } elseif ($zwssgr_insert_account == 0) {
                             $this->zwssgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->$zwssgr_widget_id);
                         } else {
-                            // Add the account number for the new post
-                            update_post_meta($zwssgr_insert_account, 'zwssgr_gmb_email', $zwssgr_gmb_email);
                         }
+                        
                     }
                 }
 
