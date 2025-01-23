@@ -193,6 +193,63 @@ input.zwssgr-input-text.zwssgr-shortcode-input {
     height: auto;
 }
 
+.zwssgr-plugin-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: none;
+}
+
+.zwssgr-plugin-popup-content {
+    background: #fff;
+    width: 450px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative;
+}
+
+.zwssgr-plugin-popup-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #1B1B1B;
+    font-family: 'Poppins', sans-serif;
+}
+.zwssgr-plugin-popup-body {
+    margin-top: 15px;
+}
+
+.zwssgr-plugin-caution-div {
+    margin-bottom: 15px;
+}
+
+.zwssgr-plugin-caution-div label {
+    font-size: 14px;
+    color: #1B1B1B;
+    font-family: 'Poppins', sans-serif;
+}
+
+.zwssgr-plugin-danger-note {
+    font-size: 14px;
+    color: #d9534f;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.zwssgr-plugin-popup .zwssgr-btn {
+    padding: 10px 15px;
+    display: inline-block;
+}
+
 /* End Of General Styles */
 
 /* ==========================================================================
@@ -1584,6 +1641,9 @@ input.zwssgr-radio {
     .zwssgr-tooltip-container {
         padding-left: 0;
         left: 100%;
+    }
+    .zwssgr-plugin-popup-content {
+        width: 80%;
     }
 }
 
