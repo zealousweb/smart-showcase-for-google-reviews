@@ -1,4 +1,130 @@
 "use strict";
+
+(function ($) {
+	"use strict";
+	function initSlickSlider() {
+		$('.zwssgr-slider-1').not('.slick-initialized').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			arrows: true,
+			dots: false,
+			adaptiveHeight: false,
+			responsive: [
+				{
+					breakpoint: 1200,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
+		$('.zwssgr-slider-2').not('.slick-initialized').slick({
+			infinite: true,
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			arrows: true,
+			dots: false,
+			responsive: [
+				{
+					breakpoint: 1200,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
+		$('.zwssgr-slider-3').not('.slick-initialized').slick({
+			infinite: true,
+			slidesToShow: 2,
+			slidesToScroll: 2,
+			arrows: true,
+			dots: false,
+			responsive: [
+				{
+					breakpoint: 1180,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
+		$('.zwssgr-slider-4').not('.slick-initialized').slick({
+			infinite: true,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			arrows: true,
+			dots: false,
+		});
+		$('.zwssgr-slider-5').not('.slick-initialized').slick({
+			infinite: true,
+			slidesToShow: 2,
+			slidesToScroll: 2,
+			arrows: true,
+			dots: false,
+			responsive: [
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
+		$('.zwssgr-slider-6').not('.slick-initialized').slick({
+			infinite: true,
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			arrows: true,
+			dots: false,
+			responsive: [
+				{
+					breakpoint: 1200,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
+	}
+
+	$(document).ready(function () {
+		initSlickSlider();
+	});
+
+	// Reinitialize Slick when Elementor updates preview
+	$(window).on('elementor/frontend/init', function () {
+		elementorFrontend.hooks.addAction('frontend/element_ready/global', function () {
+			initSlickSlider();
+		});
+	});
+})(jQuery);
+
 jQuery(document).ready(function($) {
 
 	// Bind click event to open popup
@@ -97,122 +223,6 @@ jQuery(document).ready(function($) {
         // Replace the trimmed content with the full content
         $parentParagraph.html(fullText);
     });
-
-
-    $('.zwssgr-slider-1').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		adaptiveHeight: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});
-
-    $('.zwssgr-slider-2').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});	 
-
-	$('.zwssgr-slider-3').slick({
-		infinite: true,
-		slidesToShow: 2,
-		slidesToScroll: 2,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1180,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});	
-
-	$('.zwssgr-slider-4').slick({
-		infinite: true,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		arrows: true,
-		dots: false,
-	});	
-
-	$('.zwssgr-slider-5').slick({
-		infinite: true,
-		slidesToShow: 2,
-		slidesToScroll: 2,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});	
-
-	$('.zwssgr-slider-6').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});
 
 	$(document).on('click', '.zwssgr-front-keywords-list  li', function () {
 		
