@@ -187,7 +187,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			async: false,  // Make the request synchronous
 			data: {
-				action: 'save_widget_data',
+				action: 'zwssgr_save_widget_data',
 				security: my_widget.nonce,
 				display_option: option,
 				layout_option: selectedLayout, // Send selected layout
@@ -319,7 +319,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			async: false,  // Make the request synchronous
 			data: {
-				action: 'save_widget_data',
+				action: 'zwssgr_save_widget_data',
 				security: my_widget.nonce,
 				layout_option: optionId,
 				display_option: displayOption, // The selected display option
@@ -742,7 +742,7 @@ jQuery(document).ready(function($) {
 		de: 'Mehr lesen',
 		it: 'Leggi di più',
 		pt: 'Leia mais',
-		ru: 'Читать далее',
+		ru: 'Читать дальше',
 		zh: '阅读更多',
 		ja: '続きを読む',
 		hi: 'और पढ़ें',
@@ -751,7 +751,7 @@ jQuery(document).ready(function($) {
 		tr: 'Daha fazla oku',
 		bn: 'আরও পড়ুন',
 		ms: 'Baca lagi',
-		nl: 'Lees meer',
+		nl: 'Lees verder',
 		pl: 'Czytaj więcej',
 		sv: 'Läs mer',
 		th: 'อ่านเพิ่มเติม',
@@ -843,6 +843,11 @@ jQuery(document).ready(function($) {
 		// Loop through each content block and update the Read more link with the new language
 		$('.zwssgr-content').each(function () {
 			let $this = $(this);
+			let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
+			// Store original full text if not already stored
+			if (!$this.data('full-text')) {
+				$this.data('full-text', fullText);
+			}
 			updateReadMoreLink($this, lang);
 		});
 	});
@@ -987,7 +992,7 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			async: false,  // Make the request synchronous
 			data: {
-				action: 'save_widget_data',
+				action: 'zwssgr_save_widget_data',
 				security: my_widget.nonce,
 				post_id: postId,
 				display_option: displayOption,
@@ -1024,22 +1029,24 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (e) {
-		e.preventDefault();
-		const zwssgr_button = $(this);
-		const zwssgr_gmb_data_type = zwssgr_button.data("fetch-type");
+	$("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (zwssgrEv) {
+
+		zwssgrEv.preventDefault();
+		const zwssgrButton = $(this);
+		const zwssgrGmbDataType = zwssgrButton.data("fetch-type");
 
 		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
-		zwssgr_button.prop("disabled", true);
-		zwssgr_button.html('<span class="spinner is-active"></span> Fetching...');
+		zwssgrButton.prop("disabled", true);
+		zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
 	
-		processBatch(zwssgr_gmb_data_type);
+		zwssgrProcessBatch(zwssgrGmbDataType);
+
 	});
 	
-	$("#fetch-gmb-auth-url").on("click", function (e) {
+	$("#fetch-gmb-auth-url").on("click", function (zwssgrEv) {
 		
-		e.preventDefault();
+		zwssgrEv.preventDefault();
 
 		$("#fetch-gmb-auth-url").prop('disabled', true);
 		$("#fetch-gmb-auth-url").html("Connecting...");
@@ -1080,15 +1087,15 @@ jQuery(document).ready(function($) {
 		
 	});
 
-	$("#disconnect-gmb-auth #disconnect-auth").on("click", function (e) {
+	$("#disconnect-gmb-auth #disconnect-auth").on("click", function (zwssgrEv) {
 		
-		e.preventDefault();
+		zwssgrEv.preventDefault();
 
 		$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', true);
 		$("#disconnect-gmb-auth #disconnect-auth").html("Disconnecting...");
 
 		// Get the checkbox value
-		var zwssgr_delete_plugin_data = $('#disconnect-gmb-auth #delete-all-data').prop('checked') ? '1' : '0';
+		var zwssgrDeletePluginData = $('#disconnect-gmb-auth #delete-all-data').prop('checked') ? '1' : '0';
 
 		$.ajax({
 			url: zwssgr_admin.ajax_url,
@@ -1096,7 +1103,7 @@ jQuery(document).ready(function($) {
 			dataType: "json",
 			data: {
 				action: "zwssgr_delete_oauth_connection",
-				zwssgr_delete_plugin_data: zwssgr_delete_plugin_data,
+				zwssgr_delete_plugin_data: zwssgrDeletePluginData,
 				security: zwssgr_admin.zwssgr_delete_oauth_connection,
 			},
 			success: function (response) {
@@ -1136,47 +1143,43 @@ jQuery(document).ready(function($) {
 		});
 		
 	});
-
-	function zwssgr_validate_email(email) {
-		var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailPattern.test(email);
-	}
 	
-	$("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (e) {
-		e.preventDefault();
-		const zwssgr_button = $(this);
-		const zwssgr_gmb_data_type = zwssgr_button.data("fetch-type");
+	$("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (zwssgrEv) {
+
+		zwssgrEv.preventDefault();
+		const zwssgrButton = $(this);
+		const zwssgrGmbDataType = zwssgrButton.data("fetch-type");
 	
 		// Get selected account and location from the dropdowns
-		const zwssgr_account_number = $("#fetch-gmb-data #zwssgr-account-select").val();
+		const zwssgrAccountNumber = $("#fetch-gmb-data #zwssgr-account-select").val();
 		$("#fetch-gmb-data #zwssgr-account-select").addClass('disabled');
 
-		const zwssgr_account_name = $(
+		const zwssgrAccountName = $(
 			"#fetch-gmb-data #zwssgr-account-select option:selected"
 		).text();
 
-		const zwssgr_location_number = $("#fetch-gmb-data #zwssgr-location-select").val();
+		const zwssgrLocationNumber = $("#fetch-gmb-data #zwssgr-location-select").val();
 
-		const zwssgr_location_name = $(
+		const zwssgrLocationName = $(
 			"#fetch-gmb-data #zwssgr-location-select option:selected"
 		).text();
 
-		const zwssgr_location_new_review_uri = $(
+		const zwssgrLocationNewReviewUri = $(
 			"#fetch-gmb-data #zwssgr-location-select option:selected"
 		).attr("data-new-review-url");
 
-		const zwssgr_location_all_review_uri = $(
+		const zwssgrLocationAllReviewUri = $(
 			"#fetch-gmb-data #zwssgr-location-select option:selected"
 		).attr("data-all-reviews-url");
 		
 		$("#fetch-gmb-data #zwssgr-location-select").addClass('disabled');
 
-		const zwssgr_widget_id = zwssgr_getUrlParameter("zwssgr_widget_id");
+		const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
 
-		zwssgr_button.addClass("disabled");
-		zwssgr_button.html('<span class="spinner is-active"></span> Fetching...');
+		zwssgrButton.addClass("disabled");
+		zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
 
-		if (!zwssgr_account_number && !zwssgr_location_number) {
+		if (!zwssgrAccountNumber && !zwssgrLocationNumber) {
 			$('#fetch-gmb-data .response').html('<p class="error">Both account and location are required.</p>');
 			setTimeout(function() {
 				location.reload();
@@ -1184,7 +1187,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
-		if (!zwssgr_account_number) {
+		if (!zwssgrAccountNumber) {
 			$('#fetch-gmb-data .response').html('<p class="error"> Account is required. </p>');
 			setTimeout(function() {
 				location.reload();
@@ -1192,7 +1195,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
-		if (!zwssgr_location_number) {
+		if (!zwssgrLocationNumber) {
 			$('#fetch-gmb-data .response').html('<p class="error"> Location is required. </p>');
 			setTimeout(function() {
 				location.reload();
@@ -1200,7 +1203,7 @@ jQuery(document).ready(function($) {
 			return;
 		}
 
-		if (!zwssgr_widget_id) {
+		if (!zwssgrWidgetId) {
 			alert("Please select an approprite location.");
 			$('#fetch-gmb-data .response').html('<p class="error"> No valid widget ID found. </p>');
 			setTimeout(function() {
@@ -1213,102 +1216,103 @@ jQuery(document).ready(function($) {
 
 		$('#fetch-gmb-data .progress-bar').css('display', 'block');
 	
-		processBatch(
-			zwssgr_gmb_data_type,
-			zwssgr_account_number,
-			zwssgr_location_number,
-			zwssgr_widget_id,
-			zwssgr_location_name,
-			zwssgr_location_new_review_uri,
-			zwssgr_account_name,
-			zwssgr_location_all_review_uri
+		zwssgrProcessBatch(
+			zwssgrGmbDataType,
+			zwssgrAccountNumber,
+			zwssgrLocationNumber,
+			zwssgrWidgetId,
+			zwssgrLocationName,
+			zwssgrLocationNewReviewUri,
+			zwssgrAccountName,
+			zwssgrLocationAllReviewUri
 		);
+		
 	});
 	
 	  // Function to get URL parameter by name
-	function zwssgr_getUrlParameter(name) {
-		const urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get(name);
+	function zwssgrGetUrlParameter(zwssgrName) {
+		const zwssgrUrlParams = new URLSearchParams(window.location.search);
+		return zwssgrUrlParams.get(zwssgrName);
 	}
 	
 	  // Listen for changes in the account dropdown and process batch if changed
 	$("#fetch-gmb-data #zwssgr-account-select").on("change", function () {
-		const zwssgr_account_number = $(this).val();
-		const zwssgr_account_name = $(this).find("option:selected").text();
+		
+		const zwssgrAccountNumber = $(this).val();
+		const zwssgrAccountName = $(this).find("option:selected").text();
+
 		$("#fetch-gmb-data #zwssgr-location-select").remove();
 		$("body #fetch-gmb-data .zwssgr-submit-btn").remove();
 		
-		if (zwssgr_account_number) {
+		if (zwssgrAccountNumber) {
 
-		  // Add loading spinner and disable the dropdown to prevent multiple selections
 			$(this).prop("disabled", true);
 			$("#fetch-gmb-data #zwssgr-location-select").remove();
 			$("#fetch-gmb-data #fetch-gmd-reviews").remove();
 		
-			const zwssgr_widget_id = zwssgr_getUrlParameter("zwssgr_widget_id");
+			const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
 			
 			$('#fetch-gmb-data .response').html('');
 			$('#fetch-gmb-data .progress-bar').css('display', 'block');
 		
 			// Assuming 'zwssgr_gmb_locations' as the data type for fetching locations on account change
-			processBatch(
-			"zwssgr_gmb_locations",
-			zwssgr_account_number,
-			null,
-			zwssgr_widget_id,
-			null,
-			null,
-			zwssgr_account_name
+			zwssgrProcessBatch(
+				"zwssgr_gmb_locations",
+				zwssgrAccountNumber,
+				null,
+				zwssgrWidgetId,
+				null,
+				null,
+				zwssgrAccountName
 			);
+
 		}		
 
 	});
 	
-	function processBatch(
-	zwssgr_gmb_data_type,
-	zwssgr_account_number,
-	zwssgr_location_number,
-	zwssgr_widget_id,
-	zwssgr_location_name,
-	zwssgr_location_new_review_uri,
-	zwssgr_account_name,
-	zwssgr_location_all_review_uri
+	function zwssgrProcessBatch(
+		zwssgrGmbDataType,
+		zwssgrAccountNumber,
+		zwssgrLocationNumber,
+		zwssgrWidgetId,
+		zwssgrLocationName,
+		zwssgrLocationNewReviewUri,
+		zwssgrAccountName,
+		zwssgrLocationAllReviewUri
 	) {
 		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: "POST",
-			dataType: "json",
-			data: {
-			action: "zwssgr_fetch_gmb_data",
-			security: zwssgr_admin.zwssgr_queue_manager_nounce,
-			zwssgr_gmb_data_type: zwssgr_gmb_data_type,
-			zwssgr_account_number: zwssgr_account_number,
-			zwssgr_location_number: zwssgr_location_number,
-			zwssgr_widget_id: zwssgr_widget_id,
-			zwssgr_location_name: zwssgr_location_name,
-			zwssgr_location_new_review_uri: zwssgr_location_new_review_uri,
-			zwssgr_account_name: zwssgr_account_name,
-			zwssgr_location_all_review_uri: zwssgr_location_all_review_uri
+				url: zwssgr_admin.ajax_url,
+				type: "POST",
+				dataType: "json",
+				data: {
+				action: "zwssgr_fetch_gmb_data",
+				security: zwssgr_admin.zwssgr_queue_manager_nounce,
+				zwssgr_gmb_data_type: zwssgrGmbDataType,
+				zwssgr_account_number: zwssgrAccountNumber,
+				zwssgr_location_number: zwssgrLocationNumber,
+				zwssgr_widget_id: zwssgrWidgetId,
+				zwssgr_location_name: zwssgrLocationName,
+				zwssgr_location_new_review_uri: zwssgrLocationNewReviewUri,
+				zwssgr_account_name: zwssgrAccountName,
+				zwssgr_location_all_review_uri: zwssgrLocationAllReviewUri
 			},
 			success: function (response) {
 
-			if (response.success) {
-				$('#fetch-gmb-data .progress-bar').stop(true, true).fadeIn();
-			} else {
-				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
-				// Reload the page after a 1-second delay
-				setTimeout(function() {
-					location.reload();
-				}, 1500);
-			}
+				if (response.success) {
+					$('#fetch-gmb-data .progress-bar').stop(true, true).fadeIn();
+				} else {
+					$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
+					// Reload the page after a 1-second delay
+					setTimeout(function() {
+						location.reload();
+					}, 1500);
+				}
 
 			},
 			error: function (xhr, status, error) {
 			
 			// Catch errors sent using wp_send_json_error
 			let response = xhr.responseJSON;
-
-			console.log(response, 'response');
 
 			if (response && !response.success) {
 				$('#fetch-gmb-data .response').html('<p class="error">' + response.data.message + '</p>');
@@ -1322,31 +1326,27 @@ jQuery(document).ready(function($) {
 			},
 		});
 
-		// batchInterval = setInterval(function() {
-		// 	checkBatchStatus();
-		// }, 1000);
-
 	}
 
-	  // Check if we're on the specific page URL that contains zwssgr_widget_id dynamically
+	// Check if we're on the specific page URL that contains zwssgr_widget_id dynamically
 	if (window.location.href.indexOf('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data&zwssgr_widget_id=') !== -1) {
         // Call the function to check batch status
-		batchInterval = setInterval(function() {
-			checkBatchStatus();
+		zwssgrBatchInterval = setInterval(function() {
+			zwssgrCheckBatchStatus();
 		}, 2500);
 
 	}
 	
-	function checkBatchStatus() {
+	function zwssgrCheckBatchStatus() {
 
 		// Function to get URL parameters
-		function getUrlParameter(name) {
-			const urlParams = new URLSearchParams(window.location.search);
-			return urlParams.get(name);
+		function zwssgrGetUrlParameter(zwssgrName) {
+			const zwssgrUrlParams = new URLSearchParams(window.location.search);
+			return zwssgrUrlParams.get(zwssgrName);
 		}
 
-		// Capture 'zwssgr_widget_id' from the URL
-		const zwssgr_widget_id = getUrlParameter('zwssgr_widget_id');
+		// Capture 'zwssgrWidgetId' from the URL
+		const zwssgrWidgetId = zwssgrGetUrlParameter('zwssgr_widget_id');
 
 		$.ajax({
 			url: zwssgr_admin.ajax_url,
@@ -1354,112 +1354,95 @@ jQuery(document).ready(function($) {
 			data: {
 				action: "zwssgr_get_batch_processing_status",
 				security: zwssgr_admin.zwssgr_queue_manager_nounce,
-				zwssgr_widget_id: zwssgr_widget_id
+				zwssgr_widget_id: zwssgrWidgetId
 			},
 			success: function (response) {
-				if (response.success && response.data.zwgr_data_processing_init == 'false' && response.data.zwgr_data_sync_once == 'true') {
+
+				if (response.success && response.data.zwssgr_data_processing_init == 'false' && response.data.zwssgr_data_sync_once == 'true') {
 					
 					$('#fetch-gmb-data .progress-bar #progress').val(100);
 					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
 					$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
-
 					if (response.data.zwssgr_gmb_data_type == 'zwssgr_gmb_locations') {
-
 						$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
-
 					} else if (response.data.zwssgr_gmb_data_type == 'zwssgr_gmb_reviews') {
-
 						$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
 						$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
-
 					}
 					
 					setTimeout(function () {
 						$('#fetch-gmb-data .progress-bar').fadeOut();
 						if (response.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
-							redirectToOptionsTab();
+							zwssgrRedirectToOptionsTab();
 						} else {
 							location.reload();
 						}
 					}, 2000);
 
 				} else {
-					// Use the batch progress directly from the response
-					var zwssgr_batch_progress = response.data.zwssgr_batch_progress;
 
-					// Check if zwssgr_batch_progress is a valid number
+					var zwssgr_batch_progress = response.data.zwssgr_batch_progress;
 					if (!isNaN(zwssgr_batch_progress) && zwssgr_batch_progress >= 0 && zwssgr_batch_progress <= 100) {
-						
-						// Update the progress bar with the batch progress
 						$('#fetch-gmb-data .progress-bar #progress').val(zwssgr_batch_progress);
 						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwssgr_batch_progress) + '%');
-
-					} else {
-
-						console.error('Invalid batch progress:', zwssgr_batch_progress);
-						
+					} else {	
 					}
+
 				}
 			},
 			error: function (xhr, status, error) {
-				//console.error("Error:", error);
-				//console.error("Status:", status);
-				//console.error("Response:", xhr.responseText);
+
 			},
 		});
 	}
 
-	function redirectToOptionsTab() {
-		// Get the current URL
-		let currentUrl = window.location.href;
-		
-		// Replace or add the 'tab' parameter
-		if (currentUrl.includes('tab=')) {
-			currentUrl = currentUrl.replace(/tab=[^&]+/, 'tab=tab-options'); // Replace existing 'tab' value
+	function zwssgrRedirectToOptionsTab() {
+
+		let zwssgrCurrentUrl = window.location.href;
+		if (zwssgrCurrentUrl.includes('tab=')) {
+			zwssgrCurrentUrl = zwssgrCurrentUrl.replace(/tab=[^&]+/, 'tab=tab-options');
 		} else {
-			currentUrl += (currentUrl.includes('?') ? '&' : '?') + 'tab=tab-options'; // Add 'tab' if it doesn't exist
+			zwssgrCurrentUrl += (zwssgrCurrentUrl.includes('?') ? '&' : '?') + 'tab=tab-options';
 		}
-		
-		// Redirect to the modified URL
-		window.location.href = currentUrl;
+		window.location.href = zwssgrCurrentUrl;
 	}
 	
-	$("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (event) {
+	$("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (zwssgrEv) {
 	
-		event.preventDefault();
+		zwssgrEv.preventDefault();
 
 		// Get the value of the 'Reply Comment' from textarea
-		var zwssgr_reply_comment = $("#gmb-review-data textarea[name='zwssgr_reply_comment']").val();
+		var zwssgrReplyComment = $("#gmb-review-data textarea[name='zwssgr_reply_comment']").val();
 
-		if (zwssgr_reply_comment.trim() === "") {
+		if (zwssgrReplyComment.trim() === "") {
             $("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Please enter a valid reply.' + '</p></div>');
             return;
         }
 		
-		if (zwssgr_reply_comment.trim().length > 4086) {
+		if (zwssgrReplyComment.trim().length > 4086) {
 			$("#gmb-review-data #json-response-message").html('<div class="notice notice-error"><p>' + 'Reply cannot exceed 4086 characters.' + '</p></div>');
 			return;
 		}
 
-		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
-		var buttons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+		let zwssgrLoader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		let zwssgrButtons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
 
-		const urlParams = new URLSearchParams(window.location.search);
-		const zwssgr_wp_review_id = urlParams.get('post');
+		const zwssgrUrlParams = new URLSearchParams(window.location.search);
+		const zwssgrWpReviewId = zwssgrUrlParams.get('post');
 
 		$.ajax({
 			url: zwssgr_admin.ajax_url,
 			type: 'POST',
 			data: {
 				action: 'zwssgr_add_update_review_reply',
-				zwssgr_wp_review_id: zwssgr_wp_review_id,
-				zwssgr_reply_comment: zwssgr_reply_comment,
+				zwssgr_wp_review_id: zwssgrWpReviewId,
+				zwssgr_reply_comment: zwssgrReplyComment,
 				security: zwssgr_admin.zwssgr_add_update_reply_nonce
 			},
 			beforeSend: function() {
-				buttons.addClass('disabled');
+				zwssgrButtons.addClass('disabled');
 				$("#gmb-review-data textarea[name='zwssgr_reply_comment']").prop('readonly', true);
-				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(loader.clone());
+				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(zwssgrLoader.clone());
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1479,15 +1462,14 @@ jQuery(document).ready(function($) {
 	
 	});
 	
-	$("#gmb-review-data #delete-reply").on("click", function (event) {
+	$("#gmb-review-data #delete-reply").on("click", function (zwssgrEv) {
 		
-		event.preventDefault();
+		zwssgrEv.preventDefault();
 
-		var loader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
-		var buttons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-
-		const urlParams = new URLSearchParams(window.location.search);
-		const zwssgr_wp_review_id = urlParams.get('post');
+		let zwssgrLoader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
+		let zwssgrButtons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+		const zwssgrUrlParams = new URLSearchParams(window.location.search);
+		const zwssgrWpReviewId = zwssgrUrlParams.get('post');
 	
 		// Send AJAX request to handle the reply update
 		$.ajax({
@@ -1495,13 +1477,13 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwssgr_delete_review_reply',
-				zwssgr_wp_review_id: zwssgr_wp_review_id,
+				zwssgr_wp_review_id: zwssgrWpReviewId,
 				security: zwssgr_admin.zwssgr_delete_review_reply
 			},
 			beforeSend: function() {
-				buttons.addClass('disabled');
+				zwssgrButtons.addClass('disabled');
 				$("#gmb-review-data textarea[name='zwssgr_reply_comment']").prop('readonly', true);
-				$("#gmb-review-data #delete-reply").after(loader);
+				$("#gmb-review-data #delete-reply").after(zwssgrLoader);
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1521,12 +1503,10 @@ jQuery(document).ready(function($) {
 	
 	});
 
-	$("#gmb-data-filter #zwssgr-account-select").on("change", function (e) {
+	$("#gmb-data-filter #zwssgr-account-select").on("change", function (zwssgrEv) {
 
-		e.preventDefault();
-
-		// Get the selected value
-		var zwssgr_account_number = $(this).val();
+		zwssgrEv.preventDefault();
+		var zwssgrAccountNumber = $(this).val();
 		$(this).addClass('disabled');
 	
 		$.ajax({
@@ -1534,14 +1514,13 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwssgr_gmb_dashboard_data_filter',
-				zwssgr_account_number: zwssgr_account_number,
+				zwssgr_account_number: zwssgrAccountNumber,
 				security: zwssgr_admin.zwssgr_gmb_dashboard_filter
 			},
 			success: function(response) {
 				$('#gmb-data-filter #zwssgr-location-select').remove();
 				if (response.success) {
 					$('#gmb-data-filter').append(response.data);
-					//$("#gmb-data-filter #zwssgr-location-select").trigger('change');
 				}
 			},
 			complete: function() {
@@ -1551,43 +1530,46 @@ jQuery(document).ready(function($) {
 	
 	});
 
-	$(".zwgr-dashboard").on("change", "#zwssgr-account-select, #zwssgr-location-select", function (e) {
+	$(".zwgr-dashboard").on("change", "#zwssgr-account-select, #zwssgr-location-select", function (zwssgrEv) {
 
 		// Declare variables globally or in the appropriate scope
-		let zwssgr_range_filter_data = null;
-		let zwssgr_range_filter_type = null;
+		let zwssgrRangeFilterData = null;
+		let zwssgrRangeFilterType = null;
 
 		// Disable select inputs while processing
 		$('#zwssgr-account-select, #zwssgr-location-select').addClass('disabled').prop('disabled', true);
 
 		if ($('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button.active').length > 0) {
-			zwssgr_range_filter_type = 'rangeofdays';
-			zwssgr_range_filter_data = $('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button.active').text().trim().toLowerCase();
+			zwssgrRangeFilterType = 'rangeofdays';
+			zwssgrRangeFilterData = $('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button.active').text().trim().toLowerCase();
 		} else if ($('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"].active').length > 0) {
-			zwssgr_range_filter_type = 'rangeofdate';
-			zwssgr_range_filter_data = $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').val().trim();
+			zwssgrRangeFilterType = 'rangeofdate';
+			zwssgrRangeFilterData = $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').val().trim();
 		}
 
-		zwssgr_render_data_callback(e, zwssgr_range_filter_data, zwssgr_range_filter_type);
+		zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFilterType);
 
 	});
 
-	$(".zwgr-dashboard").on("click", ".zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button", function (e) {
-		var zwssgr_range_filter_data = $(this).text().trim().toLowerCase();
-		zwssgr_render_data_callback(e, zwssgr_range_filter_data, 'rangeofdays');
+	$(".zwgr-dashboard").on("click", ".zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button", function (zwssgrEv) {
+		
+		var zwssgrRangeFilterData = $(this).text().trim().toLowerCase();
+		zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdays');
+
 	});
 
-	$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+	$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').on('apply.daterangepicker', function(zwssgrEv, zwssgrPicker) {
 		
 		$('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button').removeClass('active');
 		$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').addClass('active');
 		
-		var zwssgr_start_date = picker.startDate ? picker.startDate.format('DD-MM-YYYY') : null;
-		var zwssgr_end_date = picker.endDate ? picker.endDate.format('DD-MM-YYYY') : null;
+		var zwssgrStartDate = zwssgrPicker.startDate ? zwssgrPicker.startDate.format('DD-MM-YYYY') : null;
+		var zwssgrEndDate   = zwssgrPicker.endDate   ? zwssgrPicker.endDate.format('DD-MM-YYYY') : null;
 
-		var zwssgr_range_filter_data = zwssgr_start_date && zwssgr_end_date ? zwssgr_start_date + ' - ' + zwssgr_end_date : null;
+		var zwssgrRangeFilterData = zwssgrStartDate && zwssgrEndDate ? zwssgrStartDate + ' - ' + zwssgrEndDate : null;
 
-		zwssgr_render_data_callback(ev, zwssgr_range_filter_data, 'rangeofdate');
+		zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
+
 	});
 
 	var zwssgr_chart;
@@ -1654,28 +1636,28 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	function zwssgr_render_data_callback(e, zwssgr_range_filter_data, zwssgr_range_filter_type) {
+	function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFilterType) {
 
-		e.preventDefault();
+		zwssgrEv.preventDefault();
 
 		var $zwssgr_chart_wrapper = $('#zwssgr_chart_wrapper').outerHeight(true);
 
-		var zwssgr_gmb_account_div = $("#gmb-data-filter #zwssgr-account-select");
-		var zwssgr_gmb_location_div = $("#gmb-data-filter #zwssgr-location-select");
+		var zwssgrGmbAccountDiv = $("#gmb-data-filter #zwssgr-account-select");
+		var zwssgrGmbLocationDiv = $("#gmb-data-filter #zwssgr-location-select");
 
-		if ($(e.target).is("#gmb-data-filter #zwssgr-location-select")) {
-			zwssgr_gmb_account_div.addClass('disabled');
-			zwssgr_gmb_location_div.addClass('disabled');
+		if ($(zwssgrEv.target).is("#gmb-data-filter #zwssgr-location-select")) {
+			zwssgrGmbAccountDiv.addClass('disabled');
+			zwssgrGmbLocationDiv.addClass('disabled');
 		}
 
-		var zwssgr_gmb_account_number   = zwssgr_gmb_account_div.val();
-		var zwssgr_gmb_account_location = zwssgr_gmb_location_div.val();
+		var zwssgrGmbAccountNumber   = zwssgrGmbAccountDiv.val();
+		var zwssgrGmbAccountLocation = zwssgrGmbLocationDiv.val();
 
-		var zwssgr_filter_data = {
-			zwssgr_gmb_account_number: zwssgr_gmb_account_number,
-			zwssgr_gmb_account_location: zwssgr_gmb_account_location,
-			zwssgr_range_filter_type: zwssgr_range_filter_type,
-			zwssgr_range_filter_data: zwssgr_range_filter_data
+		var zwssgrFilterData = {
+			zwssgr_gmb_account_number: zwssgrGmbAccountNumber,
+			zwssgr_gmb_account_location: zwssgrGmbAccountLocation,
+			zwssgr_range_filter_type: zwssgrRangeFilterType,
+			zwssgr_range_filter_data: zwssgrRangeFilterData
 		};
 	
 		$.ajax({
@@ -1683,13 +1665,13 @@ jQuery(document).ready(function($) {
 			type: 'POST',
 			data: {
 				action: 'zwssgr_data_render',
-				zwssgr_filter_data: zwssgr_filter_data,
+				zwssgr_filter_data: zwssgrFilterData,
 				security: zwssgr_admin.zwssgr_data_render
 			},
 			beforeSend: function() {
-				var minHeight = $('.zwgr-dashboard #render-dynamic').outerHeight(true) || 200;
+				var zwssgrMinHeight = $('.zwgr-dashboard #render-dynamic').outerHeight(true) || 200;
 				$('.zwgr-dashboard #render-dynamic').remove();
-				$('.zwgr-dashboard').append('<div class="loader-outer-wrapper" style="height:' + minHeight + 'px;"><div class="loader"></div></div>');	
+				$('.zwgr-dashboard').append('<div class="loader-outer-wrapper" style="height:' + zwssgrMinHeight + 'px;"><div class="loader"></div></div>');	
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1700,16 +1682,14 @@ jQuery(document).ready(function($) {
 							google.charts.setOnLoadCallback(zwssgr_draw_chart(response.data.zwssgr_chart_data));
 						}, 500);
 					}
-
 				} else {
 					$('.zwgr-dashboard ').html('<p>Error loading data.</p>');
 				}
 			},
 			complete: function() {
 				$('.zwgr-dashboard .loader-outer-wrapper').remove();
-				zwssgr_gmb_account_div.removeClass('disabled');
-				zwssgr_gmb_location_div.removeClass('disabled');
-				// Disable select inputs while processing
+				zwssgrGmbAccountDiv.removeClass('disabled');
+				zwssgrGmbLocationDiv.removeClass('disabled');
 				$('#zwssgr-account-select, #zwssgr-location-select').removeClass('disabled').prop('disabled', false);
 			},
 			error: function() {
@@ -1750,7 +1730,7 @@ jQuery(document).ready(function($) {
 
 	// Event listener for clicking on a star filter
 	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
-		let nonce = filter_reviews.nonce;
+		let nonce = zwssgr_filter_reviews.nonce;
 		let postId = getQueryParam('zwssgr_widget_id');
 		let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
 		let selectedOption = getQueryParam('selectedOption');
@@ -1778,9 +1758,9 @@ jQuery(document).ready(function($) {
 		// Make the AJAX request to filter reviews based on selected ratings
 		$.ajax({
 			type: 'POST',
-			url: filter_reviews.ajax_url,
+			url: zwssgr_filter_reviews.ajax_url,
 			data: {
-				action: 'filter_reviews', // The action for the PHP handler
+				action: 'zwssgr_filter_reviews', // The action for the PHP handler
 				zwssgr_widget_id: postId,
 				rating_filter: selectedRatings, // Pass the selected ratings array
 				sort_by: sortBy, // Pass sort by parameter
@@ -2092,5 +2072,55 @@ jQuery(document).ready(function($) {
 
 	$(document).on('change', '#zwssgr-account-select', function () {
 		$(this).closest('form').submit();
+	});
+
+
+	$(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
+		e.preventDefault(); // Prevent default action
+	
+		const deactivateUrl = $(this).attr('href'); // Get the deactivation URL from the link
+	
+		// Show the deactivation confirmation popup
+		$('#zwssgr-plugin-deactivation-popup').show();
+	
+		// Cancel Deactivation
+		$(document).off('click', '#zwssgr-plugin-cancel-deactivate').on('click', '#zwssgr-plugin-cancel-deactivate', function () {
+			$('#zwssgr-plugin-deactivation-popup').hide();
+		});
+	
+		// Confirm Deactivation
+		$(document).off('click', '#zwssgr-plugin-confirm-deactivate').on('click', '#zwssgr-plugin-confirm-deactivate', function () {
+			// Check if the "Delete Plugin Data" checkbox is checked
+			const zwssgrDeletePluginData = $('#zwssgr-delete-plugin-data').prop('checked') ? 1 : 0;
+	
+			if (zwssgrDeletePluginData) {
+				// Send AJAX request to delete plugin data if checkbox is checked
+				$.ajax({
+					url: zwssgr_admin.ajax_url,
+					type: "POST",
+					dataType: "json",
+					data: {
+						action: "zwssgr_delete_oauth_connection",
+						zwssgr_delete_plugin_data: zwssgrDeletePluginData,
+						security: zwssgr_admin.zwssgr_delete_oauth_connection,
+					},
+					success: function (response) {
+						// console.log("Data deletion response:", response);
+					},
+					error: function (xhr, status, error) {
+						// console.error("Data deletion failed:", error);
+					},
+					complete: function () {
+						// Proceed to deactivate the plugin after AJAX completes
+						$('#zwssgr-plugin-deactivation-popup').hide();
+						window.location.href = deactivateUrl;
+					}
+				});
+			} else {
+				// If checkbox is not checked, directly deactivate the plugin
+				$('#zwssgr-plugin-deactivation-popup').hide();
+				window.location.href = deactivateUrl;
+			}
+		});
 	});
 });

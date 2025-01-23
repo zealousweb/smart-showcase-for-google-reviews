@@ -22,17 +22,15 @@ if ( !class_exists( 'ZWSSGR_Admin_Filter' ) ) {
 
 		function __construct() 
 		{
-
 			add_filter('get_edit_post_link', array($this, 'zwssgr_change_edit_post_link'), 10, 2);
 			add_filter('post_row_actions', array($this, 'zwssgr_remove_quick_edit_from_widget_listings'), 10, 2);
 
-			add_filter('bulk_actions-edit-zwssgr_reviews', array($this, 'filter__remove_all_bulk_actions'));
-			add_filter('bulk_actions-edit-zwssgr_data_widget', array($this, 'filter__remove_all_bulk_actions'));
-			add_filter('months_dropdown_results', array($this,'my_remove_date_filter'));
+			add_filter('bulk_actions-edit-zwssgr_reviews', array($this, 'zwssgr_filter__remove_all_bulk_actions'));
+			add_filter('bulk_actions-edit-zwssgr_data_widget', array($this, 'zwssgr_filter__remove_all_bulk_actions'));
+			add_filter('months_dropdown_results', array($this,'zwssgr_my_remove_date_filter'));
 
-			add_filter('manage_edit-zwssgr_reviews_columns', array($this, 'remove_bulk_actions_checkbox'));
-			add_filter('manage_edit-zwssgr_data_widget_columns', array($this, 'remove_bulk_actions_checkbox'));
-
+			add_filter('manage_edit-zwssgr_reviews_columns', array($this, 'zwssgr_remove_bulk_actions_checkbox'));
+			add_filter('manage_edit-zwssgr_data_widget_columns', array($this, 'zwssgr_remove_bulk_actions_checkbox'));
 		}
 
 		/**
@@ -47,30 +45,29 @@ if ( !class_exists( 'ZWSSGR_Admin_Filter' ) ) {
 		{
 			// Fetch the full post object using the post ID
 			$zwssgr_post = get_post($zwssgr_post);
-		
+
 			// Check if the post type is 'zwssgr_data_widget'
 			if ($zwssgr_post && 'zwssgr_data_widget' === $zwssgr_post->post_type) {
 
 				// Get the account number from the custom post meta
 				$zwssgr_account_number = get_post_meta($zwssgr_post->ID, 'zwssgr_account_number', true);
 				$zwssgr_location_number = get_post_meta($zwssgr_post->ID, 'zwssgr_location_number', true);
-				$layout_option = get_post_meta($zwssgr_post->ID, 'layout_option', true);
-				$current_tab2 = get_post_meta($zwssgr_post->ID, 'tab-selected', true);
+				$zwssgr_layout_option = get_post_meta($zwssgr_post->ID, 'layout_option', true);
+				$zwssgr_current_tab2 = get_post_meta($zwssgr_post->ID, 'tab-selected', true);
 
 				// Check if both account and location numbers are empty
 				if (empty($zwssgr_account_number) || empty($zwssgr_location_number)) {
 					// Redirect to the 'fetch data' page if both account and location numbers are empty
 					$zwssgr_url = admin_url('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data&zwssgr_widget_id=' . $zwssgr_post->ID);
-				} else if (!$current_tab2) {
+				} else if (!$zwssgr_current_tab2) {
 					// Redirect to a specific page for setting the tab
-					$zwssgr_url = admin_url('admin.php?page=zwssgr_widget_configurator&tab=tab-options&selectedOption=' . $layout_option . '&zwssgr_widget_id=' . $zwssgr_post->ID);
+					$zwssgr_url = admin_url('admin.php?page=zwssgr_widget_configurator&tab=tab-options&selectedOption=' . $zwssgr_layout_option . '&zwssgr_widget_id=' . $zwssgr_post->ID);
 				}else {
 					// Redirect to the widget configurator page with the selected layout option if account and location numbers are not empty
-					$zwssgr_url = admin_url('admin.php?page=zwssgr_widget_configurator&tab=tab-selected&selectedOption=' . $layout_option . '&zwssgr_widget_id=' . $zwssgr_post->ID);
+					$zwssgr_url = admin_url('admin.php?page=zwssgr_widget_configurator&tab=tab-selected&selectedOption=' . $zwssgr_layout_option . '&zwssgr_widget_id=' . $zwssgr_post->ID);
 				}
 			
 			}
-		
 			return $zwssgr_url;
 		}
 
@@ -85,7 +82,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Filter' ) ) {
 		 * @return array Modified array of row actions.
 		 */
 		function zwssgr_remove_quick_edit_from_widget_listings($zwssgr_actions, $zwssgr_post) {
-
 			// Check if the post type is 'zwssgr_reviews'
 			if (in_array($zwssgr_post->post_type, ['zwssgr_reviews', 'zwssgr_data_widget'])) {
 				
@@ -95,48 +91,42 @@ if ( !class_exists( 'ZWSSGR_Admin_Filter' ) ) {
 				// Remove the 'Quick Edit' link
 				unset($zwssgr_actions['inline hide-if-no-js']);
 			}
-			
 			return $zwssgr_actions;
-			
 		}
 
-		
-		function filter__remove_all_bulk_actions($actions) {
+		function zwssgr_filter__remove_all_bulk_actions($zwssgr_actions) {
 			// Check if the current screen is the list table for your custom post type
 			if (get_current_screen()->post_type == 'zwssgr_reviews' || get_current_screen()->post_type == 'zwssgr_data_widget') {
 				// Remove all bulk actions
-				$actions = array();
+				$zwssgr_actions = array();
 			}
-			return $actions;
-		
+			return $zwssgr_actions;
 		}
-		function my_remove_date_filter( $months ) {
+
+		function zwssgr_my_remove_date_filter( $zwssgr_months ) {
 			global $typenow; // use this to restrict it to a particular post type
 			if ($typenow == 'zwssgr_reviews' || $typenow == 'zwssgr_data_widget') {
 				return array(); // return an empty array
 			}
-			return $months; // otherwise return the original for other post types
+			return $zwssgr_months; // otherwise return the original for other post types
 		}
 		
 		/**
 		 * Remove the bulk actions column (checkbox) from admin table for specific post types.
 		 *
-		 * @param array $columns The columns for the admin list table.
+		 * @param array $zwssgr_columns The columns for the admin list table.
 		 * @return array Updated columns without the checkbox column.
 		 */
-		function remove_bulk_actions_checkbox($columns) {
+		function zwssgr_remove_bulk_actions_checkbox($zwssgr_columns) {
 			// Check if the current screen is for the custom post types
-			$screen = get_current_screen();
-			if ($screen->post_type == 'zwssgr_reviews' || $screen->post_type == 'zwssgr_data_widget') {
+			$zwssgr_screen = get_current_screen();
+			if ($zwssgr_screen->post_type == 'zwssgr_reviews' || $zwssgr_screen->post_type == 'zwssgr_data_widget') {
 				// Remove the checkbox column
-				if (isset($columns['cb'])) {
-					unset($columns['cb']);
+				if (isset($zwssgr_columns['cb'])) {
+					unset($zwssgr_columns['cb']);
 				}
 			}
-			return $columns;
+			return $zwssgr_columns;
 		}
-
-
 	}
-
 }

@@ -9,6 +9,9 @@
  * @since 1.0.0
  */
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 require_once( ZWSSGR_DIR . '/inc/lib/zwssgr-batch-processing/class.' . ZWSSGR_PREFIX . '.bdp.php' );
 require_once( ZWSSGR_DIR . '/inc/lib/api/class.' . ZWSSGR_PREFIX . '.api.php' );
 
@@ -34,38 +37,39 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
         }
 
         /**
-		 * Custom log function for debugging.
-		 *
-		 * @param string $message The message to log.
-		 */
-		function zwssgr_debug_function( $message ) {
-			// Define the custom log directory path.
-			$log_dir = WP_CONTENT_DIR . '/plugins/smart-showcase-for-google-reviews'; // wp-content/plugins/smart-showcase-for-google-reviews
-		
-			// Define the log file path.
-			$log_file = $log_dir . '/smart-showcase-for-google-reviews-debug.log';
-		
-			// Check if the directory exists, if not create it.
-			if ( ! file_exists( $log_dir ) ) {
-				wp_mkdir_p( $log_dir );
-			}
-		
-			// Initialize the WP_Filesystem.
-			if ( ! function_exists( 'WP_Filesystem' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/file.php';
-			}
-			WP_Filesystem();
-		
-			global $wp_filesystem;
-		
-			// Format the log entry with UTC timestamp using gmdate().
-			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
-		
-			// Write the log entry to the file using WP_Filesystem.
-			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
-				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
-			}
-		}
+         * Custom log function for debugging.
+         *
+         * @param string $message The message to log.
+         */
+        function zwssgr_debug_function( $zwssgr_message ) {
+            // Define the custom log directory path.
+
+            $zwssgr_log_dir = ZWSSGR_UPLOAD_DIR.'/smart-showcase-for-google-reviews/';
+        
+            // Define the log file path.
+            $zwssgr_log_file = $zwssgr_log_dir . '/smart-showcase-for-google-reviews-debug.log';
+        
+            // Check if the directory exists, if not create it.
+            if ( ! file_exists( $zwssgr_log_dir ) ) {
+                wp_mkdir_p( $zwssgr_log_dir );
+            }
+        
+            // Initialize the WP_Filesystem.
+            if ( ! function_exists( 'WP_Filesystem' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+            }
+            WP_Filesystem();
+        
+            global $wp_filesystem;
+        
+            // Format the log entry with UTC timestamp using gmdate().
+            $zwssgr_log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $zwssgr_message );
+        
+            // Write the log entry to the file using WP_Filesystem.
+            if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
+                $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
+            }
+        }
 
         // Method to get the single instance of the class
         public static function get_instance() {
@@ -118,9 +122,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' =>  'There was an error while trying to reset batch index.',
                         ), 
                     400);
-
                 }
-
             }
 
             $this->zwssgr_access_token =  $this->zwssgr_gmb_api->zwssgr_get_access_token();
@@ -134,7 +136,9 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                 if ($this->zwssgr_widget_id && $this->zwssgr_account_number) {
                     
                     update_option('zwssgr_widget_id', $this->zwssgr_widget_id);
+
                     update_post_meta($this->zwssgr_widget_id, 'zwssgr_account_number', $this->zwssgr_account_number);
+
                     if (!empty($this->zwssgr_location_number)) {
                         update_post_meta($this->zwssgr_widget_id, 'zwssgr_location_number', $this->zwssgr_location_number);
                     }
@@ -267,7 +271,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
 
-                    $zwssgr_account_name = !empty($this->zwssgr_account_name) ? $this->zwssgr_account_name : get_post_meta($this->zwssgr_widget_id, 'zwssgr_account_name', true);
+                    $zwssgr_account_name  = !empty($this->zwssgr_account_name)  ? $this->zwssgr_account_name  : get_post_meta($this->zwssgr_widget_id, 'zwssgr_account_name', true);
                     $zwssgr_location_name = !empty($this->zwssgr_location_name) ? $this->zwssgr_location_name : get_post_meta($this->zwssgr_widget_id, 'zwssgr_location_name', true);
 
                     $zwssgr_widget_title = $zwssgr_account_name;
@@ -289,23 +293,23 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
 
                     if ($this->zwssgr_gmb_data_type == 'zwssgr_gmb_reviews') {
 
-                        $missing_data = [];
+                        $zwssgr_missing_data = [];
                     
                         // Check if any required fields are empty and log the missing fields.
                         if (empty($this->zwssgr_location_all_review_uri)) {
-                            $missing_data[] = 'zwssgr_location_all_review_uri';
+                            $zwssgr_missing_data[] = 'zwssgr_location_all_review_uri';
                         }
                     
                         if (empty($this->zwssgr_location_new_review_uri)) {
-                            $missing_data[] = 'zwssgr_location_new_review_uri';
+                            $zwssgr_missing_data[] = 'zwssgr_location_new_review_uri';
                         }
                     
                         if (empty($this->zwssgr_location_name)) {
-                            $missing_data[] = 'zwssgr_location_name';
+                            $zwssgr_missing_data[] = 'zwssgr_location_name';
                         }
                     
-                        if (!empty($missing_data)) {
-                            $this->zwssgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwssgr_widget_id . " - Missing: " . implode(', ', $missing_data));
+                        if (!empty($zwssgr_missing_data)) {
+                            $this->zwssgr_debug_function("ZQM: Missing data for widget ID: " . $this->zwssgr_widget_id . " - Missing: " . implode(', ', $zwssgr_missing_data));
                             return;
                         }
 
@@ -338,14 +342,14 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' =>  'Batch Processing started.',
                         ), 
                     200);
-                
+
                 }
 
                 if ( !isset($this->zwssgr_gmb_data['nextPageToken']) || empty($this->zwssgr_gmb_data['nextPageToken']) ) {
 
                     $zwssgr_get_location_thumbnail_response = $this->zwssgr_gmb_api->zwssgr_get_location_thumbnail($this->zwssgr_account_number, $this->zwssgr_location_number);
 
-                    if (isset($zwssgr_get_location_thumbnail_response) && $zwssgr_get_location_thumbnail_response['success'] && !empty($zwssgr_get_location_thumbnail_response['data'])) {
+                    if (isset($zwssgr_get_location_thumbnail_response) && isset($zwssgr_get_location_thumbnail_response['success']) && $zwssgr_get_location_thumbnail_response['success'] && !empty($zwssgr_get_location_thumbnail_response['data'])) {
                         update_post_meta($this->zwssgr_widget_id, 'zwssgr_location_thumbnail_url', $zwssgr_get_location_thumbnail_response['data']['sourceUrl']);
                     }
 
@@ -357,25 +361,25 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                     );
 
                 }
-            
+
             } else if (isset($this->zwssgr_gmb_response) && $this->zwssgr_gmb_response['success'] && empty($this->zwssgr_gmb_response['data'])) {
                 
                 // Log the error before resetting the index and deleting options
                 $this->zwssgr_debug_function("ZQM: Batch processing error: Failed for" . $this->zwssgr_gmb_data_type .' & Widget ID ' . $this->zwssgr_widget_id .'& current index ' . $this->zwssgr_current_index);
 
                 // Define a default error message
-                $zwssgr_error_message = 'An unknown error occurred. Please try again.';
+                $zwssgr_error_message = esc_html__('An unknown error occurred. Please try again.', 'smart-showcase-for-google-reviews');
 
                 // Use a switch statement for better clarity
                 switch ($this->zwssgr_gmb_data_type) {
                     case 'zwssgr_gmb_accounts':
-                        $zwssgr_error_message = 'It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.';
+                        $zwssgr_error_message = esc_html__('It looks like we couldn\'t find any Google My Business accounts linked to this profile. Please check your account settings or try again later.', 'smart-showcase-for-google-reviews');
                         break;
                     case 'zwssgr_gmb_locations':
-                        $zwssgr_error_message = 'No locations found under this Google My Business account. Please verify your account or try again with a different one.';
+                        $zwssgr_error_message = esc_html__('No locations found under this Google My Business account. Please verify your account or try again with a different one.', 'smart-showcase-for-google-reviews');
                         break;
                     case 'zwssgr_gmb_reviews':
-                        $zwssgr_error_message = 'There are no reviews available for this location at the moment. Please try again later or choose a different location.';
+                        $zwssgr_error_message = esc_html__('There are no reviews available for this location at the moment. Please try again later or choose a different location.', 'smart-showcase-for-google-reviews');
                         break;
                 }
                 
@@ -386,8 +390,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                         'error'  => 'empty_api_response',
                         'message' => $zwssgr_error_message
                     ], 200);
-                    
-
                 } else {
 
                     return array(
@@ -397,23 +399,17 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' => $zwssgr_error_message
                         ),
                     );
-                    
                 }
-
             } {
-
                 // Log the error before resetting the index and deleting options
                 $this->zwssgr_debug_function("ZQM: Batch processing" . 'error:' . $this->zwssgr_gmb_response['error']['status'] . 'message:' . $this->zwssgr_gmb_response['error']['message'] . $this->zwssgr_gmb_data_type .' & Widget ID ' . $this->zwssgr_widget_id .'& current index ' . $this->zwssgr_current_index);
 
                 if (defined('DOING_AJAX') && DOING_AJAX) {
-
                     // For AJAX requests, send a JSON error response    
                     wp_send_json_error([
                         'error'  => $this->zwssgr_gmb_response['error']['status'],
                         'message' => $this->zwssgr_gmb_response['error']['message'],
                     ], 400);
-                    
-
                 } else {
 
                     return array(
@@ -423,13 +419,12 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                             'message' => $this->zwssgr_gmb_response['error']['message'],
                         ),
                     );
-                    
                 }
 
             }
 
             return false;
-        
+            
         }
 
         // Helper function to get the current index from the database
@@ -447,7 +442,6 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
         public function zwssgr_reset_current_batch_index($zwssgr_widget_id) {
             return delete_post_meta($zwssgr_widget_id, 'zwssgr_current_index');
         }
-
     }
 
     Zwssgr_Queue_Manager::get_instance();

@@ -29,7 +29,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
      */
     class ZWSSGR_Cron_Scheduler {
 
-        private $client;
+        private $zwssgr_client;
 
         /**
          * Constructor for the ZWSSGR_Cron_Scheduler class.
@@ -41,7 +41,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
          */
         function __construct() {
 
-            $this->client = new zwssgr_Queue_Manager();
+            $this->zwssgr_client = new zwssgr_Queue_Manager();
 
             add_action( 'cron_schedules', [$this, 'zwssgr_add_custom_cron_schedules'] );
 
@@ -53,7 +53,6 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 
             // Hook into the 'zwssgr_data_sync' action to trigger the data sync task.
             add_action( 'zwssgr_data_sync', [$this, 'zwssgr_data_sync_callback'] );
-        
         }
 
         /**
@@ -61,34 +60,37 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 		 *
 		 * @param string $message The message to log.
 		 */
-		function zwssgr_debug_function( $message ) {
-			// Define the custom log directory path.
-			$log_dir = WP_CONTENT_DIR . '/plugins/smart-showcase-for-google-reviews'; // wp-content/plugins/smart-showcase-for-google-reviews
-		
-			// Define the log file path.
-			$log_file = $log_dir . '/smart-showcase-for-google-reviews-debug.log';
-		
-			// Check if the directory exists, if not create it.
-			if ( ! file_exists( $log_dir ) ) {
-				wp_mkdir_p( $log_dir );
-			}
-		
-			// Initialize the WP_Filesystem.
-			if ( ! function_exists( 'WP_Filesystem' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/file.php';
-			}
-			WP_Filesystem();
-		
-			global $wp_filesystem;
-		
-			// Format the log entry with UTC timestamp using gmdate().
-			$log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $message );
-		
-			// Write the log entry to the file using WP_Filesystem.
-			if ( $wp_filesystem->exists( $log_file ) || $wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE ) ) {
-				$wp_filesystem->put_contents( $log_file, $log_entry, FS_CHMOD_FILE );
-			}
-		}
+		function zwssgr_debug_function( $zwssgr_message ) {
+            // Define the custom log directory path.
+
+            $zwssgr_log_dir = ZWSSGR_UPLOAD_DIR.'/smart-showcase-for-google-reviews/';
+        
+            // Define the log file path.
+            $zwssgr_log_file = $zwssgr_log_dir . '/smart-showcase-for-google-reviews-debug.log';
+        
+            // Check if the directory exists, if not create it.
+            if ( ! file_exists( $zwssgr_log_dir ) ) {
+                wp_mkdir_p( $zwssgr_log_dir );
+            }
+        
+            // Initialize the WP_Filesystem.
+            if ( ! function_exists( 'WP_Filesystem' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+            }
+
+            WP_Filesystem();
+        
+            global $wp_filesystem;
+        
+            // Format the log entry with UTC timestamp using gmdate().
+            $zwssgr_log_entry = sprintf( "[%s] %s\n", gmdate( 'Y-m-d H:i:s' ), $zwssgr_message );
+        
+            // Write the log entry to the file using WP_Filesystem.
+            if ( $wp_filesystem->exists( $zwssgr_log_file ) || $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE ) ) {
+                $wp_filesystem->put_contents( $zwssgr_log_file, $zwssgr_log_entry, FS_CHMOD_FILE );
+            }
+
+        }
 
         /**
          * Adds custom 'monthly' and 'weekly' cron schedule intervals to WordPress.
@@ -116,9 +118,10 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 
             // Return the modified list of schedules
             return $zwssgr_cron_schedules;
+            
         }
 
-         /**
+        /**
          * Sets the default cron schedule to 'monthly' if no option is selected already.
          * This method checks the value of the 'zwssgr_sync_reviews' option and schedules 
          * the cron job accordingly.
@@ -134,7 +137,7 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
             }
 
             $this->zwssgr_sync_reviews_scheduler_callback( '', $zwssgr_new_frequency );
-
+            
         }
 
         /**
@@ -176,7 +179,6 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 
         }
 
-
         /**
          * Callback function for the 'zwssgr_data_sync' cron event.
          *
@@ -216,24 +218,21 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
                         continue;
                     }
 
-                    $is_data_sync = $this->client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
+                    $zwssgr_is_data_sync = $this->zwssgr_client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
 
                     sleep(20);
 
-                    if (!$is_data_sync) {
+                    if (!$zwssgr_is_data_sync) {
                         $this->zwssgr_debug_function('Data sync for widget:' . $zwssgr_widget_id . 'has been successfully processed');
                     } else {
                         $this->zwssgr_debug_function('There was an error while Data sync for widget:' . $zwssgr_widget_id);
                     }
-                    
                 }
                 wp_reset_postdata();
             } else {
                 return;
             }
-
         }
-
     }
 
     // Instantiate the ZWSSGR_Cron_Scheduler class to ensure cron jobs are scheduled.
