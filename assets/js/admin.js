@@ -2128,4 +2128,54 @@ jQuery(document).ready(function($) {
 	$(document).on('change', '#zwssgr-account-select', function () {
 		$(this).closest('form').submit();
 	});
+
+
+	$(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
+		e.preventDefault(); // Prevent default action
+	
+		const deactivateUrl = $(this).attr('href'); // Get the deactivation URL from the link
+	
+		// Show the deactivation confirmation popup
+		$('#zwssgr-plugin-deactivation-popup').show();
+	
+		// Cancel Deactivation
+		$(document).off('click', '#zwssgr-plugin-cancel-deactivate').on('click', '#zwssgr-plugin-cancel-deactivate', function () {
+			$('#zwssgr-plugin-deactivation-popup').hide();
+		});
+	
+		// Confirm Deactivation
+		$(document).off('click', '#zwssgr-plugin-confirm-deactivate').on('click', '#zwssgr-plugin-confirm-deactivate', function () {
+			// Check if the "Delete Plugin Data" checkbox is checked
+			const zwssgrDeletePluginData = $('#zwssgr-delete-plugin-data').prop('checked') ? 1 : 0;
+	
+			if (zwssgrDeletePluginData) {
+				// Send AJAX request to delete plugin data if checkbox is checked
+				$.ajax({
+					url: zwssgr_admin.ajax_url,
+					type: "POST",
+					dataType: "json",
+					data: {
+						action: "zwssgr_delete_oauth_connection",
+						zwssgr_delete_plugin_data: zwssgrDeletePluginData,
+						security: zwssgr_admin.zwssgr_delete_oauth_connection,
+					},
+					success: function (response) {
+						// console.log("Data deletion response:", response);
+					},
+					error: function (xhr, status, error) {
+						// console.error("Data deletion failed:", error);
+					},
+					complete: function () {
+						// Proceed to deactivate the plugin after AJAX completes
+						$('#zwssgr-plugin-deactivation-popup').hide();
+						window.location.href = deactivateUrl;
+					}
+				});
+			} else {
+				// If checkbox is not checked, directly deactivate the plugin
+				$('#zwssgr-plugin-deactivation-popup').hide();
+				window.location.href = deactivateUrl;
+			}
+		});
+	});
 });
