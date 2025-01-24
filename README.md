@@ -84,7 +84,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **For Smart Showcase for Google Reviews > Connect with your Google**
 
-![Screenshot](assets/images/sgr-image-1.png)
+![Screenshot](assets/images/ssgr-image-1.png)
 
 - After activating the plugin, you'll need to connect your Google Reviews business account to fetch and display reviews on your site.
 - Click on the Connect with Google button to authorize the plugin with your Google account. You may be prompted to sign in to your Google account and grant the necessary permissions.
@@ -92,7 +92,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **For Smart Showcase for Google Reviews > Smart Showcase for Google Reviews**
 
-![Screenshot](assets/images/sgr-image-2.png)
+![Screenshot](assets/images/ssgr-image-2.png)
 
 -This section provides an overview of your Google reviews and the following statistics
  
@@ -103,14 +103,14 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **For Smart Showcase for Google Reviews > Widgets**
 
-![Screenshot](assets/images/sgr-image-3.png)
+![Screenshot](assets/images/ssgr-image-3.png)
 
 - In this section, you can configure the display settings for the Google Reviews widget on your site.
 **Configuration Steps**
 - **Fetch Data:**
 - Fetch the latest Google reviews from your business profile.
 
-![Screenshot](assets/images/sgr-image-4.png)
+![Screenshot](assets/images/ssgr-image-4.png)
 
 **Select Display Options:**
 - Choose how the reviews will appear on your site. Available display options include:
@@ -138,7 +138,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 **Popup:** 
 - Show reviews in a popup window.
 
-![Screenshot](assets/images/sgr-image-9.png)
+![Screenshot](assets/images/ssgr-image-9.png)
 
 **Widget Settings:**
 
@@ -155,23 +155,23 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 - **Number of Reviews:** Set the number of reviews to display.
 - **Custom CSS:** Add custom CSS for further widget styling.
 
-![Screenshot](assets/images/sgr-image-10.png)
+![Screenshot](assets/images/ssgr-image-10.png)
 
 **Generated Shortcode:**
 
 - Once the widget is configured, a shortcode will be generated. You can insert this shortcode into any page, post, or widget area to display the reviews.
 
-![Screenshot](assets/images/sgr-image-11.png)
+![Screenshot](assets/images/ssgr-image-11.png)
 
 **For Smart Showcase for Google Reviews > Reviews**
 
-![Screenshot](assets/images/sgr-image-12.png)
+![Screenshot](assets/images/ssgr-image-12.png)
 
 - This section allows you to view and manage the reviews collected from Google. You can list all reviews and choose to show or hide specific reviews based on your preferences.
 
 **For Smart Showcase for Google Reviews > settings**
 
-![Screenshot](assets/images/sgr-image-13.png)
+![Screenshot](assets/images/ssgr-image-13.png)
 
 - This section allows you to configure advanced settings for the plugin:
 
@@ -181,7 +181,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **SEO & Notifications:**
 
-![Screenshot](assets/images/sgr-image-14.png)
+![Screenshot](assets/images/ssgr-image-14.png)
 
 - **Enable Admin Notifications:** Enable email notifications to be sent to the admin when a new review is posted.
 - **Custom Email Addresses:** Set custom email addresses for receiving notifications.
@@ -190,7 +190,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **Advanced:**
 
-![Screenshot](assets/images/sgr-image-15.png)
+![Screenshot](assets/images/ssgr-image-15.png)
 
 - **Sync Reviews:** 
 - Choose whether to automatically or manually sync new reviews from Google.
@@ -198,7 +198,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **SMTP Settings:**
 
-![Screenshot](assets/images/sgr-image-16.png)
+![Screenshot](assets/images/ssgr-image-16.png)
 
 - Configure SMTP for sending email notifications.
 
@@ -211,7 +211,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **Test Mail:**
 
-![Screenshot](assets/images/sgr-image-17.png)
+![Screenshot](assets/images/ssgr-image-17.png)
 
 - Send a test email to verify the configuration.
 
