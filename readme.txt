@@ -2,7 +2,7 @@
 
 Contributors: zealopensource
 Donate Link: http://www.zealousweb.com/payment/
-Tags: google reviews
+Tags: google reviews, reviews, widget, google-rating, google-business-reviews 
 Requires at least: 5.8
 Tested up to: 6.7
 Stable tag: 1.0.0
