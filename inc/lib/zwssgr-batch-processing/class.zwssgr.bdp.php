@@ -138,23 +138,23 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                     if ($zwssgr_existing_post_query->have_posts()) {
                         
                         // Update existing post
-                        $zwssgr_request_data['ID'] = $zwssgr_existing_post->ID;
                         $zwssgr_update_result = wp_update_post($zwssgr_request_data);
                         
                         if (is_wp_error($zwssgr_update_result)) {
-                            $this->zwssgr_debug_function("BDP: Failed to update account ID {$zwssgr_existing_post->ID}: for Widget ID " . $this->$zwssgr_widget_id . $zwssgr_update_result->get_error_message());
+                            $this->zwssgr_debug_function("BDP: Failed to update account ID {$zwssgr_existing_post->ID}: for Widget ID " . $this->zwssgr_widget_id . $zwssgr_update_result->get_error_message());
                         } elseif ($zwssgr_update_result == 0) {
-                            $this->zwssgr_debug_function("BDP: Failed to update account ID {$zwssgr_existing_post->ID}: for Widget ID " . $this->$zwssgr_widget_id . ' Unknown error ');
+                            $this->zwssgr_debug_function("BDP: Failed to update account ID {$zwssgr_existing_post->ID}: for Widget ID " . $this->zwssgr_widget_id . ' Unknown error ');
                         }
 
                     } else {
+                        
                         // Create a new post
                         $zwssgr_insert_account = wp_insert_post($zwssgr_request_data);
 
                         if (is_wp_error($zwssgr_insert_account)) {
-                            $this->zwssgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->$zwssgr_widget_id . $zwssgr_insert_account->get_error_message());
+                            $this->zwssgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->zwssgr_widget_id . $zwssgr_insert_account->get_error_message());
                         } elseif ($zwssgr_insert_account == 0) {
-                            $this->zwssgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->$zwssgr_widget_id);
+                            $this->zwssgr_debug_function("BDP: Failed to create new account for Widget ID " . $this->zwssgr_widget_id);
                         } else {
                         }
                         
@@ -409,7 +409,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
             if ($zwssgr_put_image_content === false) {
 
-                $this->zwssgr_debug_function("Error: Failed to save the image to the specified path: " . $zwssgr_save_path . " for Widget ID " . $this->$zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
+                $this->zwssgr_debug_function("Error: Failed to save the image to the specified path: " . $zwssgr_save_path . " for Widget ID " . $this->zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
 
                 return array(
                     'success' => false,
