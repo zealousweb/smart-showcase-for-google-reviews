@@ -156,23 +156,24 @@ Installing the plugin is easy. Just follow these steps:
 
 == Screenshots ==
 
-1. Connect your Google account to seamlessly fetch and google reviews, enhancing your credibility and customer trust.
-2. Display total reviews, average rating, and provide filtering options.
-3. Create customizable widgets to display reviews on your website.
-4. Configure fetched data for widgets to control what and how reviews are displayed.
-5. Slider: google reviews in an interactive slider format.
-6. Grid: Arrange reviews in a structured grid layout. 
-7. List: Display reviews in a simple, vertical list format.
-8. Badge: Highlight reviews in a compact, eye-catching badge.
-9. Popup: Use a popup design to display reviews dynamically.
-10. Customize widget appearance and functionality with detailed settings.
-11. Generate shortcodes to easily embed widgets and reviews anywhere on your site.
-12. Provide an organized listing of all reviews for easy browsing and management.
-13. Options to connect or disconnect your Google account directly from the plugin.
-14. Optimize reviews for search engines and set up notifications for new reviews or updates.
-15. Sync reviews periodically or on demand for real-time updates.
-16. Configure SMTP settings for seamless email functionality.
-17. Send test emails to ensure email notifications and integrations work properly.
+1. Seamlessly connect your Google My Business account to fetch and display Google reviews, boosting your credibility and building customer trust
+2. Showcase total reviews, average ratings, and provide advanced filtering options. Visualize ratings with a detailed pie chart (1 to 5 stars) and display the top 5 reviews based on selected filters.
+3. Create fully customizable widgets to showcase reviews on your website. Manage multiple widgets with filtering options by account and location for easy organization. Each widget provides a shortcode for seamless integration and reuse
+4. Configure your account name and location to fetch data for widgets, giving you full control over what reviews are displayed and how they are presented.
+5. Display Google reviews in an interactive slider format for an enhanced user experience. Choose from various display options, including slider, grid, list, badge, and popup, to customize how reviews are presented.
+6. Grid Option: Organize and display reviews in a clean, structured grid layout for a visually appealing presentation.
+7. List Option: Present reviews in a straightforward, vertical list format for easy readability and seamless browsing.
+8. Badge Option: Highlight reviews with a compact, eye-catching badge displaying your organization name and total rating in various stylish designs.
+9. Popup Option: Showcase reviews dynamically with an engaging popup design for an interactive user experience.
+10. Selected Option Tab: View and manage the layouts you've selected, such as slider, grid, badge, list, and popup. Apply widget settings and instantly preview the changes in real-time. 
+11. Customize the widget's appearance and functionality with comprehensive settings, including star rating filters, element visibility options, keyword filters for the frontend, language support, date format settings, sorting options, trim settings, per-page listing count, and the ability to add custom CSS for further personalization.
+12. Generate Shortcodes Tab: Easily generate shortcodes to embed widgets and reviews anywhere on your site, providing seamless integration and flexibility
+13.Organized Review Listing: View and manage all fetched reviews in a structured list for easy browsing. Reviews can be hidden with a simple click on the 'hide' icon for better control and organization.
+14. Google Account Integration: Easily connect or disconnect your Google account directly from the plugin, allowing for seamless management of reviews and settings.
+15. SEO Optimization & Notifications: Enhance your reviews for better search engine visibility and set up notifications to stay updated on new reviews or changes.
+16. Review Syncing: Sync reviews periodically or on demand to ensure real-time updates, keeping your content fresh and accurate
+17. SMTP Configuration: Set up SMTP settings for smooth and reliable email functionality, ensuring secure and efficient email delivery.
+18. Send Test Emails: Test your email notifications and integrations to ensure they are functioning properly.
 
 == Changelog ==
 
