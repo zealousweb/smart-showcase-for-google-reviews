@@ -32,6 +32,8 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - ‘Review us on G’ button to collect new Google Reviews
 - Show/hide any elements (business photo, name, rating, reviews, avatars, names, time and etc)
 
+<strong>[Demo for Smart Showcase for Google Reviews](https://demo.zealousweb.com/wordpress-plugins/smart-showcase-for-google-reviews/)</strong>
+
 **Features of Smart Showcase for Google Reviews Pro**
 
 - Dashboard for review statistics
@@ -50,8 +52,6 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - Advanced spam detection using AI or machine learning algorithms like adult content etc
 - Automatic replies to users based on their star rating (positive or negative) (Using AI)
 - Integration with Google Analytics to track user interaction with reviews
-
-<strong>[Demo for Smart Showcase for Google Reviews Pro]()</strong>
 
 **OUR OTHER PLUGINS**
 
