@@ -696,7 +696,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			// Fetch accounts using SQL query, with caching
 			$zwssgr_cached_accounts = 'zwssgr_accounts_' . md5($zwssgr_gmb_email);
-			$zwssgr_accounts 		= get_transient($zwssgr_cached_accounts);
+			$zwssgr_accounts = get_transient($zwssgr_cached_accounts);
 
 			if ($zwssgr_accounts === false) {
 				$zwssgr_accounts = $wpdb->get_results( $wpdb->prepare("
@@ -728,30 +728,22 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 			echo '</select>';
 
-			// Fetch locations using SQL query, with caching
-			$zwssgr_cached_locations = 'zwssgr_locations_' . md5($zwssgr_gmb_email);
-			$zwssgr_locations = get_transient($zwssgr_cached_locations);
-
-			if ($zwssgr_locations === false) {
-				
-				// Fetch locations using SQL query
-				$zwssgr_locations = $wpdb->get_results(
-					$wpdb->prepare("
-						SELECT pm.meta_value AS location_data, p.ID AS post_id
-						FROM {$wpdb->postmeta} pm
-						INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
-						WHERE pm.meta_key = %s
-						AND p.post_type = %s
-						AND p.post_status = 'publish'
-						AND EXISTS (
-							SELECT 1 FROM {$wpdb->postmeta} pm2
-							WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwssgr_account_number' AND pm2.meta_value = %s
-						)
-					", 'zwssgr_account_locations', 'zwssgr_request_data', $zwssgr_selected_account)
-				);
-				set_transient($zwssgr_cached_locations, $zwssgr_locations, HOUR_IN_SECONDS);
-
-			}
+			
+			// Fetch locations using SQL query
+			$zwssgr_locations = $wpdb->get_results( 
+				$wpdb->prepare("
+					SELECT pm.meta_value AS location_data, p.ID AS post_id
+					FROM {$wpdb->postmeta} pm
+					INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+					WHERE pm.meta_key = %s
+					AND p.post_type = %s
+					AND p.post_status = 'publish'
+					AND EXISTS (
+						SELECT 1 FROM {$wpdb->postmeta} pm2
+						WHERE pm2.post_id = p.ID AND pm2.meta_key = 'zwssgr_account_number' AND pm2.meta_value = %s
+					)
+				", 'zwssgr_account_locations', 'zwssgr_request_data', $zwssgr_selected_account)
+			);
 
 
 			if (!empty($zwssgr_locations)){
