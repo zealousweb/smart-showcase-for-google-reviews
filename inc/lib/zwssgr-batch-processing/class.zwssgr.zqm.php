@@ -164,7 +164,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                     'data'    => array (
                         'error'   => 'invalid_access_token',
                         'message'  => 'No Valid access token found',
-                        'zwssgr_current_index' => $zwssgr_current_index
+                        'zwssgr_current_index' => $this->zwssgr_current_index
                     ),
                 );
                 
