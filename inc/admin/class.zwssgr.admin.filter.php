@@ -90,6 +90,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Filter' ) ) {
 				
 				// Remove the 'Quick Edit' link
 				unset($zwssgr_actions['inline hide-if-no-js']);
+
+			}
+			if ($zwssgr_post->post_type === 'zwssgr_reviews') {
+				// Remove the 'Trash' link
+				unset($zwssgr_actions['trash']);
 			}
 			return $zwssgr_actions;
 		}
