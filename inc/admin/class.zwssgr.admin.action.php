@@ -696,7 +696,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			// Fetch accounts using SQL query, with caching
 			$zwssgr_cached_accounts = 'zwssgr_accounts_' . md5($zwssgr_gmb_email);
-			$zwssgr_accounts = get_transient($zwssgr_cached_accounts);
+			$zwssgr_accounts 		= get_transient($zwssgr_cached_accounts);
 
 			if ($zwssgr_accounts === false) {
 				$zwssgr_accounts = $wpdb->get_results( $wpdb->prepare("
@@ -750,7 +750,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					", 'zwssgr_account_locations', 'zwssgr_request_data', $zwssgr_selected_account)
 				);
 				set_transient($zwssgr_cached_locations, $zwssgr_locations, HOUR_IN_SECONDS);
-				
+
 			}
 
 
