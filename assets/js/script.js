@@ -1,5 +1,3 @@
-"use strict";
-
 (function ($) {
 	"use strict";
 	function initSlickSlider() {
@@ -126,7 +124,8 @@
 })(jQuery);
 
 jQuery(document).ready(function($) {
-
+	"use strict";
+	
 	// Bind click event to open popup
 	$(document).on('click', '.zwssgr-popup-item', function (e) {
 		let popupId = $(this).data('popup'); // Get the popup ID from the data attribute

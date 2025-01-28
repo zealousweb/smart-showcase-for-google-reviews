@@ -1,6 +1,6 @@
-"use strict";
 jQuery(document).ready(function($) {
-
+	"use strict";
+	
 	// Bind click event to open popup
 	$(document).on('click', '.zwssgr-popup-item', function (e) {
 		if ($(e.target).hasClass('zwssgr-total-review')) {
