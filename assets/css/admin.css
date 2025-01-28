@@ -145,10 +145,6 @@ input.zwssgr-input-text:focus {
     margin-right: 10px;
 }
 
-.gmb-review-data .cta-wrapper .zwssgr-submit-btn#add-reply {
-    margin-right: 0px !important;
-}
-
 .gmb-review-data .cta-wrapper .zwssgr-submit-btn.button-danger {
     margin-right: 0;
     color: white;
@@ -159,10 +155,6 @@ input.zwssgr-input-text:focus {
 .gmb-review-data .cta-wrapper .zwssgr-submit-btn.button-danger:hover {
     background-color: white;
     color: red;
-}
-
-.zwssgr-disconnect-btn{
-    margin-top: 20px !important;
 }
 
 input.zwssgr-input-text.zwssgr-shortcode-input {
@@ -558,11 +550,11 @@ input.zwssgr-radio {
     padding-bottom: 15px;
 }
 
-.nav-tab.nav-tab-active {
-    background: none !important;
+.zwssgr-section-wrap .nav-tab.nav-tab-active {
+    background: none;
     border: none;
     border-bottom-width: 3px;
-    border-bottom-color: #11AAB4 !important;
+    border-bottom-color: #11AAB4;
     border-bottom-style: solid;
 }
 
@@ -726,7 +718,7 @@ input.zwssgr-radio {
     line-height: 1.6;
     color: #285064;
     text-align: center;
-    margin: 0 0 15px 0 !important;
+    margin: 0 0 15px 0;
 }
 
 .zwssgr-gmbc-outer-wrapper .zwssgr-gmbc-inner-wrapper input {
@@ -790,7 +782,7 @@ input.zwssgr-radio {
     line-height: 1.6;
     color: red;
     text-align: left;
-    margin: 0 0 10px 0 !important;
+    margin: 0 0 10px 0 ;
 }
 
 .zwssgr-caution-div .zwssgr-chechbox-label {
@@ -803,7 +795,7 @@ input.zwssgr-radio {
 }
 
 .disconnect-gmb-auth input.delete-all-data {
-    margin: 0 5px 0 0 !important;
+    margin: 0 5px 0 0;
 }
 
 .disconnect-gmb-auth .zwssgr-th-label {
@@ -822,19 +814,19 @@ input.zwssgr-radio {
 
 .disconnect-wrapper .zwssgr-disconnect-btn,
 .disconnect-gmb-auth .button-danger {
-    background-color: red !important;
-    color: white !important;
-    border: 1px solid red !important;
-    margin: 0 10px 0 0 !important;
+    background-color: red;
+    color: white;
+    border: 1px solid red;
+    margin: 0 10px 0 0;
 }
 
 .disconnect-wrapper .zwssgr-disconnect-btn:hover,
 .disconnect-wrapper .zwssgr-disconnect-btn:focus,
 .disconnect-gmb-auth .button-danger:hover,
 .disconnect-gmb-auth .button-danger:focus {
-    background-color: transparent !important;
-    box-shadow: 0 0 0 1px red !important;
-    color: red !important;
+    background-color: transparent;
+    box-shadow: 0 0 0 1px red;
+    color: red;
 }
 
 .fetch-gmb-data {
@@ -846,7 +838,7 @@ input.zwssgr-radio {
 }
 
 .fetch-gmb-data .notice {
-    margin: 10px 0 !important;
+    margin: 10px 0;
 }
 
 .fetch-gmb-data .response {
@@ -1026,9 +1018,8 @@ input.zwssgr-radio {
 
 .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-button,
 .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-picker {
-    color: white !important;
+    color: white;
     background-color: #3caab4;
-    color: #1B1B1B;
     padding: 10px 24px;
     border-radius: 50px;
     cursor: pointer;
@@ -1079,7 +1070,7 @@ input.zwssgr-radio {
     max-width: 286px;
     margin: 0 24px 0 0;
     padding: 24px 27px;
-    background-color: white !important;
+    background-color: white;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1087,10 +1078,6 @@ input.zwssgr-radio {
     border-radius: 12px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out;
-}
-
-.zwgr-dashboard .render-dynamic .zwssgr-data-card:last-child {
-    margin: 0;
 }
 
 .zwgr-dashboard .render-dynamic .zwssgr-data-card .zwssgr-card-icon {
@@ -1175,13 +1162,13 @@ input.zwssgr-radio {
 }
 
 .zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"] {
-    font-weight: 600 !important;
-    max-width: 210px !important;
+    font-weight: 600;
+    max-width: 210px;
     text-align: center;
 }
 
 .zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]::placeholder {
-    color: white !important;
+    color: white;
 }
 
 .zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"].active::placeholder {
@@ -1505,11 +1492,11 @@ input.zwssgr-radio {
     }
 
     .zwgr-dashboard .render-dynamic .zwssgr-flex-column .zwssgr_chart_legend {
-        margin: 0 14px 0 0 !important;
+        margin: 0 14px 0 0;
     }
 
     .zwssgr-flex-inner-container .zwssgr_outer_wrapper .zwssgr_chart_wrapper {
-        margin: 0 20px 0 0 !important;
+        margin: 0 20px 0 0;
     }
 
     .zwssgr-flex-inner-container .zwssgr_outer_wrapper .zwsr_chart_legend_wrapper {
@@ -1519,14 +1506,14 @@ input.zwssgr-radio {
     }
 
     .zwgr-dashboard .render-dynamic .zwgr-dashboard-footer {
-        flex-direction: column !important;
-        margin: 0 !important;
+        flex-direction: column;
+        margin: 0;
     }
 
     .zwgr-dashboard .render-dynamic .zwssgr-flex-column {
-        width: 100% !important;
+        width: 100% ;
         margin: 0 0 24px 0;
-        padding: 0 !important;
+        padding: 0;
     }
 }
 
@@ -1537,7 +1524,7 @@ input.zwssgr-radio {
         width: calc(100% + 10px);
     }
     .zwssgr-gmbc-outer-wrapper .zwssgr-gmbc-container {
-        max-width: 556px !important;
+        max-width: 556px;
     }
 
     .fetch-gmb-data .fetch-gmb-inner-data {
@@ -1554,31 +1541,31 @@ input.zwssgr-radio {
 @media only screen and (max-width: 767px) {
 
     .zwgr-dashboard-header {
-        padding-bottom: 16px !important;
+        padding-bottom: 16px;
     }
 
     .zwgr-dashboard .render-dynamic .zwgr-dashboard-{
         flex-direction: column;
-        margin: 0 !important;
+        margin: 0;
     }
 
     .zwgr-dashboard .render-dynamic .zwssgr-data-card {
-        margin: 0 0 24px 0 !important;
-        max-width: -webkit-fill-available !important;
+        margin: 0 0 24px 0;
+        max-width: -webkit-fill-available;
     }
 
     .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-filter-wrapper {
         flex-direction: column;
         align-items: flex-start;
-        margin: 0 0 16px 0 !important;
+        margin: 0 0 16px 0;
     }
 
     .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-item {
-        margin: 0 12px 12px 0 !important;
+        margin: 0 12px 12px 0;
     }
 
     .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filter-item:last-child {
-        margin: 0 !important;
+        margin: 0;
     }
 
     .zwgr-dashboard .zwgr-dashboard-header .zwssgr-filters-list {
@@ -1586,7 +1573,7 @@ input.zwssgr-radio {
     }
 
     .zwgr-dashboard .zwgr-dashboard-header .zwssgr-date-range-filter-wrapper .zwssgr-title-wrapper {
-        margin-bottom: 16px !important;
+        margin-bottom: 16px;
     }
 
     .zwgr-dashboard .zwgr-dashboard-header .gmb-data-filter .zwssgr-account-select,
@@ -1622,13 +1609,13 @@ input.zwssgr-radio {
 
     .zwgr-dashboard .render-dynamic .zwgr-dashboard-body {
         flex-direction: column;
-        margin: 0 !important;
+        margin: 0;
     }
 }
 
 @media only screen and (max-width: 576px) {
     .zwssgr-gmbc-outer-wrapper .zwssgr-gmbc-container {
-        max-width: 300px !important;
+        max-width: 300px;
     }
 }
 
