@@ -25,8 +25,6 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - Send notification emails to users after submitting reply to reviews
 - Keep all reviews in a WordPress database (CPT)
 - Multi-language support
-- Full GDPR support
-- Admin approval system for reviews
 - Multilingual support with automatic translation options for user-submitted reviews
 - Create and display review widgets in sidebars and footers, showing the latest reviews and average star ratings.
 - ‘Review us on G’ button to collect new Google Reviews
@@ -84,7 +82,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **For Smart Showcase for Google Reviews > Connect with your Google**
 
-![Screenshot](assets/images/ssgr-image-1.png)
+![Screenshot](resource/images/ssgr-image-1.png)
 
 - After activating the plugin, you'll need to connect your Google Reviews business account to fetch and display reviews on your site.
 - Click on the Connect with Google button to authorize the plugin with your Google account. You may be prompted to sign in to your Google account and grant the necessary permissions.
@@ -92,7 +90,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **For Smart Showcase for Google Reviews > Smart Showcase for Google Reviews**
 
-![Screenshot](assets/images/ssgr-image-2.png)
+![Screenshot](resource/images/ssgr-image-2.png)
 
 -This section provides an overview of your Google reviews and the following statistics
  
@@ -103,14 +101,14 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **For Smart Showcase for Google Reviews > Widgets**
 
-![Screenshot](assets/images/ssgr-image-3.png)
+![Screenshot](resource/images/ssgr-image-3.png)
 
 - In this section, you can configure the display settings for the Google Reviews widget on your site.
 **Configuration Steps**
 - **Fetch Data:**
 - Fetch the latest Google reviews from your business profile.
 
-![Screenshot](assets/images/ssgr-image-4.png)
+![Screenshot](resource/images/ssgr-image-4.png)
 
 **Select Display Options:**
 - Choose how the reviews will appear on your site. Available display options include:
@@ -118,27 +116,27 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 **Slider:** 
 - Show reviews in a scrolling slider format.
 
-![Screenshot](assets/images/slider-1.png)
+![Screenshot](resource/images/ssgr-image-5.png)
 
 **Grid:** 
 - Display reviews in a grid layout.
 
-![Screenshot](assets/images/grid.png)
+![Screenshot](resource/images/ssgr-image-6.png)
 
 **List:** 
 - Show reviews in a simple list format.
 
-![Screenshot](assets/images/list.png)
+![Screenshot](resource/images/ssgr-image-7.png)
 
 **Badge:** 
 - Display a badge-style widget with reviews.
 
-![Screenshot](assets/images/badge.png)
+![Screenshot](resource/images/ssgr-image-8.png)
 
 **Popup:** 
 - Show reviews in a popup window.
 
-![Screenshot](assets/images/ssgr-image-9.png)
+![Screenshot](resource/images/ssgr-image-9.png)
 
 **Widget Settings:**
 
@@ -155,23 +153,23 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 - **Number of Reviews:** Set the number of reviews to display.
 - **Custom CSS:** Add custom CSS for further widget styling.
 
-![Screenshot](assets/images/ssgr-image-10.png)
+![Screenshot](resource/images/ssgr-image-10.png)
 
 **Generated Shortcode:**
 
 - Once the widget is configured, a shortcode will be generated. You can insert this shortcode into any page, post, or widget area to display the reviews.
 
-![Screenshot](assets/images/ssgr-image-11.png)
+![Screenshot](resource/images/ssgr-image-11.png)
 
 **For Smart Showcase for Google Reviews > Reviews**
 
-![Screenshot](assets/images/ssgr-image-12.png)
+![Screenshot](resource/images/ssgr-image-12.png)
 
 - This section allows you to view and manage the reviews collected from Google. You can list all reviews and choose to show or hide specific reviews based on your preferences.
 
 **For Smart Showcase for Google Reviews > settings**
 
-![Screenshot](assets/images/ssgr-image-13.png)
+![Screenshot](resource/images/ssgr-image-13.png)
 
 - This section allows you to configure advanced settings for the plugin:
 
@@ -181,7 +179,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **SEO & Notifications:**
 
-![Screenshot](assets/images/ssgr-image-14.png)
+![Screenshot](resource/images/ssgr-image-14.png)
 
 - **Enable Admin Notifications:** Enable email notifications to be sent to the admin when a new review is posted.
 - **Custom Email Addresses:** Set custom email addresses for receiving notifications.
@@ -190,7 +188,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **Advanced:**
 
-![Screenshot](assets/images/ssgr-image-15.png)
+![Screenshot](resource/images/ssgr-image-15.png)
 
 - **Sync Reviews:** 
 - Choose whether to automatically or manually sync new reviews from Google.
@@ -198,7 +196,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **SMTP Settings:**
 
-![Screenshot](assets/images/ssgr-image-16.png)
+![Screenshot](resource/images/ssgr-image-16.png)
 
 - Configure SMTP for sending email notifications.
 
@@ -211,7 +209,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
 
 **Test Mail:**
 
-![Screenshot](assets/images/ssgr-image-17.png)
+![Screenshot](resource/images/ssgr-image-17.png)
 
 - Send a test email to verify the configuration.
 
@@ -247,7 +245,7 @@ How to Configure the Smart Showcase for Google Reviews Plugin
    - **Data Sent:** The Google My Business refresh token is stored securely in the third-party service solely to facilitate access token generation. No additional personal or business information is shared.  
    - **Conditions:** The data is transmitted only after user consent and is used exclusively for enabling the plugin's functionality. All operations are performed directly by the user's site.  
    - **Terms and Privacy:**  
-     - [ZealousWeb Privacy Policy](https://sgr.zealousweb.com/privacy-policy)
+     - [ZealousWeb Privacy Policy](https://zealousweb.com/privacy-policy)
 
 # Getting Help
 

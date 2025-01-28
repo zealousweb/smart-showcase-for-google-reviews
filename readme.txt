@@ -41,8 +41,6 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 * Send notification emails to users after submitting reply to reviews
 * Keep all reviews in a WordPress database (CPT)
 * Multi-language support
-* Full GDPR support
-* Admin approval system for reviews
 * Multilingual support with automatic translation options for user-submitted reviews
 * Create and display review widgets in sidebars and footers, showing the latest reviews and average star ratings.
 * ‘Review us on G’ button to collect new Google Reviews
@@ -128,7 +126,7 @@ Initial Release
    **Conditions** The data is transmitted only after user consent and is used exclusively for enabling the plugin's functionality. All operations are performed directly by the user's site.
    
    **Terms and Privacy**
-     - [ZealousWeb Privacy Policy](https://sgr.zealousweb.com/privacy-policy)
+     - [ZealousWeb Privacy Policy](https://zealousweb.com/privacy-policy)
 
 **OUR OTHER PLUGINS**
 
