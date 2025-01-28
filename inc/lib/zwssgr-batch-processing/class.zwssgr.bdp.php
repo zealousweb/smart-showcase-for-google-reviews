@@ -100,8 +100,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
         public function process_zwssgr_gmb_accounts($zwssgr_gmb_data) {
             
-            $zwssgr_existing_post = [];
-            
             if (isset($zwssgr_gmb_data['accounts'])) {
 
                 foreach ($zwssgr_gmb_data['accounts'] as $zwssgr_account) {
@@ -138,7 +136,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                     if ($zwssgr_existing_post_query->have_posts()) {
                         
                         // Update existing post
-                        $zwssgr_request_data['ID'] = $zwssgr_existing_post->ID;
+                        $zwssgr_request_data['ID'] = get_the_ID();
                         $zwssgr_update_result = wp_update_post($zwssgr_request_data);
                         
                         if (is_wp_error($zwssgr_update_result)) {
