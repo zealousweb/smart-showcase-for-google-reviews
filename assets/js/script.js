@@ -250,7 +250,7 @@ jQuery(document).ready(function($) {
 		const enable_load_more = mainDivWrapper.data('enable-load-more');
 		
 		if (enable_load_more === 1){
-			var zwssgrLoadMoreButton = '<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+			window.zwssgrLoadMoreButton = '<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
 		}
 
 		$('.zwssgr-slider.zwssgr-list');
@@ -344,12 +344,12 @@ jQuery(document).ready(function($) {
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
-						mainDivWrapper.append(zwssgrLoadMoreButton);  // Clears previous content and adds the button
+						mainDivWrapper.append(window.zwssgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				if(layoutType === 'popup-1'|| layoutType === 'popup-2'){
 					if( true != response.data.disable_button ){
-						$('.scrollable-content').append(zwssgrLoadMoreButton);  // Clears previous content and adds the button
+						$('.scrollable-content').append(window.zwssgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				// console.log(response); // Log success response
@@ -380,7 +380,7 @@ jQuery(document).ready(function($) {
 		const enable_load_more = mainDivWrapper.data('enable-load-more');
 	
 		if (enable_load_more === 1){
-			var zwssgrLoadMoreButton = '<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
+			window.zwssgrLoadMoreButton = '<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
 		}
 
 		mainDivWrapper.find('.load-more-meta').remove();
@@ -468,12 +468,12 @@ jQuery(document).ready(function($) {
 				if  (layoutType === 'list-1' || layoutType === 'list-2' || layoutType === 'list-3' || layoutType === 'list-4' || layoutType === 'list-5' ||
 				layoutType === 'grid-1' || layoutType === 'grid-2' || layoutType === 'grid-3' || layoutType === 'grid-4' || layoutType === 'grid-5') {
 					if( true != response.data.disable_button ){
-						mainDivWrapper.append(zwssgrLoadMoreButton);  // Clears previous content and adds the button
+						mainDivWrapper.append(window.zwssgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				if(layoutType === 'popup-1'|| layoutType === 'popup-2'){
 					if( true != response.data.disable_button ){
-						$('.scrollable-content').append(zwssgrLoadMoreButton);  // Clears previous content and adds the button
+						$('.scrollable-content').append(window.zwssgrLoadMoreButton);  // Clears previous content and adds the button
 					}
 				}
 				// console.log(response); // Log success response
