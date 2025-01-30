@@ -619,6 +619,37 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	// Pin Review Functionality
+	$(document).on('click', '.zwssgr-toggle-pin', function(e) {
+		e.preventDefault();
+	
+		let postId = $(this).data('post-id');
+		let $icon = $(this).find('img');
+	
+		$.ajax({
+			url: zwssgr_admin.ajax_url,
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'toggle_visibility',
+				action_type: 'pin_toggle',
+				post_id: postId,
+				nonce: zwssgr_admin.nonce
+			},
+			success: function(response) {
+				if (response.success) {
+					$icon.attr('src', response.data.icon);
+					// console.log('Post is now: ' + response.data.state);
+				} else {
+					alert(response.data.message);
+				}
+			},
+			error: function() {
+				alert('An error occurred while toggling the pin state.');
+			}
+		});
+	});
+
 	$(document).on('change', '#toggle-google-review', function() {
         // Update button colors based on the color pickers
         let bgColor = $('#bg-color-picker').val();

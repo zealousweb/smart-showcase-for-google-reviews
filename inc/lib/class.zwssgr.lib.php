@@ -311,6 +311,24 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				case 'newest':
 					$zwssgr_args['orderby'] = 'date';
 					$zwssgr_args['order'] = 'DESC';
+		
+					// Check if we need to prioritize pinned posts (i.e., zwssgr_is_pinned === 1)
+					$zwssgr_pinned_query = get_posts(array(
+						'post_type' => ZWSSGR_POST_REVIEW_TYPE,
+						'meta_key'  => 'zwssgr_is_pinned',
+						'meta_value' => 1,  // Only get pinned posts
+						'fields' => 'ids',  // Return only post IDs
+					));
+
+					if (!empty($zwssgr_pinned_query)) {
+						// Add custom ordering if there are pinned posts
+						$zwssgr_args['orderby'] = array(
+							'meta_value_num' => 'DESC',  // First, show pinned posts (1) at the top
+							'date' => 'DESC',  // Then, sort by date for both pinned and unpinned
+						);
+						$zwssgr_args['meta_key'] = 'zwssgr_is_pinned';  // Sort by the zwssgr_is_pinned meta key
+					}
+	
 					break;
 
 				case 'highest':
@@ -345,7 +363,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			$zwssgr_query = new WP_Query($zwssgr_args);
 			ob_start();  // Start output buffering
 
-			echo '<div class="zwssgr-main-wrapper" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '">';
+			echo '<div class="zwssgr-main-wrapper" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '" data-onload-first="true">';
 
 				echo '<div class="zwssgr-front-review-filter-wrap" data-widget-id="' . esc_attr( $zwssgr_post_id ) . '">';
 					if ($zwssgr_badge_layout_option === 'badge') {
@@ -1543,6 +1561,8 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			$zwssgr_account_number = get_post_meta($zwssgr_post_id, 'zwssgr_account_number', true);
 			$zwssgr_location_number =get_post_meta($zwssgr_post_id, 'zwssgr_location_number', true);
 			$zwssgr_location_all_review_uri =  get_post_meta($zwssgr_post_id, 'zwssgr_location_all_review_uri', true);
+			$zwssgr_onload_first = isset($_POST['onload_first']) && $_POST['onload_first'] === "true";
+
 
 			// Query for posts based on the current page
 			$zwssgr_args = array(
@@ -1609,6 +1629,24 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				case 'newest':
 					$zwssgr_args['orderby'] = 'date';
 					$zwssgr_args['order'] = 'DESC';
+					if ($zwssgr_onload_first) {
+						// Check if we need to prioritize pinned posts (i.e., zwssgr_is_pinned === 1)
+						$zwssgr_pinned_query = get_posts(array(
+							'post_type' => ZWSSGR_POST_REVIEW_TYPE,
+							'meta_key'  => 'zwssgr_is_pinned',
+							'meta_value' => 1,  // Only get pinned posts
+							'fields' => 'ids',  // Return only post IDs
+						));
+
+						if (!empty($zwssgr_pinned_query)) {
+							// Add custom ordering if there are pinned posts
+							$zwssgr_args['orderby'] = array(
+								'meta_value_num' => 'DESC',  // First, show pinned posts (1) at the top
+								'date' => 'DESC',  // Then, sort by date for both pinned and unpinned
+							);
+							$zwssgr_args['meta_key'] = 'zwssgr_is_pinned';  // Sort by the zwssgr_is_pinned meta key
+						}
+					}
 					break;
 
 				case 'highest':

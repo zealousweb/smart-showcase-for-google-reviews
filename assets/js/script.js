@@ -164,6 +164,11 @@ jQuery(document).ready(function($) {
 		let selectedValue = mainWrapper.find('.front-sort-by-select').val();
 		let keyword = mainWrapper.find('.zwssgr-front-keywords-list li.selected').data('zwssgr-keyword');
 		let popupContentContainer = mainWrapper.find('zwssgr-slider.zwssgr-grid-item.zwssgr-popup-list');
+		let isFirstLoad = mainWrapper.data('onload-first'); // Get onload-first value
+
+		// Set `data-onload-first` to false after first interaction
+		mainWrapper.data('onload-first', false);
+
         // Disable the button to prevent multiple clicks
         button.prop('disabled', true).text('Loading...');
 
@@ -177,6 +182,7 @@ jQuery(document).ready(function($) {
                 page: page,  // Pass the current page number
 				front_sort_by: selectedValue,
 				front_keyword: keyword,
+				onload_first: isFirstLoad, // Pass the flag to PHP
                 nonce: load_more.nonce  // Include the nonce for security
             },
             success: function(response) {
@@ -224,6 +230,7 @@ jQuery(document).ready(function($) {
     });
 
 	$(document).on('click', '.zwssgr-front-keywords-list  li', function () {
+		$('.zwssgr-main-wrapper').attr('data-onload-first', 'false');
 		
 		// Get the closest '.zwssgr-main-wrapper' for the clicked element
 		const mainWrapper = $(this).parents('.zwssgr-main-wrapper');
@@ -247,6 +254,10 @@ jQuery(document).ready(function($) {
 		const bg_color_load = mainDivWrapper.data('bg-color');
 		const text_color_load = mainDivWrapper.data('text-color');
 		const enable_load_more = mainDivWrapper.data('enable-load-more');
+		let isFirstLoad = mainWrapper.data('onload-first'); // Get onload-first value
+
+		// Set `data-onload-first` to false after first interaction
+		mainWrapper.data('onload-first', false);
 		
 		if (enable_load_more === 1){
 			window.zwssgrLoadMoreButton = '<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
@@ -266,6 +277,7 @@ jQuery(document).ready(function($) {
 				front_keyword: keyword,
 				post_id: postId,
 				front_sort_by: selectedValue,
+				onload_first: isFirstLoad, // Pass the flag to PHP
 				nonce: load_more.nonce
             },
             success: function(response) {
@@ -357,6 +369,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$(document).on('change', '.front-sort-by-select', function () {
+		$('.zwssgr-main-wrapper').attr('data-onload-first', 'false');
 		const mainWrapper = $(this).parents('.zwssgr-main-wrapper'); // Find the closest wrapper for scoping
 		const postId = mainWrapper.data('widget-id'); // Dynamically get the post ID from the wrapper
 	
@@ -377,6 +390,10 @@ jQuery(document).ready(function($) {
 		const bg_color_load = mainDivWrapper.data('bg-color');
 		const text_color_load = mainDivWrapper.data('text-color');
 		const enable_load_more = mainDivWrapper.data('enable-load-more');
+		let isFirstLoad = mainWrapper.data('onload-first'); // Get onload-first value
+
+		// Set `data-onload-first` to false after first interaction
+		mainWrapper.data('onload-first', false);
 	
 		if (enable_load_more === 1){
 			window.zwssgrLoadMoreButton = '<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="' + postId + '" data-rating-filter="' + ratingFilter + '" style="background-color: ' + bg_color_load + '; color: ' + text_color_load + ';">Load More</button>';
@@ -393,6 +410,7 @@ jQuery(document).ready(function($) {
 				front_sort_by: selectedValue,
 				post_id: postId,
 				front_keyword: keyword,
+				onload_first: isFirstLoad, // Pass the flag to PHP
 				nonce: load_more.nonce
 			},
 			success: function(response) {
