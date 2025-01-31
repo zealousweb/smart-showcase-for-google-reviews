@@ -840,7 +840,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_populate_shortcode_column($zwssgr_column, $zwssgr_post_id) {
 			if ($zwssgr_column === 'shortcode') {
 				// Generate the shortcode using the new function
-				$zwssgr_shortcode = $this->generate_shortcode($zwssgr_post_id);
+				$zwssgr_shortcode = $this->zwssgr_generate_shortcode($zwssgr_post_id);
 				
 				if ($zwssgr_shortcode) {
 					// Display the shortcode and copy icon
@@ -1394,7 +1394,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_selected_layout_option = !empty($zwssgr_layout_option) ? $zwssgr_layout_option : '';
 			$zwssgr_custom_css = get_post_meta($zwssgr_post_id, '_zwssgr_custom_css', true);
 
-			$zwssgr_generated_shortcode = $this->generate_shortcode($zwssgr_post_id);
+			$zwssgr_generated_shortcode = $this->zwssgr_generate_shortcode($zwssgr_post_id);
 			$zwssgr_current_tab = get_post_meta($zwssgr_post_id, 'tab-options', true); 
 			$zwssgr_current_tab2 = get_post_meta($zwssgr_post_id, 'tab-selected', true); 
 			$zwssgr_rating_filter = intval(get_post_meta($zwssgr_post_id, 'rating_filter', true)) ?: 0;
@@ -2727,7 +2727,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_send_json_success('Settings updated successfully.' . $zwssgr_setting_tb );
 		}
 
-		function generate_shortcode($zwssgr_post_id) {
+		function zwssgr_generate_shortcode($zwssgr_post_id) {
 			// Retrieve additional metadata
 			$zwssgr_display_option = get_post_meta($zwssgr_post_id, 'display_option', true);
 			$zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
