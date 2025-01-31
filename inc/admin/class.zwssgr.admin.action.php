@@ -837,24 +837,20 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			return $zwssgr_new_columns;
 		}
 
-		function zwssgr_populate_shortcode_column($zwssgr_column, $zwssgr_post_id) 
-		{
+		function zwssgr_populate_shortcode_column($zwssgr_column, $zwssgr_post_id) {
 			if ($zwssgr_column === 'shortcode') {
-				// Check if the "tab-selected" metadata exists and meets a specific condition
-				$zwssgr_current_tab2 = get_post_meta($zwssgr_post_id, 'tab-selected', true); 
+				// Generate the shortcode using the new function
+				$zwssgr_shortcode = $this->generate_shortcode($zwssgr_post_id);
 				
-				if ($zwssgr_current_tab2) { // Or use any specific condition for `$zwssgr_current_tab2`
-					// Generate the shortcode
-					$zwssgr_shortcode = sprintf('[zwssgr_widget post-id="%d"]', $zwssgr_post_id);
-					
+				if ($zwssgr_shortcode) {
 					// Display the shortcode and copy icon
 					echo '<div class="zwssgr-shortcode">';
 						echo '<input type="text" value="' . esc_attr($zwssgr_shortcode) . '" readonly class="zwssgr-shortcode-text" id="shortcode-' . esc_attr($zwssgr_post_id) . '">';
 						echo '<span class="dashicons dashicons-admin-page copy-shortcode-icon" data-target="shortcode-' . esc_attr($zwssgr_post_id) . '" class="zwssgr-dashicons" title="' . esc_attr__('Copy Shortcode', 'smart-showcase-for-google-reviews') . '"></span>';
 					echo '</div>';
 				} else {
-					// Optionally, you can display a message or leave it blank if the condition is not met
-					echo '<span>' . esc_html('Please select the appropriate options', 'smart-showcase-for-google-reviews') . '</span>';
+					// Optionally display a message if the shortcode is not generated
+					echo '<span>' . esc_html__('Please select the appropriate options', 'smart-showcase-for-google-reviews') . '</span>';
 				}
 			}
 		}
@@ -2731,13 +2727,32 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_send_json_success('Settings updated successfully.' . $zwssgr_setting_tb );
 		}
 
-		function generate_shortcode($zwssgr_post_id) 
-		{
-			// Build the shortcode with attributes
-			$zwssgr_shortcode = '[zwssgr_widget post-id="' . esc_attr($zwssgr_post_id) . '"]';
-			update_post_meta($zwssgr_post_id, '_generated_shortcode_new', $zwssgr_shortcode);
-			return $zwssgr_shortcode;	
-		}
+		function generate_shortcode($zwssgr_post_id) {
+			// Retrieve additional metadata
+			$zwssgr_display_option = get_post_meta($zwssgr_post_id, 'display_option', true);
+			$zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
+			$zwssgr_current_tab2 = get_post_meta($zwssgr_post_id, 'tab-selected', true);
+			$zwssgr_current_tab = get_post_meta($zwssgr_post_id, 'tab-options', true);
+		
+			// Check if 'tab-selected' and 'tab-options' match expected values
+			if ($zwssgr_current_tab2 === 'tab-selected' && $zwssgr_current_tab === 'tab-options') {
+				// Build the shortcode with attributes
+				$zwssgr_shortcode = sprintf(
+					'[zwssgr_widget post-id="%d" display-option="%s" layout-option="%s"]',
+					$zwssgr_post_id,
+					esc_attr($zwssgr_display_option),
+					esc_attr($zwssgr_layout_option)
+				);
+		
+				// Update post meta only if the shortcode is generated or updated
+				update_post_meta($zwssgr_post_id, '_generated_shortcode_new', $zwssgr_shortcode);
+			} else {
+				// If conditions do not match, retain the existing shortcode
+				$zwssgr_shortcode = get_post_meta($zwssgr_post_id, '_generated_shortcode_new', true);
+			}
+		
+			return $zwssgr_shortcode;
+		}		
 
 		function zwssgr_filter_reviews_ajax_handler() {
 			

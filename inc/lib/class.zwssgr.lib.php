@@ -179,31 +179,53 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			// Extract the attributes passed to the shortcode
 			$zwssgr_atts = shortcode_atts(
 				array(
-					'post-id' => '',  // Default value for the post-id attribute
+					'post-id'         => '',  // Default value for post-id
+					'display-option'  => '',  // Default value for display-option
+					'layout-option'   => '',  // Default value for layout-option
 				),
 				$zwssgr_atts,
 				'zwssgr_widget'
 			);
-
-			// Retrieve the post ID from the shortcode attributes
-			$zwssgr_post_id = $zwssgr_atts['post-id'];
-
-			// Check if a post ID is provided and it exists
-			if (empty($zwssgr_post_id) || !get_post($zwssgr_post_id)) {
+		
+			// Retrieve attributes
+			$zwssgr_post_id       = $zwssgr_atts['post-id'];
+			$zwssgr_display_option = $zwssgr_atts['display-option'];
+			$zwssgr_layout_option  = $zwssgr_atts['layout-option'];
+		
+			// Validate the post ID
+			if (empty($zwssgr_post_id) || !is_numeric($zwssgr_post_id) || !get_post($zwssgr_post_id)) {
 				return esc_html__('Invalid post ID.', 'smart-showcase-for-google-reviews');
 			}
-
-			// Check if a valid post ID is provided
-			if (empty($zwssgr_post_id) || !is_numeric($zwssgr_post_id)) {
-				return ''; // Return nothing if the post ID is invalid
-			}
-
-			// Get the post object for the specified post ID
+		
+			// Get the post object
 			$zwssgr_post = get_post($zwssgr_post_id);
-
-			// Check if the post exists and is of the correct post type and published
+		
+			// Ensure the post exists, is of the correct post type, and is published
 			if (!$zwssgr_post || $zwssgr_post->post_type !== 'zwssgr_data_widget' || $zwssgr_post->post_status !== 'publish') {
-				return ''; // Return nothing if the post does not meet the conditions
+				return ''; // Return nothing if conditions are not met
+			}
+		
+			// Retrieve expected values from post meta
+			$zwssgr_expected_display_option = get_post_meta($zwssgr_post_id, 'display_option', true);
+			$zwssgr_expected_layout_option  = get_post_meta($zwssgr_post_id, 'layout_option', true);
+		
+			// Validate that the shortcode attributes match the stored post meta values
+			if (
+				empty($zwssgr_display_option) || empty($zwssgr_layout_option) || 
+				$zwssgr_display_option !== $zwssgr_expected_display_option || 
+				$zwssgr_layout_option !== $zwssgr_expected_layout_option
+			) {
+				return esc_html__('Invalid or missing shortcode parameters.', 'smart-showcase-for-google-reviews');
+			}
+		
+			// If all checks pass, return the correct shortcode
+			// Validate that the shortcode attributes match the stored post meta values
+			if (
+				empty($zwssgr_display_option) || empty($zwssgr_layout_option) || 
+				$zwssgr_display_option !== $zwssgr_expected_display_option || 
+				$zwssgr_layout_option !== $zwssgr_expected_layout_option
+			) {
+				return ''; // Stop shortcode from functioning
 			}
 
 			// Retrieve the 'enable_load_more' setting from post meta
