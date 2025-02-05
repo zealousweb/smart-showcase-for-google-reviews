@@ -125,6 +125,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_register_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL .'assets/js/admin.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-admin-js' );
 
+			wp_register_script( ZWSSGR_PREFIX . '-vanilla-js', ZWSSGR_URL . 'assets/js/vanilla.js', array(), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '-vanilla-js' );
+
 			// Google chart JS
 			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
@@ -2362,7 +2365,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				<div class="tab-content zwssgr-tab-content-display" id="tab-selected">
 					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
-					<div id="selected-option-display" class="selected-option-display"></div>
+					<div id="selected-option-display" class="selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
 					<div class="zwssgr-toogle-display">
 						<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($zwssgr_bg_color); ?>; color:<?php echo esc_attr($zwssgr_text_color); ?>;" class="zwssgr-google-toggle" target="_blank"><?php echo esc_html__('Review Us On G', 'smart-showcase-for-google-reviews'); ?></a>
 					</div>
@@ -2659,8 +2662,19 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			}
 
 			else if(  $zwssgr_setting_tb == 'tab-selected' ){
-				$zwssgr_selected_elements = isset( $_POST['selected_elements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['selected_elements'] ) ) : array();
-				$zwssgr_keywords = isset( $_POST['keywords'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['keywords'] ) ) : [];
+
+				$zwssgr_selected_elements = isset($_POST['selected_elements']) ? json_decode(sanitize_text_field(wp_unslash($_POST['selected_elements'])), true) : [];
+				if (!is_array($zwssgr_selected_elements)) {
+					$zwssgr_selected_elements = [];
+				}
+				$zwssgr_selected_elements = array_map('sanitize_text_field', $zwssgr_selected_elements);
+
+				$zwssgr_keywords = isset($_POST['keywords']) ? json_decode(sanitize_text_field(wp_unslash($_POST['keywords'])), true)  : [];
+				if (!is_array($zwssgr_keywords)) {
+					$zwssgr_keywords = [];
+				}
+
+				$zwssgr_keywords = array_map('sanitize_text_field', $zwssgr_keywords);
 				$zwssgr_date_format = isset( $_POST['date_format'] ) ? sanitize_text_field( wp_unslash( $_POST['date_format'] ) ) : '';
 				$zwssgr_char_limit = isset($_POST['char_limit']) ? intval(wp_unslash($_POST['char_limit'])) : '';
 				$zwssgr_language = isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : '';
@@ -2695,7 +2709,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				update_post_meta($zwssgr_post_id, '_zwssgr_custom_css', $zwssgr_custom_css);
 				update_post_meta($zwssgr_post_id, 'enable_sort_by', $zwssgr_enable_sort_by);
 			}
-		
 			// Respond with success message
 			wp_send_json_success('Settings updated successfully.' . $zwssgr_setting_tb );
 		}

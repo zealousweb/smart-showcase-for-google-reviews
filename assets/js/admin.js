@@ -1,218 +1,218 @@
 jQuery(document).ready(function($) {
 	"use strict";
 	
-	// Bind click event to open popup
-	$(document).on('click', '.zwssgr-popup-item', function (e) {
-		if ($(e.target).hasClass('zwssgr-total-review')) {
-			return;
-		}
-		let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
-		$('#' + popupId).stop(true, true).fadeIn(); // Show the popup
-	});
+	// // Bind click event to open popup
+	// $(document).on('click', '.zwssgr-popup-item', function (e) {
+	// 	if ($(e.target).hasClass('zwssgr-total-review')) {
+	// 		return;
+	// 	}
+	// 	let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+	// 	$('#' + popupId).stop(true, true).fadeIn(); // Show the popup
+	// });
 
-	// Bind click event to close popup when the close button is clicked
-	$(document).on('click', '.zwssgr-close-popup', function () {
-		$(this).closest('.zwssgr-popup-overlay').fadeOut(); // Hide the popup
-	});
+	// // Bind click event to close popup when the close button is clicked
+	// $(document).on('click', '.zwssgr-close-popup', function () {
+	// 	$(this).closest('.zwssgr-popup-overlay').fadeOut(); // Hide the popup
+	// });
 
-	// Bind click event to close popup when clicking outside the popup content
-	$(document).on('click', '.zwssgr-popup-overlay', function (e) {
-		if ($(e.target).is('.zwssgr-popup-overlay')) {
-			$(this).stop(true, true).fadeOut(); // Hide the popup
-		}
-	});
+	// // Bind click event to close popup when clicking outside the popup content
+	// $(document).on('click', '.zwssgr-popup-overlay', function (e) {
+	// 	if ($(e.target).is('.zwssgr-popup-overlay')) {
+	// 		$(this).stop(true, true).fadeOut(); // Hide the popup
+	// 	}
+	// });
 
-	// Bind keydown event to close popup when ESC key is pressed
-	$(document).on('keydown', function (e) {
-		if (e.key === "Escape" || e.keyCode === 27) {
-			$('.zwssgr-popup-overlay').stop(true, true).fadeOut(); // Hide the popup
-		}
-	});
+	// // Bind keydown event to close popup when ESC key is pressed
+	// $(document).on('keydown', function (e) {
+	// 	if (e.key === "Escape" || e.keyCode === 27) {
+	// 		$('.zwssgr-popup-overlay').stop(true, true).fadeOut(); // Hide the popup
+	// 	}
+	// });
 
-	$(document).on('click', '.copy-shortcode-icon, .zwssgr-copy-shortcode-icon', function () {
-		let targetId = $(this).data('target');
-		let $input = $('#' + targetId);
+	// $(document).on('click', '.copy-shortcode-icon, .zwssgr-copy-shortcode-icon', function () {
+	// 	let targetId = $(this).data('target');
+	// 	let $input = $('#' + targetId);
 	
-		if ($input.length) {
-			// Copy the input field text using Clipboard API
-			navigator.clipboard.writeText($input.val()).then(() => {
-				$(this).addClass('dashicons-yes'); // Change icon to a checkmark
-				setTimeout(() => {
-					$(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
-				}, 2000);
-			}).catch(err => {
-				console.error('Failed to copy text: ', err);
-			});
-		}
-	});
+	// 	if ($input.length) {
+	// 		// Copy the input field text using Clipboard API
+	// 		navigator.clipboard.writeText($input.val()).then(() => {
+	// 			$(this).addClass('dashicons-yes'); // Change icon to a checkmark
+	// 			setTimeout(() => {
+	// 				$(this).removeClass('dashicons-yes').addClass('dashicons-admin-page'); // Reset icon after 2 seconds
+	// 			}, 2000);
+	// 		}).catch(err => {
+	// 			console.error('Failed to copy text: ', err);
+	// 		});
+	// 	}
+	// });
 	
-	window.zwssgrWidgetPostType = 'zwssgr_data_widget';
+	// window.zwssgrWidgetPostType = 'zwssgr_data_widget';
 
-    // Check if we're on the edit, new post, or the custom layout page for the widget post type
-    if ($('.post-type-' + window.zwssgrWidgetPostType).length || 
-        $('.post-php.post-type-' + window.zwssgrWidgetPostType).length || 
-        $('.post-new-php.post-type-' + window.zwssgrWidgetPostType).length || 
-        window.location.href.indexOf('admin.php?page=zwssgr_widget_configurator') !== -1) {
+    // // Check if we're on the edit, new post, or the custom layout page for the widget post type
+    // if ($('.post-type-' + window.zwssgrWidgetPostType).length || 
+    //     $('.post-php.post-type-' + window.zwssgrWidgetPostType).length || 
+    //     $('.post-new-php.post-type-' + window.zwssgrWidgetPostType).length || 
+    //     window.location.href.indexOf('admin.php?page=zwssgr_widget_configurator') !== -1) {
 
-        // Ensure the parent menu (dashboard) is highlighted as active
-        $('.toplevel_page_zwssgr_dashboard')
-            .removeClass('wp-not-current-submenu')
-            .addClass('wp-has-current-submenu wp-menu-open');
+    //     // Ensure the parent menu (dashboard) is highlighted as active
+    //     $('.toplevel_page_zwssgr_dashboard')
+    //         .removeClass('wp-not-current-submenu')
+    //         .addClass('wp-has-current-submenu wp-menu-open');
 
-        // Ensure the specific submenu item for zwssgr_data_widget is active
-        $('ul.wp-submenu li a[href="edit.php?post_type=' + window.zwssgrWidgetPostType + '"]')
-            .parent('li')
-            .addClass('current');
-    }
+    //     // Ensure the specific submenu item for zwssgr_data_widget is active
+    //     $('ul.wp-submenu li a[href="edit.php?post_type=' + window.zwssgrWidgetPostType + '"]')
+    //         .parent('li')
+    //         .addClass('current');
+    // }
 
-	window.zwssgrReviewPostType = 'zwssgr_reviews';
+	// window.zwssgrReviewPostType = 'zwssgr_reviews';
 
-	// Check if we're on the edit, new post, or the custom layout page for the review post type
-	if ($('.post-type-' + window.zwssgrReviewPostType).length || 
-	$('.post-php.post-type-' + window.zwssgrReviewPostType).length || 
-	$('.post-new-php.post-type-' + window.zwssgrReviewPostType).length || 
-	window.location.href.indexOf('admin.php?page=zwssgr_review_configurator') !== -1) {
+	// // Check if we're on the edit, new post, or the custom layout page for the review post type
+	// if ($('.post-type-' + window.zwssgrReviewPostType).length || 
+	// $('.post-php.post-type-' + window.zwssgrReviewPostType).length || 
+	// $('.post-new-php.post-type-' + window.zwssgrReviewPostType).length || 
+	// window.location.href.indexOf('admin.php?page=zwssgr_review_configurator') !== -1) {
 
-	// Ensure the parent menu (dashboard) is highlighted as active
-	$('.toplevel_page_zwssgr_dashboard')
-		.removeClass('wp-not-current-submenu')
-		.addClass('wp-has-current-submenu wp-menu-open');
+	// // Ensure the parent menu (dashboard) is highlighted as active
+	// $('.toplevel_page_zwssgr_dashboard')
+	// 	.removeClass('wp-not-current-submenu')
+	// 	.addClass('wp-has-current-submenu wp-menu-open');
 
-	// Ensure the specific submenu item for zwssgr_reviews is active
-	$('ul.wp-submenu li a[href="edit.php?post_type=' + window.zwssgrReviewPostType + '"]')
-		.parent('li')
-		.addClass('current');
-	}
+	// // Ensure the specific submenu item for zwssgr_reviews is active
+	// $('ul.wp-submenu li a[href="edit.php?post_type=' + window.zwssgrReviewPostType + '"]')
+	// 	.parent('li')
+	// 	.addClass('current');
+	// }
 
-	//SEO and Notification Email Toggle 
-	window.zwssgrToggle = $('#zwssgr_admin_notification_enabled');
-	window.zwssgrNotificationFields = $('.zwssgr-notification-fields');
-	window.zwssgrSubmitButton = $('.zwssgr-notification-submit-btn'); 
-	if (window.zwssgrToggle.is(':checked')) {
-		window.zwssgrNotificationFields.show();
-		window.zwssgrSubmitButton.removeClass('zwssgr-disable');
-	} else {
-		window.zwssgrNotificationFields.hide();
-		window.zwssgrSubmitButton.addClass('zwssgr-disable');
-	}
-	window.zwssgrToggle.on('change', function () {
-		if ($(this).is(':checked')) {
-			window.zwssgrNotificationFields.show();
-			window.zwssgrSubmitButton.removeClass('zwssgr-disable');
-		} else {
-			window.zwssgrNotificationFields.hide();
-			window.zwssgrSubmitButton.addClass('zwssgr-disable');
-		}
-	});
+	// //SEO and Notification Email Toggle 
+	// window.zwssgrToggle = $('#zwssgr_admin_notification_enabled');
+	// window.zwssgrNotificationFields = $('.zwssgr-notification-fields');
+	// window.zwssgrSubmitButton = $('.zwssgr-notification-submit-btn'); 
+	// if (window.zwssgrToggle.is(':checked')) {
+	// 	window.zwssgrNotificationFields.show();
+	// 	window.zwssgrSubmitButton.removeClass('zwssgr-disable');
+	// } else {
+	// 	window.zwssgrNotificationFields.hide();
+	// 	window.zwssgrSubmitButton.addClass('zwssgr-disable');
+	// }
+	// window.zwssgrToggle.on('change', function () {
+	// 	if ($(this).is(':checked')) {
+	// 		window.zwssgrNotificationFields.show();
+	// 		window.zwssgrSubmitButton.removeClass('zwssgr-disable');
+	// 	} else {
+	// 		window.zwssgrNotificationFields.hide();
+	// 		window.zwssgrSubmitButton.addClass('zwssgr-disable');
+	// 	}
+	// });
 
 
-	// SEO and Notification email vaildation
-	function validateEmail(email) {
-		let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-		return emailPattern.test(email);
-	}
+	// // SEO and Notification email vaildation
+	// function validateEmail(email) {
+	// 	let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	// 	return emailPattern.test(email);
+	// }
 
-	// Function to validate emails and show messages
-	function validateEmails() {
-		let emails = $('#zwssgr_admin_notification_emails').val().split(',');
-		let invalidEmails = [];
-		emails.forEach(function(email) {
-			email = email.trim(); // Clean the email address
-			if (!validateEmail(email)) {
-				invalidEmails.push(email);
-			}
-		});
+	// // Function to validate emails and show messages
+	// function validateEmails() {
+	// 	let emails = $('#zwssgr_admin_notification_emails').val().split(',');
+	// 	let invalidEmails = [];
+	// 	emails.forEach(function(email) {
+	// 		email = email.trim(); // Clean the email address
+	// 		if (!validateEmail(email)) {
+	// 			invalidEmails.push(email);
+	// 		}
+	// 	});
 
-		// Show error message if any email is invalid
-		if (invalidEmails.length > 0) {
-			$('#email-error').text('Invalid email(s): ' + invalidEmails.join(', ')).show();
-			$('#email-success').hide(); // Hide success message
-		} else {
-			$('#email-error').hide(); // Hide error message if all emails are valid
-		}
-	}
+	// 	// Show error message if any email is invalid
+	// 	if (invalidEmails.length > 0) {
+	// 		$('#email-error').text('Invalid email(s): ' + invalidEmails.join(', ')).show();
+	// 		$('#email-success').hide(); // Hide success message
+	// 	} else {
+	// 		$('#email-error').hide(); // Hide error message if all emails are valid
+	// 	}
+	// }
 
-	// On keypress in the email field
-	$(document).on('keypress', '#zwssgr_admin_notification_emails', function() {
-		validateEmails();
-	});
+	// // On keypress in the email field
+	// $(document).on('keypress', '#zwssgr_admin_notification_emails', function() {
+	// 	validateEmails();
+	// });
 
-	// On blur (when the user leaves the email field)
-	$(document).on('blur', '#zwssgr_admin_notification_emails', function() {
-		validateEmails();
-	});
+	// // On blur (when the user leaves the email field)
+	// $(document).on('blur', '#zwssgr_admin_notification_emails', function() {
+	// 	validateEmails();
+	// });
 
-	// On form submission, check if all emails are valid
-	$(document).on('submit', '#notification-form', function(e) {
-		let emails = $('#zwssgr_admin_notification_emails').val().split(',');
-		let invalidEmails = [];
-		emails.forEach(function(email) {
-			email = email.trim();
-			if (!validateEmail(email)) {
-				invalidEmails.push(email);
-			}
-		});
+	// // On form submission, check if all emails are valid
+	// $(document).on('submit', '#notification-form', function(e) {
+	// 	let emails = $('#zwssgr_admin_notification_emails').val().split(',');
+	// 	let invalidEmails = [];
+	// 	emails.forEach(function(email) {
+	// 		email = email.trim();
+	// 		if (!validateEmail(email)) {
+	// 			invalidEmails.push(email);
+	// 		}
+	// 	});
 
-		// If there are invalid emails, prevent form submission and show error message
-		if (invalidEmails.length > 0) {
-			e.preventDefault();
-			$('#email-error').text('Cannot send emails. Invalid email(s): ' + invalidEmails.join(', ')).show();
-			$('#email-success').hide(); // Hide success message
-		} else {
-			// If all emails are valid, show success message and allow form submission
-			$('#email-error').hide(); // Hide error message
-			$('#email-success').text('Success! Emails are valid and form submitted.').show(); // Show success message
-		}
-	});
+	// 	// If there are invalid emails, prevent form submission and show error message
+	// 	if (invalidEmails.length > 0) {
+	// 		e.preventDefault();
+	// 		$('#email-error').text('Cannot send emails. Invalid email(s): ' + invalidEmails.join(', ')).show();
+	// 		$('#email-success').hide(); // Hide success message
+	// 	} else {
+	// 		// If all emails are valid, show success message and allow form submission
+	// 		$('#email-error').hide(); // Hide error message
+	// 		$('#email-success').text('Success! Emails are valid and form submitted.').show(); // Show success message
+	// 	}
+	// });
 
-	// Select Layout option functionality
-	const radioButtons = $('input[name="display_option"]');
-	let currentDisplayOption = 'all';
+	// // Select Layout option functionality
+	// const radioButtons = $('input[name="display_option"]');
+	// let currentDisplayOption = 'all';
 
-	// Add event listeners to radio buttons for dynamic filtering
-	radioButtons.change(function () {
-		currentDisplayOption = $(this).val();
-		updateOptions(currentDisplayOption);
-		saveSelectedOption(currentDisplayOption); // Save the selected display option
-	});
+	// // Add event listeners to radio buttons for dynamic filtering
+	// radioButtons.change(function () {
+	// 	currentDisplayOption = $(this).val();
+	// 	updateOptions(currentDisplayOption);
+	// 	saveSelectedOption(currentDisplayOption); // Save the selected display option
+	// });
 
-	// Function to save the selected display option and layout option via AJAX
-	function saveSelectedOption(option) {
-		let postId = getQueryParam('zwssgr_widget_id');
-		let settings = $('.tab-item.active').attr('data-tab');
-		let selectedLayout = $('.zwssgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
+	// // Function to save the selected display option and layout option via AJAX
+	// function saveSelectedOption(option) {
+	// 	let postId = getQueryParam('zwssgr_widget_id');
+	// 	let settings = $('.tab-item.active').attr('data-tab');
+	// 	let selectedLayout = $('.zwssgr-option-item:visible .select-btn.selected').data('option'); // Get selected layout option
 
-		$.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			async: false,  // Make the request synchronous
-			data: {
-				action: 'zwssgr_save_widget_data',
-				security: my_widget.nonce,
-				display_option: option,
-				layout_option: selectedLayout, // Send selected layout
-				post_id: postId,
-				settings: settings
-			},
-			success: function(response) {
-				// console.log('Display and layout option saved:', response);
-			},
-			error: function(error) {
-				console.error('Error saving options:', error);
-			}
-		});
-	}
+	// 	$.ajax({
+	// 		url: ajaxurl,
+	// 		type: 'POST',
+	// 		async: false,  // Make the request synchronous
+	// 		data: {
+	// 			action: 'zwssgr_save_widget_data',
+	// 			security: my_widget.nonce,
+	// 			display_option: option,
+	// 			layout_option: selectedLayout, // Send selected layout
+	// 			post_id: postId,
+	// 			settings: settings
+	// 		},
+	// 		success: function(response) {
+	// 			// console.log('Display and layout option saved:', response);
+	// 		},
+	// 		error: function(error) {
+	// 			console.error('Error saving options:', error);
+	// 		}
+	// 	});
+	// }
 
-	// Function to show/hide options based on the selected radio button
-	function updateOptions(value) {
-		$('.zwssgr-option-item').each(function () {
-			if (value === 'all' || $(this).data('type') === value) {
-				$(this).show();
-			} else {
-				$(this).hide();
-			}
-		});
-	}
+	// // Function to show/hide options based on the selected radio button
+	// function updateOptions(value) {
+	// 	$('.zwssgr-option-item').each(function () {
+	// 		if (value === 'all' || $(this).data('type') === value) {
+	// 			$(this).show();
+	// 		} else {
+	// 			$(this).hide();
+	// 		}
+	// 	});
+	// }
 				
 	// Function to get query parameter by name
 	function getQueryParam(param) {
@@ -243,121 +243,121 @@ jQuery(document).ready(function($) {
 		}, 100);
 	}
 	
-	// Handle click events for the tab navigation items
-	$(document).on('click', '.tab-item', function() {
-		let tabId = $(this).data('tab');
-		let currentUrl = window.location.href.split('?')[0]; // Get the base URL
+	// // Handle click events for the tab navigation items
+	// $(document).on('click', '.tab-item', function() {
+	// 	let tabId = $(this).data('tab');
+	// 	let currentUrl = window.location.href.split('?')[0]; // Get the base URL
 
-		// Get existing query parameters
-		let selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
-		let postId = getQueryParam('zwssgr_widget_id'); // Get the post_id from the URL if it exists
+	// 	// Get existing query parameters
+	// 	let selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
+	// 	let postId = getQueryParam('zwssgr_widget_id'); // Get the post_id from the URL if it exists
 
-		// Start building the new URL with page and tab parameters
-		let newUrl = currentUrl + '?page=zwssgr_widget_configurator&tab=' + tabId;
+	// 	// Start building the new URL with page and tab parameters
+	// 	let newUrl = currentUrl + '?page=zwssgr_widget_configurator&tab=' + tabId;
 
-		// Add selectedOption to the URL if it exists
-		if (selectedOption) {
-			newUrl += '&selectedOption=' + selectedOption;
-		}
+	// 	// Add selectedOption to the URL if it exists
+	// 	if (selectedOption) {
+	// 		newUrl += '&selectedOption=' + selectedOption;
+	// 	}
 
-		// Add post_id to the URL if it exists
-		if (postId) {
-			newUrl += '&zwssgr_widget_id=' + postId;
-		}
+	// 	// Add post_id to the URL if it exists
+	// 	if (postId) {
+	// 		newUrl += '&zwssgr_widget_id=' + postId;
+	// 	}
 
-		// Redirect to the new URL
-		window.location.href = newUrl;
-	});
+	// 	// Redirect to the new URL
+	// 	window.location.href = newUrl;
+	// });
 
 	// Function to show custom notifications
-	function showNotification(message, type) {
-		// Define the notification types: success, error, warning, info
-		let notificationClass = 'zwssgr-notice-' + type; // Example: zwssgr-notice-success, zwssgr-notice-error
+	// function showNotification(message, type) {
+	// 	// Define the notification types: success, error, warning, info
+	// 	let notificationClass = 'zwssgr-notice-' + type; // Example: zwssgr-notice-success, zwssgr-notice-error
 
-		// Create the notification HTML
-		let notification = `
-			<div class="zwssgr-notice ${notificationClass} zwssgr-is-dismissible">
-				<p>${message}</p>
-			</div>
-		`;
+	// 	// Create the notification HTML
+	// 	let notification = `
+	// 		<div class="zwssgr-notice ${notificationClass} zwssgr-is-dismissible">
+	// 			<p>${message}</p>
+	// 		</div>
+	// 	`;
 
-		// Append the notification to the target area
-		$('.zwssgr-dashboard').prepend(notification);
+	// 	// Append the notification to the target area
+	// 	$('.zwssgr-dashboard').prepend(notification);
 
-		// Add click event for the dismiss button
-		$('.zwssgr-notice.zwssgr-is-dismissible').on('click', '.zwssgr-notice-dismiss', function () {
-			$(this).closest('.zwssgr-notice').fadeOut(function () {
-				$(this).remove();
-			});
-		});
-	}
+	// 	// Add click event for the dismiss button
+	// 	$('.zwssgr-notice.zwssgr-is-dismissible').on('click', '.zwssgr-notice-dismiss', function () {
+	// 		$(this).closest('.zwssgr-notice').fadeOut(function () {
+	// 			$(this).remove();
+	// 		});
+	// 	});
+	// }
 
-	// Handle click events for "Select Option" buttons
-    $(document).on('click', '.select-btn', function() {
-        let optionId = $(this).data('option');
-        let postId = getQueryParam('zwssgr_widget_id');
-        let currentUrl = window.location.href.split('?')[0];
-
-
-        if (!postId) {
-			showNotification('Post ID not found!', 'error'); // Custom error notification
-			return;
-		}
-
-		// Fetch the HTML for the selected option using the correct optionId
-		let selectedOptionElement = $('#' + optionId); // Clone the selected option's element
-		$('#selected-option-display').html(selectedOptionElement); // Update the display area
-		$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
-
-		// Get the current display option (assuming you have a variable for this)
-		let displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
-		let settings = $('.tab-item.active').attr('data-tab');
-		let currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
-
-		$.ajax({
-			url: ajaxurl,  // This is the WordPress AJAX URL
-			type: 'POST',
-			async: false,  // Make the request synchronous
-			data: {
-				action: 'zwssgr_save_widget_data',
-				security: my_widget.nonce,
-				layout_option: optionId,
-				display_option: displayOption, // The selected display option
-				post_id: postId   ,// The post ID
-				settings: settings,
-				current_tab: currentTab // Include current tab status
-			},
-			success: function(response) {
-				if (response.success) {
-					showNotification('Layout option saved successfully!', 'success'); // Show success message
-				} else {
-					showNotification('Failed to save layout option.', 'error'); // Show error message
-				}
-			},
-			error: function() {
-				showNotification('An error occurred.', 'error'); // Show error message
-			}
-		});
-
-        // Append post_id and selected option to the URL
-        window.location.href = currentUrl + '?page=zwssgr_widget_configurator&tab=tab-selected&selectedOption=' + optionId + '&zwssgr_widget_id=' + postId;
-    });
-
-    // Handle the Save & Get Code Button
-    $(document).on('click', '#save-get-code-btn', function() {
-        let selectedOption = getQueryParam('selectedOption');
-        let postId = getQueryParam('zwssgr_widget_id');
-        let currentUrl = window.location.href.split('?')[0];
+	// // Handle click events for "Select Option" buttons
+    // $(document).on('click', '.select-btn', function() {
+    //     let optionId = $(this).data('option');
+    //     let postId = getQueryParam('zwssgr_widget_id');
+    //     let currentUrl = window.location.href.split('?')[0];
 
 
-        if (!postId) {
-			showNotification('Post ID not found!', 'error'); // Custom error notification
-			return;
-		}
+    //     if (!postId) {
+	// 		showNotification('Post ID not found!', 'error'); // Custom error notification
+	// 		return;
+	// 	}
 
-        // Redirect to the "Generated Shortcode" tab with selected option and post_id
-        window.location.href = currentUrl + '?page=zwssgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&zwssgr_widget_id=' + postId;
-    });
+	// 	// Fetch the HTML for the selected option using the correct optionId
+	// 	let selectedOptionElement = $('#' + optionId); // Clone the selected option's element
+	// 	$('#selected-option-display').html(selectedOptionElement); // Update the display area
+	// 	$('#selected-option-display').find('.select-btn').remove(); // Remove the select button from the cloned HTML
+
+	// 	// Get the current display option (assuming you have a variable for this)
+	// 	let displayOption = $('input[name="display_option"]:checked').val(); // Or adjust according to your setup
+	// 	let settings = $('.tab-item.active').attr('data-tab');
+	// 	let currentTab = $('.tab-item.active').data('tab'); // Get the current active tab
+
+	// 	$.ajax({
+	// 		url: ajaxurl,  // This is the WordPress AJAX URL
+	// 		type: 'POST',
+	// 		async: false,  // Make the request synchronous
+	// 		data: {
+	// 			action: 'zwssgr_save_widget_data',
+	// 			security: my_widget.nonce,
+	// 			layout_option: optionId,
+	// 			display_option: displayOption, // The selected display option
+	// 			post_id: postId   ,// The post ID
+	// 			settings: settings,
+	// 			current_tab: currentTab // Include current tab status
+	// 		},
+	// 		success: function(response) {
+	// 			if (response.success) {
+	// 				showNotification('Layout option saved successfully!', 'success'); // Show success message
+	// 			} else {
+	// 				showNotification('Failed to save layout option.', 'error'); // Show error message
+	// 			}
+	// 		},
+	// 		error: function() {
+	// 			showNotification('An error occurred.', 'error'); // Show error message
+	// 		}
+	// 	});
+
+    //     // Append post_id and selected option to the URL
+    //     window.location.href = currentUrl + '?page=zwssgr_widget_configurator&tab=tab-selected&selectedOption=' + optionId + '&zwssgr_widget_id=' + postId;
+    // });
+
+    // // Handle the Save & Get Code Button
+    // $(document).on('click', '#save-get-code-btn', function() {
+    //     let selectedOption = getQueryParam('selectedOption');
+    //     let postId = getQueryParam('zwssgr_widget_id');
+    //     let currentUrl = window.location.href.split('?')[0];
+
+
+    //     if (!postId) {
+	// 		showNotification('Post ID not found!', 'error'); // Custom error notification
+	// 		return;
+	// 	}
+
+    //     // Redirect to the "Generated Shortcode" tab with selected option and post_id
+    //     window.location.href = currentUrl + '?page=zwssgr_widget_configurator&tab=tab-shortcode&selectedOption=' + selectedOption + '&zwssgr_widget_id=' + postId;
+    // });
 
 	// Function to reinitialize the selected Slick Slider
 	function reinitializeSlickSlider(container) {
@@ -589,445 +589,445 @@ jQuery(document).ready(function($) {
 		]
 	});
 
-	// Handle click on visibility toggle icon of Review CPT
-	$(document).on('click', '.zwssgr-toggle-visibility', function(e) {
-		e.preventDefault();
+	// // Handle click on visibility toggle icon of Review CPT
+	// $(document).on('click', '.zwssgr-toggle-visibility', function(e) {
+	// 	e.preventDefault();
 
-		let postId = $(this).data('post-id');
-		let $icon = $(this).find('.dashicons');
+	// 	let postId = $(this).data('post-id');
+	// 	let $icon = $(this).find('.dashicons');
 
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: 'POST',
-			async: false,  // Make the request synchronous
-			dataType: 'json',
-			data: {
-				action: 'toggle_visibility',
-				post_id: postId,
-				nonce: zwssgr_admin.nonce
-			},
-			success: function(response) {
-				if (response.success) {
-					// Update icon based on the response
-					$icon.removeClass('dashicons-hidden dashicons-visibility').addClass('dashicons-' + response.data.icon);
+	// 	$.ajax({
+	// 		url: zwssgr_admin.ajax_url,
+	// 		type: 'POST',
+	// 		async: false,  // Make the request synchronous
+	// 		dataType: 'json',
+	// 		data: {
+	// 			action: 'toggle_visibility',
+	// 			post_id: postId,
+	// 			nonce: zwssgr_admin.nonce
+	// 		},
+	// 		success: function(response) {
+	// 			if (response.success) {
+	// 				// Update icon based on the response
+	// 				$icon.removeClass('dashicons-hidden dashicons-visibility').addClass('dashicons-' + response.data.icon);
 
-					// Optionally display the current state somewhere on the page
-					let currentState = response.data.state;
-					// console.log("Post visibility is now: " + currentState); 	
-				}
-			}
-		});
-	});
+	// 				// Optionally display the current state somewhere on the page
+	// 				let currentState = response.data.state;
+	// 				// console.log("Post visibility is now: " + currentState); 	
+	// 			}
+	// 		}
+	// 	});
+	// });
 
-	$(document).on('change', '#toggle-google-review', function() {
-        // Update button colors based on the color pickers
-        let bgColor = $('#bg-color-picker').val();
-        let textColor = $('#text-color-picker').val();
+	// $(document).on('change', '#toggle-google-review', function() {
+    //     // Update button colors based on the color pickers
+    //     let bgColor = $('#bg-color-picker').val();
+    //     let textColor = $('#text-color-picker').val();
 
-        $('.zwssgr-google-toggle').css({
-            'background-color': bgColor,
-            'color': textColor
-        });
-    });
+    //     $('.zwssgr-google-toggle').css({
+    //         'background-color': bgColor,
+    //         'color': textColor
+    //     });
+    // });
 
-    // When the background color picker changes
-	$(document).on('input', '#bg-color-picker', function() {
-        let bgColor = $(this).val();
-        $('.zwssgr-google-toggle').css('background-color', bgColor);
-    });
+    // // When the background color picker changes
+	// $(document).on('input', '#bg-color-picker', function() {
+    //     let bgColor = $(this).val();
+    //     $('.zwssgr-google-toggle').css('background-color', bgColor);
+    // });
 
-    // When the text color picker changes
-	$(document).on('input', '#text-color-picker', function() {
-        let textColor = $(this).val();
-        $('.zwssgr-google-toggle').css('color', textColor);
-    });
+    // // When the text color picker changes
+	// $(document).on('input', '#text-color-picker', function() {
+    //     let textColor = $(this).val();
+    //     $('.zwssgr-google-toggle').css('color', textColor);
+    // });
 
-	function toggleButtonVisibility() {
-		if ($('#toggle-google-review').is(':checked')) {
-			$('.zwssgr-google-toggle').show(); // Show the button
-		} else {
-			$('.zwssgr-google-toggle').hide(); // Hide the button
-		}
-	}
+	// function toggleButtonVisibility() {
+	// 	if ($('#toggle-google-review').is(':checked')) {
+	// 		$('.zwssgr-google-toggle').show(); // Show the button
+	// 	} else {
+	// 		$('.zwssgr-google-toggle').hide(); // Hide the button
+	// 	}
+	// }
 
-	// Run the function when the page loads
-	toggleButtonVisibility();
+	// // Run the function when the page loads
+	// toggleButtonVisibility();
 
-	// Run the function whenever the checkbox state changes
-	$(document).on('change', '#toggle-google-review', toggleButtonVisibility);
+	// // Run the function whenever the checkbox state changes
+	// $(document).on('change', '#toggle-google-review', toggleButtonVisibility);
 
 	// Function to hide or show elements with a smooth effect
-	function toggleElements() {
-        $('#review-title').is(':checked') ? $('.selected-option-display .zwssgr-title').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-title').stop(true, true).fadeIn(600);
-        $('#review-rating').is(':checked') ? $('.selected-option-display .zwssgr-rating').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-rating').stop(true, true).fadeIn(600);
-        $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwssgr-days-ago').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-days-ago').stop(true, true).fadeIn(600);
-        $('#review-content').is(':checked') ? $('.selected-option-display .zwssgr-content').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-content').stop(true, true).fadeIn(600);
-		$('#review-photo').is(':checked') ? $('.selected-option-display .zwssgr-profile').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-profile').stop(true, true).fadeIn(600);
-		$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwssgr-google-icon').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-google-icon').stop(true, true).fadeIn(600);
-    }
+	// function toggleElements() {
+    //     $('#review-title').is(':checked') ? $('.selected-option-display .zwssgr-title').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-title').stop(true, true).fadeIn(600);
+    //     $('#review-rating').is(':checked') ? $('.selected-option-display .zwssgr-rating').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-rating').stop(true, true).fadeIn(600);
+    //     $('#review-days-ago').is(':checked') ? $('.selected-option-display .zwssgr-days-ago').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-days-ago').stop(true, true).fadeIn(600);
+    //     $('#review-content').is(':checked') ? $('.selected-option-display .zwssgr-content').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-content').stop(true, true).fadeIn(600);
+	// 	$('#review-photo').is(':checked') ? $('.selected-option-display .zwssgr-profile').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-profile').stop(true, true).fadeIn(600);
+	// 	$('#review-g-icon').is(':checked') ? $('.selected-option-display .zwssgr-google-icon').stop(true, true).fadeOut(600) : $('.selected-option-display .zwssgr-google-icon').stop(true, true).fadeIn(600);
+    // }
 
 	
 
-    // Attach change event listeners to checkboxes
-	$(document).on('change', 'input[name="review-element"]', function() {
-        toggleElements(); // Call function to toggle elements with fade effect
-    });
+    // // Attach change event listeners to checkboxes
+	// $(document).on('change', 'input[name="review-element"]', function() {
+    //     toggleElements(); // Call function to toggle elements with fade effect
+    // });
 
-    // Call toggleElements on page load to apply any initial settings with fade effect
-    toggleElements();
+    // // Call toggleElements on page load to apply any initial settings with fade effect
+    // toggleElements();
 
-	function formatDate(dateString, format, lang) {
-		let dateParts;
-		let date;
+	// function formatDate(dateString, format, lang) {
+	// 	let dateParts;
+	// 	let date;
 	
-		// Check for various formats and parse accordingly
-		if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
-			dateParts = dateString.split('/');
-			date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]); // DD/MM/YYYY
-		} else if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
-			dateParts = dateString.split('-');
-			date = new Date(dateParts[2], dateParts[0] - 1, dateParts[1]); // MM-DD-YYYY
-		} else if (/^\d{4}\/\d{2}\/\d{2}$/.test(dateString)) {
-			dateParts = dateString.split('/');
-			date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // YYYY/MM/DD
-		} else {
-			date = new Date(dateString); // ISO or fallback
-		}
+	// 	// Check for various formats and parse accordingly
+	// 	if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+	// 		dateParts = dateString.split('/');
+	// 		date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]); // DD/MM/YYYY
+	// 	} else if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+	// 		dateParts = dateString.split('-');
+	// 		date = new Date(dateParts[2], dateParts[0] - 1, dateParts[1]); // MM-DD-YYYY
+	// 	} else if (/^\d{4}\/\d{2}\/\d{2}$/.test(dateString)) {
+	// 		dateParts = dateString.split('/');
+	// 		date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // YYYY/MM/DD
+	// 	} else {
+	// 		date = new Date(dateString); // ISO or fallback
+	// 	}
 	
-		// Return original if date is invalid
-		if (isNaN(date.getTime())) return dateString;
+	// 	// Return original if date is invalid
+	// 	if (isNaN(date.getTime())) return dateString;
 	
-		// Format date based on selected format and language
-		const options = { year: 'numeric', month: 'long', day: 'numeric' };
-		switch (format) {
-			case 'DD/MM/YYYY':
-				return date.toLocaleDateString('en-GB'); // e.g., 01/01/2024
-			case 'MM-DD-YYYY':
-				return date.toLocaleDateString('en-US').replace(/\//g, '-'); // e.g., 01-01-2024
-			case 'YYYY/MM/DD':
-				return date.toISOString().split('T')[0].replace(/-/g, '/'); // e.g., 2024/01/01
-			case 'full':
-				return date.toLocaleDateString(lang, options); // January 1, 2024 in selected language
-			default:
-				return dateString;
-		}
-	}
-	// Event listener for date format dropdown
-	$(document).on('change', '#date-format-select', function() {
-		const selectedFormat = $(this).val();
-		updateDisplayedDates(); // Updated to ensure it re-renders based on new format
-	});
+	// 	// Format date based on selected format and language
+	// 	const options = { year: 'numeric', month: 'long', day: 'numeric' };
+	// 	switch (format) {
+	// 		case 'DD/MM/YYYY':
+	// 			return date.toLocaleDateString('en-GB'); // e.g., 01/01/2024
+	// 		case 'MM-DD-YYYY':
+	// 			return date.toLocaleDateString('en-US').replace(/\//g, '-'); // e.g., 01-01-2024
+	// 		case 'YYYY/MM/DD':
+	// 			return date.toISOString().split('T')[0].replace(/-/g, '/'); // e.g., 2024/01/01
+	// 		case 'full':
+	// 			return date.toLocaleDateString(lang, options); // January 1, 2024 in selected language
+	// 		default:
+	// 			return dateString;
+	// 	}
+	// }
+	// // Event listener for date format dropdown
+	// $(document).on('change', '#date-format-select', function() {
+	// 	const selectedFormat = $(this).val();
+	// 	updateDisplayedDates(); // Updated to ensure it re-renders based on new format
+	// });
 
-	// Function to update date display based on format
-	function updateDisplayedDates() {
-		const lang = $('#language-select').val(); // Get selected language
-		const format = $('#date-format-select').val(); // Get selected date format
+	// // Function to update date display based on format
+	// function updateDisplayedDates() {
+	// 	const lang = $('#language-select').val(); // Get selected language
+	// 	const format = $('#date-format-select').val(); // Get selected date format
 	
-		$('.date').each(function() {
-			const originalDate = $(this).data('original-date'); // Get the original date
-			if (format === 'hide') {
-				$(this).text(''); // Hide the date
-			} else {
-				const formattedDate = formatDate(originalDate, format, lang); // Pass lang to formatDate
-				$(this).text(formattedDate); // Update the text with the formatted date
-			}
-		});
-	}
+	// 	$('.date').each(function() {
+	// 		const originalDate = $(this).data('original-date'); // Get the original date
+	// 		if (format === 'hide') {
+	// 			$(this).text(''); // Hide the date
+	// 		} else {
+	// 			const formattedDate = formatDate(originalDate, format, lang); // Pass lang to formatDate
+	// 			$(this).text(formattedDate); // Update the text with the formatted date
+	// 		}
+	// 	});
+	// }
 
-	// Translations for "Read more" in different languages
-	window.zwssgrTranslations = {
-		en: 'Read more',
-		es: 'Leer más',
-		fr: 'Lire la suite',
-		de: 'Mehr lesen',
-		it: 'Leggi di più',
-		pt: 'Leia mais',
-		ru: 'Читать дальше',
-		zh: '阅读更多',
-		ja: '続きを読む',
-		hi: 'और पढ़ें',
-		ar: 'اقرأ أكثر',
-		ko: '더 읽기',
-		tr: 'Daha fazla oku',
-		bn: 'আরও পড়ুন',
-		ms: 'Baca lagi',
-		nl: 'Lees verder',
-		pl: 'Czytaj więcej',
-		sv: 'Läs mer',
-		th: 'อ่านเพิ่มเติม',
-	};
+	// // Translations for "Read more" in different languages
+	// window.zwssgrTranslations = {
+	// 	en: 'Read more',
+	// 	es: 'Leer más',
+	// 	fr: 'Lire la suite',
+	// 	de: 'Mehr lesen',
+	// 	it: 'Leggi di più',
+	// 	pt: 'Leia mais',
+	// 	ru: 'Читать дальше',
+	// 	zh: '阅读更多',
+	// 	ja: '続きを読む',
+	// 	hi: 'और पढ़ें',
+	// 	ar: 'اقرأ أكثر',
+	// 	ko: '더 읽기',
+	// 	tr: 'Daha fazla oku',
+	// 	bn: 'আরও পড়ুন',
+	// 	ms: 'Baca lagi',
+	// 	nl: 'Lees verder',
+	// 	pl: 'Czytaj więcej',
+	// 	sv: 'Läs mer',
+	// 	th: 'อ่านเพิ่มเติม',
+	// };
 
-	// Function to update Read more link based on language
-	function updateReadMoreLink($element, lang) {
-		let charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
-		let fullText = $element.data('full-text'); // Get the stored full text
+	// // Function to update Read more link based on language
+	// function updateReadMoreLink($element, lang) {
+	// 	let charLimit = parseInt($('#review-char-limit').val(), 10); // Get character limit
+	// 	let fullText = $element.data('full-text'); // Get the stored full text
 
-		if (charLimit && fullText.length > charLimit) {
-			let trimmedText = fullText.substring(0, charLimit) + '... ';
-			$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${window.zwssgrTranslations[lang]}</a>`);
+	// 	if (charLimit && fullText.length > charLimit) {
+	// 		let trimmedText = fullText.substring(0, charLimit) + '... ';
+	// 		$element.html(trimmedText + `<a href="javascript:void(0);" class="read-more-link">${window.zwssgrTranslations[lang]}</a>`);
 			
-			// Re-apply the "Read more" click event using event delegation
-			$(document).on('click', '.read-more-link', function (e) {
-				e.preventDefault();
-				$(this).parent().text(fullText); // Update parent with full text
-			});
-		} else {
-			$element.text(fullText); // Show full text if no limit
-		}
-	}
+	// 		// Re-apply the "Read more" click event using event delegation
+	// 		$(document).on('click', '.read-more-link', function (e) {
+	// 			e.preventDefault();
+	// 			$(this).parent().text(fullText); // Update parent with full text
+	// 		});
+	// 	} else {
+	// 		$element.text(fullText); // Show full text if no limit
+	// 	}
+	// }
 
-	// On character limit input change
-	$(document).on('input', '#review-char-limit', function () {
-		let charLimit = parseInt($(this).val(), 10); // Get the entered value
-		let lang = $('#language-select').val(); // Get current language
+	// // On character limit input change
+	// $(document).on('input', '#review-char-limit', function () {
+	// 	let charLimit = parseInt($(this).val(), 10); // Get the entered value
+	// 	let lang = $('#language-select').val(); // Get current language
 
-		// Reference to the error message container
-		let $errorContainer = $('#char-limit-error');
+	// 	// Reference to the error message container
+	// 	let $errorContainer = $('#char-limit-error');
 
-		// Remove previous error message if any
-		$errorContainer.text('');
+	// 	// Remove previous error message if any
+	// 	$errorContainer.text('');
 
-		// Validation: Ensure the value is 1 or greater
-		if (charLimit < 1 || isNaN(charLimit)) {
-			if ($(this).val().trim() === '') {
-				// If input is blank, reset all content to full text
-				$('.zwssgr-content').each(function () {
-					let $this = $(this);
-					let fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
-					$this.text(fullText); // Show the full text
-				});
-			} else {
-				$errorContainer.text('Character limit must be 1 or greater.'); // Show the error message
-				$(this).val(''); // Reset the input to an empty value
-			}
-			return; // Exit the function early if the validation fails
-		}
+	// 	// Validation: Ensure the value is 1 or greater
+	// 	if (charLimit < 1 || isNaN(charLimit)) {
+	// 		if ($(this).val().trim() === '') {
+	// 			// If input is blank, reset all content to full text
+	// 			$('.zwssgr-content').each(function () {
+	// 				let $this = $(this);
+	// 				let fullText = $this.data('full-text') || $this.text(); // Get stored full text or fallback to current text
+	// 				$this.text(fullText); // Show the full text
+	// 			});
+	// 		} else {
+	// 			$errorContainer.text('Character limit must be 1 or greater.'); // Show the error message
+	// 			$(this).val(''); // Reset the input to an empty value
+	// 		}
+	// 		return; // Exit the function early if the validation fails
+	// 	}
 
-		// If valid, apply the new character limit dynamically
-		$('.zwssgr-content').each(function () {
-			let $this = $(this);
-			let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
+	// 	// If valid, apply the new character limit dynamically
+	// 	$('.zwssgr-content').each(function () {
+	// 		let $this = $(this);
+	// 		let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
 
-			// Store original full text if not already stored
-			if (!$this.data('full-text')) {
-				$this.data('full-text', fullText);
-			}
+	// 		// Store original full text if not already stored
+	// 		if (!$this.data('full-text')) {
+	// 			$this.data('full-text', fullText);
+	// 		}
 
-			// Update the content with the new character limit
-			updateReadMoreLink($this, lang); // Update the "Read more" link based on the new limit
-		});
-	});
+	// 		// Update the content with the new character limit
+	// 		updateReadMoreLink($this, lang); // Update the "Read more" link based on the new limit
+	// 	});
+	// });
 
-	   // Function to update displayed dates based on selected language and format
-	function updateDisplayedDates() {
-		const lang = $('#language-select').val(); // Get selected language
-		const format = $('#date-format-select').val(); // Get selected date format
+	//    // Function to update displayed dates based on selected language and format
+	// function updateDisplayedDates() {
+	// 	const lang = $('#language-select').val(); // Get selected language
+	// 	const format = $('#date-format-select').val(); // Get selected date format
 	
-		$('.zwssgr-date').each(function () {
-			const originalDate = $(this).data('original-date'); // Get the original date
-			if (format === 'hide') {
-				$(this).text(''); // Hide the date
-			} else {
-				const formattedDate = formatDate(originalDate, format, lang);
-				$(this).text(formattedDate); // Update the text with the formatted date
-			}
-		});
-	}
+	// 	$('.zwssgr-date').each(function () {
+	// 		const originalDate = $(this).data('original-date'); // Get the original date
+	// 		if (format === 'hide') {
+	// 			$(this).text(''); // Hide the date
+	// 		} else {
+	// 			const formattedDate = formatDate(originalDate, format, lang);
+	// 			$(this).text(formattedDate); // Update the text with the formatted date
+	// 		}
+	// 	});
+	// }
 	
 
-	// On language select change
-	$(document).on('change', '#language-select', function () {
-		let lang = $(this).val(); // Get selected language
-		updateDisplayedDates(); // Re-render dates when language changes
+	// // On language select change
+	// $(document).on('change', '#language-select', function () {
+	// 	let lang = $(this).val(); // Get selected language
+	// 	updateDisplayedDates(); // Re-render dates when language changes
 
-		// Loop through each content block and update the Read more link with the new language
-		$('.zwssgr-content').each(function () {
-			let $this = $(this);
-			let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
-			// Store original full text if not already stored
-			if (!$this.data('full-text')) {
-				$this.data('full-text', fullText);
-			}
-			updateReadMoreLink($this, lang);
-		});
-	});
+	// 	// Loop through each content block and update the Read more link with the new language
+	// 	$('.zwssgr-content').each(function () {
+	// 		let $this = $(this);
+	// 		let fullText = $this.data('full-text') || $this.text(); // Get full text or fallback to current text
+	// 		// Store original full text if not already stored
+	// 		if (!$this.data('full-text')) {
+	// 			$this.data('full-text', fullText);
+	// 		}
+	// 		updateReadMoreLink($this, lang);
+	// 	});
+	// });
 
-	$(document).on('change', '#date-format-select', updateDisplayedDates);
+	// $(document).on('change', '#date-format-select', updateDisplayedDates);
 
-	// Toggle for Google Review link
-	$(document).on('change', '#toggle-google-review', function() {
-        if ($(this).is(':checked')) {
-			$('#color-picker-options').stop(true, true).fadeIn();
-        } else {
-			$('#color-picker-options').stop(true, true).fadeOut();
-        }
-    });
+	// // Toggle for Google Review link
+	// $(document).on('change', '#toggle-google-review', function() {
+    //     if ($(this).is(':checked')) {
+	// 		$('#color-picker-options').stop(true, true).fadeIn();
+    //     } else {
+	// 		$('#color-picker-options').stop(true, true).fadeOut();
+    //     }
+    // });
 
-	// Toggle for Lode More
-	$(document).on('change', '#enable-load-more', function () {
-        if ($(this).is(':checked')) {
-            // If checkbox is checked, fade in the color picker options
-			$('#zwssgr-load-color-picker-options').stop(true, true).fadeIn();
-        } else {
-            // If checkbox is unchecked, fade out the color picker options
-			$('#zwssgr-load-color-picker-options').stop(true, true).fadeOut();
-        }
-    });
+	// // Toggle for Lode More
+	// $(document).on('change', '#enable-load-more', function () {
+    //     if ($(this).is(':checked')) {
+    //         // If checkbox is checked, fade in the color picker options
+	// 		$('#zwssgr-load-color-picker-options').stop(true, true).fadeIn();
+    //     } else {
+    //         // If checkbox is unchecked, fade out the color picker options
+	// 		$('#zwssgr-load-color-picker-options').stop(true, true).fadeOut();
+    //     }
+    // });
 
-	if ($('#enable-load-more').is(':checked')) {
-        $('#zwssgr-load-color-picker-options').show();
-    } else {
-        $('#zwssgr-load-color-picker-options').hide();
-    }
+	// if ($('#enable-load-more').is(':checked')) {
+    //     $('#zwssgr-load-color-picker-options').show();
+    // } else {
+    //     $('#zwssgr-load-color-picker-options').hide();
+    // }
 
-	// Function to update the hidden input field with the keywords in a comma-separated format
-	const updateInputField = () => {
-		const keywords = [];
-		$('#keywords-list .keyword-item').each(function () {
-			keywords.push($(this).text().trim().replace(' ✖', ''));
-		});
-		$('#keywords-input-hidden').val(keywords.join(', ')); // Store the keywords in a hidden input
-	};
+	// // Function to update the hidden input field with the keywords in a comma-separated format
+	// const updateInputField = () => {
+	// 	const keywords = [];
+	// 	$('#keywords-list .keyword-item').each(function () {
+	// 		keywords.push($(this).text().trim().replace(' ✖', ''));
+	// 	});
+	// 	$('#keywords-input-hidden').val(keywords.join(', ')); // Store the keywords in a hidden input
+	// };
 
-	// Initialize the hidden input field based on the existing keywords
-	updateInputField();
+	// // Initialize the hidden input field based on the existing keywords
+	// updateInputField();
 
-	// Function to handle adding new keywords
-	const handleAddKeywords = (inputValue) => {
-		// Get the input value and split it into keywords
-		const newKeywords = inputValue.split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
+	// // Function to handle adding new keywords
+	// const handleAddKeywords = (inputValue) => {
+	// 	// Get the input value and split it into keywords
+	// 	const newKeywords = inputValue.split(',').map(keyword => keyword.trim()).filter(keyword => keyword);
 
-		// Get the current number of keywords in the list
-		const currentKeywordsCount = $('#keywords-list .keyword-item').length;
+	// 	// Get the current number of keywords in the list
+	// 	const currentKeywordsCount = $('#keywords-list .keyword-item').length;
 
-		// Check if adding new keywords exceeds the limit of 5
-		if (currentKeywordsCount + newKeywords.length > 5) {
-			$('#error-message').show(); // Show the error message
-			return; // Stop further execution
-		} else {
-			$('#error-message').hide(); // Hide the error message if under limit
-		}
+	// 	// Check if adding new keywords exceeds the limit of 5
+	// 	if (currentKeywordsCount + newKeywords.length > 5) {
+	// 		$('#error-message').show(); // Show the error message
+	// 		return; // Stop further execution
+	// 	} else {
+	// 		$('#error-message').hide(); // Hide the error message if under limit
+	// 	}
 
-		$('#keywords-input').val(''); // Clear input field
+	// 	$('#keywords-input').val(''); // Clear input field
 
-		newKeywords.forEach(function (keyword) {
-			// Check if the keyword is already in the list
-			if ($('#keywords-list .keyword-item').filter(function () {
-				return $(this).text().trim() === keyword;
-			}).length === 0) {
-				// Create a new keyword item
-				const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
-				const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
+	// 	newKeywords.forEach(function (keyword) {
+	// 		// Check if the keyword is already in the list
+	// 		if ($('#keywords-list .keyword-item').filter(function () {
+	// 			return $(this).text().trim() === keyword;
+	// 		}).length === 0) {
+	// 			// Create a new keyword item
+	// 			const keywordItem = $('<div class="keyword-item"></div>').text(keyword);
+	// 			const removeButton = $('<span class="remove-keyword"> ✖</span>'); // Cross sign
 
-				// Append remove button to the keyword item
-				keywordItem.append(removeButton);
+	// 			// Append remove button to the keyword item
+	// 			keywordItem.append(removeButton);
 
-				// Append the keyword item to the keywords list
-				$('#keywords-list').append(keywordItem);
+	// 			// Append the keyword item to the keywords list
+	// 			$('#keywords-list').append(keywordItem);
 
-				// Update hidden input field
-				updateInputField();
+	// 			// Update hidden input field
+	// 			updateInputField();
 
-				// Set up click event to remove keyword
-				removeButton.on('click', function () {
-					keywordItem.remove(); // Remove keyword from list
-					updateInputField(); // Update input field after removal
-				});
-			}
-		});
-	};
+	// 			// Set up click event to remove keyword
+	// 			removeButton.on('click', function () {
+	// 				keywordItem.remove(); // Remove keyword from list
+	// 				updateInputField(); // Update input field after removal
+	// 			});
+	// 		}
+	// 	});
+	// };
 
-	// Handle the Enter key press to add keywords
-	$(document).on('keypress', '#keywords-input', function (e) {
-		if (e.which === 13) { // Check for Enter key
-			e.preventDefault(); // Prevent default form submission
-			handleAddKeywords($(this).val());
-		}
-	});
+	// // Handle the Enter key press to add keywords
+	// $(document).on('keypress', '#keywords-input', function (e) {
+	// 	if (e.which === 13) { // Check for Enter key
+	// 		e.preventDefault(); // Prevent default form submission
+	// 		handleAddKeywords($(this).val());
+	// 	}
+	// });
 
-	// Handle the blur event to add keywords
-	$(document).on('blur', '#keywords-input', function () {
-		handleAddKeywords($(this).val());
-	});
+	// // Handle the blur event to add keywords
+	// $(document).on('blur', '#keywords-input', function () {
+	// 	handleAddKeywords($(this).val());
+	// });
 
 
-    // Set up click event to remove existing keywords (on page load)
-	$(document).on('click', '#keywords-list .remove-keyword', function () {
-        $(this).parent('.keyword-item').remove(); // Remove the clicked keyword
-        updateInputField(); // Update the hidden input after removal
-    });
+    // // Set up click event to remove existing keywords (on page load)
+	// $(document).on('click', '#keywords-list .remove-keyword', function () {
+    //     $(this).parent('.keyword-item').remove(); // Remove the clicked keyword
+    //     updateInputField(); // Update the hidden input after removal
+    // });
 	
 	// Save the all Widget and Generate the shortcode
-	$(document).on('click', '#save-get-code-btn', function(e) {
-		e.preventDefault();
+	// $(document).on('click', '#save-get-code-btn', function(e) {
+	// 	e.preventDefault();
 	
-		let postId = getQueryParam('zwssgr_widget_id'); // Get post_id from the URL
-		let displayOption = $('input[name="display_option"]:checked').val();
-		let selectedElements = $('input[name="review-element"]:checked').map(function() {
-			return $(this).val();
-		}).get();
-		let keywords = $('#keywords-list .keyword-item').map(function() {
-			return $(this).text().trim().replace(' ✖', '');
-		}).get();
-		let dateFormat = $('#date-format-select').val();
-		let charLimit = $('#review-char-limit').val();
-		let language = $('#language-select').val();
-		let sortBy = $('#sort-by-select').val();
-		let enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
-		let googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
-		let bgColor = $('#bg-color-picker').val();
-		let textColor = $('#text-color-picker').val();
-		let bgColorLoad = $('#bg-color-picker_load').val();
-		let textColorLoad = $('#text-color-picker_load').val();
-		let settings = $('.tab-item.active').attr('data-tab');
-		let postsPerPage = $('#posts-per-page').val();
-		let selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
-		let currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
-		let customCSS = $('.zwssgr-textarea').val();
-		let enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
+	// 	let postId = getQueryParam('zwssgr_widget_id'); // Get post_id from the URL
+	// 	let displayOption = $('input[name="display_option"]:checked').val();
+	// 	let selectedElements = $('input[name="review-element"]:checked').map(function() {
+	// 		return $(this).val();
+	// 	}).get();
+	// 	let keywords = $('#keywords-list .keyword-item').map(function() {
+	// 		return $(this).text().trim().replace(' ✖', '');
+	// 	}).get();
+	// 	let dateFormat = $('#date-format-select').val();
+	// 	let charLimit = $('#review-char-limit').val();
+	// 	let language = $('#language-select').val();
+	// 	let sortBy = $('#sort-by-select').val();
+	// 	let enableLoadMore = $('#enable-load-more').is(':checked') ? 1 : 0;
+	// 	let googleReviewToggle = $('#toggle-google-review').is(':checked') ? 1 : 0;
+	// 	let bgColor = $('#bg-color-picker').val();
+	// 	let textColor = $('#text-color-picker').val();
+	// 	let bgColorLoad = $('#bg-color-picker_load').val();
+	// 	let textColorLoad = $('#text-color-picker_load').val();
+	// 	let settings = $('.tab-item.active').attr('data-tab');
+	// 	let postsPerPage = $('#posts-per-page').val();
+	// 	let selectedRating = $('.star-filter.selected').last().data('rating') || 0; // Fetch the rating, or default to 0
+	// 	let currentTab2 = $('.tab-item.active').data('tab'); // Get the current active tab
+	// 	let customCSS = $('.zwssgr-textarea').val();
+	// 	let enableSortBy = $('#enable-sort-by-filter').is(':checked') ? 1 : 0; 
 
-		// Send AJAX request to store the widget data and shortcode
-		$.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			async: false,  // Make the request synchronous
-			data: {
-				action: 'zwssgr_save_widget_data',
-				security: my_widget.nonce,
-				post_id: postId,
-				display_option: displayOption,
-				selected_elements: selectedElements,
-				rating_filter: selectedRating,
-				keywords: keywords,
-				date_format: dateFormat,
-				char_limit: charLimit,
-				language: language,
-				sort_by: sortBy,
-				enable_load_more: enableLoadMore,
-				google_review_toggle: googleReviewToggle,
-				bg_color: bgColor,
-				text_color: textColor,
-				bg_color_load: bgColorLoad,
-				text_color_load: textColorLoad,
-				settings: settings,
-				posts_per_page: postsPerPage,
-				current_tab2: currentTab2,
-				enable_sort_by: enableSortBy,
-				custom_css: customCSS  // Add the custom CSS value here
-			},
-			success: function(response) {
-				if (response.success) {
-					showNotification('Settings and shortcode saved successfully.', 'success'); // Custom success notification
-				} else {
-					showNotification('Error: ' + response.data, 'error'); // Custom error notification
-				}
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				console.log('AJAX Error: ', textStatus, errorThrown);
-				showNotification('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown, 'error'); // Custom error notification
-			}
-		});
-	});
+	// 	// Send AJAX request to store the widget data and shortcode
+	// 	$.ajax({
+	// 		url: ajaxurl,
+	// 		type: 'POST',
+	// 		async: false,  // Make the request synchronous
+	// 		data: {
+	// 			action: 'zwssgr_save_widget_data',
+	// 			security: my_widget.nonce,
+	// 			post_id: postId,
+	// 			display_option: displayOption,
+	// 			selected_elements: selectedElements,
+	// 			rating_filter: selectedRating,
+	// 			keywords: keywords,
+	// 			date_format: dateFormat,
+	// 			char_limit: charLimit,
+	// 			language: language,
+	// 			sort_by: sortBy,
+	// 			enable_load_more: enableLoadMore,
+	// 			google_review_toggle: googleReviewToggle,
+	// 			bg_color: bgColor,
+	// 			text_color: textColor,
+	// 			bg_color_load: bgColorLoad,
+	// 			text_color_load: textColorLoad,
+	// 			settings: settings,
+	// 			posts_per_page: postsPerPage,
+	// 			current_tab2: currentTab2,
+	// 			enable_sort_by: enableSortBy,
+	// 			custom_css: customCSS  // Add the custom CSS value here
+	// 		},
+	// 		success: function(response) {
+	// 			if (response.success) {
+	// 				showNotification('Settings and shortcode saved successfully.', 'success'); // Custom success notification
+	// 			} else {
+	// 				showNotification('Error: ' + response.data, 'error'); // Custom error notification
+	// 			}
+	// 		},
+	// 		error: function(jqXHR, textStatus, errorThrown) {
+	// 			console.log('AJAX Error: ', textStatus, errorThrown);
+	// 			showNotification('An error occurred while saving data. Details: ' + textStatus + ': ' + errorThrown, 'error'); // Custom error notification
+	// 		}
+	// 	});
+	// });
 
 	$("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (zwssgrEv) {
 
@@ -1751,34 +1751,34 @@ jQuery(document).ready(function($) {
 
 	}	
 
-	$(document).on('click', '.star-filter', function () {
-		let rating = $(this).data('rating'); // Get the rating of the clicked star
+	// $(document).on('click', '.star-filter', function () {
+	// 	let rating = $(this).data('rating'); // Get the rating of the clicked star
 	
-		// Check if the clicked star is already selected and is the lowest rating
-		if ($(this).hasClass('selected') && rating === 1) {
-			// Unselect all stars
-			$('.star-filter').removeClass('selected');
-			$('.star-filter .star').css('fill', '#ccc'); // Reset color to unselected
-			return;
-		}
+	// 	// Check if the clicked star is already selected and is the lowest rating
+	// 	if ($(this).hasClass('selected') && rating === 1) {
+	// 		// Unselect all stars
+	// 		$('.star-filter').removeClass('selected');
+	// 		$('.star-filter .star').css('fill', '#ccc'); // Reset color to unselected
+	// 		return;
+	// 	}
 	
-		// Toggle the 'selected' state of stars
-		$('.star-filter').each(function () {
-			let currentRating = $(this).data('rating');
-			if (currentRating <= rating) {
-				// Select this star
-				$(this).addClass('selected');
-				$(this).find('.star').css('fill', '#f39c12'); // Set color to gold
-			} else {
-				// Deselect this star
-				$(this).removeClass('selected');
-				$(this).find('.star').css('fill', '#ccc'); // Reset color to unselected
-			}
-		});
+	// 	// Toggle the 'selected' state of stars
+	// 	$('.star-filter').each(function () {
+	// 		let currentRating = $(this).data('rating');
+	// 		if (currentRating <= rating) {
+	// 			// Select this star
+	// 			$(this).addClass('selected');
+	// 			$(this).find('.star').css('fill', '#f39c12'); // Set color to gold
+	// 		} else {
+	// 			// Deselect this star
+	// 			$(this).removeClass('selected');
+	// 			$(this).find('.star').css('fill', '#ccc'); // Reset color to unselected
+	// 		}
+	// 	});
 	
-		// Handle the new rating value
-		let ratingFilterValue = rating;
-	});
+	// 	// Handle the new rating value
+	// 	let ratingFilterValue = rating;
+	// });
 	
 
 	// Event listener for clicking on a star filter
@@ -2047,76 +2047,76 @@ jQuery(document).ready(function($) {
         $parentParagraph.html(fullText);
     });
 
-	// Start code SMTP
-	function zwssgr_update_Smtp_Port() {
-        let encryptionType = $('input[name="zwssgr_smtp_ency_type"]:checked').val();
-        switch(encryptionType) {
-            case 'none':
-                $('#zwssgr-smtp-port').val('25'); // Set port to 25 for 'None'
-                break;
-            case 'ssl':
-                $('#zwssgr-smtp-port').val('465'); // Set port to 465 for 'SSL'
-                break;
-            case 'tls':
-                $('#zwssgr-smtp-port').val('587'); // Set port to 587 for 'TLS'
-                break;
-            default:
-                $('#zwssgr-smtp-port').val('25'); // Default port
-        }
-    }
-	$(document).on('change', 'input[name="zwssgr_smtp_ency_type"]', function() {
-        zwssgr_update_Smtp_Port(); // Update the port when the encryption type is changed
-    });
-	if ($('#zwssgr_smtp_auth_1').is(':checked')) {
-        $('.zwssgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
-		$('input[name="zwssgr_smtp_username"]').removeAttr('required');
-		$('input[name="zwssgr_smtp_password"]').removeAttr('required');
-	} else {
-        $('.zwssgr-smtp-auth-enable').show(); // Show if 'Yes' is selected
-		$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
-		$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
-    }
-    $(document).on('change', 'input[name="zwssgr_smtp_auth"]', function() {
-        if ($(this).val() === 'no') {
-            $('.zwssgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
-			$('input[name="zwssgr_smtp_username"]').removeAttr('required');
-			$('input[name="zwssgr_smtp_password"]').removeAttr('required');
-        } else {
-            $('.zwssgr-smtp-auth-enable').show(); // Show if 'Yes' is selected
-			$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
-			$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
-        }
-    }); 
+	// // Start code SMTP
+	// function zwssgr_update_Smtp_Port() {
+    //     let encryptionType = $('input[name="zwssgr_smtp_ency_type"]:checked').val();
+    //     switch(encryptionType) {
+    //         case 'none':
+    //             $('#zwssgr-smtp-port').val('25'); // Set port to 25 for 'None'
+    //             break;
+    //         case 'ssl':
+    //             $('#zwssgr-smtp-port').val('465'); // Set port to 465 for 'SSL'
+    //             break;
+    //         case 'tls':
+    //             $('#zwssgr-smtp-port').val('587'); // Set port to 587 for 'TLS'
+    //             break;
+    //         default:
+    //             $('#zwssgr-smtp-port').val('25'); // Default port
+    //     }
+    // }
+	// $(document).on('change', 'input[name="zwssgr_smtp_ency_type"]', function() {
+    //     zwssgr_update_Smtp_Port(); // Update the port when the encryption type is changed
+    // });
+	// if ($('#zwssgr_smtp_auth_1').is(':checked')) {
+    //     $('.zwssgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
+	// 	$('input[name="zwssgr_smtp_username"]').removeAttr('required');
+	// 	$('input[name="zwssgr_smtp_password"]').removeAttr('required');
+	// } else {
+    //     $('.zwssgr-smtp-auth-enable').show(); // Show if 'Yes' is selected
+	// 	$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
+	// 	$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
+    // }
+    // $(document).on('change', 'input[name="zwssgr_smtp_auth"]', function() {
+    //     if ($(this).val() === 'no') {
+    //         $('.zwssgr-smtp-auth-enable').hide(); // Hide if 'No' is selected
+	// 		$('input[name="zwssgr_smtp_username"]').removeAttr('required');
+	// 		$('input[name="zwssgr_smtp_password"]').removeAttr('required');
+    //     } else {
+    //         $('.zwssgr-smtp-auth-enable').show(); // Show if 'Yes' is selected
+	// 		$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
+	// 		$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
+    //     }
+    // }); 
 
-	$(document).on('change', 'input[name="zwssgr_admin_smtp_enabled"]', function() {
-        if ($(this).is(':checked')) {
-			$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
-			$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
-			$('input[name="zwssgr_from_email"]').attr('required', 'required');
-			$('input[name="zwssgr_smtp_host"]').attr('required', 'required');
-			$('.zwssgr-admin-enable-smtp').show(); // Example of showing an element
-        } else {
-			$('.zwssgr-admin-enable-smtp').hide(); // Example of hiding an element
-			$('input[name="zwssgr_from_email"]').removeAttr('required');
-			$('input[name="zwssgr_smtp_host"]').removeAttr('required');
-			$('input[name="zwssgr_smtp_username"]').removeAttr('required');
-			$('input[name="zwssgr_smtp_password"]').removeAttr('required');
-        }
-    });
-	if ($('input[name="zwssgr_admin_smtp_enabled"]').is(':checked')) {
-		$('.zwssgr-admin-enable-smtp').show();
-		$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
-		$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
-		$('input[name="zwssgr_from_email"]').attr('required', 'required');
-        $('input[name="zwssgr_smtp_host"]').attr('required', 'required');
-	} else {
-		$('.zwssgr-admin-enable-smtp').hide(); 
-		$('input[name="zwssgr_from_email"]').removeAttr('required');
-		$('input[name="zwssgr_smtp_host"]').removeAttr('required');
-		$('input[name="zwssgr_smtp_username"]').removeAttr('required');
-		$('input[name="zwssgr_smtp_password"]').removeAttr('required');
-	}
-	// End code SMTP
+	// $(document).on('change', 'input[name="zwssgr_admin_smtp_enabled"]', function() {
+    //     if ($(this).is(':checked')) {
+	// 		$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
+	// 		$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
+	// 		$('input[name="zwssgr_from_email"]').attr('required', 'required');
+	// 		$('input[name="zwssgr_smtp_host"]').attr('required', 'required');
+	// 		$('.zwssgr-admin-enable-smtp').show(); // Example of showing an element
+    //     } else {
+	// 		$('.zwssgr-admin-enable-smtp').hide(); // Example of hiding an element
+	// 		$('input[name="zwssgr_from_email"]').removeAttr('required');
+	// 		$('input[name="zwssgr_smtp_host"]').removeAttr('required');
+	// 		$('input[name="zwssgr_smtp_username"]').removeAttr('required');
+	// 		$('input[name="zwssgr_smtp_password"]').removeAttr('required');
+    //     }
+    // });
+	// if ($('input[name="zwssgr_admin_smtp_enabled"]').is(':checked')) {
+	// 	$('.zwssgr-admin-enable-smtp').show();
+	// 	$('input[name="zwssgr_smtp_username"]').attr('required', 'required');
+	// 	$('input[name="zwssgr_smtp_password"]').attr('required', 'required');
+	// 	$('input[name="zwssgr_from_email"]').attr('required', 'required');
+    //     $('input[name="zwssgr_smtp_host"]').attr('required', 'required');
+	// } else {
+	// 	$('.zwssgr-admin-enable-smtp').hide(); 
+	// 	$('input[name="zwssgr_from_email"]').removeAttr('required');
+	// 	$('input[name="zwssgr_smtp_host"]').removeAttr('required');
+	// 	$('input[name="zwssgr_smtp_username"]').removeAttr('required');
+	// 	$('input[name="zwssgr_smtp_password"]').removeAttr('required');
+	// }
+	// // End code SMTP
 	
 
 	$(document).on('change', '#zwssgr-account-select', function () {
@@ -2124,52 +2124,52 @@ jQuery(document).ready(function($) {
 	});
 
 
-	$(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
-		e.preventDefault(); // Prevent default action
+	// $(document).on('click', 'a[href*="deactivate"][href*="smart-showcase-for-google-reviews"]', function (e) {
+	// 	e.preventDefault(); // Prevent default action
 	
-		const deactivateUrl = $(this).attr('href'); // Get the deactivation URL from the link
+	// 	const deactivateUrl = $(this).attr('href'); // Get the deactivation URL from the link
 	
-		// Show the deactivation confirmation popup
-		$('#zwssgr-plugin-deactivation-popup').show();
+	// 	// Show the deactivation confirmation popup
+	// 	$('#zwssgr-plugin-deactivation-popup').show();
 	
-		// Cancel Deactivation
-		$(document).off('click', '#zwssgr-plugin-cancel-deactivate').on('click', '#zwssgr-plugin-cancel-deactivate', function () {
-			$('#zwssgr-plugin-deactivation-popup').hide();
-		});
+	// 	// Cancel Deactivation
+	// 	$(document).off('click', '#zwssgr-plugin-cancel-deactivate').on('click', '#zwssgr-plugin-cancel-deactivate', function () {
+	// 		$('#zwssgr-plugin-deactivation-popup').hide();
+	// 	});
 	
-		// Confirm Deactivation
-		$(document).off('click', '#zwssgr-plugin-confirm-deactivate').on('click', '#zwssgr-plugin-confirm-deactivate', function () {
-			// Check if the "Delete Plugin Data" checkbox is checked
-			const zwssgrDeletePluginData = $('#zwssgr-delete-plugin-data').prop('checked') ? 1 : 0;
+	// 	// Confirm Deactivation
+	// 	$(document).off('click', '#zwssgr-plugin-confirm-deactivate').on('click', '#zwssgr-plugin-confirm-deactivate', function () {
+	// 		// Check if the "Delete Plugin Data" checkbox is checked
+	// 		const zwssgrDeletePluginData = $('#zwssgr-delete-plugin-data').prop('checked') ? 1 : 0;
 	
-			if (zwssgrDeletePluginData) {
-				// Send AJAX request to delete plugin data if checkbox is checked
-				$.ajax({
-					url: zwssgr_admin.ajax_url,
-					type: "POST",
-					dataType: "json",
-					data: {
-						action: "zwssgr_delete_oauth_connection",
-						zwssgr_delete_plugin_data: zwssgrDeletePluginData,
-						security: zwssgr_admin.zwssgr_delete_oauth_connection,
-					},
-					success: function (response) {
-						// console.log("Data deletion response:", response);
-					},
-					error: function (xhr, status, error) {
-						// console.error("Data deletion failed:", error);
-					},
-					complete: function () {
-						// Proceed to deactivate the plugin after AJAX completes
-						$('#zwssgr-plugin-deactivation-popup').hide();
-						window.location.href = deactivateUrl;
-					}
-				});
-			} else {
-				// If checkbox is not checked, directly deactivate the plugin
-				$('#zwssgr-plugin-deactivation-popup').hide();
-				window.location.href = deactivateUrl;
-			}
-		});
-	});
+	// 		if (zwssgrDeletePluginData) {
+	// 			// Send AJAX request to delete plugin data if checkbox is checked
+	// 			$.ajax({
+	// 				url: zwssgr_admin.ajax_url,
+	// 				type: "POST",
+	// 				dataType: "json",
+	// 				data: {
+	// 					action: "zwssgr_delete_oauth_connection",
+	// 					zwssgr_delete_plugin_data: zwssgrDeletePluginData,
+	// 					security: zwssgr_admin.zwssgr_delete_oauth_connection,
+	// 				},
+	// 				success: function (response) {
+	// 					// console.log("Data deletion response:", response);
+	// 				},
+	// 				error: function (xhr, status, error) {
+	// 					// console.error("Data deletion failed:", error);
+	// 				},
+	// 				complete: function () {
+	// 					// Proceed to deactivate the plugin after AJAX completes
+	// 					$('#zwssgr-plugin-deactivation-popup').hide();
+	// 					window.location.href = deactivateUrl;
+	// 				}
+	// 			});
+	// 		} else {
+	// 			// If checkbox is not checked, directly deactivate the plugin
+	// 			$('#zwssgr-plugin-deactivation-popup').hide();
+	// 			window.location.href = deactivateUrl;
+	// 		}
+	// 	});
+	// });
 });
