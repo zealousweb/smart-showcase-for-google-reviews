@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function toggleNotificationFields() {
         if (window.zwssgrToggle.checked) {
-            window.zwssgrNotificationFields.style.display = 'block'; 
+            window.zwssgrNotificationFields.style.display = 'block';
             window.zwssgrSubmitButton.classList.remove('zwssgr-disable');
         } else {
             window.zwssgrNotificationFields.style.display = 'none';
@@ -565,9 +565,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // Get the data-widget-id value
         const selectedOptionDisplay = document.getElementById("selected-option-display");
-        // console.log(selectedOptionDisplay);
-        
-        const layoutOption = selectedOptionDisplay?.dataset?.widgetId; // Ensure it's not undefined
+        const layoutOption = selectedOptionDisplay?.dataset?.layoutOption; // Ensure it's not undefined
         if (!layoutOption) {
             // console.error('layoutOption is undefined or invalid');
             return; // Exit early if layoutOption is not defined
@@ -608,9 +606,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call toggleElements on page load to apply any initial settings with fade effect
     toggleElements();
     
-    
 
-    
     function formatDate(dateString, format, lang) {
 		let dateParts;
 		let date;

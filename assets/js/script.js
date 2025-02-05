@@ -126,102 +126,102 @@
 jQuery(document).ready(function($) {
 	"use strict";
 	
-	// Bind click event to open popup
-	$(document).on('click', '.zwssgr-popup-item', function (e) {
-		let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
+	// // Bind click event to open popup
+	// $(document).on('click', '.zwssgr-popup-item', function (e) {
+	// 	let popupId = $(this).data('popup'); // Get the popup ID from the data attribute
 		
-		if( $( e.target ).hasClass('zwssgr-popup-item') ){
-			$('#' + popupId).fadeIn(); // Show the popup
-		} else {
-			console.log( 'not found');
-		}
-	});
+	// 	if( $( e.target ).hasClass('zwssgr-popup-item') ){
+	// 		$('#' + popupId).fadeIn(); // Show the popup
+	// 	} else {
+	// 		console.log( 'not found');
+	// 	}
+	// });
 
-	// Bind click event to close popup when the close button is clicked
-	$(document).on('click', '.zwssgr-close-popup', function () {
-		$(this).closest('.zwssgr-popup-overlay').fadeOut(); // Hide the popup
-	});
+	// // Bind click event to close popup when the close button is clicked
+	// $(document).on('click', '.zwssgr-close-popup', function () {
+	// 	$(this).closest('.zwssgr-popup-overlay').fadeOut(); // Hide the popup
+	// });
 
-	// Bind click event to close popup when clicking outside the popup content
-	$(document).on('click', '.zwssgr-popup-overlay', function (e) {
-		if ($(e.target).is('.zwssgr-popup-overlay')) {
-			$(this).fadeOut(); // Hide the popup
-		}
-	});
+	// // Bind click event to close popup when clicking outside the popup content
+	// $(document).on('click', '.zwssgr-popup-overlay', function (e) {
+	// 	if ($(e.target).is('.zwssgr-popup-overlay')) {
+	// 		$(this).fadeOut(); // Hide the popup
+	// 	}
+	// });
 
-	// Bind keydown event to close popup when ESC key is pressed
-	$(document).on('keydown', function (e) {
-		if (e.key === "Escape" || e.keyCode === 27) {
-			$('.zwssgr-popup-overlay').fadeOut(); // Hide the popup
-		}
-	});
+	// // Bind keydown event to close popup when ESC key is pressed
+	// $(document).on('keydown', function (e) {
+	// 	if (e.key === "Escape" || e.keyCode === 27) {
+	// 		$('.zwssgr-popup-overlay').fadeOut(); // Hide the popup
+	// 	}
+	// });
 
-    $(document).on('click','.load-more-meta',function() {
-		const mainWrapper = $(this).parents('.zwssgr-main-wrapper');
-        let button = mainWrapper.find(this);
-        let page = button.data('page');  // Get the current page number
-        let postId = button.data('post-id');  // Get the post-id from the button data attribute
-		let selectedValue = mainWrapper.find('.front-sort-by-select').val();
-		let keyword = mainWrapper.find('.zwssgr-front-keywords-list li.selected').data('zwssgr-keyword');
-		let popupContentContainer = mainWrapper.find('zwssgr-slider.zwssgr-grid-item.zwssgr-popup-list');
-        // Disable the button to prevent multiple clicks
-        button.prop('disabled', true).text('Loading...');
+    // $(document).on('click','.load-more-meta',function() {
+	// 	const mainWrapper = $(this).parents('.zwssgr-main-wrapper');
+    //     let button = mainWrapper.find(this);
+    //     let page = button.data('page');  // Get the current page number
+    //     let postId = button.data('post-id');  // Get the post-id from the button data attribute
+	// 	let selectedValue = mainWrapper.find('.front-sort-by-select').val();
+	// 	let keyword = mainWrapper.find('.zwssgr-front-keywords-list li.selected').data('zwssgr-keyword');
+	// 	let popupContentContainer = mainWrapper.find('zwssgr-slider.zwssgr-grid-item.zwssgr-popup-list');
+    //     // Disable the button to prevent multiple clicks
+    //     button.prop('disabled', true).text('Loading...');
 
-        // AJAX request
-        $.ajax({
-            url: load_more.ajax_url,  // Use the localized ajax_url
-            method: 'POST',
-            data: {
-                action: 'zwssgr_load_more_meta_data',  // Action hook for AJAX
-                post_id: postId,  // Pass the post-id from the button
-                page: page,  // Pass the current page number
-				front_sort_by: selectedValue,
-				front_keyword: keyword,
-                nonce: load_more.nonce  // Include the nonce for security
-            },
-            success: function(response) {
-                // console.log(response, 'response ');
-                if (response.success) {
-					// Append new content to the popup
-					if (popupContentContainer.length >= 1) {
-						popupContentContainer.append(response.data.content);  // Append the new content to the popup
-					}
-					let container = $('#div-container[data-widget-id="' + postId + '"]');
+    //     // AJAX request
+    //     $.ajax({
+    //         url: load_more.ajax_url,  // Use the localized ajax_url
+    //         method: 'POST',
+    //         data: {
+    //             action: 'zwssgr_load_more_meta_data',  // Action hook for AJAX
+    //             post_id: postId,  // Pass the post-id from the button
+    //             page: page,  // Pass the current page number
+	// 			front_sort_by: selectedValue,
+	// 			front_keyword: keyword,
+    //             nonce: load_more.nonce  // Include the nonce for security
+    //         },
+    //         success: function(response) {
+    //             // console.log(response, 'response ');
+    //             if (response.success) {
+	// 				// Append new content to the popup
+	// 				if (popupContentContainer.length >= 1) {
+	// 					popupContentContainer.append(response.data.content);  // Append the new content to the popup
+	// 				}
+	// 				let container = $('#div-container[data-widget-id="' + postId + '"]');
 
-					if (container.find('.zwssgr-list').length >= 1) {
-						container.find('.zwssgr-list').append(response.data.content);
-					}
-					if (container.find('.zwssgr-grid-item').length >= 1) {
-						container.find('.zwssgr-grid-item').append(response.data.content);
-					}
+	// 				if (container.find('.zwssgr-list').length >= 1) {
+	// 					container.find('.zwssgr-list').append(response.data.content);
+	// 				}
+	// 				if (container.find('.zwssgr-grid-item').length >= 1) {
+	// 					container.find('.zwssgr-grid-item').append(response.data.content);
+	// 				}
 
-                    // Update the page number for future requests
-                    button.data('page', response.data.new_page);
+    //                 // Update the page number for future requests
+    //                 button.data('page', response.data.new_page);
 
-                    // If no more posts, remove or disable the button
-                    if (response.data.disable_button) {
-                        button.remove();  // Remove the button if no more posts
-                    } else {
-                        button.prop('disabled', false).text('Load More');  // Re-enable button and reset text
-                    }
-                } else {
-                    button.prop('disabled', false).text('Error, try again');
-                }
-            },
-            error: function() {
-                button.prop('disabled', false).text('Error, try again');
-            }
-        });
-    });
+    //                 // If no more posts, remove or disable the button
+    //                 if (response.data.disable_button) {
+    //                     button.remove();  // Remove the button if no more posts
+    //                 } else {
+    //                     button.prop('disabled', false).text('Load More');  // Re-enable button and reset text
+    //                 }
+    //             } else {
+    //                 button.prop('disabled', false).text('Error, try again');
+    //             }
+    //         },
+    //         error: function() {
+    //             button.prop('disabled', false).text('Error, try again');
+    //         }
+    //     });
+    // });
 
-    $(document).on('click', '.toggle-content', function () {
-        let $link = $(this);
-        let fullText = $link.data('full-text');
-        let $parentParagraph = $link.closest('p');
+    // $(document).on('click', '.toggle-content', function () {
+    //     let $link = $(this);
+    //     let fullText = $link.data('full-text');
+    //     let $parentParagraph = $link.closest('p');
     
-        // Replace the trimmed content with the full content
-        $parentParagraph.html(fullText);
-    });
+    //     // Replace the trimmed content with the full content
+    //     $parentParagraph.html(fullText);
+    // });
 
 	$(document).on('click', '.zwssgr-front-keywords-list  li', function () {
 		
