@@ -327,13 +327,14 @@ if ( !defined( 'ABSPATH' ) ) exit;
 					</td>
 				</tr>
 
-				<tr valign="top" class="zwssgr-smtp-auth-enable">
+				<tr valign="top" class="zwssgr-smtp-auth-enable-main">
 					<th scope="row" valign="top">
-						<label for="zwssgr-smtp-username">
+						<label for="zwssgr-smtp-username" class="zwssgr-smtp-auth-enable">
 							<?php esc_html_e( 'SMTP Username', 'smart-showcase-for-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
+					<label class="zwssgr-smtp-auth-enable">
 						<input
 							id="zwssgr-smtp-username"
 							name="zwssgr_smtp_username"
@@ -342,16 +343,18 @@ if ( !defined( 'ABSPATH' ) ) exit;
 							STARTTLS
 							value="<?php echo isset( $zwssgr_smtp_option['zwssgr_smtp_username'] ) ? esc_attr( $zwssgr_smtp_option['zwssgr_smtp_username'] ) : ''; ?>"
 						/>
+					</label>
 					</td>
 				</tr>
 
-				<tr valign="top" class="zwssgr-smtp-auth-enable">
+				<tr valign="top" class="zwssgr-smtp-auth-enable-main">
 					<th scope="row" valign="top">
-						<label for="zwssgr-smtp-password">
+						<label for="zwssgr-smtp-password" class="zwssgr-smtp-auth-enable">
 							<?php esc_html_e( 'SMTP Password', 'smart-showcase-for-google-reviews' ); ?>
 						</label>
 					</th>
 					<td>
+					<label class="zwssgr-smtp-auth-enable">
 						<input
 							id="zwssgr-smtp-password"
 							name="zwssgr_smtp_password"
@@ -360,6 +363,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 							required
 							value="<?php echo isset( $zwssgr_smtp_option['zwssgr_smtp_password'] ) ? esc_attr( $zwssgr_smtp_option['zwssgr_smtp_password'] ) : ''; ?>"
 						/>
+					</label>
 					</td>
 				</tr>
 			</tbody>

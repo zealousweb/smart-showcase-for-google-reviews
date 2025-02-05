@@ -474,120 +474,120 @@ jQuery(document).ready(function($) {
 	
 
 	// Slick sliders
-	$('.zwssgr-slider-1').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		adaptiveHeight: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});
+	// $('.zwssgr-slider-1').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 3,
+	// 	slidesToScroll: 3,
+	// 	arrows: true,
+	// 	dots: false,
+	// 	adaptiveHeight: false,
+	// 	responsive: [
+	// 		{
+	// 			breakpoint: 1200,
+	// 			settings: {
+	// 				slidesToShow: 2,
+	// 				slidesToScroll: 2
+	// 			}
+	// 		},
+	// 		{
+	// 			breakpoint: 480,
+	// 			settings: {
+	// 				slidesToShow: 1,
+	// 				slidesToScroll: 1
+	// 			}
+	// 		}
+	// 	]
+	// });
 	
-	$('.zwssgr-slider-2').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});	 
+	// $('.zwssgr-slider-2').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 3,
+	// 	slidesToScroll: 3,
+	// 	arrows: true,
+	// 	dots: false,
+	// 	responsive: [
+	// 		{
+	// 			breakpoint: 1200,
+	// 			settings: {
+	// 				slidesToShow: 2,
+	// 				slidesToScroll: 2
+	// 			}
+	// 		},
+	// 		{
+	// 			breakpoint: 480,
+	// 			settings: {
+	// 				slidesToShow: 1,
+	// 				slidesToScroll: 1
+	// 			}
+	// 		}
+	// 	]
+	// });	 
 
-	$('.zwssgr-slider-3').slick({
-		infinite: true,
-		slidesToShow: 2,
-		slidesToScroll: 2,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1180,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});	
+	// $('.zwssgr-slider-3').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 2,
+	// 	slidesToScroll: 2,
+	// 	arrows: true,
+	// 	dots: false,
+	// 	responsive: [
+	// 		{
+	// 			breakpoint: 1180,
+	// 			settings: {
+	// 				slidesToShow: 1,
+	// 				slidesToScroll: 1
+	// 			}
+	// 		}
+	// 	]
+	// });	
 
-	$('.zwssgr-slider-4').slick({
-		infinite: true,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		arrows: true,
-		dots: false,
-	});	
+	// $('.zwssgr-slider-4').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 1,
+	// 	slidesToScroll: 1,
+	// 	arrows: true,
+	// 	dots: false,
+	// });	
 
-	$('.zwssgr-slider-5').slick({
-		infinite: true,
-		slidesToShow: 2,
-		slidesToScroll: 2,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});	
+	// $('.zwssgr-slider-5').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 2,
+	// 	slidesToScroll: 2,
+	// 	arrows: true,
+	// 	dots: false,
+	// 	responsive: [
+	// 		{
+	// 			breakpoint: 480,
+	// 			settings: {
+	// 				slidesToShow: 1,
+	// 				slidesToScroll: 1
+	// 			}
+	// 		}
+	// 	]
+	// });	
 
-	$('.zwssgr-slider-6').slick({
-		infinite: true,
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		arrows: true,
-		dots: false,
-		responsive: [
-			{
-				breakpoint: 1200,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1
-				}
-			}
-		]
-	});
+	// $('.zwssgr-slider-6').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 3,
+	// 	slidesToScroll: 3,
+	// 	arrows: true,
+	// 	dots: false,
+	// 	responsive: [
+	// 		{
+	// 			breakpoint: 1200,
+	// 			settings: {
+	// 				slidesToShow: 2,
+	// 				slidesToScroll: 2
+	// 			}
+	// 		},
+	// 		{
+	// 			breakpoint: 480,
+	// 			settings: {
+	// 				slidesToShow: 1,
+	// 				slidesToScroll: 1
+	// 			}
+	// 		}
+	// 	]
+	// });
 
 	// // Handle click on visibility toggle icon of Review CPT
 	// $(document).on('click', '.zwssgr-toggle-visibility', function(e) {

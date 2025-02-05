@@ -1,5 +1,35 @@
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
+    
+    const sliderConfigs = {
+        ".zwssgr-slider-1": { slidesPerView: 1, slidesPerGroup: 1, breakpoints: { 1200: { slidesPerView: 3, slidesPerGroup: 3 }, 768: { slidesPerView: 2, slidesPerGroup: 2 }, 480: { slidesPerView: 1, slidesPerGroup: 1 } } },
+        ".zwssgr-slider-2": { slidesPerView: 1, slidesPerGroup: 1, breakpoints: { 1200: { slidesPerView: 3, slidesPerGroup: 3 }, 768: { slidesPerView: 2, slidesPerGroup: 2 }, 480: { slidesPerView: 1, slidesPerGroup: 1 } } },
+        ".zwssgr-slider-3": { slidesPerView: 1, slidesPerGroup: 1, breakpoints: { 1200: { slidesPerView: 2, slidesPerGroup: 2 }, 480: { slidesPerView: 1, slidesPerGroup: 1 } } },
+        ".zwssgr-slider-4": { slidesPerView: 1, slidesPerGroup: 1 },
+        ".zwssgr-slider-5": { slidesPerView: 1, slidesPerGroup: 1, breakpoints: { 1200: { slidesPerView: 2, slidesPerGroup: 2 }, 480: { slidesPerView: 1, slidesPerGroup: 1 } } },
+        ".zwssgr-slider-6": { slidesPerView: 1, slidesPerGroup: 1, breakpoints: { 1200: { slidesPerView: 3, slidesPerGroup: 3 }, 768: { slidesPerView: 2, slidesPerGroup: 2 }, 480: { slidesPerView: 1, slidesPerGroup: 1 } } },
+    };
+
+    Object.keys(sliderConfigs).forEach(selector => {
+        const sliderElements = document.querySelectorAll(selector); // Get all sliders matching this class
+        if (sliderElements.length > 0) {
+            sliderElements.forEach(sliderElement => {
+                new Swiper(sliderElement, {
+                    slidesPerView: sliderConfigs[selector].slidesPerView,
+                    slidesPerGroup: sliderConfigs[selector].slidesPerGroup,
+                    spaceBetween: 20,
+                    loop: true,
+                    navigation: {
+                        nextEl: sliderElement.querySelector(".swiper-button-next"),
+                        prevEl: sliderElement.querySelector(".swiper-button-prev"),
+                    },
+                    breakpoints: sliderConfigs[selector].breakpoints || {},
+                });
+            });
+        } else {
+            console.warn(`Swiper slider with selector '${selector}' not found.`);
+        }
+    });
 
     // Bind click event to open popup
     document.addEventListener("click", function (e) {
@@ -539,72 +569,77 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleCheckbox.addEventListener('change', toggleButtonVisibility);
     }
 
-    function toggleElements(event) {
-        const fadeDuration = 600; // Duration of the fade effect in milliseconds
-    
-        // Prevent default behavior of the event (to stop page reload if it's coming from a form or checkbox)
-        if (event) {
-            event.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get("page");
+    const tab = urlParams.get("tab");
+
+    if (page === "zwssgr_widget_configurator" && tab === "tab-selected") {
+        function toggleElements(event) {
+            const fadeDuration = 600; // Duration of the fade effect in milliseconds
+
+            // Prevent default behavior of the event (to stop page reload if it's coming from a form or checkbox)
+            if (event) {
+                event.preventDefault();
+            }
+
+            function fadeOut(element) {
+                element.style.transition = `opacity ${fadeDuration}ms`;
+                element.style.opacity = 0;
+                setTimeout(() => {
+                    element.style.display = "none";
+                }, fadeDuration);
+            }
+
+            function fadeIn(element) {
+                element.style.display = "block";
+                element.style.transition = `opacity ${fadeDuration}ms`;
+                setTimeout(() => {
+                    element.style.opacity = 1;
+                }, 10);
+            }
+
+            // Get the data-widget-id value
+            const selectedOptionDisplay = document.getElementById("selected-option-display");
+            const layoutOption = selectedOptionDisplay?.dataset?.layoutOption; // Ensure it's not undefined
+            if (!layoutOption) {
+                return; // Exit early if layoutOption is not defined
+            }
+
+            const layoutOptionId = `#${layoutOption}`;
+
+            document.querySelectorAll(`${layoutOptionId} .zwssgr-title`).forEach(el => {
+                document.getElementById('review-title')?.checked ? fadeOut(el) : fadeIn(el);
+            });
+
+            document.querySelectorAll(`${layoutOptionId} .zwssgr-rating`).forEach(el => {
+                document.getElementById('review-rating')?.checked ? fadeOut(el) : fadeIn(el);
+            });
+
+            document.querySelectorAll(`${layoutOptionId} .zwssgr-days-ago`).forEach(el => {
+                document.getElementById('review-days-ago')?.checked ? fadeOut(el) : fadeIn(el);
+            });
+
+            document.querySelectorAll(`${layoutOptionId} .zwssgr-content`).forEach(el => {
+                document.getElementById('review-content')?.checked ? fadeOut(el) : fadeIn(el);
+            });
+
+            document.querySelectorAll(`${layoutOptionId} .zwssgr-profile`).forEach(el => {
+                document.getElementById('review-photo')?.checked ? fadeOut(el) : fadeIn(el);
+            });
+
+            document.querySelectorAll(`${layoutOptionId} .zwssgr-google-icon`).forEach(el => {
+                document.getElementById('review-g-icon')?.checked ? fadeOut(el) : fadeIn(el);
+            });
         }
-    
-        function fadeOut(element) {
-            element.style.transition = `opacity ${fadeDuration}ms`;
-            element.style.opacity = 0;
-            setTimeout(() => {
-                element.style.display = "none";
-            }, fadeDuration);
-        }
-    
-        function fadeIn(element) {
-            element.style.display = "block";
-            element.style.transition = `opacity ${fadeDuration}ms`;
-            setTimeout(() => {
-                element.style.opacity = 1;
-            }, 10);
-        }
-    
-        // Get the data-widget-id value
-        const selectedOptionDisplay = document.getElementById("selected-option-display");
-        const layoutOption = selectedOptionDisplay?.dataset?.layoutOption; // Ensure it's not undefined
-        if (!layoutOption) {
-            // console.error('layoutOption is undefined or invalid');
-            return; // Exit early if layoutOption is not defined
-        }
-        
-        const layoutOptionId = `#${layoutOption}`;
-    
-        document.querySelectorAll(`${layoutOptionId} .zwssgr-title`).forEach(el => {
-            document.getElementById('review-title')?.checked ? fadeOut(el) : fadeIn(el);
+
+        // Attach change event listeners to checkboxes
+        document.querySelectorAll('input[name="review-element"]').forEach(checkbox => {
+            checkbox.addEventListener('change', toggleElements);
         });
-    
-        document.querySelectorAll(`${layoutOptionId} .zwssgr-rating`).forEach(el => {
-            document.getElementById('review-rating')?.checked ? fadeOut(el) : fadeIn(el);
-        });
-    
-        document.querySelectorAll(`${layoutOptionId} .zwssgr-days-ago`).forEach(el => {
-            document.getElementById('review-days-ago')?.checked ? fadeOut(el) : fadeIn(el);
-        });
-    
-        document.querySelectorAll(`${layoutOptionId} .zwssgr-content`).forEach(el => {
-            document.getElementById('review-content')?.checked ? fadeOut(el) : fadeIn(el);
-        });
-    
-        document.querySelectorAll(`${layoutOptionId} .zwssgr-profile`).forEach(el => {
-            document.getElementById('review-photo')?.checked ? fadeOut(el) : fadeIn(el);
-        });
-    
-        document.querySelectorAll(`${layoutOptionId} .zwssgr-google-icon`).forEach(el => {
-            document.getElementById('review-g-icon')?.checked ? fadeOut(el) : fadeIn(el);
-        });
+
+        // Call toggleElements on page load to apply any initial settings with fade effect
+        toggleElements();
     }
-    
-    // Attach change event listeners to checkboxes
-    document.querySelectorAll('input[name="review-element"]').forEach(checkbox => {
-        checkbox.addEventListener('change', toggleElements);
-    });
-    
-    // Call toggleElements on page load to apply any initial settings with fade effect
-    toggleElements();
     
 
     function formatDate(dateString, format, lang) {
@@ -1074,20 +1109,28 @@ document.addEventListener('DOMContentLoaded', function () {
         const authFields = document.querySelectorAll('.zwssgr-smtp-auth-enable');
         const usernameField = document.querySelector('input[name="zwssgr_smtp_username"]');
         const passwordField = document.querySelector('input[name="zwssgr_smtp_password"]');
-
+        const zwssgrSmtprows = document.querySelectorAll('tr.zwssgr-smtp-auth-enable-main');
         if (smtpAuth?.value === 'no') {
-            // authFields.forEach(el => el.style.display = 'none');
+            zwssgrSmtprows.forEach(row => {
+                row.style.display = 'none';
+            });
             usernameField.removeAttribute('required');
             passwordField.removeAttribute('required');
+            
+            
         } else {
-            // authFields.forEach(el => el.style.display = 'block');
+            zwssgrSmtprows.forEach(row => {
+                row.style.display = 'table-row';
+            });
             usernameField.setAttribute('required', 'required');
             passwordField.setAttribute('required', 'required');
+            
         }
     }
 
     document.querySelectorAll('input[name="zwssgr_smtp_auth"]').forEach(input => {
         input.addEventListener('change', toggleSmtpAuth);
+        
     });
 
     function toggleAdminSmtp() {
@@ -1101,13 +1144,13 @@ document.addEventListener('DOMContentLoaded', function () {
         ];
 
         if (adminSmtpEnabled.checked) {
-            // adminSmtpFields.forEach(el => el.style.display = 'block');
+            adminSmtpFields.forEach(el => el.style.display = 'contents');
             requiredFields.forEach(field => {
                 const input = document.querySelector(`input[name="${field}"]`);
                 input.setAttribute('required', 'required');
             });
         } else {
-            // adminSmtpFields.forEach(el => el.style.display = 'none');
+            adminSmtpFields.forEach(el => el.style.display = 'none');
             requiredFields.forEach(field => {
                 const input = document.querySelector(`input[name="${field}"]`);
                 input.removeAttribute('required');
@@ -1125,8 +1168,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initial execution
     if (document.querySelector('input[name="zwssgr_admin_smtp_enabled"]:checked')) {
         toggleAdminSmtp();
+        
+    }else{
+        toggleAdminSmtp();
     }
     if (document.querySelector('input[name="zwssgr_smtp_auth"]:checked')) {
+        toggleSmtpAuth();
+    }else{
         toggleSmtpAuth();
     }
     // End code SMTP
