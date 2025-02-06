@@ -1029,117 +1029,128 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	$("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (zwssgrEv) {
+	const zwssgrButton 	   = document.querySelector("#fetch-gmb-data #fetch-gmd-accounts");
+	const zwssgrAuthButton = document.getElementById("fetch-gmb-auth-url");
 
-		"use strict";
+	if (zwssgrButton) {
 		
-		zwssgrEv.preventDefault();
-		const zwssgrButton = $(this);
-		const zwssgrGmbDataType = zwssgrButton.data("fetch-type");
-		const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
-
-		$('#fetch-gmb-data .progress-bar').addClass('active');
-		zwssgrButton.addClass('disabled');
-		zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
-
-		try {
-			zwssgrProcessBatch(zwssgrGmbDataType, null, null, zwssgrWidgetId, null, null, null, null);
-		} catch (error) {
-			console.error("Error processing batch:", error);
-		}
-
-	});
-
-	$("#fetch-gmb-auth-url").on("click", function (zwssgrEv) {
-		"use strict";
-	
-		zwssgrEv.preventDefault();
-	
-		const zwssgrAuthButton   = $("#fetch-gmb-auth-url");
-		const zwssgrAuthResponse = $("#fetch-gmb-auth-url-response");
-		zwssgrAuthButton.prop('disabled', true).html("Connecting...");
-
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: "POST",
-			dataType: "json",
-			data: {
-				action: "zwssgr_fetch_oauth_url"
-			},
-			success: function (response) {
-				if (response.success) {
-
-					zwssgrAuthButton.prop('disabled', false).html("Redirecting...");
-					window.location.href = response.data.zwssgr_oauth_url;
-
-				} else {
-
-					const errorMessage = $("<p>")
-						.addClass("error response")
-						.text("Error generating OAuth URL: " + (response.data?.message || "Unknown error"));
-					zwssgrAuthResponse.html(errorMessage);
-				}
-			},
-			error: function (xhr, status, error) {
-
-				zwssgrAuthButton.prop('disabled', false).html("Connect with Google");
-				const unexpectedError = $("<p>")
-					.addClass("error response")
-					.text("An unexpected error occurred: " + error);
-				zwssgrAuthResponse.html(unexpectedError);
-
+		zwssgrButton.addEventListener("click", function (zwssgrEv) {
+			"use strict";
+			
+			zwssgrEv.preventDefault();
+			
+			const zwssgrGmbDataType = zwssgrButton.getAttribute("data-fetch-type");
+			const zwssgrWidgetId 	= zwssgrGetUrlParameter("zwssgr_widget_id");
+			
+			document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
+			zwssgrButton.classList.add("disabled");
+			zwssgrButton.innerHTML = '<span class="spinner is-active"></span> Fetching...';
+			
+			try {
+				zwssgrProcessBatch(zwssgrGmbDataType, null, null, zwssgrWidgetId, null, null, null, null);
+			} catch (error) {
+				console.error("Error processing batch:", error);
 			}
+
 		});
 
-	});
+	}
 
-	$("#disconnect-gmb-auth #disconnect-auth").on("click", function (zwssgrEv) {
-		zwssgrEv.preventDefault();
+	if (zwssgrAuthButton) {
 
-		$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', true);
-		$("#disconnect-gmb-auth #disconnect-auth").html("Disconnecting...");
+		zwssgrAuthButton.addEventListener("click", function (zwssgrEv) {
+			"use strict";
+			
+			zwssgrEv.preventDefault();
+			
+			const zwssgrAuthResponse = document.getElementById("fetch-gmb-auth-url-response");
+			zwssgrAuthButton.disabled = true;
+			zwssgrAuthButton.textContent = "Connecting...";
+			
+			fetch(zwssgr_admin.ajax_url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: new URLSearchParams(
+					{ 
+						action: "zwssgr_fetch_oauth_url" 
+					}
+				)
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					zwssgrAuthButton.disabled = false;
+					zwssgrAuthButton.textContent = "Redirecting...";
+					window.location.href = data.data.zwssgr_oauth_url;
+				} else {
+					const errorMessage = document.createElement("p");
+					errorMessage.classList.add("error", "response");
+					errorMessage.textContent = "Error generating OAuth URL: " + (data.data?.message || "Unknown error");
+					zwssgrAuthResponse.innerHTML = "";
+					zwssgrAuthResponse.appendChild(errorMessage);
+				}
+			})
+			.catch(error => {
+				zwssgrAuthButton.disabled = false;
+				zwssgrAuthButton.textContent = "Connect with Google";
+				const unexpectedError = document.createElement("p");
+				unexpectedError.classList.add("error", "response");
+				unexpectedError.textContent = "An unexpected error occurred: " + error;
+				zwssgrAuthResponse.innerHTML = "";
+				zwssgrAuthResponse.appendChild(unexpectedError);
+			});
+		});
 
-		var zwssgrDeletePluginData = $('#disconnect-gmb-auth #delete-all-data').prop('checked') ? '1' : '0';
+	}
 
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: "POST",
-			dataType: "json",
-			data: {
-				action: "zwssgr_delete_oauth_connection",
-				zwssgr_delete_plugin_data: zwssgrDeletePluginData,
-				security: zwssgr_admin.zwssgr_delete_oauth_connection,
-			},
-			success: function (response) {
+	const zwssgrDisconnectButton = document.querySelector("#disconnect-gmb-auth #disconnect-auth");
 
-				if (response.success) {
-					
-					$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
-					$("#disconnect-gmb-auth #disconnect-auth").html("Disconnected");
-					$("#disconnect-gmb-auth-response").html("<p class='success response''> OAuth Disconnected: " + (response.data?.message || "Unknown error") + "</p>");
-					$("#disconnect-gmb-auth .zwssgr-th-label").html("");
-					$("#disconnect-gmb-auth .zwssgr-caution-div").fadeOut();
-					$("#disconnect-gmb-auth .danger-note").fadeOut();
+	if (zwssgrDisconnectButton) {
 
+		zwssgrDisconnectButton.addEventListener("click", function (zwssgrEv) {
+			zwssgrEv.preventDefault();
+	
+			zwssgrDisconnectButton.disabled = true;
+			zwssgrDisconnectButton.textContent = "Disconnecting...";
+	
+			const zwssgrDeletePluginData = document.querySelector("#disconnect-gmb-auth #delete-all-data").checked ? '1' : '0';
+	
+			fetch(zwssgr_admin.ajax_url, {
+				method: "POST",
+				headers: { "Content-Type": "application/x-www-form-urlencoded" },
+				body: new URLSearchParams({
+					action: "zwssgr_delete_oauth_connection",
+					zwssgr_delete_plugin_data: zwssgrDeletePluginData,
+					security: zwssgr_admin.zwssgr_delete_oauth_connection,
+				})
+			})
+			.then(response => response.json())
+			.then(zwssgrData => {
+				if (zwssgrData.success) {
+					zwssgrDisconnectButton.disabled = false;
+					zwssgrDisconnectButton.textContent = "Disconnected";
+					document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='success response'> OAuth Disconnected: " + (zwssgrData.data?.message || "Unknown error") + "</p>";
+					document.querySelector("#disconnect-gmb-auth .zwssgr-th-label").innerHTML = "";
+					document.querySelector("#disconnect-gmb-auth .zwssgr-caution-div").style.display = "none";
+					document.querySelector("#disconnect-gmb-auth .danger-note").style.display = "none";
+	
 					setTimeout(function() {
 						window.location.href = zwssgr_admin.zwssgr_redirect;
 					}, 1500);
-
 				} else {
-					$("#disconnect-gmb-auth-response").html("<p class='error response''>Error disconnecting OAuth connection: " + (response.data?.message || "Unknown error") + "</p>");
+					document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='error response'>Error disconnecting OAuth connection: " + (zwssgrData.data?.message || "Unknown error") + "</p>";
 				}
-
-			},
-			error: function (xhr, status, error) {
-
-				$("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
-				$("#disconnect-gmb-auth #disconnect-auth").html("Disconnect");
-				$("#disconnect-gmb-auth-response").html("<p class='error response''> An unexpected error occurred: " + error + "</p>");
-				
-			}
+			})
+			.catch(zwssgrError => {
+				zwssgrDisconnectButton.disabled = false;
+				zwssgrDisconnectButton.textContent = "Disconnect";
+				document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='error response'> An unexpected error occurred: " + zwssgrError + "</p>";
+			});
 		});
 		
-	});
+	}	
 	
 	$("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (zwssgrEv) {
 
@@ -1232,46 +1243,47 @@ jQuery(document).ready(function($) {
 		return zwssgrUrlParams.get(zwssgrName);
 	}
 
-	$("#fetch-gmb-data #zwssgr-account-select").on("change", function () {
-		"use strict";
-	
-		const zwssgrAccountNumber = $(this).val();
-		const zwssgrAccountName   = $(this).find("option:selected").text();
-		const zwssgrDataContainer = $("#fetch-gmb-data");
-	
-		zwssgrDataContainer.find("#zwssgr-location-select, .zwssgr-submit-btn, #fetch-gmd-reviews").remove();
-	
-		if (zwssgrAccountNumber) {
+	const zwssgrAccountSelect = document.querySelector("#fetch-gmb-data #zwssgr-account-select");
 
-			$(this).prop("disabled", true);
-	
-			const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
-	
-			// Clear any previous responses and display the progress bar
-			zwssgrDataContainer.find(".response").html('');
-			zwssgrDataContainer.find(".progress-bar").addClass('active');
-	
-			// Process the batch request
-			try {
-				zwssgrProcessBatch(
-					"zwssgr_gmb_locations",
-					zwssgrAccountNumber,
-					null,
-					zwssgrWidgetId,
-					null,
-					null,
-					zwssgrAccountName
-				);
-			} catch (error) {
-				console.error("Error processing batch:", error);
-	
-				// Reset UI on error
-				zwssgrDataContainer.find(".progress-bar").removeClass('active');
-				zwssgrDataContainer.find(".response").html("<p class='error'>An error occurred while processing your request.</p>");
+	if (zwssgrAccountSelect) {
+
+		zwssgrAccountSelect.addEventListener("change", function () {
+			"use strict";
+			
+			const zwssgrAccountNumber = zwssgrAccountSelect.value;
+			const zwssgrAccountName = zwssgrAccountSelect.options[zwssgrAccountSelect.selectedIndex].text;
+			const zwssgrDataContainer = document.querySelector("#fetch-gmb-data");
+			
+			document.querySelectorAll("#fetch-gmb-data #zwssgr-location-select, .zwssgr-submit-btn, #fetch-gmd-reviews").forEach(zwssgrEl => zwssgrEl.remove());
+			
+			if (zwssgrAccountNumber) {
+				zwssgrAccountSelect.disabled = true;
+				
+				const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
+				
+				document.querySelector("#fetch-gmb-data .response").innerHTML = '';
+				document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
+				
+				// Process the batch request
+				try {
+					zwssgrProcessBatch(
+						"zwssgr_gmb_locations",
+						zwssgrAccountNumber,
+						null,
+						zwssgrWidgetId,
+						null,
+						null,
+						zwssgrAccountName
+					);
+				} catch (error) {					
+					// Reset UI on error
+					document.querySelector("#fetch-gmb-data .progress-bar").classList.remove("active");
+					document.querySelector("#fetch-gmb-data .response").innerHTML = "<p class='error'>An error occurred while processing your request.</p>";
+				}
 			}
-		}
-        
-	});
+		});
+
+	}
 	
 	function zwssgrProcessBatch(
 		zwssgrGmbDataType,
@@ -1325,16 +1337,16 @@ jQuery(document).ready(function($) {
 
 	// Check if we're on the specific page URL that contains zwssgr_widget_id dynamically
 	const zwssgrUrlParams = new URLSearchParams(window.location.search);
-	if (zwssgrUrlParams.has('zwssgr_widget_id') && window.location.href.includes('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data')) {
-		let zwssgrBatchInterval = setInterval(function () {
-			try {
-				zwssgrCheckBatchStatus();
-			} catch (error) {
-				console.error("Error in zwssgrCheckBatchStatus:", error);
-				clearInterval(zwssgrBatchInterval); // Stop the interval on failure
-			}
-		}, 2500);
-	}
+    if (zwssgrUrlParams.has('zwssgr_widget_id') && window.location.href.includes('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data')) {
+        let zwssgrBatchInterval = setInterval(function () {
+            try {
+                zwssgrCheckBatchStatus();
+            } catch (error) {
+                console.error("Error in zwssgrCheckBatchStatus:", error);
+                clearInterval(zwssgrBatchInterval); // Stop the interval on failure
+            }
+        }, 2500);
+    }
 	
 	function zwssgrCheckBatchStatus() {
 
@@ -1395,8 +1407,9 @@ jQuery(document).ready(function($) {
 		});
 	}
 
-	function zwssgrRedirectToOptionsTab() {
 
+	function zwssgrRedirectToOptionsTab() {
+	
 		let zwssgrCurrentUrl = window.location.href;
 		if (zwssgrCurrentUrl.includes('tab=')) {
 			zwssgrCurrentUrl = zwssgrCurrentUrl.replace(/tab=[^&]+/, 'tab=tab-options');
@@ -1404,6 +1417,7 @@ jQuery(document).ready(function($) {
 			zwssgrCurrentUrl += (zwssgrCurrentUrl.includes('?') ? '&' : '?') + 'tab=tab-options';
 		}
 		window.location.href = zwssgrCurrentUrl;
+		
 	}
 
 	$("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (zwssgrEv) {
@@ -2173,3 +2187,4 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
+
