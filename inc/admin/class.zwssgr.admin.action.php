@@ -2549,6 +2549,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<option value="full" <?php echo ($zwssgr_date_format === 'full') ? 'selected' : ''; ?>><?php echo esc_html__('Full Date (e.g., January 1, 2024)', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="hide" <?php echo ($zwssgr_date_format === 'hide') ? 'selected' : ''; ?>><?php echo esc_html__('Hide', 'smart-showcase-for-google-reviews'); ?></option>
 									</select>
+								</div>
 								<?php
 
 									if ($zwssgr_current_tab2 == '' && $zwssgr_enable_load_more == '') {
