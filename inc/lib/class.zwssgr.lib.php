@@ -53,6 +53,13 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			wp_register_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css' );
 
+			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . 'swiper-css' );
+
+			// swiper js
+			wp_register_script( ZWSSGR_PREFIX . 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . 'swiper-js' );
+
 			// Custom css
 			$zwssgr_wd_posts_args = array(
 				'post_type'			=> 'zwssgr_data_widget',
@@ -435,7 +442,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 							// Slider 
 							$zwssgr_slider_item1 = '
-								<div class="zwssgr-slide-item">' .
+								<div class="zwssgr-slide-item swiper-slide">' .
 									'<div class="zwssgr-list-inner">' .
 										'<div class="zwssgr-slide-wrap">' .
 											(!in_array('review-photo', $zwssgr_selected_elements) ? '<div class="zwssgr-profile">' .
@@ -1171,8 +1178,12 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					$zwssgr_options = [
 						'slider' => [
 							'<div class="zwssgr-slider zwssgr-slider1" id="zwssgr-slider1">
-								<div class="zwssgr-slider-1">
-									' . $zwssgr_slider_content1 . '
+								<div class="swiper zwssgr-slider-1">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content1 . '
+									</div>
+									<div class="swiper-button-next"></div>
+    								<div class="swiper-button-prev"></div>
 								</div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">

@@ -280,16 +280,28 @@
    2. Slider Styles
    ========================================================================== */
 
+.swiper-button-next.zwssgr-swiper-button-next:after, .swiper-button-prev.zwssgr-swiper-button-prev:after {
+    font-size: 30px;
+    font-weight: 900;
+    color: #3A4554;
+}
+
+.swiper-button-next.zwssgr-swiper-button-next {
+    right: 0;
+}
+
+.swiper-button-prev.zwssgr-swiper-button-prev {
+    left: 0;
+}
 .zwssgr-slider .zwssgr-slide-item {
     background: #FAFAFA;
-    padding: 20px;
     border-radius: 8px;
-    margin: 0 10px;
 }
 
 .zwssgr-slider {
     max-width: 100%;
     height: fit-content;
+    position: relative;
 }
 
 .zwssgr-slider .zwssgr-slider-1 .zwssgr-slide-item,

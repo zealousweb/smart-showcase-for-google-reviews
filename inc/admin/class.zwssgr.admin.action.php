@@ -1419,7 +1419,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			
 			$zwssgr_reviews_args = array(
 				'post_type'      => ZWSSGR_POST_REVIEW_TYPE,
-				'posts_per_page' => 5,
+				'posts_per_page' => 6,
 				'meta_query'     => array(
 					'relation' => 'AND',  // Ensure all conditions are met
 					array(
@@ -2021,9 +2021,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="swiper-wrapper">
 								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
 							</div>
-							<div class="swiper-button-next"></div>
-    						<div class="swiper-button-prev"></div>
 						</div>
+						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    					<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 					</div>',
 					'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">
 						<div class="swiper zwssgr-slider-2">
@@ -2549,7 +2549,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<option value="full" <?php echo ($zwssgr_date_format === 'full') ? 'selected' : ''; ?>><?php echo esc_html__('Full Date (e.g., January 1, 2024)', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="hide" <?php echo ($zwssgr_date_format === 'hide') ? 'selected' : ''; ?>><?php echo esc_html__('Hide', 'smart-showcase-for-google-reviews'); ?></option>
 									</select>
-								</div>
 								<?php
 
 									if ($zwssgr_current_tab2 == '' && $zwssgr_enable_load_more == '') {
@@ -2802,7 +2801,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			// Query reviews with the selected string-based filters
 			$zwssgr_args = array(
 				'post_type'      => ZWSSGR_POST_REVIEW_TYPE, // Replace with your custom post type
-				'posts_per_page' => 5,
+				'posts_per_page' => 6,
 				'meta_query'     => array(
 					'relation' => 'AND',  // Ensure all conditions are met
 					array(

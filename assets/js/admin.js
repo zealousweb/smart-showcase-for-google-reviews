@@ -238,9 +238,9 @@ jQuery(document).ready(function($) {
 		$('#selected-option-display').find('.select-btn').remove();
 
 		// Reinitialize Slick slider after the DOM has been updated
-		setTimeout(function() {
-			reinitializeSlickSlider($('#selected-option-display'));
-		}, 100);
+		// setTimeout(function() {
+		// 	reinitializeSlickSlider($('#selected-option-display'));
+		// }, 100);
 	}
 	
 	// // Handle click events for the tab navigation items
@@ -360,117 +360,117 @@ jQuery(document).ready(function($) {
     // });
 
 	// Function to reinitialize the selected Slick Slider
-	function reinitializeSlickSlider(container) {
-		// Find all sliders within the container
-		let sliders = $(container).find('[class^="zwssgr-slider-"]');
+	// function reinitializeSlickSlider(container) {
+	// 	// Find all sliders within the container
+	// 	let sliders = $(container).find('[class^="zwssgr-slider-"]');
 	
-		// Slider configurations based on slider types
-		let sliderConfigs = {
-			'zwssgr-slider-1': {
-				infinite: true,
-				slidesToShow: 3,
-				slidesToScroll: 3,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1200,
-						settings: { slidesToShow: 2, slidesToScroll: 2 }
-					},
-					{
-						breakpoint: 480,
-						settings: { slidesToShow: 1, slidesToScroll: 1 }
-					}
-				]
-			},
-			'zwssgr-slider-2': {
-				infinite: true,
-				slidesToShow: 3,
-				slidesToScroll: 3,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1200,
-						settings: { slidesToShow: 2, slidesToScroll: 2 }
-					},
-					{
-						breakpoint: 480,
-						settings: { slidesToShow: 1, slidesToScroll: 1 }
-					}
-				]
-			},
-			'zwssgr-slider-3': {
-				infinite: true,
-				slidesToShow: 2,
-				slidesToScroll: 2,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1180,
-						settings: { slidesToShow: 1, slidesToScroll: 1 }
-					}
-				]
-			},
-			'zwssgr-slider-4': {
-				infinite: true,
-				slidesToShow: 1,
-				slidesToScroll: 1,
-				arrows: true,
-				dots: false
-			},
-			'zwssgr-slider-5': {
-				infinite: true,
-				slidesToShow: 2,
-				slidesToScroll: 2,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 480,
-						settings: { slidesToShow: 1, slidesToScroll: 1 }
-					}
-				]
-			},
-			'zwssgr-slider-6': {
-				infinite: true,
-				slidesToShow: 3,
-				slidesToScroll: 3,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1200,
-						settings: { slidesToShow: 2, slidesToScroll: 2 }
-					},
-					{
-						breakpoint: 480,
-						settings: { slidesToShow: 1, slidesToScroll: 1 }
-					}
-				]
-			}
-		};
+	// 	// Slider configurations based on slider types
+	// 	let sliderConfigs = {
+	// 		'zwssgr-slider-1': {
+	// 			infinite: true,
+	// 			slidesToShow: 3,
+	// 			slidesToScroll: 3,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1200,
+	// 					settings: { slidesToShow: 2, slidesToScroll: 2 }
+	// 				},
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: { slidesToShow: 1, slidesToScroll: 1 }
+	// 				}
+	// 			]
+	// 		},
+	// 		'zwssgr-slider-2': {
+	// 			infinite: true,
+	// 			slidesToShow: 3,
+	// 			slidesToScroll: 3,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1200,
+	// 					settings: { slidesToShow: 2, slidesToScroll: 2 }
+	// 				},
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: { slidesToShow: 1, slidesToScroll: 1 }
+	// 				}
+	// 			]
+	// 		},
+	// 		'zwssgr-slider-3': {
+	// 			infinite: true,
+	// 			slidesToShow: 2,
+	// 			slidesToScroll: 2,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1180,
+	// 					settings: { slidesToShow: 1, slidesToScroll: 1 }
+	// 				}
+	// 			]
+	// 		},
+	// 		'zwssgr-slider-4': {
+	// 			infinite: true,
+	// 			slidesToShow: 1,
+	// 			slidesToScroll: 1,
+	// 			arrows: true,
+	// 			dots: false
+	// 		},
+	// 		'zwssgr-slider-5': {
+	// 			infinite: true,
+	// 			slidesToShow: 2,
+	// 			slidesToScroll: 2,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: { slidesToShow: 1, slidesToScroll: 1 }
+	// 				}
+	// 			]
+	// 		},
+	// 		'zwssgr-slider-6': {
+	// 			infinite: true,
+	// 			slidesToShow: 3,
+	// 			slidesToScroll: 3,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1200,
+	// 					settings: { slidesToShow: 2, slidesToScroll: 2 }
+	// 				},
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: { slidesToShow: 1, slidesToScroll: 1 }
+	// 				}
+	// 			]
+	// 		}
+	// 	};
 	
-		// Iterate through each slider and reinitialize
-		sliders.each(function () {
-			let slider = $(this);
+	// 	// Iterate through each slider and reinitialize
+	// 	sliders.each(function () {
+	// 		let slider = $(this);
 	
-			// Unslick if already initialized
-			if (slider.hasClass('slick-initialized')) {
-				slider.slick('unslick');
-			}
+	// 		// Unslick if already initialized
+	// 		if (slider.hasClass('slick-initialized')) {
+	// 			slider.slick('unslick');
+	// 		}
 	
-			// Get slider-specific settings
-			let sliderClass = slider.attr('class').split(' ').find(cls => cls.startsWith('zwssgr-slider-'));
-			let config = sliderConfigs[sliderClass];
+	// 		// Get slider-specific settings
+	// 		let sliderClass = slider.attr('class').split(' ').find(cls => cls.startsWith('zwssgr-slider-'));
+	// 		let config = sliderConfigs[sliderClass];
 	
-			// Initialize Slick with the configuration
-			if (config) {
-				slider.slick(config);
-			}
-		});
-	}
+	// 		// Initialize Slick with the configuration
+	// 		if (config) {
+	// 			slider.slick(config);
+	// 		}
+	// 	});
+	// }
 	
 
 	// Slick sliders
@@ -1782,235 +1782,235 @@ jQuery(document).ready(function($) {
 	
 
 	// Event listener for clicking on a star filter
-	$(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
-		let nonce = zwssgr_filter_reviews.nonce;
-		let postId = getQueryParam('zwssgr_widget_id');
-		let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
-		let selectedOption = getQueryParam('selectedOption');
-		// Prepare an array of selected ratings
-		let selectedRatings = [];
-		$('.filter-rating .star-filter.selected').each(function() {
-			selectedRatings.push($(this).data('rating')); // Push each selected rating into the array
-		});
+	// $(document).on('click', '#sort-by-select,.filter-rating .star-filter' , function() {
+	// 	let nonce = zwssgr_filter_reviews.nonce;
+	// 	let postId = getQueryParam('zwssgr_widget_id');
+	// 	let sortBy = $('#sort-by-select').val(); // Get the selected sort by value
+	// 	let selectedOption = getQueryParam('selectedOption');
+	// 	// Prepare an array of selected ratings
+	// 	let selectedRatings = [];
+	// 	$('.filter-rating .star-filter.selected').each(function() {
+	// 		selectedRatings.push($(this).data('rating')); // Push each selected rating into the array
+	// 	});
 
-		// If nothing is selected, default to all ratings (1-5 stars)
-		if(selectedRatings.length === 1){
-			selectedRatings =[1]
-		}else if(selectedRatings.length === 2){
-			selectedRatings =[2]
-		}else if(selectedRatings.length === 3){
-			selectedRatings =[3]
-		}else if(selectedRatings.length === 4){
-			selectedRatings =[4]
-		}else if(selectedRatings.length === 5){
-			selectedRatings =[5]
-		}else{
-			selectedRatings = [1, 2, 3, 4, 5];
-		}
+	// 	// If nothing is selected, default to all ratings (1-5 stars)
+	// 	if(selectedRatings.length === 1){
+	// 		selectedRatings =[1]
+	// 	}else if(selectedRatings.length === 2){
+	// 		selectedRatings =[2]
+	// 	}else if(selectedRatings.length === 3){
+	// 		selectedRatings =[3]
+	// 	}else if(selectedRatings.length === 4){
+	// 		selectedRatings =[4]
+	// 	}else if(selectedRatings.length === 5){
+	// 		selectedRatings =[5]
+	// 	}else{
+	// 		selectedRatings = [1, 2, 3, 4, 5];
+	// 	}
 
-		// Make the AJAX request to filter reviews based on selected ratings
-		$.ajax({
-			type: 'POST',
-			url: zwssgr_filter_reviews.ajax_url,
-			data: {
-				action: 'zwssgr_filter_reviews', // The action for the PHP handler
-				zwssgr_widget_id: postId,
-				rating_filter: selectedRatings, // Pass the selected ratings array
-				sort_by: sortBy, // Pass sort by parameter
-				nonce: nonce
-			},
-			success: function(response) {
+	// 	// Make the AJAX request to filter reviews based on selected ratings
+	// 	$.ajax({
+	// 		type: 'POST',
+	// 		url: zwssgr_filter_reviews.ajax_url,
+	// 		data: {
+	// 			action: 'zwssgr_filter_reviews', // The action for the PHP handler
+	// 			zwssgr_widget_id: postId,
+	// 			rating_filter: selectedRatings, // Pass the selected ratings array
+	// 			sort_by: sortBy, // Pass sort by parameter
+	// 			nonce: nonce
+	// 		},
+	// 		success: function(response) {
 
-				// Ensure the response is HTML or clean content
-				if (typeof response === "string" || response instanceof String) {
-					// Insert response as HTML into the display
-					$('#selected-option-display').empty();
-					$('#selected-option-display').html(response);
-				} else {
-					console.error("Expected HTML content, but received:", response);
-				}
+	// 			// Ensure the response is HTML or clean content
+	// 			if (typeof response === "string" || response instanceof String) {
+	// 				// Insert response as HTML into the display
+	// 				$('#selected-option-display').empty();
+	// 				$('#selected-option-display').html(response);
+	// 			} else {
+	// 				console.error("Expected HTML content, but received:", response);
+	// 			}
 
-				// Only reinitialize Slick slider if selectedOption is one of the slider options
-				if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
-					setTimeout(function() {
-						reinitializeSlickSlider1($('#selected-option-display'));
-					}, 100);
-				}
-				// Handle list layout reinitialization (if needed)
-				if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
-					 // Optionally, you can apply list-specific reinitialization logic here
-					//  alert('List layout filtered');
-				}				
-			},
-			error: function(xhr, status, error) {
-				console.error("AJAX Error: ", status, error);
-			}
-		});
-	});
+	// 			// Only reinitialize Slick slider if selectedOption is one of the slider options
+	// 			if (selectedOption === 'slider-1' || selectedOption === 'slider-2' || selectedOption === 'slider-3' || selectedOption === 'slider-4' || selectedOption === 'slider-5' || selectedOption === 'slider-6') {
+	// 				setTimeout(function() {
+	// 					reinitializeSlickSlider1($('#selected-option-display'));
+	// 				}, 100);
+	// 			}
+	// 			// Handle list layout reinitialization (if needed)
+	// 			if (selectedOption === 'list-1' || selectedOption === 'list-2' || selectedOption === 'list-3' || selectedOption === 'list-4' || selectedOption === 'list-5') {
+	// 				 // Optionally, you can apply list-specific reinitialization logic here
+	// 				//  alert('List layout filtered');
+	// 			}				
+	// 		},
+	// 		error: function(xhr, status, error) {
+	// 			console.error("AJAX Error: ", status, error);
+	// 		}
+	// 	});
+	// });
 
 	// Function to reinitialize the selected Slick Slider
-	function reinitializeSlickSlider1(container) {
-		// Find and reinitialize Slick sliders
-		let slider1 = $(container).find('.zwssgr-slider-1');
-		let slider2 = $(container).find('.zwssgr-slider-2');
-		let slider3 = $(container).find('.zwssgr-slider-3');
-		let slider4 = $(container).find('.zwssgr-slider-4');
-		let slider5 = $(container).find('.zwssgr-slider-5');
-		let slider6 = $(container).find('.zwssgr-slider-6');
+	// function reinitializeSlickSlider1(container) {
+	// 	// Find and reinitialize Slick sliders
+	// 	let slider1 = $(container).find('.zwssgr-slider-1');
+	// 	let slider2 = $(container).find('.zwssgr-slider-2');
+	// 	let slider3 = $(container).find('.zwssgr-slider-3');
+	// 	let slider4 = $(container).find('.zwssgr-slider-4');
+	// 	let slider5 = $(container).find('.zwssgr-slider-5');
+	// 	let slider6 = $(container).find('.zwssgr-slider-6');
 
-		// Unslick if it's already initialized
-		if (slider1.hasClass('slick-initialized')) {
-			slider1.slick('unslick');
-		}
+	// 	// Unslick if it's already initialized
+	// 	if (slider1.hasClass('slick-initialized')) {
+	// 		slider1.slick('unslick');
+	// 	}
 
-		if (slider2.hasClass('slick-initialized')) {
-			slider2.slick('unslick');
-		}
+	// 	if (slider2.hasClass('slick-initialized')) {
+	// 		slider2.slick('unslick');
+	// 	}
 
-		if (slider3.hasClass('slick-initialized')) {
-			slider3.slick('unslick');
-		}
+	// 	if (slider3.hasClass('slick-initialized')) {
+	// 		slider3.slick('unslick');
+	// 	}
 
-		if (slider4.hasClass('slick-initialized')) {
-			slider4.slick('unslick');
-		}
+	// 	if (slider4.hasClass('slick-initialized')) {
+	// 		slider4.slick('unslick');
+	// 	}
 
-		if (slider5.hasClass('slick-initialized')) {
-			slider5.slick('unslick');
-		}
+	// 	if (slider5.hasClass('slick-initialized')) {
+	// 		slider5.slick('unslick');
+	// 	}
 
-		if (slider6.hasClass('slick-initialized')) {
-			slider6.slick('unslick');
-		}
+	// 	if (slider6.hasClass('slick-initialized')) {
+	// 		slider6.slick('unslick');
+	// 	}
 
 
-		// Reinitialize the selected slider
-		if (slider1.length) {
-			slider1.slick({
-				infinite: true,
-				slidesToShow: 3,
-				slidesToScroll: 3,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1200,
-						settings: {
-							slidesToShow: 2,
-							slidesToScroll: 2
-						}
-					},
-					{
-						breakpoint: 480,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1
-						}
-					}
-				]
-			});
-		}
+	// 	// Reinitialize the selected slider
+	// 	if (slider1.length) {
+	// 		slider1.slick({
+	// 			infinite: true,
+	// 			slidesToShow: 3,
+	// 			slidesToScroll: 3,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1200,
+	// 					settings: {
+	// 						slidesToShow: 2,
+	// 						slidesToScroll: 2
+	// 					}
+	// 				},
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: {
+	// 						slidesToShow: 1,
+	// 						slidesToScroll: 1
+	// 					}
+	// 				}
+	// 			]
+	// 		});
+	// 	}
 
-		if (slider2.length) {
-			slider2.slick({
-				infinite: true,
-				slidesToShow: 3,
-				slidesToScroll: 3,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1200,
-						settings: {
-							slidesToShow: 2,
-							slidesToScroll: 2
-						}
-					},
-					{
-						breakpoint: 480,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1
-						}
-					}
-				]
-			});
-		}
+	// 	if (slider2.length) {
+	// 		slider2.slick({
+	// 			infinite: true,
+	// 			slidesToShow: 3,
+	// 			slidesToScroll: 3,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1200,
+	// 					settings: {
+	// 						slidesToShow: 2,
+	// 						slidesToScroll: 2
+	// 					}
+	// 				},
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: {
+	// 						slidesToShow: 1,
+	// 						slidesToScroll: 1
+	// 					}
+	// 				}
+	// 			]
+	// 		});
+	// 	}
 
-		if (slider3.length) {
-			slider3.slick({
-				infinite: true,
-				slidesToShow: 2,
-				slidesToScroll: 2,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1180,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1
-						}
-					}
-				]
-			});
-		}
+	// 	if (slider3.length) {
+	// 		slider3.slick({
+	// 			infinite: true,
+	// 			slidesToShow: 2,
+	// 			slidesToScroll: 2,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1180,
+	// 					settings: {
+	// 						slidesToShow: 1,
+	// 						slidesToScroll: 1
+	// 					}
+	// 				}
+	// 			]
+	// 		});
+	// 	}
 
-		if (slider4.length) {
-			slider4.slick({
-				infinite: true,
-				slidesToShow: 1,
-				slidesToScroll: 1,
-				arrows: true,
-				dots: false,
-			});
-		}
+	// 	if (slider4.length) {
+	// 		slider4.slick({
+	// 			infinite: true,
+	// 			slidesToShow: 1,
+	// 			slidesToScroll: 1,
+	// 			arrows: true,
+	// 			dots: false,
+	// 		});
+	// 	}
 
-		if (slider5.length) {
-			slider5.slick({
-				infinite: true,
-				slidesToShow: 2,
-				slidesToScroll: 2,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 480,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1
-						}
-					}
-				]
-			});
-		}
+	// 	if (slider5.length) {
+	// 		slider5.slick({
+	// 			infinite: true,
+	// 			slidesToShow: 2,
+	// 			slidesToScroll: 2,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: {
+	// 						slidesToShow: 1,
+	// 						slidesToScroll: 1
+	// 					}
+	// 				}
+	// 			]
+	// 		});
+	// 	}
 
-		if (slider6.length) {
-			slider6.slick({
-				infinite: true,
-				slidesToShow: 3,
-				slidesToScroll: 3,
-				arrows: true,
-				dots: false,
-				responsive: [
-					{
-						breakpoint: 1200,
-						settings: {
-							slidesToShow: 2,
-							slidesToScroll: 2
-						}
-					},
-					{
-						breakpoint: 480,
-						settings: {
-							slidesToShow: 1,
-							slidesToScroll: 1
-						}
-					}
-				]
-			});
-		}
-	}
+	// 	if (slider6.length) {
+	// 		slider6.slick({
+	// 			infinite: true,
+	// 			slidesToShow: 3,
+	// 			slidesToScroll: 3,
+	// 			arrows: true,
+	// 			dots: false,
+	// 			responsive: [
+	// 				{
+	// 					breakpoint: 1200,
+	// 					settings: {
+	// 						slidesToShow: 2,
+	// 						slidesToScroll: 2
+	// 					}
+	// 				},
+	// 				{
+	// 					breakpoint: 480,
+	// 					settings: {
+	// 						slidesToShow: 1,
+	// 						slidesToScroll: 1
+	// 					}
+	// 				}
+	// 			]
+	// 		});
+	// 	}
+	// }
 
 
 	// Handle filter button clicks

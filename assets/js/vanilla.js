@@ -11,25 +11,80 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     Object.keys(sliderConfigs).forEach(selector => {
-        const sliderElements = document.querySelectorAll(selector); // Get all sliders matching this class
+        const sliderElements = document.querySelectorAll(selector);
+    
         if (sliderElements.length > 0) {
+            const parentElement = sliderElements[0].parentElement;    
             sliderElements.forEach(sliderElement => {
+                const slideCount = sliderElement.querySelectorAll('.swiper-slide').length;
+                const config = sliderConfigs[selector];
+                const minSlidesRequired = (config.slidesPerView || 1) + 1;
+                const enableLoop = slideCount >= minSlidesRequired;
+    
                 new Swiper(sliderElement, {
-                    slidesPerView: sliderConfigs[selector].slidesPerView,
-                    slidesPerGroup: sliderConfigs[selector].slidesPerGroup,
+                    slidesPerView: config.slidesPerView,
+                    slidesPerGroup: config.slidesPerGroup,
                     spaceBetween: 20,
-                    loop: true,
+                    loop: enableLoop,
                     navigation: {
-                        nextEl: sliderElement.querySelector(".swiper-button-next"),
-                        prevEl: sliderElement.querySelector(".swiper-button-prev"),
+                        nextEl: parentElement.querySelector(".swiper-button-next"),
+                        prevEl: parentElement.querySelector(".swiper-button-prev"),
                     },
-                    breakpoints: sliderConfigs[selector].breakpoints || {},
+                    breakpoints: config.breakpoints || {},
                 });
             });
-        } else {
-            console.warn(`Swiper slider with selector '${selector}' not found.`);
         }
     });
+
+    // Store Swiper instances in an object
+    let swiperInstances = {};
+
+    function reinitializeAllSwipers(containerId) {
+        // Select the container where Swiper sliders exist
+        const container = document.getElementById(containerId);
+
+        if (!container) {
+            console.error(`Container with ID '${containerId}' not found!`);
+            return;
+        }
+
+        // Loop through all configured Swiper sliders
+        Object.keys(sliderConfigs).forEach(selector => {
+            const sliderElements = container.querySelectorAll(selector); // Get all sliders within the container
+
+            sliderElements.forEach(sliderElement => {
+                const slideCount = sliderElement.querySelectorAll('.swiper-slide').length;
+                const config = sliderConfigs[selector];
+                const minSlidesRequired = (config.slidesPerView || 1) + 1;
+                const enableLoop = slideCount >= minSlidesRequired;
+
+                // Destroy existing Swiper instance if it exists
+                if (swiperInstances[selector]) {
+                    swiperInstances[selector].destroy(true, true);
+                }
+
+                // Initialize new Swiper instance
+                swiperInstances[selector] = new Swiper(sliderElement, {
+                    slidesPerView: config.slidesPerView,
+                    slidesPerGroup: config.slidesPerGroup,
+                    spaceBetween: 20,
+                    loop: enableLoop,
+                    navigation: {
+                        nextEl: sliderElement.closest(".zwssgr-slider").querySelector(".swiper-button-next"),
+                        prevEl: sliderElement.closest(".zwssgr-slider").querySelector(".swiper-button-prev"),
+                    },
+                    breakpoints: config.breakpoints || {},
+                });
+            });
+        });
+    }
+
+
+    // document.getElementById("reinitSwiperBtn").addEventListener("click", function () {
+    //     reinitializeAllSwipers("zwssgr-slider1");
+    // });
+
+
 
     // Bind click event to open popup
     document.addEventListener("click", function (e) {
@@ -1080,10 +1135,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // Start code SMTP
-    function zwssgr_update_Smtp_Port() {
+     // Start code SMTP
+     function zwssgr_update_Smtp_Port() {
         let encryptionType = document.querySelector('input[name="zwssgr_smtp_ency_type"]:checked')?.value;
         const portInput = document.getElementById('zwssgr-smtp-port');
+
+        if (!portInput) return; // Prevent error if element doesn't exist
 
         switch (encryptionType) {
             case 'none':
@@ -1100,39 +1157,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Attach event listeners for SMTP encryption type
     document.querySelectorAll('input[name="zwssgr_smtp_ency_type"]').forEach(input => {
         input.addEventListener('change', zwssgr_update_Smtp_Port);
     });
 
+    // Function to toggle SMTP authentication fields
     function toggleSmtpAuth() {
         const smtpAuth = document.querySelector('input[name="zwssgr_smtp_auth"]:checked');
-        const authFields = document.querySelectorAll('.zwssgr-smtp-auth-enable');
+        const zwssgrSmtprows = document.querySelectorAll('tr.zwssgr-smtp-auth-enable-main');
         const usernameField = document.querySelector('input[name="zwssgr_smtp_username"]');
         const passwordField = document.querySelector('input[name="zwssgr_smtp_password"]');
-        const zwssgrSmtprows = document.querySelectorAll('tr.zwssgr-smtp-auth-enable-main');
-        if (smtpAuth?.value === 'no') {
-            zwssgrSmtprows.forEach(row => {
-                row.style.display = 'none';
-            });
+
+        if (!smtpAuth || !usernameField || !passwordField) return; // Prevent error if elements don't exist
+
+        if (smtpAuth.value === 'no') {
+            zwssgrSmtprows.forEach(row => row.style.display = 'none');
             usernameField.removeAttribute('required');
             passwordField.removeAttribute('required');
-            
-            
         } else {
-            zwssgrSmtprows.forEach(row => {
-                row.style.display = 'table-row';
-            });
+            zwssgrSmtprows.forEach(row => row.style.display = 'table-row');
             usernameField.setAttribute('required', 'required');
             passwordField.setAttribute('required', 'required');
-            
         }
     }
 
+    // Attach event listeners for SMTP authentication
     document.querySelectorAll('input[name="zwssgr_smtp_auth"]').forEach(input => {
         input.addEventListener('change', toggleSmtpAuth);
-        
     });
 
+    // Function to toggle Admin SMTP settings
     function toggleAdminSmtp() {
         const adminSmtpEnabled = document.querySelector('input[name="zwssgr_admin_smtp_enabled"]');
         const adminSmtpFields = document.querySelectorAll('.zwssgr-admin-enable-smtp');
@@ -1143,38 +1198,34 @@ document.addEventListener('DOMContentLoaded', function () {
             'zwssgr_smtp_host'
         ];
 
+        if (!adminSmtpEnabled) return; // Prevent error if element doesn't exist
+
         if (adminSmtpEnabled.checked) {
             adminSmtpFields.forEach(el => el.style.display = 'contents');
             requiredFields.forEach(field => {
                 const input = document.querySelector(`input[name="${field}"]`);
-                input.setAttribute('required', 'required');
+                if (input) input.setAttribute('required', 'required'); // Check if input exists
             });
         } else {
             adminSmtpFields.forEach(el => el.style.display = 'none');
             requiredFields.forEach(field => {
                 const input = document.querySelector(`input[name="${field}"]`);
-                input.removeAttribute('required');
+                if (input) input.removeAttribute('required'); // Check if input exists
             });
         }
     }
 
+    // Attach event listener for Admin SMTP toggle
     document.body.addEventListener('change', function (event) {
         if (event.target && event.target.name === 'zwssgr_admin_smtp_enabled') {
-            toggleAdminSmtp(); // Call the function when input changes
+            toggleAdminSmtp();
         }
     });
-    
 
-    // Initial execution
-    if (document.querySelector('input[name="zwssgr_admin_smtp_enabled"]:checked')) {
-        toggleAdminSmtp();
-        
-    }else{
+    if (document.querySelector('input[name="zwssgr_admin_smtp_enabled"]')) {
         toggleAdminSmtp();
     }
-    if (document.querySelector('input[name="zwssgr_smtp_auth"]:checked')) {
-        toggleSmtpAuth();
-    }else{
+    if (document.querySelector('input[name="zwssgr_smtp_auth"]')) {
         toggleSmtpAuth();
     }
     // End code SMTP
