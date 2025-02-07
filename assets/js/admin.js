@@ -215,33 +215,33 @@ jQuery(document).ready(function($) {
 	// }
 				
 	// Function to get query parameter by name
-	function getQueryParam(param) {
-		const urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get(param);
-	}
+	// function getQueryParam(param) {
+	// 	const urlParams = new URLSearchParams(window.location.search);
+	// 	return urlParams.get(param);
+	// }
 
-	// Get the active tab and selected option from the URL
-	window.zwssgrActiveTab = getQueryParam('tab') || 'tab-options'; // Default to 'tab-options'
-	window.zwssgrSelectedOption = getQueryParam('selectedOption'); // Get the selected option ID from URL
+	// // Get the active tab and selected option from the URL
+	// window.zwssgrActiveTab = getQueryParam('tab') || 'tab-options'; // Default to 'tab-options'
+	// window.zwssgrSelectedOption = getQueryParam('selectedOption'); // Get the selected option ID from URL
 
-	// Initially show the active tab content
-	$('.tab-content').hide(); // Hide all tab content
-	$('#' + window.zwssgrActiveTab).show(); // Show the active tab content
+	// // Initially show the active tab content
+	// $('.tab-content').hide(); // Hide all tab content
+	// $('#' + window.zwssgrActiveTab).show(); // Show the active tab content
 
-	$('.tab-item').removeClass('active');
-	$('.tab-item[data-tab="' + window.zwssgrActiveTab + '"]').addClass('active');
+	// $('.tab-item').removeClass('active');
+	// $('.tab-item[data-tab="' + window.zwssgrActiveTab + '"]').addClass('active');
 
-	// If there's a selected option in the URL, display it in the "Selected Option" tab
-	if (window.zwssgrSelectedOption && window.zwssgrActiveTab === 'tab-selected') {
-		let selectedOptionElement = $('#' + window.zwssgrSelectedOption);
-		$('#selected-option-display').html(selectedOptionElement);
-		$('#selected-option-display').find('.select-btn').remove();
+	// // If there's a selected option in the URL, display it in the "Selected Option" tab
+	// if (window.zwssgrSelectedOption && window.zwssgrActiveTab === 'tab-selected') {
+	// 	let selectedOptionElement = $('#' + window.zwssgrSelectedOption);
+	// 	$('#selected-option-display').html(selectedOptionElement);
+	// 	$('#selected-option-display').find('.select-btn').remove();
 
-		// Reinitialize Slick slider after the DOM has been updated
-		// setTimeout(function() {
-		// 	reinitializeSlickSlider($('#selected-option-display'));
-		// }, 100);
-	}
+	// 	// Reinitialize Slick slider after the DOM has been updated
+	// 	// setTimeout(function() {
+	// 	// 	reinitializeSlickSlider($('#selected-option-display'));
+	// 	// }, 100);
+	// }
 	
 	// // Handle click events for the tab navigation items
 	// $(document).on('click', '.tab-item', function() {
