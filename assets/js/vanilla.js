@@ -359,46 +359,50 @@ document.addEventListener('DOMContentLoaded', function () {
         return urlParams.get(param);
     }  
 
+    // Set active tab and selected option from the URL
     window.zwssgrActiveTab = getQueryParam('tab') || 'tab-options'; // Default to 'tab-options'
     window.zwssgrSelectedOption = getQueryParam('selectedOption'); // Get the selected option ID from URL
 
-    // Initially show the active tab content
-    document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none'); // Hide all tab content
 
+    // Hide all tab content
+    document.querySelectorAll('.tab-content').forEach(function (tab) {
+        tab.style.display = 'none';
+    });
+
+    // Show the active tab content
     let activeTabElement = document.getElementById(window.zwssgrActiveTab);
     if (activeTabElement) {
-        activeTabElement.style.display = 'block'; // Show the active tab content
-    } else {
-        // console.warn(`Tab with ID "${window.zwssgrActiveTab}" not found.`);
+        activeTabElement.style.display = 'block';
     }
 
-    document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+    // Remove 'active' class from all tab items
+    document.querySelectorAll('.tab-item').forEach(function (tabItem) {
+        tabItem.classList.remove('active');
+    });
 
-    let activeTabItem = document.querySelector(`.tab-item[data-tab="${window.zwssgrActiveTab}"]`);
+    // Add 'active' class to the selected tab item
+    let activeTabItem = document.querySelector('.tab-item[data-tab="' + window.zwssgrActiveTab + '"]');
     if (activeTabItem) {
         activeTabItem.classList.add('active');
-    } else {
-        // console.warn(`Tab item for ID "${window.zwssgrActiveTab}" not found.`);
     }
 
-    // If there's a selected option in the URL, display it in the "Selected Option" tab
+    // If there's a selected option in the URL and the active tab is 'tab-selected'
     if (window.zwssgrSelectedOption && window.zwssgrActiveTab === 'tab-selected') {
         let selectedOptionElement = document.getElementById(window.zwssgrSelectedOption);
         let selectedOptionDisplay = document.getElementById('selected-option-display');
 
         if (selectedOptionElement && selectedOptionDisplay) {
-            selectedOptionDisplay.innerHTML = '';
-            selectedOptionDisplay.appendChild(selectedOptionElement.cloneNode(true));
-            selectedOptionDisplay.querySelectorAll('.select-btn').forEach(btn => btn.remove());
-
-            // Reinitialize Swiper after DOM update
-            setTimeout(() => {
-                reinitializeAllSwipers(selectedOptionDisplay);
-            }, 100);
-        } else {
-            // console.warn(`Selected option with ID "${window.zwssgrSelectedOption}" or display container not found.`);
+            selectedOptionDisplay.innerHTML = ''; // Clear previous content
+            selectedOptionDisplay.appendChild(selectedOptionElement); // Move the selected option
+            
+            // Remove the select button from the moved element
+            let selectBtn = selectedOptionDisplay.querySelector('.select-btn');
+            if (selectBtn) {
+                selectBtn.remove();
+            }
         }
     }
+
 
     // Handle click events for the tab navigation items
     document.addEventListener('click', function(event) {
