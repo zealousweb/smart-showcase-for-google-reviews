@@ -396,6 +396,7 @@
 .zwssgr-slider.zwssgr-slider4{
     max-width: 650px;
     margin: 0 auto;
+    padding: 0 30px;
 }
 
 .zwssgr-slider.zwssgr-slider5 {
@@ -574,6 +575,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
+    padding: 0;
 }
 
 .zwssgr-slider3 .zwssgr-slider-badge {
@@ -581,8 +583,10 @@
     text-align: center;
 }
 
-.zwssgr-slider3 .zwssgr-slider-3 {
-    width: calc(100% - 280px);
+.zwssgr-slider3 .zwssgr-slider-3-wrap {
+    width: calc(100% - 300px);
+    position: relative;
+    padding: 0 30px;
 }
 
 .zwssgr-slider3 .zwssgr-slider-badge .zwssgr-rating {
@@ -1420,7 +1424,7 @@
         width: 100%;
     }
     .zwssgr-slider3 .zwssgr-slider-badge,
-    .zwssgr-slider3 .zwssgr-slider-3 {
+    .zwssgr-slider3 .zwssgr-slider-3-wrap {
         width: 100%;
     }
 

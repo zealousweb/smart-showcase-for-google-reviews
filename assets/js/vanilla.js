@@ -39,30 +39,28 @@ document.addEventListener('DOMContentLoaded', function () {
     // Store Swiper instances in an object
     let swiperInstances = {};
 
-    function reinitializeAllSwipers(containerId) {
-        // Select the container where Swiper sliders exist
-        const container = document.getElementById(containerId);
-
-        if (!container) {
-            console.error(`Container with ID '${containerId}' not found!`);
+    function reinitializeAllSwipers(container) {
+        // Ensure container is a valid HTML element
+        if (!(container instanceof HTMLElement)) {
+            console.error(`Invalid container element!`, container);
             return;
         }
-
+    
         // Loop through all configured Swiper sliders
         Object.keys(sliderConfigs).forEach(selector => {
             const sliderElements = container.querySelectorAll(selector); // Get all sliders within the container
-
+    
             sliderElements.forEach(sliderElement => {
                 const slideCount = sliderElement.querySelectorAll('.swiper-slide').length;
                 const config = sliderConfigs[selector];
                 const minSlidesRequired = (config.slidesPerView || 1) + 1;
                 const enableLoop = slideCount >= minSlidesRequired;
-
+    
                 // Destroy existing Swiper instance if it exists
                 if (swiperInstances[selector]) {
                     swiperInstances[selector].destroy(true, true);
                 }
-
+    
                 // Initialize new Swiper instance
                 swiperInstances[selector] = new Swiper(sliderElement, {
                     slidesPerView: config.slidesPerView,
@@ -78,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+    
 
 
     // document.getElementById("reinitSwiperBtn").addEventListener("click", function () {
@@ -648,74 +647,39 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const page = urlParams.get("page");
     const tab = urlParams.get("tab");
-
-    if (page === "zwssgr_widget_configurator" && tab === "tab-selected") {
-        function toggleElements(event) {
-            const fadeDuration = 600; // Duration of the fade effect in milliseconds
-
-            // Prevent default behavior of the event (to stop page reload if it's coming from a form or checkbox)
-            if (event) {
-                event.preventDefault();
+    
+    function toggleElements() {
+        const elements = [
+            { checkbox: "review-title", target: ".zwssgr-title" },
+            { checkbox: "review-rating", target: ".zwssgr-rating" },
+            { checkbox: "review-days-ago", target: ".zwssgr-days-ago" },
+            { checkbox: "review-content", target: ".zwssgr-content" },
+            { checkbox: "review-photo", target: ".zwssgr-profile" },
+            { checkbox: "review-g-icon", target: ".zwssgr-google-icon" }
+        ];
+    
+        elements.forEach(({ checkbox, target }) => {
+            const checkboxElement = document.getElementById(checkbox);
+            const targetElements = document.querySelectorAll(target);
+    
+            if (checkboxElement && targetElements.length) {
+                const shouldShow = !checkboxElement.checked;
+                targetElements.forEach(el => el.style.display = shouldShow ? 'block' : 'none');
             }
-
-            function fadeOut(element) {
-                element.style.transition = `opacity ${fadeDuration}ms`;
-                element.style.opacity = 0;
-                setTimeout(() => {
-                    element.style.display = "none";
-                }, fadeDuration);
-            }
-
-            function fadeIn(element) {
-                element.style.display = "block";
-                element.style.transition = `opacity ${fadeDuration}ms`;
-                setTimeout(() => {
-                    element.style.opacity = 1;
-                }, 10);
-            }
-
-            // Get the data-widget-id value
-            const selectedOptionDisplay = document.getElementById("selected-option-display");
-            const layoutOption = selectedOptionDisplay?.dataset?.layoutOption; // Ensure it's not undefined
-            if (!layoutOption) {
-                return; // Exit early if layoutOption is not defined
-            }
-
-            const layoutOptionId = `#${layoutOption}`;
-
-            document.querySelectorAll(`${layoutOptionId} .zwssgr-title`).forEach(el => {
-                document.getElementById('review-title')?.checked ? fadeOut(el) : fadeIn(el);
-            });
-
-            document.querySelectorAll(`${layoutOptionId} .zwssgr-rating`).forEach(el => {
-                document.getElementById('review-rating')?.checked ? fadeOut(el) : fadeIn(el);
-            });
-
-            document.querySelectorAll(`${layoutOptionId} .zwssgr-days-ago`).forEach(el => {
-                document.getElementById('review-days-ago')?.checked ? fadeOut(el) : fadeIn(el);
-            });
-
-            document.querySelectorAll(`${layoutOptionId} .zwssgr-content`).forEach(el => {
-                document.getElementById('review-content')?.checked ? fadeOut(el) : fadeIn(el);
-            });
-
-            document.querySelectorAll(`${layoutOptionId} .zwssgr-profile`).forEach(el => {
-                document.getElementById('review-photo')?.checked ? fadeOut(el) : fadeIn(el);
-            });
-
-            document.querySelectorAll(`${layoutOptionId} .zwssgr-google-icon`).forEach(el => {
-                document.getElementById('review-g-icon')?.checked ? fadeOut(el) : fadeIn(el);
-            });
-        }
-
-        // Attach change event listeners to checkboxes
-        document.querySelectorAll('input[name="review-element"]').forEach(checkbox => {
-            checkbox.addEventListener('change', toggleElements);
         });
+    }
 
-        // Call toggleElements on page load to apply any initial settings with fade effect
+    // Attach change event listeners to checkboxes
+    document.querySelectorAll('input[name="review-element"]').forEach(checkbox => {
+        checkbox.addEventListener('change', toggleElements);
+    });
+
+    // Call toggleElements on page load to apply any initial settings with fade effect
+    if (page === "zwssgr_widget_configurator" && tab === "tab-selected") {
+        console.log("Condition met, calling toggleElements...");
         toggleElements();
     }
+    
     
 
     function formatDate(dateString, format, lang) {
@@ -1220,11 +1184,11 @@ document.addEventListener('DOMContentLoaded', function () {
     
                     // Only reinitialize Slick slider if selectedOption is one of the slider options
                     if (['slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6'].includes(selectedOption)) {
-                        console.log("Reinitializing Slick Slider");
                         setTimeout(function () {
-                            reinitializeSlickSlider1(document.querySelector('#selected-option-display'));
+                            reinitializeAllSwipers(document.querySelector('#selected-option-display'));
                         }, 100);
                     }
+                    toggleElements();
     
                     // Handle list layout reinitialization (if needed)
                     if (['list-1', 'list-2', 'list-3', 'list-4', 'list-5'].includes(selectedOption)) {
