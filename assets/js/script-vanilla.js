@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						if (list_to_apnd) list_to_apnd.innerHTML = errMsg;
 						if (grid_to_apnd) grid_to_apnd.innerHTML = errMsg;
 						
-						['.zwssgr-slider-1', '.zwssgr-slider-2', '#zwssgr-slider3', '.zwssgr-slider-4', '.zwssgr-slider-5', '.zwssgr-slider-6'].forEach(selector => {
+						['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(selector => {
 							const element = mainDivWrapper.querySelector(selector);
 							if (element) element.innerHTML = errMsg;
 						});
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						grid_to_apnd.insertAdjacentHTML('beforeend', response.data.content);
 					}
 	
-					['.zwssgr-slider-1', '.zwssgr-slider-2', '#zwssgr-slider3', '.zwssgr-slider-4', '.zwssgr-slider-5', '.zwssgr-slider-6'].forEach(selector => {
+					['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(selector => {
 						const element = mainDivWrapper.querySelector(selector);
 						if (element) {
 							setTimeout(() => reinitializeAllSwipers(element), 100);
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						if (list_to_apnd) list_to_apnd.innerHTML = errMsg;
 						if (grid_to_apnd) grid_to_apnd.innerHTML = errMsg;
 	
-						['.zwssgr-slider-1', '.zwssgr-slider-2', '#zwssgr-slider3', '.zwssgr-slider-4', '.zwssgr-slider-5', '.zwssgr-slider-6'].forEach(selector => {
+						['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(selector => {
 							const element = mainDivWrapper.querySelector(selector);
 							if (element) element.innerHTML = errMsg;
 						});
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						grid_to_apnd.insertAdjacentHTML('beforeend', response.data.content);
 					}
 	
-					['.zwssgr-slider-1', '.zwssgr-slider-2', '#zwssgr-slider3', '.zwssgr-slider-4', '.zwssgr-slider-5', '.zwssgr-slider-6'].forEach(selector => {
+					['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(selector => {
 						const element = mainDivWrapper.querySelector(selector);
 						if (element) {
 							setTimeout(() => reinitializeAllSwipers(element), 100);

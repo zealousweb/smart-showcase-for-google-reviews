@@ -1183,9 +1183,9 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<div class="swiper-wrapper">
 										' . $zwssgr_slider_content1 . '
 									</div>
-									<div class="swiper-button-next zwssgr-swiper-button-next"></div>
-    								<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+								<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">
 								<div class="zwssgr-slider-2 swiper">

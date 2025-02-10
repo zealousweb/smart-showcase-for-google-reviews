@@ -78,13 +78,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
 
-
-    // document.getElementById("reinitSwiperBtn").addEventListener("click", function () {
-    //     reinitializeAllSwipers("zwssgr-slider1");
-    // });
-
-
-
     // Bind click event to open popup
     document.addEventListener("click", function (e) {
         if (e.target.classList.contains("zwssgr-total-review")) {
