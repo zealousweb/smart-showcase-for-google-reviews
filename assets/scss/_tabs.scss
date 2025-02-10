@@ -1,0 +1,141 @@
+@use 'variables' as *;
+
+.tab-content {
+    display: none;
+    padding-right: 1rem;
+
+    &.active {
+        display: block;
+    }
+}
+
+.zwssgr-nav-tab-wrapper {
+    border-bottom: 1px solid rgba(221, 225, 231, 1);
+
+    .nav-tab {
+        background: none;
+        box-shadow: none;
+        border: none;
+        color: #285064;
+        font-weight: var(--font-weight-500);
+        font-size: var(--font-size-body);
+        font-family: var(--font-primary);
+        padding-bottom: 15px;
+    }
+
+    .nav-tab-active {
+        border-bottom: 3px solid #11AAB4;
+    }
+}
+
+.zwssgr-custom-tab {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 30px 0;
+
+    .zwssgr-tab-item {
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-400);
+        color: #4A494B;
+        font-family: var(--font-primary);
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        pointer-events: none;
+        text-transform: capitalize;
+        padding-bottom: 10px;
+
+        &.done {
+            pointer-events: all;
+            .zwssgr-step {
+                font-size: 0;
+
+                &:before {
+                    content: url('../images/step-done-icon.png');
+                    display: flex;
+                    align-items: center;
+                    align-content: center;
+                    justify-content: center;
+                    height: 18px;
+                    width: 18px;
+                    margin: 0;
+                }
+            }
+        }
+
+        &.active {
+            color: #285064;
+            font-weight: var(--font-weight-600);
+            pointer-events: all;
+        }
+
+        .zwssgr-step {
+            font-weight: var(--font-weight-600);
+            color: var(--body-color);
+            margin-right: 10px;
+            position: relative;
+            width: 18px;
+            height: 19px;
+            background: #f0f0f1;
+            border-radius: 200%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+
+            &.done {
+                font-size: 0;
+
+                &:before {
+                    content: url('../images/step-done-icon.png');
+                    display: flex;
+                    align-items: center;
+                    align-content: center;
+                    justify-content: center;
+                    height: 18px;
+                    width: 18px;
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .zwssgr-step-arrow {
+        position: relative;
+        margin: 0px 20px;
+
+        &:before,
+        &:after {
+            content: "";
+            background: #4A494B;
+            position: relative;
+            width: 10px;
+            height: 2px;
+            display: block;
+            transform: rotate(45deg);
+            border-radius: 2px;
+            top: 6px;
+        }
+
+        &:after {
+            transform: rotate(-45deg);
+            top: 10px;
+        }
+    }
+}
+
+.zwssgr-tab-content-display {
+    display: none;
+}
+
+.zwssgr-google-tab-text {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-500);
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: red;
+}
+

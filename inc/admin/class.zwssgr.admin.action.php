@@ -137,12 +137,21 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_enqueue_script( ZWSSGR_PREFIX . '-daterangepicker-min-js' );
 
 			// admin css
-			wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', false, ZWSSGR_VERSION );
-			wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );	
+			// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', false, ZWSSGR_VERSION );
+			// wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );	
 			
 			// style css
-			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
+			// wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
+			// wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
+
+			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.min.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );	
+
+			wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.min.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );
+
+			
+			
 
 			// Enqueue Daterangepicker CSS
 			wp_register_style( ZWSSGR_PREFIX . '-daterangepicker-css', ZWSSGR_URL . 'assets/css/daterangepicker.css', false, ZWSSGR_VERSION );

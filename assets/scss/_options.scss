@@ -1,0 +1,30 @@
+@use 'variables' as *;
+
+.zwssgr-toogle-display {
+    background-color: #e0e0e0;
+    border: 1px solid var(--border-gray);
+    padding: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.zwssgr-option-item {
+    display: none;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--white-color);
+    box-shadow: 0px 0.5px 2px 0px #252A3B1C;
+    border-radius: var(--border-radius-large);
+
+    &.selected {
+        border: 5px solid #285064;
+
+        &[data-type="badge"] {
+            background-color: var(--primary-color);
+
+            .zwssgr-layout-title {
+                color: var(--black-color);
+            }
+        }
+    }
+}

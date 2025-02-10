@@ -1,0 +1,191 @@
+@use 'variables' as *;
+
+.zwssgr-layout-radio {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--white-color);
+    box-shadow: 0px 0.5px 2px 0px #252A3B1C;
+    border-radius: 16px;
+    flex-wrap: wrap;
+
+    label {
+        font-size: 15px;
+        font-family: var(--font-primary);
+        font-weight: var(--font-weight-400);
+        line-height: 1;
+        margin-right: 30px;
+    }
+}
+
+input.zwssgr-radio {
+    box-sizing: border-box;
+}
+
+.zwssgr-layout-title-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .zwssgr-layout-title {
+        font-size: var(--font-size-h1);
+        color: var(--primary-color);
+        font-weight: var(--font-weight-500);
+        font-family: var(--font-primary);
+        text-transform: capitalize;
+    }
+}
+
+
+
+.zwssgr-page-title {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-600);
+    color: var(--body-color);
+    font-family: var(--font-primary);
+    border-bottom: 1px solid rgba(16, 41, 50, 0.10);
+    padding-bottom: 20px;
+}
+
+input.zwssgr-input-text,
+textarea.zwssgr-textarea,
+select.zwssgr-input-text {
+    padding: 10px 16px;
+    border: 1px solid #C1CFDE;
+    background: #FCFCFC;
+    box-shadow: none;
+    color: var(--gray-color);
+    border-radius: var(--border-radius-large);
+    font-weight: var(--font-weight-400);
+    font-size: var(--font-size-body);
+    font-family: var(--font-primary);
+    width: 100%;
+
+    &.zwssgr-shortcode-input {
+        max-width: 280px;
+        text-align: center;
+    }
+}
+
+textarea.zwssgr-textarea {
+    height: 200px;
+}
+
+select.zwssgr-input-text {
+    height: 48px;
+    line-height: 1.3;
+    background: #FCFCFC url('../images/down-arrow.png') no-repeat right 7px top 55%;
+    background-size: 16px 10px;
+    max-width: 500px;
+
+    option {
+        font-weight: var(--font-weight-400);
+        font-size: var(--font-size-body);
+        font-family: var(--font-primary);
+        padding: 10px;
+    }
+}
+
+select.zwssgr-input-text:focus,
+input.zwssgr-input-text:focus {
+    box-shadow: none;
+    border: 1px solid #C1CFDE;
+}
+
+
+.zwssgr-plugin-caution-div {
+    margin-bottom: 15px;
+
+    label {
+        font-size: var(--font-size-h2);
+        color: var(--body-color);
+        font-family: var(--font-primary);
+    }
+}
+
+.zwssgr-plugin-danger-note {
+    font-size: var(--font-size-h2);
+    color: #d9534f;
+    margin-bottom: 15px;
+    font-family: var(--font-primary);
+}
+
+.gmb-review-data {
+    .separator-cell {
+        .separator {
+            border-top: 2px dashed var(--secondary-color);
+            margin: 0;
+        }
+    }
+
+    .cta-wrapper {
+        position: relative;
+        margin: 10px 0 0 0;
+
+        .zwssgr-submit-btn {
+            margin-right: 10px;
+
+            &.button-danger {
+                margin-right: 0;
+                color: var(--white-color);
+                border-color: red;
+                background-color: red;
+
+                &:hover {
+                    background-color: var(--white-color);
+                    color: red;
+                }
+            }
+        }
+    }
+}
+
+.zwssgr-shortcode {
+    display: flex;
+    align-items: center;
+}
+
+.zwssgr-shortcode-text {
+    margin-right: 10px;
+    width: auto;
+}
+
+.zwssgr-dashicons {
+    cursor: pointer;
+}
+
+.zwssgr-regular-text {
+    width: 100%;
+}
+
+.zwssgr-fallback-user-dp {
+    max-width: 50px;
+    height: auto;
+}
+
+.zwssgr-label,
+.zwssgr-th,
+.zwssgr-setting-form th {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-500);
+    font-family: var(--font-primary);
+    color: #285064;
+}
+
+.zwssgr-description {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-400);
+    font-family: var(--font-primary);
+    color: #285064;
+    margin-top: 5px;
+}
+
+.zwssgr-google-tab-text {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-500);
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: red;
+}
+

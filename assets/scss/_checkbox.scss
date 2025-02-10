@@ -1,0 +1,29 @@
+@use 'variables' as *;
+
+input.zwssgr-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--border-radius);
+    border: 1px solid #9C9C9C;
+    background: #F6F6F6;
+
+    &:checked {
+        background-color: #11AAB4;
+        border: 1px solid var(--secondary-color);
+
+        &:before {
+            content: url('../images/checked-icon.png');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 14px;
+            width: 14px;
+        }
+    }
+}
+
+.zwssgr-chechbox-label {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-400);
+    font-family: var(--font-primary);
+}

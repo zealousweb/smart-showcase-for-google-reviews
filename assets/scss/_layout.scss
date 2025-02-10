@@ -1,0 +1,36 @@
+@use 'variables' as *;
+
+.zwssgr-section-wrap {
+    border-radius: var(--border-radius-large);
+    box-shadow: 0px 0.5px 2px 0px #252A3B1C;
+    background: var(--white-color);
+    padding: 20px;
+    margin-top: 20px;
+
+    form h2 {
+        display: none;
+    }
+}
+
+.zwssgr-widget-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+
+    .zwssgr-widget-setting {
+        width: 45%;
+    }
+
+    .zwssgr-widget-eleemt-list {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+
+        li {
+            padding-bottom: 20px;
+            width: 33.33%;
+        }
+    }
+}
