@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Call toggleElements on page load to apply any initial settings with fade effect
     if (page === "zwssgr_widget_configurator" && tab === "tab-selected") {
-        console.log("Condition met, calling toggleElements...");
+        // console.log("Condition met, calling toggleElements...");
         toggleElements();
     }
     
@@ -1008,15 +1008,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
     // Function to set up click event to remove existing keywords (on page load and dynamically)
-    document.addEventListener('click', function (event) {
-        if (event.target.classList.contains('remove-keyword')) {
-            let keywordItem = event.target.closest('.keyword-item');
-            if (keywordItem) {
-                keywordItem.remove(); // Remove the clicked keyword
-                updateInputField(); // Update the hidden input after removal
-            }
-        }
-    });
+    const keywordsList = document.getElementById('keywords-list');
+    if (keywordsList) {
+        keywordsList.addEventListener('click', function (e) {
+            document.getElementById('keywords-list').addEventListener('click', function (e) {
+                const removeBtn = e.target.closest('.remove-keyword'); // Find the closest remove button
+                if (removeBtn) {
+                    removeBtn.parentElement.remove(); // Remove the keyword item
+                    updateInputField(); // Update the hidden input after removal
+                }
+            });
+        });
+    }
 
     document.body.addEventListener('click', function (e) {
         if (e.target && e.target.id === 'save-get-code-btn') {
