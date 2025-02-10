@@ -1370,7 +1370,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_text_color_load = get_post_meta($zwssgr_post_id, 'text_color_load', true);
 			$zwssgr_posts_per_page = get_post_meta($zwssgr_post_id, 'posts_per_page', true);
 			if (empty($zwssgr_posts_per_page)) {
-				$zwssgr_posts_per_page = 10;
+				$zwssgr_posts_per_page = 12;
 			}
 
 			$zwssgr_selected_elements = is_array($zwssgr_selected_elements) ? $zwssgr_selected_elements : [];
@@ -2604,7 +2604,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<div id="load-more-settings">
 										<h3 class="zwssgr-label"><?php echo esc_html__('Reviews Per Page for List, Grid, and Popup:', 'smart-showcase-for-google-reviews'); ?></h3>
 										<div class="zwssgr-tooltip">
-											<input type="number" id="posts-per-page" name="posts_per_page" class="zwssgr-input-text" value="<?php echo esc_attr($zwssgr_posts_per_page); ?>" min="10" max="100" step="1" onchange="this.value = Math.max(10, Math.min(100, this.value));">
+											<input type="number" id="posts-per-page" name="posts_per_page" class="zwssgr-input-text" value="<?php echo esc_attr($zwssgr_posts_per_page); ?>" min="12" max="100" step="1" onchange="this.value = Math.max(12, Math.min(100, this.value));">
 											<span class="zwssgr-tooltip-container">
 												<div class="zwssgr-wrapper">
 													<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 30 30">
@@ -2719,7 +2719,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				$zwssgr_text_color = isset( $_POST['text_color'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color'] ) ) : '';
 				$zwssgr_bg_color_load = isset( $_POST['bg_color_load'] ) ? sanitize_hex_color( wp_unslash( $_POST['bg_color_load'] ) ) : '';
 				$zwssgr_text_color_load = isset( $_POST['text_color_load'] ) ? sanitize_hex_color( wp_unslash( $_POST['text_color_load'] ) ) : '';
-				$zwssgr_posts_per_page = isset( $_POST['posts_per_page'] ) ? intval( wp_unslash( $_POST['posts_per_page'] ) ) : 10; // Default to 10
+				$zwssgr_posts_per_page = isset( $_POST['posts_per_page'] ) ? intval( wp_unslash( $_POST['posts_per_page'] ) ) : 12; // Default to 12
 				$zwssgr_rating_filter = isset( $_POST['rating_filter'] ) ? intval( wp_unslash( $_POST['rating_filter'] ) ) : 0;
 				$zwssgr_custom_css = isset( $_POST['custom_css'] ) ? sanitize_textarea_field( wp_unslash( $_POST['custom_css'] ) ) : '';
 				$zwssgr_current_tab2 = sanitize_text_field( wp_unslash( $_POST['settings'] ) ); // The active tab
