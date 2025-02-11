@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
 
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    } 
+
     document.querySelectorAll('.star-filter').forEach(star => {
         star.addEventListener('click', function () {
             let rating = parseInt(this.dataset.rating, 10);
