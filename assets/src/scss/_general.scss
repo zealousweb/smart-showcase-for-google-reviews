@@ -1,5 +1,6 @@
 @use 'variables' as *;
-.zwssgr{
+
+.zwssgr {
     &-layout-radio {
         display: flex;
         align-items: center;
@@ -18,18 +19,50 @@
         }
     }
 
+    &-radio {
+        box-sizing: border-box;
+    }
+
+    &-layout-title-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    &-page-title {
+        font-size: var(--font-size-h2);
+        font-weight: var(--font-weight-600);
+        color: var(--body-color);
+        font-family: var(--font-primary);
+        border-bottom: 1px solid rgba(16, 41, 50, 0.10);
+        padding-bottom: 20px;
+    }
+
+    &-input-text,
+    &-textarea {
+        padding: 10px 16px;
+        border: 1px solid #C1CFDE;
+        background: #FCFCFC;
+        box-shadow: none;
+        color: var(--gray-color);
+        border-radius: var(--border-radius-large);
+        font-weight: var(--font-weight-400);
+        font-size: var(--font-size-body);
+        font-family: var(--font-primary);
+        width: 100%;
+
+        &-shortcode-input {
+            max-width: 280px;
+            text-align: center;
+        }
+    }
+
 }
 
-
-input.zwssgr-radio {
-    box-sizing: border-box;
-}
 
 .zwssgr-layout-title-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+   
 
     .zwssgr-layout-title {
         font-size: var(--font-size-h1);
@@ -42,14 +75,6 @@ input.zwssgr-radio {
 
 
 
-.zwssgr-page-title {
-    font-size: var(--font-size-h2);
-    font-weight: var(--font-weight-600);
-    color: var(--body-color);
-    font-family: var(--font-primary);
-    border-bottom: 1px solid rgba(16, 41, 50, 0.10);
-    padding-bottom: 20px;
-}
 
 input.zwssgr-input-text,
 textarea.zwssgr-textarea,

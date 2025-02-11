@@ -122,15 +122,18 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_admin_enqueue() 
 		{
 			// admin js
-			wp_register_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL .'assets/js/admin.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '-admin-js' );
+			// wp_register_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL .'assets/js/admin.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			// wp_enqueue_script( ZWSSGR_PREFIX . '-admin-js' );
 
-			wp_register_script( ZWSSGR_PREFIX . '-vanilla-js', ZWSSGR_URL . 'assets/js/vanilla.js', array(), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '-vanilla-js' );
+			// wp_register_script( ZWSSGR_PREFIX . '-vanilla-js', ZWSSGR_URL . 'assets/js/vanilla.js', array(), ZWSSGR_VERSION, true );
+			// wp_enqueue_script( ZWSSGR_PREFIX . '-vanilla-js' );
+
+			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '-main-js' );
 
 			// Google chart JS
-			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
+			// wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			// wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
 
 			// Enqueue Daterangepicker JS
 			wp_register_script( ZWSSGR_PREFIX . '-daterangepicker-min-js', ZWSSGR_URL .'assets/js/daterangepicker.min.js', array('jquery-core','moment'), ZWSSGR_VERSION, true );
@@ -144,11 +147,11 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			// wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
 			// wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
 
-			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.min.css', false, ZWSSGR_VERSION );
+			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );	
 
-			wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.min.css', false, ZWSSGR_VERSION );
-			wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );
+			// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.min.css', false, ZWSSGR_VERSION );
+			// wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );
 
 			
 			
@@ -2323,12 +2326,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				</ul>
 
 				<!-- Tab Data Fetch Areas -->
-				<div class="tab-content" id="tab-fetch-data">
+				<div class="tab-content zwssgr-tab-content" id="tab-fetch-data">
 					<?php zwssgr_Google_My_Business_Connector::get_instance()->zwssgr_fetch_gmb_data_callback(); ?>
 				</div>
 
 				<!-- Tab Content Areas -->
-				<div class="tab-content" id="tab-options">
+				<div class="tab-content zwssgr-tab-content" id="tab-options">
 					<!-- Dynamically Render Radio Buttons -->
 					<div class="zwssgr-layout-radio"> 
 						<label><input type="radio" name="display_option" class="zwssgr-radio" value="all" checked> <span><?php echo esc_html__('All', 'smart-showcase-for-google-reviews'); ?></span></label>
@@ -2406,7 +2409,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</div>
 				</div>
 
-				<div class="tab-content zwssgr-tab-content-display" id="tab-selected">
+				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-selected">
 					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="selected-option-display" class="selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
 					<div class="zwssgr-toogle-display">
@@ -2637,7 +2640,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</button>
 				</div>
 
-				<div class="tab-content zwssgr-tab-content-display" id="tab-shortcode">
+				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-shortcode">
 					<h3><?php echo esc_html__('Generated Shortcode', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display">
 						<div class="zwssgr-shortcode">
