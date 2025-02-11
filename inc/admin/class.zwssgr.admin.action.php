@@ -2361,7 +2361,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								echo '<div id="' . esc_attr($zwssgr_element_id) . '" class="zwssgr-option-item' . esc_attr($zwssgr_selected_class) . '" data-type="' . esc_attr($option_type) . '" style="display: ' . esc_attr($zwssgr_display_style) . ';">';
 									echo '<div class="zwssgr-layout-title-wrap">';
 										echo '<h3 class="zwssgr-layout-title">Layout: '. esc_html($option_type) .' '.esc_html($zwssgr_layout_count).'</h3>';
-										echo '<button class="select-btn zwssgr-btn" data-option="' . esc_attr($zwssgr_element_id) . '"' . ($zwssgr_element_id === $zwssgr_selected_layout_option ? ' selected' : '') . '>'. esc_html__('Select Option', 'smart-showcase-for-google-reviews').'</button>';
+										echo '<button class="select-btn zwssgr-select-btn zwssgr-btn" data-option="' . esc_attr($zwssgr_element_id) . '"' . ($zwssgr_element_id === $zwssgr_selected_layout_option ? ' selected' : '') . '>'. esc_html__('Select Option', 'smart-showcase-for-google-reviews').'</button>';
 									echo '</div>';
 									$zwssgr_allowed_html = wp_kses_allowed_html('post');
 

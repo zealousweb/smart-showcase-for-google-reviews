@@ -4,5 +4,6 @@
   "dist/styles.js": "dist/styles.js",
   "dist/step-done-icon.png": "dist/7bed242ae82c1d0575ce.png",
   "dist/main.js.map": "dist/main.js.map",
-  "dist/styles.css.map": "dist/styles.css.map"
+  "dist/styles.css.map": "dist/styles.css.map",
+  "dist/styles.js.map": "dist/styles.js.map"
 }

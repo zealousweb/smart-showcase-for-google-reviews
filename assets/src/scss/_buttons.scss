@@ -1,42 +1,49 @@
 @use 'variables' as *;
 
-.zwssgr-submit-btn.button {
-    padding: 20px 24px;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--secondary-color);
-    background-color: var(--white-color);
-    color: var(--secondary-color);
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-500);
-    font-family: var(--font-primary);
-    line-height: 1;
-    cursor: pointer;
+$zwssgrbtn: ".zwssgr";
 
-    &:hover {
-        background-color: var(--secondary-color);
-        color: var(--white-color);
+#{$zwssgrbtn} {
+    &-submit-btn {
+        padding: 20px 24px;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--secondary-color);
+        background-color: var(--white-color);
+        color: var(--secondary-color);
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-500);
+        font-family: var(--font-primary);
+        line-height: 1;
+        cursor: pointer;
+    
+        &:hover {
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+        }
     }
-}
 
-.zwssgr-btn {
-    background-color: var(--tertiary-color);
-    padding: 20px 24px;
-    border-radius: var(--border-radius);
-    color: #102932;
-    font-size: var(--font-size-body);
-    font-weight: var(--font-weight-500);
-    font-family: var(--font-primary);
-    border: 1px solid #F5B976;
-    cursor: pointer;
-
-    &:hover {
-        background-color: var(--secondary-color);
-        border-color: var(--secondary-color);
-        color: var(--white-color);
+    &-btn {
+        background-color: var(--tertiary-color);
+        padding: 20px 24px;
+        border-radius: var(--border-radius);
+        color: #102932;
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-500);
+        font-family: var(--font-primary);
+        border: 1px solid #F5B976;
+        cursor: pointer;
+    
+        &:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--white-color);
+        }
     }
+
+    &-select-btn {
+        padding: 10px;
+        font-size: var(--font-size-14);
+    }
+
 }
 
-.select-btn.zwssgr-btn {
-    padding: 10px;
-    font-size: var(--font-size-14);
-}
+

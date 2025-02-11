@@ -1,34 +1,8 @@
 @use 'variables' as *;
 
 .zwssgr {
-    &-layout-radio {
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        background-color: var(--white-color);
-        box-shadow: 0px 0.5px 2px 0px #252A3B1C;
-        border-radius: 16px;
-        flex-wrap: wrap;
-    
-        label {
-            font-size: 15px;
-            font-family: var(--font-primary);
-            font-weight: var(--font-weight-400);
-            line-height: 1;
-            margin-right: 30px;
-        }
-    }
-
-    &-radio {
-        box-sizing: border-box;
-    }
-
-    &-layout-title-wrap {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
+  
+   
 
     &-page-title {
         font-size: var(--font-size-h2);
@@ -58,47 +32,16 @@
         }
     }
 
-}
-
-
-.zwssgr-layout-title-wrap {
-   
-
-    .zwssgr-layout-title {
-        font-size: var(--font-size-h1);
-        color: var(--primary-color);
-        font-weight: var(--font-weight-500);
-        font-family: var(--font-primary);
-        text-transform: capitalize;
+    &-textarea {
+        height: 200px;
     }
+
 }
 
 
 
 
-input.zwssgr-input-text,
-textarea.zwssgr-textarea,
-select.zwssgr-input-text {
-    padding: 10px 16px;
-    border: 1px solid #C1CFDE;
-    background: #FCFCFC;
-    box-shadow: none;
-    color: var(--gray-color);
-    border-radius: var(--border-radius-large);
-    font-weight: var(--font-weight-400);
-    font-size: var(--font-size-body);
-    font-family: var(--font-primary);
-    width: 100%;
 
-    &.zwssgr-shortcode-input {
-        max-width: 280px;
-        text-align: center;
-    }
-}
-
-textarea.zwssgr-textarea {
-    height: 200px;
-}
 
 select.zwssgr-input-text {
     height: 48px;
