@@ -1,3 +1,5 @@
+
+console.log('Webpack is running with SCSS folder structuresss1234567sadsfdsf!');
 // (function ($) {
 // 	"use strict";
 // 	function initSlickSlider() {
