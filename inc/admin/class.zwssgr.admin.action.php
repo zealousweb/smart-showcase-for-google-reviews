@@ -182,7 +182,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 
 			//Toggle Ajax
-			wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'zwssgr_admin', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'zwssgr_admin', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce' => wp_create_nonce('toggle-visibility-nonce')
 			));
@@ -209,12 +209,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			));
 
 			//Save Widget Ajax
-			wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'my_widget', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'my_widget', array(
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('my_widget_nonce'),
             ));
 
-			wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'zwssgr_filter_reviews', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'zwssgr_filter_reviews', array(
 				'ajax_url' => admin_url('admin-ajax.php'), // The AJAX handler URL
 				'nonce' => wp_create_nonce('zwssgr_filter_reviews_nonce') // Security nonce
 			));
