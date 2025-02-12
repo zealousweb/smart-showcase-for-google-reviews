@@ -12,7 +12,7 @@ $zwssgrslider: ".zwssgr";
         #{$zwssgrslider} { 
             &-slide-item {
                 background: transparent;
-                border-radius: 0;
+                border-radius: var(--border-radius-extra-small);
         
                 &:focus {
                     outline: none;
@@ -20,7 +20,7 @@ $zwssgrslider: ".zwssgr";
             }
 
             &-list-inner {
-                background-color: #FAFAFA;
+                background-color: var(--gray-color-light);
                 padding: 20px;
                 border-radius: var(--border-radius-large);
                 height: 100%;
@@ -83,7 +83,7 @@ $zwssgrslider: ".zwssgr";
     
             &-star {
                 color: #ccc;
-                font-size: 20px;
+                font-size: var(--font-size-h1);
         
                 &.filled {
                     color: var(--tertiary-color);
@@ -136,7 +136,7 @@ $zwssgrslider: ".zwssgr";
             &-swiper-button-next,
             &-swiper-button-prev {
                 &::after {
-                    font-size: 30px;
+                    font-size: var(--font-size-30);
                     font-weight: 900;
                     color: #3A4554;
                 }
@@ -189,7 +189,7 @@ $zwssgrslider: ".zwssgr";
                 padding: 0;
             }
             &-contnt-wrap {
-                background-color: #FAFAFA;
+                background-color: var(--gray-color-light);
                 padding: 20px;
                 border-radius: var(--border-radius-large);
             }

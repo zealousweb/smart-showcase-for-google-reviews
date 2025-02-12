@@ -15,7 +15,7 @@ $zwssgrbadge: ".zwssgr";
                 width: calc(33.33% - 20px);
                 padding: 20px;
                 box-shadow: none;
-                background: #3caab4;
+                background: var(--primary-color);
                 box-sizing: border-box;
                 text-align: center;
                 margin: 0;
@@ -26,22 +26,22 @@ $zwssgrbadge: ".zwssgr";
             }
 
             &-layout-title {
-                color: #000;
+                color: var(--black-color);
             }
 
             &-badge-item {
                 box-shadow: 10px 10px 30px 0px #00000005;
                 text-align: center;
                 padding: 30px;
-                background-color: #fff;
-                border-radius: 16px;
+                background-color: var(--white-color);
+                border-radius: var(--border-radius-extra-large);
 
                 #{$zwssgrbadge} {
                     &-average {
-                        color: #1B1B1B;
-                        font-weight: 700;
-                        font-size: 24px;
-                        font-family: 'Poppins', sans-serif;
+                        color: var(--body-color);
+                        font-weight: var(--font-weight-700);
+                        font-size: var(--font-size-h3);
+                        font-family: var(--font-primary);
                         text-transform: uppercase;
                         margin: 0 0 10px;
                     }
@@ -52,10 +52,10 @@ $zwssgrbadge: ".zwssgr";
                     }
 
                     &-based-on {
-                        color: #1B1B1B;
-                        font-size: 16px;
-                        font-weight: 400;
-                        font-family: 'Poppins', sans-serif;
+                        color: var(--body-color);
+                        font-size: var(--font-size-body);
+                        font-weight: var(--font-weight-400);
+                        font-family: var(--font-primary);
                         margin: 15px 0;
                     }
 
@@ -75,16 +75,16 @@ $zwssgrbadge: ".zwssgr";
                     }
 
                     &-google {
-                        color: #6A6A6A;
-                        font-size: 28px;
-                        font-weight: 700;
+                        color: var(--slate-gray);
+                        font-size: var(--font-size-h4);
+                        font-weight: var(--font-weight-700);
                         margin: 0;
                     }
 
                     &-avg-note {
-                        color: #6A6A6A;
-                        font-size: 16px;
-                        font-weight: 400;
+                        color: var(--slate-gray);
+                        font-size: var(--font-size-body);
+                        font-weight: var(--font-weight-400);
                         margin: 10px 0;
                     }
 
@@ -133,10 +133,10 @@ $zwssgrbadge: ".zwssgr";
                     }
                 }
                 .final-rating {
-                    font-weight: 900;
-                    font-size: 20px;
-                    color: #000000;
-                    font-family: 'Poppins', sans-serif;
+                    font-weight: var(--font-weight-900);
+                    font-size: var(--font-size-h1);
+                    color: var(--black-color);
+                    font-family: var(--font-primary);
                 }
             }
         
@@ -159,9 +159,9 @@ $zwssgrbadge: ".zwssgr";
                 }
                 .final-rating {
                     color: #4285F4;
-                    font-size: 60px;
-                    font-weight: 700;
-                    font-family: 'Poppins', sans-serif;
+                    font-size: var(--font-size-60);
+                    font-weight: var(--font-weight-700);
+                    font-family: var(--font-primary);
                     line-height: 1;
                 }
             }
@@ -192,10 +192,10 @@ $zwssgrbadge: ".zwssgr";
                 }
         
                 .final-rating {
-                    color: #FFFFFF;
-                    font-size: 62px;
-                    font-weight: 700;
-                    font-family: 'Poppins', sans-serif;
+                    color: var(--white-color);
+                    font-size: var(--font-size-62);
+                    font-weight: var(--font-weight-700);
+                    font-family: var(--font-primary);
                     line-height: 1;
                 }
             }
@@ -210,9 +210,9 @@ $zwssgrbadge: ".zwssgr";
                 }
                 .final-rating {
                     color: #F6BB06;
-                    font-weight: 700;
-                    font-size: 40px;
-                    font-family: 'Poppins', sans-serif;
+                    font-weight: var(--font-weight-700);
+                    font-size: var(--font-size-40);
+                    font-family: var(--font-primary);
                     padding-right: 20px;
                 }
             }
@@ -227,10 +227,10 @@ $zwssgrbadge: ".zwssgr";
                     }
                 }
                 .final-rating {
-                    font-weight: 900;
-                    font-size: 20px;
-                    color: #000000;
-                    font-family: 'Poppins', sans-serif;
+                    font-weight: var(--font-weight-900);
+                    font-size: var(--font-size-h1);
+                    color: var(--black-color);
+                    font-family: var(--font-primary);
                     padding-right: 5px;
                 }
             }
@@ -242,9 +242,9 @@ $zwssgrbadge: ".zwssgr";
                     }
                 }
                 .final-rating {
-                    color: #6A6A6A;
-                    font-size: 56px;
-                    font-weight: 400;
+                    color: var(--slate-gray);
+                    font-size: var(--font-size-56);
+                    font-weight: var(--font-weight-400);
                     line-height: 60px;
                 }
             }
@@ -266,7 +266,7 @@ $zwssgrbadge: ".zwssgr";
                     }
                     &-average {
                         text-transform: capitalize;
-                        font-size: 18px;
+                        font-size: var(--font-size-h2);
                     }
 
                     &-final-review-wrap {

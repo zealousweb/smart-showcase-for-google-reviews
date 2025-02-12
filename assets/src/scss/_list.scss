@@ -14,7 +14,7 @@ $zwssgrlist: ".zwssgr";
     }
 
     &-list-inner {
-        background-color: #FAFAFA;
+        background-color: var(--gray-color-light);
         padding: 20px;
         border-radius: var(--border-radius-large);
         height: 100%;
@@ -23,8 +23,8 @@ $zwssgrlist: ".zwssgr";
     &-list2 {
         #{$zwssgrlist} {
             &-list-inner {
-                background-color: #FFFFFF;
-                border: 1px solid #E8EBEF;
+                background-color: var(--white-color);
+                border: 1px solid var(--white-color-100);
             }
             &-list-content-wrap {
                 padding-left: 80px;
@@ -57,12 +57,12 @@ $zwssgrlist: ".zwssgr";
         #{$zwssgrlist} {
             &-slide-item {
                 background-color: var(--white-color);
-                border-bottom: 2px solid #E8EBEF;
-                border-radius: 0;
+                border-bottom: 2px solid var(--white-color-100);
+                border-radius: var(--border-radius-extra-small);
                 margin-bottom: 0;
             }
             &-list-inner {
-                background-color: #fff;
+                background-color: var( --white-color);
             }
         }
     }
