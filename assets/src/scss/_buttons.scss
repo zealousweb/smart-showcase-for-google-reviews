@@ -25,11 +25,11 @@ $zwssgrbtn: ".zwssgr";
         background-color: var(--tertiary-color);
         padding: 20px 24px;
         border-radius: var(--border-radius);
-        color: #102932;
+        color: var(--dark-secondary-color);
         font-size: var(--font-size-body);
         font-weight: var(--font-weight-500);
         font-family: var(--font-primary);
-        border: 1px solid #F5B976;
+        border: 1px solid var(--tertiary-color-light);
         cursor: pointer;
     
         &:hover {

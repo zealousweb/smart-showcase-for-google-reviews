@@ -5,27 +5,50 @@
 
     /* Colors */
     --primary-color: #3caab4;
+    --primary-color-100:#11AAB4;
     --secondary-color: #0074A2;
+    --secondary-color-100: #285064;
+    --dark-secondary-color: #102932;
+    --extra-dark-secondary-color: #252A3B1C;
     --tertiary-color: #F08C3C;
+    --tertiary-color-light: #F5B976;
     --gray-color: #8E8E8E;
+    --gray-color-light: #FAFAFA;
+    --charcoal-gray: #4A494B;
+    --slate-gray: #6A6A6A;
     --body-color: #1B1B1B;
     --white-color: #FFFFFF;
+    --white-color-100: #E8EBEF;
     --black-color: #000000;
+    --red-color: #FF0000;
 
     /* Font Sizes */
+    --font-size-62: 62px;
+    --font-size-60: 60px;
+    --font-size-56: 56px;
+    --font-size-40: 40px;
+    --font-size-30: 30px;
+    --font-size-h4: 28px; 
+    --font-size-h3: 24px;
     --font-size-h1: 20px;
     --font-size-h2: 18px;
     --font-size-body: 16px;
+    --font-size-15: 15px;
     --font-size-14: 14px;
+    --font-size-0: 0;
 
     /* Font Weights */
+    --font-weight-900: 900;
     --font-weight-700: 700;
     --font-weight-600: 600;
     --font-weight-500: 500;
     --font-weight-400: 400;
 
     /* Border Radius */
+    --border-radius-extra-large: 16px;
     --border-radius-large: 8px;
     --border-radius: 4px;
+    --border-radius-small: 2px;
+    --border-radius-extra-small: 0;
 
 }
