@@ -250,7 +250,7 @@ jQuery(document).ready(function($) {
 
 		// Get existing query parameters
 		let selectedOption = getQueryParam('selectedOption'); // Keep the selected option in URL if it exists
-		let postId = getQueryParam('zwssgr_widget_id'); // Get the post_id from the URL if it exists
+		let postId = getQueryParam('zwssgr_widget_id');
 
 		// Start building the new URL with page and tab parameters
 		let newUrl = currentUrl + '?page=zwssgr_widget_configurator&tab=' + tabId;
@@ -1013,7 +1013,7 @@ jQuery(document).ready(function($) {
 				posts_per_page: postsPerPage,
 				current_tab2: currentTab2,
 				enable_sort_by: enableSortBy,
-				custom_css: customCSS  // Add the custom CSS value here
+				custom_css: customCSS
 			},
 			success: function(response) {
 				if (response.success) {
@@ -1150,79 +1150,72 @@ jQuery(document).ready(function($) {
 			});
 		});
 		
-	}	
+	}
+
 	
-	$("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (zwssgrEv) {
+	const zwssgrFetchReviewButton = document.querySelector("#fetch-gmb-data #fetch-gmd-reviews");
 
-		zwssgrEv.preventDefault();
-		const zwssgrButton = $(this);
-		const zwssgrGmbDataType = zwssgrButton.data("fetch-type");
+	if (zwssgrFetchReviewButton) {
+		zwssgrFetchReviewButton.addEventListener("click", function (zwssgrEv) {
+			zwssgrEv.preventDefault();
+			zwssgrFetchGmbData(this);
+		});
+	}
 	
-		// Get selected account and location from the dropdowns
-		const zwssgrAccountNumber = $("#fetch-gmb-data #zwssgr-account-select").val();
-		$("#fetch-gmb-data #zwssgr-account-select").addClass('disabled');
+	function zwssgrFetchGmbData(zwssgrFetchReviewButton) {
 
-		const zwssgrAccountName = $(
-			"#fetch-gmb-data #zwssgr-account-select option:selected"
-		).text();
-
-		const zwssgrLocationNumber = $("#fetch-gmb-data #zwssgr-location-select").val();
-
-		const zwssgrLocationName = $(
-			"#fetch-gmb-data #zwssgr-location-select option:selected"
-		).text();
-
-		const zwssgrLocationNewReviewUri = $(
-			"#fetch-gmb-data #zwssgr-location-select option:selected"
-		).attr("data-new-review-url");
-
-		const zwssgrLocationAllReviewUri = $(
-			"#fetch-gmb-data #zwssgr-location-select option:selected"
-		).attr("data-all-reviews-url");
-		
-		$("#fetch-gmb-data #zwssgr-location-select").addClass('disabled');
-
+		const zwssgrGmbDataType = zwssgrFetchReviewButton.getAttribute("data-fetch-type");
+	
+		const zwssgrAccountSelect = document.querySelector("#fetch-gmb-data #zwssgr-account-select");
+		if (!zwssgrAccountSelect) return;
+	
+		const zwssgrAccountNumber = zwssgrAccountSelect.value;
+		zwssgrAccountSelect.classList.add('disabled');
+	
+		const zwssgrAccountName = zwssgrAccountSelect.options[zwssgrAccountSelect.selectedIndex].text;
+	
+		const zwssgrLocationSelect = document.querySelector("#fetch-gmb-data #zwssgr-location-select");
+		if (!zwssgrLocationSelect) return;
+	
+		const zwssgrLocationNumber = zwssgrLocationSelect.value;
+		zwssgrLocationSelect.classList.add('disabled');
+	
+		const zwssgrLocationName 		 = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].text;
+		const zwssgrLocationNewReviewUri = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].getAttribute("data-new-review-url");
+		const zwssgrLocationAllReviewUri = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].getAttribute("data-all-reviews-url");
+	
 		const zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
-
-		zwssgrButton.addClass("disabled");
-		zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
-
+	
+		zwssgrFetchReviewButton.classList.add("disabled");
+		zwssgrFetchReviewButton.innerHTML = '<span class="spinner is-active"></span> Fetching...';
+	
 		if (!zwssgrAccountNumber && !zwssgrLocationNumber) {
-			$('#fetch-gmb-data .response').html('<p class="error">Both account and location are required.</p>');
-			setTimeout(function() {
-				location.reload();
-			}, 1500);
+			document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">Both account and location are required.</p>';
+			setTimeout(() => location.reload(), 1500);
 			return;
 		}
-
+	
 		if (!zwssgrAccountNumber) {
-			$('#fetch-gmb-data .response').html('<p class="error"> Account is required. </p>');
-			setTimeout(function() {
-				location.reload();
-			}, 1500);
+			document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">Account is required.</p>';
+			setTimeout(() => location.reload(), 1500);
 			return;
 		}
-
+	
 		if (!zwssgrLocationNumber) {
-			$('#fetch-gmb-data .response').html('<p class="error"> Location is required. </p>');
-			setTimeout(function() {
-				location.reload();
-			}, 1500);
+			document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">Location is required.</p>';
+			setTimeout(() => location.reload(), 1500);
 			return;
 		}
-
+	
 		if (!zwssgrWidgetId) {
-			alert("Please select an approprite location.");
-			$('#fetch-gmb-data .response').html('<p class="error"> No valid widget ID found. </p>');
-			setTimeout(function() {
-				location.reload();
-			}, 1500);
+			alert("Please select an appropriate location.");
+			document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">No valid widget ID found.</p>';
+			setTimeout(() => location.reload(), 1500);
 			return;
 		}
-
-		$('#fetch-gmb-data .response').html('');
-
-		$('#fetch-gmb-data .progress-bar').css('display', 'block');
+	
+		document.querySelector('#fetch-gmb-data .response').innerHTML = '';
+		document.querySelector('#fetch-gmb-data .progress-bar').style.display = 'block';
 	
 		zwssgrProcessBatch(
 			zwssgrGmbDataType,
@@ -1234,10 +1227,9 @@ jQuery(document).ready(function($) {
 			zwssgrAccountName,
 			zwssgrLocationAllReviewUri
 		);
-		
-	});
+
+	}
 	
-	  // Function to get URL parameter by name
 	function zwssgrGetUrlParameter(zwssgrName) {
 		const zwssgrUrlParams = new URLSearchParams(window.location.search);
 		return zwssgrUrlParams.get(zwssgrName);
@@ -1263,8 +1255,7 @@ jQuery(document).ready(function($) {
 				
 				document.querySelector("#fetch-gmb-data .response").innerHTML = '';
 				document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
-				
-				// Process the batch request
+
 				try {
 					zwssgrProcessBatch(
 						"zwssgr_gmb_locations",
@@ -1276,7 +1267,6 @@ jQuery(document).ready(function($) {
 						zwssgrAccountName
 					);
 				} catch (error) {					
-					// Reset UI on error
 					document.querySelector("#fetch-gmb-data .progress-bar").classList.remove("active");
 					document.querySelector("#fetch-gmb-data .response").innerHTML = "<p class='error'>An error occurred while processing your request.</p>";
 				}
@@ -1285,7 +1275,7 @@ jQuery(document).ready(function($) {
 
 	}
 	
-	function zwssgrProcessBatch(
+	function zwssgrProcessBatch (
 		zwssgrGmbDataType,
 		zwssgrAccountNumber,
 		zwssgrLocationNumber,
@@ -1295,15 +1285,14 @@ jQuery(document).ready(function($) {
 		zwssgrAccountName,
 		zwssgrLocationAllReviewUri
 	) {
-		function zwssgrReloadWithDelay(delay = 1500) {
-			setTimeout(() => location.reload(), delay);
+		function zwssgrReloadWithDelay(zwssgrDelay = 1500) {
+			setTimeout(() => location.reload(), zwssgrDelay);
 		}
 	
-		$.ajax({
-			url: zwssgr_admin?.ajax_url, // Ensure zwssgr_admin is defined
-			type: "POST",
-			dataType: "json",
-			data: {
+		fetch(zwssgr_admin?.ajax_url, {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: new URLSearchParams({
 				action: "zwssgr_fetch_gmb_data",
 				security: zwssgr_admin?.zwssgr_queue_manager_nounce,
 				zwssgr_gmb_data_type: zwssgrGmbDataType,
@@ -1313,29 +1302,28 @@ jQuery(document).ready(function($) {
 				zwssgr_location_name: zwssgrLocationName,
 				zwssgr_location_new_review_uri: zwssgrLocationNewReviewUri,
 				zwssgr_account_name: zwssgrAccountName,
-				zwssgr_location_all_review_uri: zwssgrLocationAllReviewUri,
-			},
-			success(response) {
-				const progressBar = $('#fetch-gmb-data .progress-bar');
-				const responseContainer = $('#fetch-gmb-data .response');
+				zwssgr_location_all_review_uri: zwssgrLocationAllReviewUri
+			})
+		})
+		.then(zwssgrResponse => zwssgrResponse.json())
+		.then(zwssgrResponse => {
+			const zwssgrProgressBar 	  = document.querySelector('#fetch-gmb-data .progress-bar');
+			const zwssgrResponseContainer = document.querySelector('#fetch-gmb-data .response');
 	
-				if (response.success) {
-					progressBar.stop(true, true).fadeIn();
-				} else {
-					responseContainer.html(`<p class="error">${response.data?.message || 'An error occurred.'}</p>`);
-					zwssgrReloadWithDelay();
-				}
-			},
-			error(xhr) {
-				const response = xhr.responseJSON;
-				const errorMessage = response?.data?.message || 'An unexpected error occurred.';
-				$('#fetch-gmb-data .response').html(`<p class="error">${errorMessage}</p>`);
+			if (zwssgrResponse.success) {
+				zwssgrProgressBar.style.display = 'block';
+			} else {
+				zwssgrResponseContainer.innerHTML = `<p class="error">${zwssgrResponse.data?.message || 'An error occurred.'}</p>`;
 				zwssgrReloadWithDelay();
-			},
+			}
+		})
+		.catch(error => {
+			const zwssgrResponseContainer 	  = document.querySelector('#fetch-gmb-data .response');
+			zwssgrResponseContainer.innerHTML = `<p class="error">An unexpected error occurred.</p>`;
+			zwssgrReloadWithDelay();
 		});
-	}	
+	}		
 
-	// Check if we're on the specific page URL that contains zwssgr_widget_id dynamically
 	const zwssgrUrlParams = new URLSearchParams(window.location.search);
     if (zwssgrUrlParams.has('zwssgr_widget_id') && window.location.href.includes('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data')) {
         let zwssgrBatchInterval = setInterval(function () {
@@ -1343,69 +1331,65 @@ jQuery(document).ready(function($) {
                 zwssgrCheckBatchStatus();
             } catch (error) {
                 console.error("Error in zwssgrCheckBatchStatus:", error);
-                clearInterval(zwssgrBatchInterval); // Stop the interval on failure
+                clearInterval(zwssgrBatchInterval);
             }
         }, 2500);
     }
 	
 	function zwssgrCheckBatchStatus() {
-
-		// Function to get URL parameters
+	
 		function zwssgrGetUrlParameter(zwssgrName) {
 			const zwssgrUrlParams = new URLSearchParams(window.location.search);
 			return zwssgrUrlParams.get(zwssgrName);
 		}
-
-		// Capture 'zwssgrWidgetId' from the URL
+	
 		const zwssgrWidgetId = zwssgrGetUrlParameter('zwssgr_widget_id');
-
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
+	
+		fetch(zwssgr_admin.ajax_url, {
 			method: "POST",
-			data: {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: new URLSearchParams({
 				action: "zwssgr_get_batch_processing_status",
 				security: zwssgr_admin.zwssgr_queue_manager_nounce,
 				zwssgr_widget_id: zwssgrWidgetId
-			},
-			success: function (response) {
-
-				if (response.success && response.data.zwssgr_data_processing_init == 'false' && response.data.zwssgr_data_sync_once == 'true') {
-					
-					$('#fetch-gmb-data .progress-bar #progress').val(100);
-					$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
-					$('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
-					if (response.data.zwssgr_gmb_data_type == 'zwssgr_gmb_locations') {
-						$('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
-					} else if (response.data.zwssgr_gmb_data_type == 'zwssgr_gmb_reviews') {
-						$('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
-						$('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
-					}
-					
-					setTimeout(function () {
-						$('#fetch-gmb-data .progress-bar').fadeOut();
-						if (response.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
-							zwssgrRedirectToOptionsTab();
-						} else {
-							location.reload();
-						}
-					}, 2000);
-
-				} else {
-
-					var zwssgr_batch_progress = response.data.zwssgr_batch_progress;
-					if (!isNaN(zwssgr_batch_progress) && zwssgr_batch_progress >= 0 && zwssgr_batch_progress <= 100) {
-						$('#fetch-gmb-data .progress-bar #progress').val(zwssgr_batch_progress);
-						$('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwssgr_batch_progress) + '%');
-					} else {	
-					}
-
+			})
+		})
+		.then(zwssgrResponse => zwssgrResponse.json())
+		.then(zwssgrResponse => {
+			if (zwssgrResponse.success && zwssgrResponse.data.zwssgr_data_processing_init === 'false' && zwssgrResponse.data.zwssgr_data_sync_once === 'true') {
+				document.querySelector('#fetch-gmb-data .progress-bar #progress').value = 100;
+				document.querySelector('#fetch-gmb-data .progress-bar #progress-percentage').textContent = '100%';
+				document.querySelector('#fetch-gmb-data .progress-bar #progress-percentage').textContent = 'Processed';
+	
+				if (zwssgrResponse.data.zwssgr_gmb_data_type === 'zwssgr_gmb_locations') {
+					document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="success">Locations processed successfully</p>';
+				} else if (zwssgrResponse.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
+					document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="success">Reviews processed successfully</p>';
+					document.querySelector('#fetch-gmb-data #fetch-gmd-reviews').innerHTML = 'Fetched';
 				}
-			},
-			error: function (xhr, status, error) {
-
-			},
+	
+				setTimeout(() => {
+					document.querySelector('#fetch-gmb-data .progress-bar').style.display = 'none';
+					if (zwssgrResponse.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
+						zwssgrRedirectToOptionsTab();
+					} else {
+						location.reload();
+					}
+				}, 2000);
+			} else {
+				let zwssgr_batch_progress = zwssgrResponse.data.zwssgr_batch_progress;
+				if (!isNaN(zwssgr_batch_progress) && zwssgr_batch_progress >= 0 && zwssgr_batch_progress <= 100) {
+					document.querySelector('#fetch-gmb-data .progress-bar #progress').value = zwssgr_batch_progress;
+					document.querySelector('#fetch-gmb-data .progress-bar #progress-percentage').textContent = Math.round(zwssgr_batch_progress) + '%';
+				}
+			}
+		})
+		.catch(zwssgrError => {
+			console.error('Error:', zwssgrError);
 		});
-	}
+	}	
 
 
 	function zwssgrRedirectToOptionsTab() {
@@ -1420,197 +1404,220 @@ jQuery(document).ready(function($) {
 		
 	}
 
-	$("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (zwssgrEv) {
-		"use strict";
+	document.querySelectorAll("#gmb-review-data #add-reply, #gmb-review-data #update-reply").forEach(zwssgrButton => {
+
+		zwssgrButton.addEventListener("click", function (zwssgrEv) {
+
+			"use strict";
+			zwssgrEv.preventDefault();
 	
-		zwssgrEv.preventDefault();
+			// Get the value of the 'Reply Comment' from textarea
+			const zwssgrReplyCommentElement = document.querySelector("#gmb-review-data textarea[name='zwssgr_reply_comment']");
+			const zwssgrReplyComment 		= zwssgrReplyCommentElement.value.trim();
+			const zwssgrJsonMessage 		= document.querySelector("#gmb-review-data #json-response-message");
 	
-		// Get the value of the 'Reply Comment' from textarea
-		const zwssgrReplyComment = $("#gmb-review-data textarea[name='zwssgr_reply_comment']").val().trim();
-		const zwssgrJsonMessage = $("#gmb-review-data #json-response-message");
+			if (!zwssgrReplyComment) {
+				zwssgrJsonMessage.innerHTML = '<div class="notice notice-error"> <p> Please enter a valid reply. </p> </div>';
+				return;
+			}
 	
-		if (!zwssgrReplyComment) {
-			zwssgrJsonMessage.html('<div class="notice notice-error"> <p> Please enter a valid reply. </p> </div>');
-			return;
-		}
+			if (zwssgrReplyComment.length > 4086) {
+				zwssgrJsonMessage.innerHTML = '<div class="notice notice-error"> <p> Reply cannot exceed 4086 characters. </p> </div>';
+				return;
+			}
 	
-		if (zwssgrReplyComment.length > 4086) {
-			zwssgrJsonMessage.html('<div class="notice notice-error"> <p> Reply cannot exceed 4086 characters. </p> </div>');
-			return;
-		}
+			const zwssgrLoader 			  = document.createElement("span");
+			zwssgrLoader.className  	  = "loader is-active";
+			zwssgrLoader.style.marginLeft = "10px";
 	
-		const zwssgrLoader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
-		const zwssgrButtons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+			const zwssgrButtons = document.querySelectorAll("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+			const zwssgrUrlParams = new URLSearchParams(window.location.search);
+			const zwssgrWpReviewId = zwssgrUrlParams.get("post");
 	
-		const zwssgrUrlParams = new URLSearchParams(window.location.search);
-		const zwssgrWpReviewId = zwssgrUrlParams.get("post");
+			zwssgrButtons.forEach(btn => btn.classList.add("disabled"));
+			zwssgrReplyCommentElement.readOnly = true;
+			document.querySelector("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(zwssgrLoader.cloneNode(true));
 	
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: "POST",
-			data: {
-				action: "zwssgr_add_update_review_reply",
-				zwssgr_wp_review_id: zwssgrWpReviewId,
-				zwssgr_reply_comment: zwssgrReplyComment,
-				security: zwssgr_admin.zwssgr_add_update_reply_nonce
-			},
-			beforeSend: () => {
-				zwssgrButtons.addClass("disabled");
-				$("#gmb-review-data textarea[name='zwssgr_reply_comment']").prop("readonly", true);
-				$("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(zwssgrLoader.clone());
-			},
-			success: (response) => {
-				if (response.success) {
-					const zwssgrSafeMessage = $("<div>").text(response.data.message).html();
-					zwssgrJsonMessage.html('<div class="notice notice-success"><p>' + zwssgrSafeMessage + '</p></div>');
+			fetch(zwssgr_admin.ajax_url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: new URLSearchParams({
+					action: "zwssgr_add_update_review_reply",
+					zwssgr_wp_review_id: zwssgrWpReviewId,
+					zwssgr_reply_comment: zwssgrReplyComment,
+					security: zwssgr_admin.zwssgr_add_update_reply_nonce
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					const zwssgrSafeMessage = document.createElement("div");
+					zwssgrSafeMessage.textContent = data.data.message;
+					zwssgrJsonMessage.innerHTML = `<div class="notice notice-success"><p>${zwssgrSafeMessage.innerHTML}</p></div>`;
 					setTimeout(() => location.reload(), 2000);
 				}
-			},
-			complete: () => {
-				$("#gmb-review-data .loader.is-active").remove();
-			},
-			error: (xhr, status, error) => {
-				console.error("AJAX Error:", { xhr, status, error });
-				zwssgrJsonMessage.html('<div class="notice notice-error"><p>Error: ' + error + '</p></div>');
-			}
+			})
+			.catch(zwssgrError => {
+				zwssgrJsonMessage.innerHTML = `<div class="notice notice-error"><p>Error: ${zwssgrError.message}</p></div>`;
+			})
+			.finally(() => {
+				document.querySelectorAll("#gmb-review-data .loader.is-active").forEach(zwssgrLoader => zwssgrLoader.remove());
+			});
 		});
+
 	});
 
-	$("#gmb-review-data #delete-reply").on("click", (zwssgrEv) => {
-		"use strict";
-	
-		zwssgrEv.preventDefault();
-	
-		const zwssgrLoader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
-		const zwssgrButtons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-		const zwssgrUrlParams = new URLSearchParams(window.location.search);
-		const zwssgrWpReviewId = zwssgrUrlParams.get("post");
-		const zwssgrJsonMessage = $("#gmb-review-data #json-response-message");
-	
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: "POST",
-			data: {
-				action: "zwssgr_delete_review_reply",
-				zwssgr_wp_review_id: zwssgrWpReviewId,
-				security: zwssgr_admin.zwssgr_delete_review_reply
-			},
-			beforeSend: () => {
-				zwssgrButtons.addClass("disabled");
-				$("#gmb-review-data textarea[name='zwssgr_reply_comment']").prop("readonly", true);
-				$("#gmb-review-data #delete-reply").after(zwssgrLoader);
-			},
-			success: (response) => {
-				if (response.success) {
-					const zwssgrSafeMessage = $("<div>").text(response.data.message).html();
-					zwssgrJsonMessage.html('<div class="notice notice-success"><p>' + zwssgrSafeMessage + '</p></div>');
+	document.querySelectorAll("#gmb-review-data #delete-reply").forEach(zwssgrButton => {
+
+		zwssgrButton.addEventListener("click", function (zwssgrEv) {
+
+			"use strict";
+			zwssgrEv.preventDefault();
+		
+			const zwssgrLoader = document.createElement("span");
+			zwssgrLoader.className = "loader is-active";
+			zwssgrLoader.style.marginLeft = "10px";
+		
+			const zwssgrButtons = document.querySelectorAll("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+			const zwssgrUrlParams = new URLSearchParams(window.location.search);
+			const zwssgrWpReviewId = zwssgrUrlParams.get("post");
+			const zwssgrJsonMessage = document.querySelector("#gmb-review-data #json-response-message");
+		
+			zwssgrButtons.forEach(btn => btn.classList.add("disabled"));
+			document.querySelector("#gmb-review-data textarea[name='zwssgr_reply_comment']").readOnly = true;
+			document.querySelector("#gmb-review-data #delete-reply").after(zwssgrLoader);
+		
+			fetch(zwssgr_admin.ajax_url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				body: new URLSearchParams({
+					action: "zwssgr_delete_review_reply",
+					zwssgr_wp_review_id: zwssgrWpReviewId,
+					security: zwssgr_admin.zwssgr_delete_review_reply
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					const zwssgrSafeMessage = document.createElement("div");
+					zwssgrSafeMessage.textContent = data.data.message;
+					zwssgrJsonMessage.innerHTML = `<div class="notice notice-success"><p>${zwssgrSafeMessage.innerHTML}</p></div>`;
 					setTimeout(() => location.reload(), 2000);
 				}
-			},
-			complete: () => {
-				$("#gmb-review-data .loader.is-active").remove();
-			},
-			error: (xhr, status, error) => {
-				console.error("AJAX Error:", { xhr, status, error });
-				zwssgrJsonMessage.html('<div class="notice notice-error"><p>Error: ' + error + '</p></div>');
-			}
+			})
+			.catch(zwssgrError => {
+				console.error("AJAX Error:", zwssgrError);
+				zwssgrJsonMessage.innerHTML = `<div class="notice notice-error"><p>Error: ${zwssgrError.message}</p></div>`;
+			})
+			.finally(() => {
+				document.querySelectorAll("#gmb-review-data .loader.is-active").forEach(zwssgrLoader => zwssgrLoader.remove());
+			});
+		
 		});
+		
 	});
 
-	$("#gmb-data-filter #zwssgr-account-select").on("change", function (zwssgrEv) {
+	document.querySelector("#gmb-data-filter #zwssgr-account-select").addEventListener("change", (zwssgrEv) => {
 		"use strict";
-	
 		zwssgrEv.preventDefault();
 	
-		const zwssgrAccountNumber = $(this).val();
-		const zwssgrDropdown = $(this);
-		const zwssgrDataFilter = $('#gmb-data-filter');
+		const zwssgrAccountNumber = zwssgrEv.target.value;
+		const zwssgrDropdown = zwssgrEv.target;
+		const zwssgrDataFilter = document.querySelector("#gmb-data-filter");
 	
-		zwssgrDropdown.addClass('disabled');
-	
-		const zwssgrLoader = $('<span class="loader is-active"></span>');
-	
-		$.ajax({
-			url: zwssgr_admin.ajax_url,
-			type: 'POST',
-			data: {
-				action: 'zwssgr_gmb_dashboard_data_filter',
+		zwssgrDropdown.classList.add("disabled");
+		
+		fetch(zwssgr_admin.ajax_url, {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: new URLSearchParams({
+				action: "zwssgr_gmb_dashboard_data_filter",
 				zwssgr_account_number: zwssgrAccountNumber,
 				security: zwssgr_admin.zwssgr_gmb_dashboard_filter
-			},
-			success: (response) => {
-				$('#gmb-data-filter #zwssgr-location-select').remove();
-				if (response.success) {
-					zwssgrDataFilter.append(response.data);
-				} else {
-					zwssgrDataFilter.append('<div class="notice notice-error">No data available.</div>');
-				}
-			},
-			error: (xhr, status, error) => {
-				console.error("AJAX Error:", { xhr, status, error });
-				zwssgrDataFilter.append('<div class="notice notice-error">Error occurred while processing your request.</div>');
-			},
-			complete: () => {
-				zwssgrDropdown.removeClass('disabled');
-				zwssgrLoader.remove();
+			})
+		})
+		.then(response => response.json())
+		.then(data => {
+			document.querySelector("#gmb-data-filter #zwssgr-location-select")?.remove();
+			if (data.success) {
+				zwssgrDataFilter.insertAdjacentHTML("beforeend", data.data);
+			} else {
+				zwssgrDataFilter.insertAdjacentHTML("beforeend", '<div class="notice notice-error">No data available.</div>');
 			}
-		});
-	
+		})
+		.catch(error => console.error("AJAX Error:", error));
 	});
 
-	$(".zwgr-dashboard").on("change", "#zwssgr-account-select, #zwssgr-location-select", (zwssgrEv) => {
+	document.querySelector("#zwssgr-account-select, #zwssgr-location-select").addEventListener("change", function(zwssgrEv) {
 		"use strict";
-
+	
 		let zwssgrRangeFilterData = null;
 		let zwssgrRangeFilterType = null;
 	
-		const zwssgrInputs = $('#zwssgr-account-select, #zwssgr-location-select');
-		zwssgrInputs.addClass('disabled').prop('disabled', true);
+		// Select account and location dropdowns
+		const zwssgrAccountSelect = document.querySelector('#zwssgr-account-select');
+		const zwssgrLocationSelect = document.querySelector('#zwssgr-location-select');
 	
-		const zwssgrActiveButton = $('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button.active');
-		const zwssgrActiveDateInput = $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"].active');
+		// Disable account and location select inputs
+		if (zwssgrAccountSelect) {
+			zwssgrAccountSelect.classList.add('disabled');
+			zwssgrAccountSelect.disabled = true;
+		}
+		if (zwssgrLocationSelect) {
+			zwssgrLocationSelect.classList.add('disabled');
+			zwssgrLocationSelect.disabled = true;
+		}
+	
+		// Find the active filter button or date input
+		const zwssgrActiveButton = document.querySelectorAll('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button.active');
+		const zwssgrActiveDateInput = document.querySelectorAll('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"].active');
 	
 		if (zwssgrActiveButton.length > 0) {
 			zwssgrRangeFilterType = 'rangeofdays';
-			zwssgrRangeFilterData = zwssgrActiveButton.text().trim().toLowerCase();
+			zwssgrRangeFilterData = zwssgrActiveButton[0].textContent.trim().toLowerCase();
 		} else if (zwssgrActiveDateInput.length > 0) {
 			zwssgrRangeFilterType = 'rangeofdate';
-			zwssgrRangeFilterData = zwssgrActiveDateInput.val().trim();
+			zwssgrRangeFilterData = zwssgrActiveDateInput[0].value.trim();
 		} else {
 			console.warn("No active filters or dates selected.");
 		}
 	
 		zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFilterType);
+	});	
+
+	document.querySelector(".zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button").addEventListener("click", function(zwssgrEv) {
+		"use strict";
+
+		const zwssgrButton = zwssgrEv.target.closest(".zwssgr-filter-button");
+	
+		if (zwssgrButton) {
+			const zwssgrRangeFilterData = zwssgrButton.textContent.trim().toLowerCase();
+	
+			if (!zwssgrRangeFilterData) {
+				console.warn("Filter data is empty or invalid.");
+				return;
+			}
+	
+			zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, "rangeofdays");
+		}
 
 	});
 
-	$(".zwgr-dashboard").on("click", ".zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button", (zwssgrEv) => {
+	document.querySelector('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').addEventListener('apply.daterangepicker', function(zwssgrEv) {
 		"use strict";
 	
-		const zwssgrButton = $(zwssgrEv.currentTarget);
-		const zwssgrRangeFilterData = zwssgrButton.text().trim().toLowerCase();
-	
-		if (!zwssgrRangeFilterData) {
-			console.warn("Filter data is empty or invalid.");
-			return;
-		}
+		const zwssgrFilterButtons = document.querySelectorAll('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
+		const zwssgrDateInput = document.querySelector('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]');
 
-		zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, "rangeofdays");
-
-	});	
-
-	$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').on('apply.daterangepicker', (zwssgrEv, zwssgrPicker) => {
-		"use strict";
-
-		const zwssgrFilterButtons = $('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
-		const zwssgrDateInput = $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]');
+		zwssgrFilterButtons.forEach(button => button.classList.remove('active'));
+		zwssgrDateInput.classList.add('active');
 	
-		zwssgrFilterButtons.removeClass('active');
-		zwssgrDateInput.addClass('active');
-	
-		const zwssgrStartDate = zwssgrPicker?.startDate ? zwssgrPicker.startDate.format('DD-MM-YYYY') : null;
-		const zwssgrEndDate = zwssgrPicker?.endDate ? zwssgrPicker.endDate.format('DD-MM-YYYY') : null;
-	
+		const zwssgrStartDate 		= zwssgrEv.detail?.startDate ? zwssgrEv.detail.startDate.format('DD-MM-YYYY') : null;
+		const zwssgrEndDate 		= zwssgrEv.detail?.endDate ? zwssgrEv.detail.endDate.format('DD-MM-YYYY') : null;
 		const zwssgrRangeFilterData = zwssgrStartDate && zwssgrEndDate ? `${zwssgrStartDate} - ${zwssgrEndDate}` : null;
 	
 		if (!zwssgrRangeFilterData) {
@@ -1674,6 +1681,7 @@ jQuery(document).ready(function($) {
 			const zwssgrChart = new google.visualization.PieChart(
 				document.getElementById('zwssgr_chart_wrapper')
 			);
+			console.log(zwssgrChart, 'zwssgrChart');
 			zwssgrChart.draw(zwssgrData, zwssgrOptions);
 		} catch (error) {
 			console.error("Error drawing the chart:", error);
