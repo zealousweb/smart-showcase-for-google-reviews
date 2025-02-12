@@ -8,17 +8,35 @@
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./add-update-review-reply.js": "./assets/src/js/add-update-review-reply.js",
 	"./admin-fliter.js": "./assets/src/js/admin-fliter.js",
 	"./admin.js": "./assets/src/js/admin.js",
+	"./check-batch-status.js": "./assets/src/js/check-batch-status.js",
 	"./color-picker.js": "./assets/src/js/color-picker.js",
 	"./deactivation-popup.js": "./assets/src/js/deactivation-popup.js",
+	"./delete-review-reply.js": "./assets/src/js/delete-review-reply.js",
+	"./disconnect-auth.js": "./assets/src/js/disconnect-auth.js",
+	"./fetch-gmb-accounts-on-change.js": "./assets/src/js/fetch-gmb-accounts-on-change.js",
+	"./fetch-gmb-accounts.js": "./assets/src/js/fetch-gmb-accounts.js",
+	"./fetch-gmb-auth-url.js": "./assets/src/js/fetch-gmb-auth-url.js",
+	"./fetch-gmb-reviews.js": "./assets/src/js/fetch-gmb-reviews.js",
+	"./front-elementor.js": "./assets/src/js/front-elementor.js",
+	"./front-keyword-filter.js": "./assets/src/js/front-keyword-filter.js",
+	"./front-popup.js": "./assets/src/js/front-popup.js",
+	"./front-sortby-filter.js": "./assets/src/js/front-sortby-filter.js",
+	"./front-swiper.js": "./assets/src/js/front-swiper.js",
+	"./get-url-parameter.js": "./assets/src/js/get-url-parameter.js",
 	"./google-chart.js": "./assets/src/js/google-chart.js",
 	"./hide-element.js": "./assets/src/js/hide-element.js",
 	"./hide-show-review.js": "./assets/src/js/hide-show-review.js",
 	"./index.js": "./assets/src/js/index.js",
 	"./keyword-filter.js": "./assets/src/js/keyword-filter.js",
+	"./load-more.js": "./assets/src/js/load-more.js",
 	"./plugin-menu.js": "./assets/src/js/plugin-menu.js",
 	"./popup.js": "./assets/src/js/popup.js",
+	"./process-batches.js": "./assets/src/js/process-batches.js",
+	"./read-more.js": "./assets/src/js/read-more.js",
+	"./redirect-to-options-tab.js": "./assets/src/js/redirect-to-options-tab.js",
 	"./review-filter.js": "./assets/src/js/review-filter.js",
 	"./script.js": "./assets/src/js/script.js",
 	"./seo-notification.js": "./assets/src/js/seo-notification.js",
@@ -49,6 +67,77 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = "./assets/src/js sync \\.js$";
+
+/***/ }),
+
+/***/ "./assets/src/js/add-update-review-reply.js":
+/*!**************************************************!*\
+  !*** ./assets/src/js/add-update-review-reply.js ***!
+  \**************************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  document.querySelectorAll("#gmb-review-data #add-reply, #gmb-review-data #update-reply").forEach(function (zwssgrButton) {
+    zwssgrButton.addEventListener("click", function (zwssgrEv) {
+      "use strict";
+
+      zwssgrEv.preventDefault();
+      var zwssgrReplyCommentElement = document.querySelector("#gmb-review-data textarea[name='zwssgr_reply_comment']");
+      var zwssgrReplyComment = zwssgrReplyCommentElement.value.trim();
+      var zwssgrJsonMessage = document.querySelector("#gmb-review-data #json-response-message");
+      if (!zwssgrReplyComment) {
+        zwssgrJsonMessage.innerHTML = '<div class="notice notice-error"> <p> Please enter a valid reply. </p> </div>';
+        return;
+      }
+      if (zwssgrReplyComment.length > 4086) {
+        zwssgrJsonMessage.innerHTML = '<div class="notice notice-error"> <p> Reply cannot exceed 4086 characters. </p> </div>';
+        return;
+      }
+      var zwssgrLoader = document.createElement("span");
+      zwssgrLoader.className = "loader is-active";
+      zwssgrLoader.style.marginLeft = "10px";
+      var zwssgrButtons = document.querySelectorAll("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+      var zwssgrUrlParams = new URLSearchParams(window.location.search);
+      var zwssgrWpReviewId = zwssgrUrlParams.get("post");
+      zwssgrButtons.forEach(function (btn) {
+        return btn.classList.add("disabled");
+      });
+      zwssgrReplyCommentElement.readOnly = true;
+      document.querySelector("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(zwssgrLoader.cloneNode(true));
+      fetch(zwssgr_admin.ajax_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          action: "zwssgr_add_update_review_reply",
+          zwssgr_wp_review_id: zwssgrWpReviewId,
+          zwssgr_reply_comment: zwssgrReplyComment,
+          security: zwssgr_admin.zwssgr_add_update_reply_nonce
+        })
+      }).then(function (zwssgrResponse) {
+        return zwssgrResponse.json();
+      }).then(function (data) {
+        if (data.success) {
+          var zwssgrSafeMessage = document.createElement("div");
+          zwssgrSafeMessage.textContent = data.data.message;
+          zwssgrJsonMessage.innerHTML = "<div class=\"notice notice-success\"><p>".concat(zwssgrSafeMessage.innerHTML, "</p></div>");
+          setTimeout(function () {
+            return location.reload();
+          }, 2000);
+        }
+      })["catch"](function (zwssgrError) {
+        zwssgrJsonMessage.innerHTML = "<div class=\"notice notice-error\"><p>Error: ".concat(zwssgrError.message, "</p></div>");
+      })["finally"](function () {
+        document.querySelectorAll("#gmb-review-data .loader.is-active").forEach(function (zwssgrLoader) {
+          return zwssgrLoader.remove();
+        });
+      });
+    });
+  });
+});
 
 /***/ }),
 
@@ -1201,594 +1290,6 @@ jQuery(document).ready(function ($) {
   // 		}
   // 	});
   // });
-  $("#fetch-gmb-data #fetch-gmd-accounts").on("click", function (zwssgrEv) {
-    "use strict";
-
-    zwssgrEv.preventDefault();
-    var zwssgrButton = $(this);
-    var zwssgrGmbDataType = zwssgrButton.data("fetch-type");
-    var zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
-    $('#fetch-gmb-data .progress-bar').addClass('active');
-    zwssgrButton.addClass('disabled');
-    zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
-    try {
-      zwssgrProcessBatch(zwssgrGmbDataType, null, null, zwssgrWidgetId, null, null, null, null);
-    } catch (error) {
-      console.error("Error processing batch:", error);
-    }
-  });
-  $("#fetch-gmb-auth-url").on("click", function (zwssgrEv) {
-    "use strict";
-
-    zwssgrEv.preventDefault();
-    var zwssgrAuthButton = $("#fetch-gmb-auth-url");
-    var zwssgrAuthResponse = $("#fetch-gmb-auth-url-response");
-    zwssgrAuthButton.prop('disabled', true).html("Connecting...");
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      type: "POST",
-      dataType: "json",
-      data: {
-        action: "zwssgr_fetch_oauth_url"
-      },
-      success: function success(response) {
-        if (response.success) {
-          zwssgrAuthButton.prop('disabled', false).html("Redirecting...");
-          window.location.href = response.data.zwssgr_oauth_url;
-        } else {
-          var _response$data;
-          var errorMessage = $("<p>").addClass("error response").text("Error generating OAuth URL: " + (((_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.message) || "Unknown error"));
-          zwssgrAuthResponse.html(errorMessage);
-        }
-      },
-      error: function error(xhr, status, _error) {
-        zwssgrAuthButton.prop('disabled', false).html("Connect with Google");
-        var unexpectedError = $("<p>").addClass("error response").text("An unexpected error occurred: " + _error);
-        zwssgrAuthResponse.html(unexpectedError);
-      }
-    });
-  });
-  $("#disconnect-gmb-auth #disconnect-auth").on("click", function (zwssgrEv) {
-    zwssgrEv.preventDefault();
-    $("#disconnect-gmb-auth #disconnect-auth").prop('disabled', true);
-    $("#disconnect-gmb-auth #disconnect-auth").html("Disconnecting...");
-    var zwssgrDeletePluginData = $('#disconnect-gmb-auth #delete-all-data').prop('checked') ? '1' : '0';
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      type: "POST",
-      dataType: "json",
-      data: {
-        action: "zwssgr_delete_oauth_connection",
-        zwssgr_delete_plugin_data: zwssgrDeletePluginData,
-        security: zwssgr_admin.zwssgr_delete_oauth_connection
-      },
-      success: function success(response) {
-        if (response.success) {
-          var _response$data2;
-          $("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
-          $("#disconnect-gmb-auth #disconnect-auth").html("Disconnected");
-          $("#disconnect-gmb-auth-response").html("<p class='success response''> OAuth Disconnected: " + (((_response$data2 = response.data) === null || _response$data2 === void 0 ? void 0 : _response$data2.message) || "Unknown error") + "</p>");
-          $("#disconnect-gmb-auth .zwssgr-th-label").html("");
-          $("#disconnect-gmb-auth .zwssgr-caution-div").fadeOut();
-          $("#disconnect-gmb-auth .danger-note").fadeOut();
-          setTimeout(function () {
-            window.location.href = zwssgr_admin.zwssgr_redirect;
-          }, 1500);
-        } else {
-          var _response$data3;
-          $("#disconnect-gmb-auth-response").html("<p class='error response''>Error disconnecting OAuth connection: " + (((_response$data3 = response.data) === null || _response$data3 === void 0 ? void 0 : _response$data3.message) || "Unknown error") + "</p>");
-        }
-      },
-      error: function error(xhr, status, _error2) {
-        $("#disconnect-gmb-auth #disconnect-auth").prop('disabled', false);
-        $("#disconnect-gmb-auth #disconnect-auth").html("Disconnect");
-        $("#disconnect-gmb-auth-response").html("<p class='error response''> An unexpected error occurred: " + _error2 + "</p>");
-      }
-    });
-  });
-  $("#fetch-gmb-data #fetch-gmd-reviews").on("click", function (zwssgrEv) {
-    zwssgrEv.preventDefault();
-    var zwssgrButton = $(this);
-    var zwssgrGmbDataType = zwssgrButton.data("fetch-type");
-
-    // Get selected account and location from the dropdowns
-    var zwssgrAccountNumber = $("#fetch-gmb-data #zwssgr-account-select").val();
-    $("#fetch-gmb-data #zwssgr-account-select").addClass('disabled');
-    var zwssgrAccountName = $("#fetch-gmb-data #zwssgr-account-select option:selected").text();
-    var zwssgrLocationNumber = $("#fetch-gmb-data #zwssgr-location-select").val();
-    var zwssgrLocationName = $("#fetch-gmb-data #zwssgr-location-select option:selected").text();
-    var zwssgrLocationNewReviewUri = $("#fetch-gmb-data #zwssgr-location-select option:selected").attr("data-new-review-url");
-    var zwssgrLocationAllReviewUri = $("#fetch-gmb-data #zwssgr-location-select option:selected").attr("data-all-reviews-url");
-    $("#fetch-gmb-data #zwssgr-location-select").addClass('disabled');
-    var zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
-    zwssgrButton.addClass("disabled");
-    zwssgrButton.html('<span class="spinner is-active"></span> Fetching...');
-    if (!zwssgrAccountNumber && !zwssgrLocationNumber) {
-      $('#fetch-gmb-data .response').html('<p class="error">Both account and location are required.</p>');
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-      return;
-    }
-    if (!zwssgrAccountNumber) {
-      $('#fetch-gmb-data .response').html('<p class="error"> Account is required. </p>');
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-      return;
-    }
-    if (!zwssgrLocationNumber) {
-      $('#fetch-gmb-data .response').html('<p class="error"> Location is required. </p>');
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-      return;
-    }
-    if (!zwssgrWidgetId) {
-      alert("Please select an approprite location.");
-      $('#fetch-gmb-data .response').html('<p class="error"> No valid widget ID found. </p>');
-      setTimeout(function () {
-        location.reload();
-      }, 1500);
-      return;
-    }
-    $('#fetch-gmb-data .response').html('');
-    $('#fetch-gmb-data .progress-bar').css('display', 'block');
-    zwssgrProcessBatch(zwssgrGmbDataType, zwssgrAccountNumber, zwssgrLocationNumber, zwssgrWidgetId, zwssgrLocationName, zwssgrLocationNewReviewUri, zwssgrAccountName, zwssgrLocationAllReviewUri);
-  });
-
-  // Function to get URL parameter by name
-  function zwssgrGetUrlParameter(zwssgrName) {
-    var zwssgrUrlParams = new URLSearchParams(window.location.search);
-    return zwssgrUrlParams.get(zwssgrName);
-  }
-  $("#fetch-gmb-data #zwssgr-account-select").on("change", function () {
-    "use strict";
-
-    var zwssgrAccountNumber = $(this).val();
-    var zwssgrAccountName = $(this).find("option:selected").text();
-    var zwssgrDataContainer = $("#fetch-gmb-data");
-    zwssgrDataContainer.find("#zwssgr-location-select, .zwssgr-submit-btn, #fetch-gmd-reviews").remove();
-    if (zwssgrAccountNumber) {
-      $(this).prop("disabled", true);
-      var zwssgrWidgetId = zwssgrGetUrlParameter("zwssgr_widget_id");
-
-      // Clear any previous responses and display the progress bar
-      zwssgrDataContainer.find(".response").html('');
-      zwssgrDataContainer.find(".progress-bar").addClass('active');
-
-      // Process the batch request
-      try {
-        zwssgrProcessBatch("zwssgr_gmb_locations", zwssgrAccountNumber, null, zwssgrWidgetId, null, null, zwssgrAccountName);
-      } catch (error) {
-        console.error("Error processing batch:", error);
-
-        // Reset UI on error
-        zwssgrDataContainer.find(".progress-bar").removeClass('active');
-        zwssgrDataContainer.find(".response").html("<p class='error'>An error occurred while processing your request.</p>");
-      }
-    }
-  });
-  function zwssgrProcessBatch(zwssgrGmbDataType, zwssgrAccountNumber, zwssgrLocationNumber, zwssgrWidgetId, zwssgrLocationName, zwssgrLocationNewReviewUri, zwssgrAccountName, zwssgrLocationAllReviewUri) {
-    var _zwssgr_admin, _zwssgr_admin2;
-    function zwssgrReloadWithDelay() {
-      var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1500;
-      setTimeout(function () {
-        return location.reload();
-      }, delay);
-    }
-    $.ajax({
-      url: (_zwssgr_admin = zwssgr_admin) === null || _zwssgr_admin === void 0 ? void 0 : _zwssgr_admin.ajax_url,
-      // Ensure zwssgr_admin is defined
-      type: "POST",
-      dataType: "json",
-      data: {
-        action: "zwssgr_fetch_gmb_data",
-        security: (_zwssgr_admin2 = zwssgr_admin) === null || _zwssgr_admin2 === void 0 ? void 0 : _zwssgr_admin2.zwssgr_queue_manager_nounce,
-        zwssgr_gmb_data_type: zwssgrGmbDataType,
-        zwssgr_account_number: zwssgrAccountNumber,
-        zwssgr_location_number: zwssgrLocationNumber,
-        zwssgr_widget_id: zwssgrWidgetId,
-        zwssgr_location_name: zwssgrLocationName,
-        zwssgr_location_new_review_uri: zwssgrLocationNewReviewUri,
-        zwssgr_account_name: zwssgrAccountName,
-        zwssgr_location_all_review_uri: zwssgrLocationAllReviewUri
-      },
-      success: function success(response) {
-        var progressBar = $('#fetch-gmb-data .progress-bar');
-        var responseContainer = $('#fetch-gmb-data .response');
-        if (response.success) {
-          progressBar.stop(true, true).fadeIn();
-        } else {
-          var _response$data4;
-          responseContainer.html("<p class=\"error\">".concat(((_response$data4 = response.data) === null || _response$data4 === void 0 ? void 0 : _response$data4.message) || 'An error occurred.', "</p>"));
-          zwssgrReloadWithDelay();
-        }
-      },
-      error: function error(xhr) {
-        var _response$data5;
-        var response = xhr.responseJSON;
-        var errorMessage = (response === null || response === void 0 || (_response$data5 = response.data) === null || _response$data5 === void 0 ? void 0 : _response$data5.message) || 'An unexpected error occurred.';
-        $('#fetch-gmb-data .response').html("<p class=\"error\">".concat(errorMessage, "</p>"));
-        zwssgrReloadWithDelay();
-      }
-    });
-  }
-
-  // Check if we're on the specific page URL that contains zwssgr_widget_id dynamically
-  var zwssgrUrlParams = new URLSearchParams(window.location.search);
-  if (zwssgrUrlParams.has('zwssgr_widget_id') && window.location.href.includes('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data')) {
-    var zwssgrBatchInterval = setInterval(function () {
-      try {
-        zwssgrCheckBatchStatus();
-      } catch (error) {
-        console.error("Error in zwssgrCheckBatchStatus:", error);
-        clearInterval(zwssgrBatchInterval); // Stop the interval on failure
-      }
-    }, 2500);
-  }
-  function zwssgrCheckBatchStatus() {
-    // Function to get URL parameters
-    function zwssgrGetUrlParameter(zwssgrName) {
-      var zwssgrUrlParams = new URLSearchParams(window.location.search);
-      return zwssgrUrlParams.get(zwssgrName);
-    }
-
-    // Capture 'zwssgrWidgetId' from the URL
-    var zwssgrWidgetId = zwssgrGetUrlParameter('zwssgr_widget_id');
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      method: "POST",
-      data: {
-        action: "zwssgr_get_batch_processing_status",
-        security: zwssgr_admin.zwssgr_queue_manager_nounce,
-        zwssgr_widget_id: zwssgrWidgetId
-      },
-      success: function success(response) {
-        if (response.success && response.data.zwssgr_data_processing_init == 'false' && response.data.zwssgr_data_sync_once == 'true') {
-          $('#fetch-gmb-data .progress-bar #progress').val(100);
-          $('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(100) + '%');
-          $('#fetch-gmb-data .progress-bar #progress-percentage').text('Processed');
-          if (response.data.zwssgr_gmb_data_type == 'zwssgr_gmb_locations') {
-            $('#fetch-gmb-data .response').html('<p class="success">Locations processed successfully</p>');
-          } else if (response.data.zwssgr_gmb_data_type == 'zwssgr_gmb_reviews') {
-            $('#fetch-gmb-data .response').html('<p class="success">Reviews processed successfully</p>');
-            $('#fetch-gmb-data #fetch-gmd-reviews').html('Fetched');
-          }
-          setTimeout(function () {
-            $('#fetch-gmb-data .progress-bar').fadeOut();
-            if (response.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
-              zwssgrRedirectToOptionsTab();
-            } else {
-              location.reload();
-            }
-          }, 2000);
-        } else {
-          var zwssgr_batch_progress = response.data.zwssgr_batch_progress;
-          if (!isNaN(zwssgr_batch_progress) && zwssgr_batch_progress >= 0 && zwssgr_batch_progress <= 100) {
-            $('#fetch-gmb-data .progress-bar #progress').val(zwssgr_batch_progress);
-            $('#fetch-gmb-data .progress-bar #progress-percentage').text(Math.round(zwssgr_batch_progress) + '%');
-          } else {}
-        }
-      },
-      error: function error(xhr, status, _error3) {}
-    });
-  }
-  function zwssgrRedirectToOptionsTab() {
-    var zwssgrCurrentUrl = window.location.href;
-    if (zwssgrCurrentUrl.includes('tab=')) {
-      zwssgrCurrentUrl = zwssgrCurrentUrl.replace(/tab=[^&]+/, 'tab=tab-options');
-    } else {
-      zwssgrCurrentUrl += (zwssgrCurrentUrl.includes('?') ? '&' : '?') + 'tab=tab-options';
-    }
-    window.location.href = zwssgrCurrentUrl;
-  }
-  $("#gmb-review-data #add-reply, #gmb-review-data #update-reply").on("click", function (zwssgrEv) {
-    "use strict";
-
-    zwssgrEv.preventDefault();
-
-    // Get the value of the 'Reply Comment' from textarea
-    var zwssgrReplyComment = $("#gmb-review-data textarea[name='zwssgr_reply_comment']").val().trim();
-    var zwssgrJsonMessage = $("#gmb-review-data #json-response-message");
-    if (!zwssgrReplyComment) {
-      zwssgrJsonMessage.html('<div class="notice notice-error"> <p> Please enter a valid reply. </p> </div>');
-      return;
-    }
-    if (zwssgrReplyComment.length > 4086) {
-      zwssgrJsonMessage.html('<div class="notice notice-error"> <p> Reply cannot exceed 4086 characters. </p> </div>');
-      return;
-    }
-    var zwssgrLoader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
-    var zwssgrButtons = $("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-    var zwssgrUrlParams = new URLSearchParams(window.location.search);
-    var zwssgrWpReviewId = zwssgrUrlParams.get("post");
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      type: "POST",
-      data: {
-        action: "zwssgr_add_update_review_reply",
-        zwssgr_wp_review_id: zwssgrWpReviewId,
-        zwssgr_reply_comment: zwssgrReplyComment,
-        security: zwssgr_admin.zwssgr_add_update_reply_nonce
-      },
-      beforeSend: function beforeSend() {
-        zwssgrButtons.addClass("disabled");
-        $("#gmb-review-data textarea[name='zwssgr_reply_comment']").prop("readonly", true);
-        $("#gmb-review-data #add-reply, #gmb-review-data #delete-reply").after(zwssgrLoader.clone());
-      },
-      success: function success(response) {
-        if (response.success) {
-          var zwssgrSafeMessage = $("<div>").text(response.data.message).html();
-          zwssgrJsonMessage.html('<div class="notice notice-success"><p>' + zwssgrSafeMessage + '</p></div>');
-          setTimeout(function () {
-            return location.reload();
-          }, 2000);
-        }
-      },
-      complete: function complete() {
-        $("#gmb-review-data .loader.is-active").remove();
-      },
-      error: function error(xhr, status, _error4) {
-        console.error("AJAX Error:", {
-          xhr: xhr,
-          status: status,
-          error: _error4
-        });
-        zwssgrJsonMessage.html('<div class="notice notice-error"><p>Error: ' + _error4 + '</p></div>');
-      }
-    });
-  });
-  $("#gmb-review-data #delete-reply").on("click", function (zwssgrEv) {
-    "use strict";
-
-    zwssgrEv.preventDefault();
-    var zwssgrLoader = $('<span class="loader is-active" style="margin-left: 10px;"></span>');
-    var zwssgrButtons = $("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-    var zwssgrUrlParams = new URLSearchParams(window.location.search);
-    var zwssgrWpReviewId = zwssgrUrlParams.get("post");
-    var zwssgrJsonMessage = $("#gmb-review-data #json-response-message");
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      type: "POST",
-      data: {
-        action: "zwssgr_delete_review_reply",
-        zwssgr_wp_review_id: zwssgrWpReviewId,
-        security: zwssgr_admin.zwssgr_delete_review_reply
-      },
-      beforeSend: function beforeSend() {
-        zwssgrButtons.addClass("disabled");
-        $("#gmb-review-data textarea[name='zwssgr_reply_comment']").prop("readonly", true);
-        $("#gmb-review-data #delete-reply").after(zwssgrLoader);
-      },
-      success: function success(response) {
-        if (response.success) {
-          var zwssgrSafeMessage = $("<div>").text(response.data.message).html();
-          zwssgrJsonMessage.html('<div class="notice notice-success"><p>' + zwssgrSafeMessage + '</p></div>');
-          setTimeout(function () {
-            return location.reload();
-          }, 2000);
-        }
-      },
-      complete: function complete() {
-        $("#gmb-review-data .loader.is-active").remove();
-      },
-      error: function error(xhr, status, _error5) {
-        console.error("AJAX Error:", {
-          xhr: xhr,
-          status: status,
-          error: _error5
-        });
-        zwssgrJsonMessage.html('<div class="notice notice-error"><p>Error: ' + _error5 + '</p></div>');
-      }
-    });
-  });
-  $("#gmb-data-filter #zwssgr-account-select").on("change", function (zwssgrEv) {
-    "use strict";
-
-    zwssgrEv.preventDefault();
-    var zwssgrAccountNumber = $(this).val();
-    var zwssgrDropdown = $(this);
-    var zwssgrDataFilter = $('#gmb-data-filter');
-    zwssgrDropdown.addClass('disabled');
-    var zwssgrLoader = $('<span class="loader is-active"></span>');
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      type: 'POST',
-      data: {
-        action: 'zwssgr_gmb_dashboard_data_filter',
-        zwssgr_account_number: zwssgrAccountNumber,
-        security: zwssgr_admin.zwssgr_gmb_dashboard_filter
-      },
-      success: function success(response) {
-        $('#gmb-data-filter #zwssgr-location-select').remove();
-        if (response.success) {
-          zwssgrDataFilter.append(response.data);
-        } else {
-          zwssgrDataFilter.append('<div class="notice notice-error">No data available.</div>');
-        }
-      },
-      error: function error(xhr, status, _error6) {
-        console.error("AJAX Error:", {
-          xhr: xhr,
-          status: status,
-          error: _error6
-        });
-        zwssgrDataFilter.append('<div class="notice notice-error">Error occurred while processing your request.</div>');
-      },
-      complete: function complete() {
-        zwssgrDropdown.removeClass('disabled');
-        zwssgrLoader.remove();
-      }
-    });
-  });
-  $(".zwgr-dashboard").on("change", "#zwssgr-account-select, #zwssgr-location-select", function (zwssgrEv) {
-    "use strict";
-
-    var zwssgrRangeFilterData = null;
-    var zwssgrRangeFilterType = null;
-    var zwssgrInputs = $('#zwssgr-account-select, #zwssgr-location-select');
-    zwssgrInputs.addClass('disabled').prop('disabled', true);
-    var zwssgrActiveButton = $('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button.active');
-    var zwssgrActiveDateInput = $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"].active');
-    if (zwssgrActiveButton.length > 0) {
-      zwssgrRangeFilterType = 'rangeofdays';
-      zwssgrRangeFilterData = zwssgrActiveButton.text().trim().toLowerCase();
-    } else if (zwssgrActiveDateInput.length > 0) {
-      zwssgrRangeFilterType = 'rangeofdate';
-      zwssgrRangeFilterData = zwssgrActiveDateInput.val().trim();
-    } else {
-      console.warn("No active filters or dates selected.");
-    }
-    zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFilterType);
-  });
-  $(".zwgr-dashboard").on("click", ".zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button", function (zwssgrEv) {
-    "use strict";
-
-    var zwssgrButton = $(zwssgrEv.currentTarget);
-    var zwssgrRangeFilterData = zwssgrButton.text().trim().toLowerCase();
-    if (!zwssgrRangeFilterData) {
-      console.warn("Filter data is empty or invalid.");
-      return;
-    }
-    zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, "rangeofdays");
-  });
-  $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').on('apply.daterangepicker', function (zwssgrEv, zwssgrPicker) {
-    "use strict";
-
-    var zwssgrFilterButtons = $('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
-    var zwssgrDateInput = $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]');
-    zwssgrFilterButtons.removeClass('active');
-    zwssgrDateInput.addClass('active');
-    var zwssgrStartDate = zwssgrPicker !== null && zwssgrPicker !== void 0 && zwssgrPicker.startDate ? zwssgrPicker.startDate.format('DD-MM-YYYY') : null;
-    var zwssgrEndDate = zwssgrPicker !== null && zwssgrPicker !== void 0 && zwssgrPicker.endDate ? zwssgrPicker.endDate.format('DD-MM-YYYY') : null;
-    var zwssgrRangeFilterData = zwssgrStartDate && zwssgrEndDate ? "".concat(zwssgrStartDate, " - ").concat(zwssgrEndDate) : null;
-    if (!zwssgrRangeFilterData) {
-      console.warn("Invalid date range selected.");
-      return;
-    }
-    zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
-  });
-  var zwssgrChart;
-  var zwssgrData;
-  var zwssgrOptions;
-  google.charts.load('current', {
-    packages: ['corechart']
-  });
-  google.charts.setOnLoadCallback(function () {
-    return zwssgr_draw_chart(zwssgr_admin.zwssgr_dynamic_chart_data);
-  });
-  function zwssgr_draw_chart(zwssgrChartData) {
-    "use strict";
-
-    if (!Array.isArray(zwssgrChartData)) {
-      document.getElementById('zwssgr_chart_wrapper').innerHTML = '<div class="zwssgr-dashboard-text"> No enough data available. </div>';
-      return;
-    }
-    var zwssgr_all_zero = zwssgrChartData.every(function (row) {
-      return Array.isArray(row) && row[1] === 0;
-    });
-    if (zwssgr_all_zero) {
-      document.getElementById('zwssgr_chart_wrapper').innerHTML = '<div class="zwssgr-dashboard-text"> No enough data available. </div>';
-      return;
-    }
-    zwssgrChartData.unshift(['Rating', 'Number of Reviews']);
-    var zwssgrData = google.visualization.arrayToDataTable(zwssgrChartData);
-    var zwssgrOptions = {
-      pieHole: 0.4,
-      width: 276,
-      height: 276,
-      pieSliceText: 'percentage',
-      pieSliceTextStyle: {
-        color: '#000000',
-        fontSize: 16
-      },
-      legend: 'none',
-      chartArea: {
-        width: '90%',
-        height: '90%'
-      },
-      colors: ['#F08C3C', '#3CAAB4', '#A9C6CC', '#285064', '#F44336'],
-      backgroundColor: 'transparent'
-    };
-    try {
-      var _zwssgrChart = new google.visualization.PieChart(document.getElementById('zwssgr_chart_wrapper'));
-      _zwssgrChart.draw(zwssgrData, zwssgrOptions);
-    } catch (error) {
-      console.error("Error drawing the chart:", error);
-      document.getElementById('zwssgr_chart_wrapper').innerHTML = '<div class="zwssgr-dashboard-text">Failed to render chart</div>';
-    }
-  }
-  var zwssgrResizeTimeout;
-  window.addEventListener('resize', function () {
-    clearTimeout(zwssgrResizeTimeout);
-    zwssgrResizeTimeout = setTimeout(function () {
-      if (zwssgrChart && zwssgrData && zwssgrOptions) {
-        zwssgrChart.draw(zwssgrData, zwssgrOptions);
-      } else {
-        console.warn("Chart or data is not initialized. Skipping redraw.");
-      }
-    }, 200);
-  });
-  function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFilterType) {
-    "use strict";
-
-    zwssgrEv.preventDefault();
-    var zwssgrGmbAccountDiv = $("#gmb-data-filter #zwssgr-account-select");
-    var zwssgrGmbLocationDiv = $("#gmb-data-filter #zwssgr-location-select");
-    var zwssgrDashboard = $('.zwgr-dashboard');
-    if ($(zwssgrEv.target).is("#gmb-data-filter #zwssgr-location-select")) {
-      zwssgrGmbAccountDiv.addClass('disabled');
-      zwssgrGmbLocationDiv.addClass('disabled');
-    }
-    var zwssgrFilterData = {
-      zwssgr_gmb_account_number: zwssgrGmbAccountDiv.val(),
-      zwssgr_gmb_account_location: zwssgrGmbLocationDiv.val(),
-      zwssgr_range_filter_type: zwssgrRangeFilterType,
-      zwssgr_range_filter_data: zwssgrRangeFilterData
-    };
-    $.ajax({
-      url: zwssgr_admin.ajax_url,
-      type: 'POST',
-      data: {
-        action: 'zwssgr_data_render',
-        zwssgr_filter_data: zwssgrFilterData,
-        security: zwssgr_admin.zwssgr_data_render
-      },
-      beforeSend: function beforeSend() {
-        var zwssgrMinHeight = zwssgrDashboard.find('#render-dynamic').outerHeight(true) || 200;
-        zwssgrDashboard.find('#render-dynamic').remove();
-        zwssgrDashboard.append("<div class=\"loader-outer-wrapper\" style=\"height:".concat(zwssgrMinHeight, "px;\">\n\t\t\t\t\t\t<div class=\"loader\"></div>\n\t\t\t\t\t</div>"));
-      },
-      success: function success(response) {
-        if (response.success) {
-          zwssgrDashboard.append(response.data.html);
-          zwssgrDashboard.children(':last').hide().stop(true, true).fadeIn(300);
-          if (response.data.zwssgr_chart_data) {
-            google.charts.setOnLoadCallback(function () {
-              return zwssgr_draw_chart(response.data.zwssgr_chart_data);
-            });
-          }
-        } else {
-          zwssgrDashboard.html('<p>Error loading data.</p>');
-        }
-      },
-      complete: function complete() {
-        zwssgrDashboard.find('.loader-outer-wrapper').remove();
-        zwssgrGmbAccountDiv.removeClass('disabled');
-        zwssgrGmbLocationDiv.removeClass('disabled');
-        $('#zwssgr-account-select, #zwssgr-location-select').removeClass('disabled').prop('disabled', false);
-      },
-      error: function error(xhr, status, _error7) {
-        console.error("AJAX Error:", {
-          xhr: xhr,
-          status: status,
-          error: _error7
-        });
-        zwssgrDashboard.html('<p>An error occurred while fetching data.</p>');
-      }
-    });
-  }
 
   // $(document).on('click', '.star-filter', function () {
   // 	let rating = $(this).data('rating'); // Get the rating of the clicked star
@@ -2050,26 +1551,29 @@ jQuery(document).ready(function ($) {
   // }
 
   // Handle filter button clicks
-  $('.zwgr-dashboard .zwssgr-filters-wrapper .zwssgr-filter-button').on('click', function () {
-    // Remove active class from all buttons and add it to the clicked button
-    $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').removeClass('active');
-    $('.zwgr-dashboard .zwssgr-filters-wrapper .zwssgr-filter-button').removeClass('active');
-    $(this).addClass('active');
-  });
-  $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').daterangepicker({
-    opens: 'center',
-    locale: {
-      format: 'DD-MM-YYYY'
-    },
-    autoUpdateInput: false,
-    minDate: moment('1995-01-01', 'YYYY-MM-DD'),
-    maxDate: moment()
-  }, function (start, end, label) {
-    $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').val(start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY'));
-  });
+  // $('.zwgr-dashboard .zwssgr-filters-wrapper .zwssgr-filter-button').on('click', function () {
+  //     // Remove active class from all buttons and add it to the clicked button
+  // 	$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').removeClass('active');
+  // 	$('.zwgr-dashboard .zwssgr-filters-wrapper .zwssgr-filter-button').removeClass('active');
+  //     $(this).addClass('active');		
+  // });
+
+  // $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').daterangepicker({
+  // 	opens: 'center',
+  // 	locale: {
+  // 		format: 'DD-MM-YYYY'
+  // 	},
+  // 	autoUpdateInput: false,
+  // 	minDate: moment('1995-01-01', 'YYYY-MM-DD'),
+  // 	maxDate: moment(),
+  // }, function(start, end, label) {
+  // 	$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').val(
+  // 		start.format('DD-MM-YYYY') + ' - ' + end.format('DD-MM-YYYY')
+  // 	);
+  // });
 
   // Set custom placeholder for gmb-dashboard-filter
-  $('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').attr('placeholder', 'Custom');
+  //$('.zwgr-dashboard .zwssgr-filters-wrapper input[name="dates"]').attr('placeholder', 'Custom');
   $(document).on('click', '.toggle-content', function () {
     var $link = $(this);
     var fullText = $link.data('full-text');
@@ -2203,6 +1707,80 @@ jQuery(document).ready(function ($) {
   // 	});
   // });
 });
+
+/***/ }),
+
+/***/ "./assets/src/js/check-batch-status.js":
+/*!*********************************************!*\
+  !*** ./assets/src/js/check-batch-status.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   zwssgrCheckBatchStatus: () => (/* binding */ zwssgrCheckBatchStatus)
+/* harmony export */ });
+/* harmony import */ var _get_url_parameter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-url-parameter */ "./assets/src/js/get-url-parameter.js");
+/* harmony import */ var _redirect_to_options_tab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./redirect-to-options-tab */ "./assets/src/js/redirect-to-options-tab.js");
+
+
+
+// Check if we're on the specific page URL that contains zwssgr_widget_id dynamically
+var zwssgrUrlParams = new URLSearchParams(window.location.search);
+if (zwssgrUrlParams.has('zwssgr_widget_id') && window.location.href.includes('admin.php?page=zwssgr_widget_configurator&tab=tab-fetch-data')) {
+  var zwssgrBatchInterval = setInterval(function () {
+    try {
+      zwssgrCheckBatchStatus();
+    } catch (zwssrError) {
+      clearInterval(zwssgrBatchInterval); // Stop the interval on failure
+    }
+  }, 2500);
+}
+function zwssgrCheckBatchStatus() {
+  var zwssgrWidgetId = (0,_get_url_parameter__WEBPACK_IMPORTED_MODULE_0__.zwssgrGetUrlParameter)('zwssgr_widget_id');
+  fetch(zwssgr_admin.ajax_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      action: "zwssgr_get_batch_processing_status",
+      security: zwssgr_admin.zwssgr_queue_manager_nounce,
+      zwssgr_widget_id: zwssgrWidgetId
+    })
+  }).then(function (zwssgrResponse) {
+    return zwssgrResponse.json();
+  }).then(function (zwssgrResponse) {
+    if (zwssgrResponse.success && zwssgrResponse.data.zwssgr_data_processing_init === 'false' && zwssgrResponse.data.zwssgr_data_sync_once === 'true') {
+      document.querySelector('#fetch-gmb-data .progress-bar #progress').value = 100;
+      document.querySelector('#fetch-gmb-data .progress-bar #progress-percentage').textContent = '100%';
+      document.querySelector('#fetch-gmb-data .progress-bar #progress-percentage').textContent = 'Processed';
+      if (zwssgrResponse.data.zwssgr_gmb_data_type === 'zwssgr_gmb_locations') {
+        document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="success">Locations processed successfully</p>';
+      } else if (zwssgrResponse.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
+        document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="success">Reviews processed successfully</p>';
+        document.querySelector('#fetch-gmb-data #fetch-gmd-reviews').innerHTML = 'Fetched';
+      }
+      setTimeout(function () {
+        document.querySelector('#fetch-gmb-data .progress-bar').style.display = 'none';
+        if (zwssgrResponse.data.zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
+          (0,_redirect_to_options_tab__WEBPACK_IMPORTED_MODULE_1__.zwssgrRedirectToOptionsTab)();
+        } else {
+          location.reload();
+        }
+      }, 2000);
+    } else {
+      var zwssgr_batch_progress = zwssgrResponse.data.zwssgr_batch_progress;
+      if (!isNaN(zwssgr_batch_progress) && zwssgr_batch_progress >= 0 && zwssgr_batch_progress <= 100) {
+        document.querySelector('#fetch-gmb-data .progress-bar #progress').value = zwssgr_batch_progress;
+        document.querySelector('#fetch-gmb-data .progress-bar #progress-percentage').textContent = Math.round(zwssgr_batch_progress) + '%';
+      }
+    }
+  })["catch"](function (zwssgrError) {
+    console.error('Error:', zwssgrError);
+  });
+}
 
 /***/ }),
 
@@ -2382,6 +1960,880 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+/***/ }),
+
+/***/ "./assets/src/js/delete-review-reply.js":
+/*!**********************************************!*\
+  !*** ./assets/src/js/delete-review-reply.js ***!
+  \**********************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  document.querySelectorAll("#gmb-review-data #delete-reply").forEach(function (zwssgrButton) {
+    zwssgrButton.addEventListener("click", function (zwssgrEv) {
+      "use strict";
+
+      zwssgrEv.preventDefault();
+      var zwssgrLoader = document.createElement("span");
+      zwssgrLoader.className = "loader is-active";
+      zwssgrLoader.style.marginLeft = "10px";
+      var zwssgrButtons = document.querySelectorAll("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+      var zwssgrUrlParams = new URLSearchParams(window.location.search);
+      var zwssgrWpReviewId = zwssgrUrlParams.get("post");
+      var zwssgrJsonMessage = document.querySelector("#gmb-review-data #json-response-message");
+      zwssgrButtons.forEach(function (btn) {
+        return btn.classList.add("disabled");
+      });
+      document.querySelector("#gmb-review-data textarea[name='zwssgr_reply_comment']").readOnly = true;
+      document.querySelector("#gmb-review-data #delete-reply").after(zwssgrLoader);
+      fetch(zwssgr_admin.ajax_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          action: "zwssgr_delete_review_reply",
+          zwssgr_wp_review_id: zwssgrWpReviewId,
+          security: zwssgr_admin.zwssgr_delete_review_reply
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        if (data.success) {
+          var zwssgrSafeMessage = document.createElement("div");
+          zwssgrSafeMessage.textContent = data.data.message;
+          zwssgrJsonMessage.innerHTML = "<div class=\"notice notice-success\"><p>".concat(zwssgrSafeMessage.innerHTML, "</p></div>");
+          setTimeout(function () {
+            return location.reload();
+          }, 2000);
+        }
+      })["catch"](function (zwssgrError) {
+        console.error("AJAX Error:", zwssgrError);
+        zwssgrJsonMessage.innerHTML = "<div class=\"notice notice-error\"><p>Error: ".concat(zwssgrError.message, "</p></div>");
+      })["finally"](function () {
+        document.querySelectorAll("#gmb-review-data .loader.is-active").forEach(function (zwssgrLoader) {
+          return zwssgrLoader.remove();
+        });
+      });
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/disconnect-auth.js":
+/*!******************************************!*\
+  !*** ./assets/src/js/disconnect-auth.js ***!
+  \******************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var zwssgrDisconnectButton = document.querySelector("#disconnect-gmb-auth #disconnect-auth");
+  if (zwssgrDisconnectButton) {
+    zwssgrDisconnectButton.addEventListener("click", function (zwssgrEv) {
+      zwssgrEv.preventDefault();
+      zwssgrDisconnectButton.disabled = true;
+      zwssgrDisconnectButton.textContent = "Disconnecting...";
+      var zwssgrDeletePluginData = document.querySelector("#disconnect-gmb-auth #delete-all-data").checked ? '1' : '0';
+      fetch(zwssgr_admin.ajax_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          action: "zwssgr_delete_oauth_connection",
+          zwssgr_delete_plugin_data: zwssgrDeletePluginData,
+          security: zwssgr_admin.zwssgr_delete_oauth_connection
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (zwssgrData) {
+        if (zwssgrData.success) {
+          var _zwssgrData$data;
+          zwssgrDisconnectButton.disabled = false;
+          zwssgrDisconnectButton.textContent = "Disconnected";
+          document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='success response'> OAuth Disconnected: " + (((_zwssgrData$data = zwssgrData.data) === null || _zwssgrData$data === void 0 ? void 0 : _zwssgrData$data.message) || "Unknown error") + "</p>";
+          document.querySelector("#disconnect-gmb-auth .zwssgr-th-label").innerHTML = "";
+          document.querySelector("#disconnect-gmb-auth .zwssgr-caution-div").style.display = "none";
+          document.querySelector("#disconnect-gmb-auth .danger-note").style.display = "none";
+          setTimeout(function () {
+            window.location.href = zwssgr_admin.zwssgr_redirect;
+          }, 1500);
+        } else {
+          var _zwssgrData$data2;
+          document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='error response'>Error disconnecting OAuth connection: " + (((_zwssgrData$data2 = zwssgrData.data) === null || _zwssgrData$data2 === void 0 ? void 0 : _zwssgrData$data2.message) || "Unknown error") + "</p>";
+        }
+      })["catch"](function (zwssgrError) {
+        zwssgrDisconnectButton.disabled = false;
+        zwssgrDisconnectButton.textContent = "Disconnect";
+        document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='error response'> An unexpected error occurred: " + zwssgrError + "</p>";
+      });
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/fetch-gmb-accounts-on-change.js":
+/*!*******************************************************!*\
+  !*** ./assets/src/js/fetch-gmb-accounts-on-change.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _process_batches__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./process-batches */ "./assets/src/js/process-batches.js");
+/* harmony import */ var _get_url_parameter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./get-url-parameter */ "./assets/src/js/get-url-parameter.js");
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var zwssgrAccountSelect = document.querySelector("#fetch-gmb-data #zwssgr-account-select");
+  if (zwssgrAccountSelect) {
+    zwssgrAccountSelect.addEventListener("change", function () {
+      "use strict";
+
+      var zwssgrAccountNumber = zwssgrAccountSelect.value;
+      var zwssgrAccountName = zwssgrAccountSelect.options[zwssgrAccountSelect.selectedIndex].text;
+      document.querySelectorAll("#fetch-gmb-data #zwssgr-location-select, .zwssgr-submit-btn, #fetch-gmd-reviews").forEach(function (zwssgrEl) {
+        return zwssgrEl.remove();
+      });
+      if (zwssgrAccountNumber) {
+        zwssgrAccountSelect.disabled = true;
+        var zwssgrWidgetId = (0,_get_url_parameter__WEBPACK_IMPORTED_MODULE_1__.zwssgrGetUrlParameter)("zwssgr_widget_id");
+        document.querySelector("#fetch-gmb-data .response").innerHTML = '';
+        document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
+        try {
+          (0,_process_batches__WEBPACK_IMPORTED_MODULE_0__.zwssgrProcessBatch)("zwssgr_gmb_locations", zwssgrAccountNumber, null, zwssgrWidgetId, null, null, zwssgrAccountName);
+        } catch (error) {
+          document.querySelector("#fetch-gmb-data .progress-bar").classList.remove("active");
+          document.querySelector("#fetch-gmb-data .response").innerHTML = "<p class='error'>An error occurred while processing your request.</p>";
+        }
+      }
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/fetch-gmb-accounts.js":
+/*!*********************************************!*\
+  !*** ./assets/src/js/fetch-gmb-accounts.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _process_batches__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./process-batches */ "./assets/src/js/process-batches.js");
+/* harmony import */ var _get_url_parameter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./get-url-parameter */ "./assets/src/js/get-url-parameter.js");
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var zwssgrButton = document.querySelector("#fetch-gmb-data #fetch-gmd-accounts");
+  if (zwssgrButton) {
+    zwssgrButton.addEventListener("click", function (zwssgrEv) {
+      "use strict";
+
+      zwssgrEv.preventDefault();
+      var zwssgrGmbDataType = zwssgrButton.getAttribute("data-fetch-type");
+      var zwssgrWidgetId = (0,_get_url_parameter__WEBPACK_IMPORTED_MODULE_1__.zwssgrGetUrlParameter)("zwssgr_widget_id");
+      document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
+      zwssgrButton.classList.add("disabled");
+      zwssgrButton.innerHTML = '<span class="spinner is-active"></span> Fetching...';
+      try {
+        (0,_process_batches__WEBPACK_IMPORTED_MODULE_0__.zwssgrProcessBatch)(zwssgrGmbDataType, null, null, zwssgrWidgetId, null, null, null, null);
+      } catch (zwssgrError) {
+        console.error("Error processing batch:", zwssgrError);
+      }
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/fetch-gmb-auth-url.js":
+/*!*********************************************!*\
+  !*** ./assets/src/js/fetch-gmb-auth-url.js ***!
+  \*********************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var zwssgrAuthButton = document.getElementById("fetch-gmb-auth-url");
+  if (zwssgrAuthButton) {
+    zwssgrAuthButton.addEventListener("click", function (zwssgrEv) {
+      "use strict";
+
+      zwssgrEv.preventDefault();
+      var zwssgrAuthResponse = document.getElementById("fetch-gmb-auth-url-response");
+      zwssgrAuthButton.disabled = true;
+      zwssgrAuthButton.textContent = "Connecting...";
+      fetch(zwssgr_admin.ajax_url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({
+          action: "zwssgr_fetch_oauth_url"
+        })
+      }).then(function (zwssgrResponse) {
+        return zwssgrResponse.json();
+      }).then(function (zwssgrData) {
+        if (zwssgrData.success) {
+          zwssgrAuthButton.disabled = false;
+          zwssgrAuthButton.textContent = "Redirecting...";
+          window.location.href = zwssgrData.data.zwssgr_oauth_url;
+        } else {
+          var _zwssgrData$data;
+          var zwssgrErrorMessage = document.createElement("p");
+          zwssgrErrorMessage.classList.add("error", "response");
+          zwssgrErrorMessage.textContent = "Error generating OAuth URL: " + (((_zwssgrData$data = zwssgrData.data) === null || _zwssgrData$data === void 0 ? void 0 : _zwssgrData$data.message) || "Unknown error");
+          zwssgrAuthResponse.innerHTML = "";
+          zwssgrAuthResponse.appendChild(zwssgrErrorMessage);
+        }
+      })["catch"](function (zwssgrError) {
+        zwssgrAuthButton.disabled = false;
+        zwssgrAuthButton.textContent = "Connect with Google";
+        var zwssgrUnexpectedError = document.createElement("p");
+        zwssgrUnexpectedError.classList.add("error", "response");
+        zwssgrUnexpectedError.textContent = "An unexpected error occurred: " + zwssgrError;
+        zwssgrAuthResponse.innerHTML = "";
+        zwssgrAuthResponse.appendChild(zwssgrUnexpectedError);
+      });
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/fetch-gmb-reviews.js":
+/*!********************************************!*\
+  !*** ./assets/src/js/fetch-gmb-reviews.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _process_batches__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./process-batches */ "./assets/src/js/process-batches.js");
+/* harmony import */ var _get_url_parameter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./get-url-parameter */ "./assets/src/js/get-url-parameter.js");
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var zwssgrFetchReviewButton = document.querySelector("#fetch-gmb-data #fetch-gmd-reviews");
+  if (zwssgrFetchReviewButton) {
+    zwssgrFetchReviewButton.addEventListener("click", function (zwssgrEv) {
+      zwssgrEv.preventDefault();
+      zwssgrFetchGmbData(this);
+    });
+  }
+  function zwssgrFetchGmbData(zwssgrFetchReviewButton) {
+    var zwssgrGmbDataType = zwssgrFetchReviewButton.getAttribute("data-fetch-type");
+    var zwssgrAccountSelect = document.querySelector("#fetch-gmb-data #zwssgr-account-select");
+    if (!zwssgrAccountSelect) {
+      return;
+    }
+    var zwssgrAccountNumber = zwssgrAccountSelect.value;
+    zwssgrAccountSelect.classList.add('disabled');
+    var zwssgrAccountName = zwssgrAccountSelect.options[zwssgrAccountSelect.selectedIndex].text;
+    var zwssgrLocationSelect = document.querySelector("#fetch-gmb-data #zwssgr-location-select");
+    if (!zwssgrLocationSelect) {
+      return;
+    }
+    var zwssgrLocationNumber = zwssgrLocationSelect.value;
+    zwssgrLocationSelect.classList.add('disabled');
+    var zwssgrLocationName = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].text;
+    var zwssgrLocationNewReviewUri = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].getAttribute("data-new-review-url");
+    var zwssgrLocationAllReviewUri = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].getAttribute("data-all-reviews-url");
+    var zwssgrWidgetId = (0,_get_url_parameter__WEBPACK_IMPORTED_MODULE_1__.zwssgrGetUrlParameter)("zwssgr_widget_id");
+    zwssgrFetchReviewButton.classList.add("disabled");
+    zwssgrFetchReviewButton.innerHTML = '<span class="spinner is-active"></span> Fetching...';
+    if (!zwssgrAccountNumber && !zwssgrLocationNumber) {
+      document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">Both account and location are required.</p>';
+      setTimeout(function () {
+        return location.reload();
+      }, 1500);
+      return;
+    }
+    if (!zwssgrAccountNumber) {
+      document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">Account is required.</p>';
+      setTimeout(function () {
+        return location.reload();
+      }, 1500);
+      return;
+    }
+    if (!zwssgrLocationNumber) {
+      document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">Location is required.</p>';
+      setTimeout(function () {
+        return location.reload();
+      }, 1500);
+      return;
+    }
+    if (!zwssgrWidgetId) {
+      document.querySelector('#fetch-gmb-data .response').innerHTML = '<p class="error">No valid widget ID found.</p>';
+      setTimeout(function () {
+        return location.reload();
+      }, 1500);
+      return;
+    }
+    document.querySelector('#fetch-gmb-data .response').innerHTML = '';
+    document.querySelector('#fetch-gmb-data .progress-bar').style.display = 'block';
+    (0,_process_batches__WEBPACK_IMPORTED_MODULE_0__.zwssgrProcessBatch)(zwssgrGmbDataType, zwssgrAccountNumber, zwssgrLocationNumber, zwssgrWidgetId, zwssgrLocationName, zwssgrLocationNewReviewUri, zwssgrAccountName, zwssgrLocationAllReviewUri);
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/front-elementor.js":
+/*!******************************************!*\
+  !*** ./assets/src/js/front-elementor.js ***!
+  \******************************************/
+/***/ (() => {
+
+(function () {
+  "use strict";
+
+  function initSwiperSlider() {
+    var sliderConfigs = {
+      ".zwssgr-slider-1": {
+        slidesPerView: 1,
+        slidesPerGroup: 1,
+        breakpoints: {
+          1200: {
+            slidesPerView: 3,
+            slidesPerGroup: 3
+          },
+          768: {
+            slidesPerView: 2,
+            slidesPerGroup: 2
+          },
+          480: {
+            slidesPerView: 1,
+            slidesPerGroup: 1
+          }
+        }
+      },
+      ".zwssgr-slider-2": {
+        slidesPerView: 1,
+        slidesPerGroup: 1,
+        breakpoints: {
+          1200: {
+            slidesPerView: 3,
+            slidesPerGroup: 3
+          },
+          768: {
+            slidesPerView: 2,
+            slidesPerGroup: 2
+          },
+          480: {
+            slidesPerView: 1,
+            slidesPerGroup: 1
+          }
+        }
+      },
+      ".zwssgr-slider-3": {
+        slidesPerView: 1,
+        slidesPerGroup: 1,
+        breakpoints: {
+          1200: {
+            slidesPerView: 2,
+            slidesPerGroup: 2
+          },
+          480: {
+            slidesPerView: 1,
+            slidesPerGroup: 1
+          }
+        }
+      },
+      ".zwssgr-slider-4": {
+        slidesPerView: 1,
+        slidesPerGroup: 1
+      },
+      ".zwssgr-slider-5": {
+        slidesPerView: 1,
+        slidesPerGroup: 1,
+        breakpoints: {
+          1200: {
+            slidesPerView: 2,
+            slidesPerGroup: 2
+          },
+          480: {
+            slidesPerView: 1,
+            slidesPerGroup: 1
+          }
+        }
+      },
+      ".zwssgr-slider-6": {
+        slidesPerView: 1,
+        slidesPerGroup: 1,
+        breakpoints: {
+          1200: {
+            slidesPerView: 3,
+            slidesPerGroup: 3
+          },
+          768: {
+            slidesPerView: 2,
+            slidesPerGroup: 2
+          },
+          480: {
+            slidesPerView: 1,
+            slidesPerGroup: 1
+          }
+        }
+      }
+    };
+    Object.keys(sliderConfigs).forEach(function (selector) {
+      var sliderElements = document.querySelectorAll(selector);
+      if (sliderElements.length > 0) {
+        var parentElement = sliderElements[0].parentElement;
+        sliderElements.forEach(function (sliderElement) {
+          var slideCount = sliderElement.querySelectorAll('.swiper-slide').length;
+          var config = sliderConfigs[selector];
+          var minSlidesRequired = (config.slidesPerView || 1) + 1;
+          var enableLoop = slideCount >= minSlidesRequired;
+          new Swiper(sliderElement, {
+            slidesPerView: config.slidesPerView,
+            slidesPerGroup: config.slidesPerGroup,
+            spaceBetween: 20,
+            loop: enableLoop,
+            navigation: {
+              nextEl: parentElement.querySelector(".swiper-button-next"),
+              prevEl: parentElement.querySelector(".swiper-button-prev")
+            },
+            breakpoints: config.breakpoints || {}
+          });
+        });
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    initSwiperSlider();
+  });
+
+  // Reinitialize Swiper when Elementor updates preview
+  window.addEventListener('elementor/frontend/init', function () {
+    elementorFrontend.hooks.addAction('frontend/element_ready/global', function () {
+      initSwiperSlider();
+    });
+  });
+})();
+
+/***/ }),
+
+/***/ "./assets/src/js/front-keyword-filter.js":
+/*!***********************************************!*\
+  !*** ./assets/src/js/front-keyword-filter.js ***!
+  \***********************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  document.addEventListener('click', function (event) {
+    if (event.target.closest('.zwssgr-front-keywords-list li')) {
+      var _mainWrapper$querySel, _mainWrapper$querySel2;
+      var clickedElement = event.target.closest('.zwssgr-front-keywords-list li');
+      var mainWrapper = clickedElement.closest('.zwssgr-main-wrapper');
+      mainWrapper.querySelectorAll('.zwssgr-front-keywords-list li').forEach(function (li) {
+        return li.classList.remove('selected');
+      });
+      clickedElement.classList.add('selected');
+      var postId = mainWrapper.getAttribute('data-widget-id');
+      if (!postId) {
+        console.warn('Post ID not found for the selected element.');
+        return;
+      }
+      var keyword = clickedElement.getAttribute('data-zwssgr-keyword');
+      var selectedValue = ((_mainWrapper$querySel = mainWrapper.querySelector('.front-sort-by-select')) === null || _mainWrapper$querySel === void 0 ? void 0 : _mainWrapper$querySel.value) || '';
+      var mainDivWrapper = (_mainWrapper$querySel2 = mainWrapper.querySelector('.zwssgr-front-review-filter-wrap')) === null || _mainWrapper$querySel2 === void 0 ? void 0 : _mainWrapper$querySel2.nextElementSibling;
+      if (!mainDivWrapper) return;
+      var list_to_apnd = mainDivWrapper.querySelector('.zwssgr-slider.zwssgr-list');
+      var grid_to_apnd = mainDivWrapper.querySelector('.zwssgr-slider.zwssgr-grid-item');
+      var ratingFilter = mainDivWrapper.getAttribute('data-rating-filter');
+      var layoutType = mainDivWrapper.getAttribute('data-layout-type');
+      var bg_color_load = mainDivWrapper.getAttribute('data-bg-color');
+      var text_color_load = mainDivWrapper.getAttribute('data-text-color');
+      var enable_load_more = mainDivWrapper.getAttribute('data-enable-load-more');
+      if (enable_load_more === "1") {
+        window.zwssgrLoadMoreButton = "<button class=\"load-more-meta zwssgr-load-more-btn\" data-page=\"2\" data-post-id=\"".concat(postId, "\" data-rating-filter=\"").concat(ratingFilter, "\" style=\"background-color: ").concat(bg_color_load, "; color: ").concat(text_color_load, ";\">Load More</button>");
+      }
+      mainDivWrapper.querySelectorAll('.load-more-meta').forEach(function (button) {
+        return button.style.display = 'none';
+      });
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', load_more.ajax_url, true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          if (!response.data.content || response.data.content.trim() === '') {
+            var errMsg = "<p class=\"zwssgr-no-found-message\">".concat(response.data.err_msg, "</p>");
+            if (list_to_apnd) list_to_apnd.innerHTML = errMsg;
+            if (grid_to_apnd) grid_to_apnd.innerHTML = errMsg;
+            ['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(function (selector) {
+              var element = mainDivWrapper.querySelector(selector);
+              if (element) element.innerHTML = errMsg;
+            });
+            return;
+          }
+          if (list_to_apnd) {
+            list_to_apnd.innerHTML = '';
+            list_to_apnd.insertAdjacentHTML('beforeend', response.data.content);
+          }
+          if (grid_to_apnd) {
+            grid_to_apnd.innerHTML = '';
+            grid_to_apnd.insertAdjacentHTML('beforeend', response.data.content);
+          }
+          ['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(function (selector) {
+            var element = mainDivWrapper.querySelector(selector);
+            if (element) {
+              setTimeout(function () {
+                return reinitializeAllSwipers(element);
+              }, 100);
+              element.innerHTML = '';
+              element.insertAdjacentHTML('beforeend', response.data.content);
+            }
+          });
+          if (['list-1', 'list-2', 'list-3', 'list-4', 'list-5', 'grid-1', 'grid-2', 'grid-3', 'grid-4', 'grid-5'].includes(layoutType)) {
+            if (response.data.disable_button !== true) {
+              mainDivWrapper.insertAdjacentHTML('beforeend', window.zwssgrLoadMoreButton);
+            }
+          }
+          if (['popup-1', 'popup-2'].includes(layoutType)) {
+            if (response.data.disable_button !== true) {
+              var _document$querySelect;
+              (_document$querySelect = document.querySelector('.scrollable-content')) === null || _document$querySelect === void 0 || _document$querySelect.insertAdjacentHTML('beforeend', window.zwssgrLoadMoreButton);
+            }
+          }
+        }
+      };
+      var params = new URLSearchParams();
+      params.append('action', 'zwssgr_load_more_meta_data');
+      params.append('front_keyword', keyword);
+      params.append('post_id', postId);
+      params.append('front_sort_by', selectedValue);
+      params.append('nonce', load_more.nonce);
+      xhr.send(params);
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/front-popup.js":
+/*!**************************************!*\
+  !*** ./assets/src/js/front-popup.js ***!
+  \**************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  // Bind click event to open popup
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('zwssgr-popup-item')) {
+      var popupId = e.target.getAttribute('data-popup'); // Get the popup ID from the data attribute
+
+      if (popupId) {
+        document.getElementById(popupId).style.display = 'block'; // Show the popup
+      } else {
+        console.log('not found');
+      }
+    }
+  });
+
+  // Bind click event to close popup when the close button is clicked
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('zwssgr-close-popup')) {
+      var popupOverlay = e.target.closest('.zwssgr-popup-overlay');
+      if (popupOverlay) {
+        popupOverlay.style.display = 'none'; // Hide the popup
+      }
+    }
+  });
+
+  // Bind click event to close popup when clicking outside the popup content
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('zwssgr-popup-overlay')) {
+      e.target.style.display = 'none'; // Hide the popup
+    }
+  });
+
+  // Bind keydown event to close popup when ESC key is pressed
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' || e.keyCode === 27) {
+      document.querySelectorAll('.zwssgr-popup-overlay').forEach(function (popup) {
+        popup.style.display = 'none'; // Hide the popup
+      });
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/front-sortby-filter.js":
+/*!**********************************************!*\
+  !*** ./assets/src/js/front-sortby-filter.js ***!
+  \**********************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  document.addEventListener('change', function (event) {
+    if (event.target.matches('.front-sort-by-select')) {
+      var _mainWrapper$querySel;
+      var mainWrapper = event.target.closest('.zwssgr-main-wrapper');
+      if (!mainWrapper) return;
+      var postId = mainWrapper.getAttribute('data-widget-id');
+      if (!postId) {
+        console.error('Post ID not found');
+        return;
+      }
+      var selectedValue = event.target.value;
+      var selectedKeywordElement = mainWrapper.querySelector('.zwssgr-front-keywords-list li.selected');
+      var keyword = selectedKeywordElement ? selectedKeywordElement.getAttribute('data-zwssgr-keyword') : '';
+      var mainDivWrapper = (_mainWrapper$querySel = mainWrapper.querySelector('.zwssgr-front-review-filter-wrap')) === null || _mainWrapper$querySel === void 0 ? void 0 : _mainWrapper$querySel.nextElementSibling;
+      if (!mainDivWrapper) return;
+      var list_to_apnd = mainDivWrapper.querySelector('.zwssgr-slider.zwssgr-list');
+      var grid_to_apnd = mainDivWrapper.querySelector('.zwssgr-slider.zwssgr-grid-item');
+      var ratingFilter = mainDivWrapper.getAttribute('data-rating-filter');
+      var layoutType = mainDivWrapper.getAttribute('data-layout-type');
+      var bg_color_load = mainDivWrapper.getAttribute('data-bg-color');
+      var text_color_load = mainDivWrapper.getAttribute('data-text-color');
+      var enable_load_more = mainDivWrapper.getAttribute('data-enable-load-more');
+      if (enable_load_more === "1") {
+        window.zwssgrLoadMoreButton = "<button class=\"load-more-meta zwssgr-load-more-btn\" data-page=\"2\" data-post-id=\"".concat(postId, "\" data-rating-filter=\"").concat(ratingFilter, "\" style=\"background-color: ").concat(bg_color_load, "; color: ").concat(text_color_load, ";\">Load More</button>");
+      }
+      mainDivWrapper.querySelectorAll('.load-more-meta').forEach(function (button) {
+        return button.remove();
+      });
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', load_more.ajax_url, true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          if (!response.data.content || response.data.content.trim() === '') {
+            var errMsg = "<p class=\"zwssgr-no-found-message\">".concat(response.data.err_msg, "</p>");
+            if (list_to_apnd) list_to_apnd.innerHTML = errMsg;
+            if (grid_to_apnd) grid_to_apnd.innerHTML = errMsg;
+            ['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(function (selector) {
+              var element = mainDivWrapper.querySelector(selector);
+              if (element) element.innerHTML = errMsg;
+            });
+            return;
+          }
+          if (list_to_apnd) {
+            list_to_apnd.innerHTML = '';
+            list_to_apnd.insertAdjacentHTML('beforeend', response.data.content);
+          }
+          if (grid_to_apnd) {
+            grid_to_apnd.innerHTML = '';
+            grid_to_apnd.insertAdjacentHTML('beforeend', response.data.content);
+          }
+          ['#zwssgr-slider1', '#zwssgr-slider2', '#zwssgr-slider3', '#zwssgr-slider4', '#zwssgr-slider5', '#zwssgr-slider6'].forEach(function (selector) {
+            var element = mainDivWrapper.querySelector(selector);
+            if (element) {
+              setTimeout(function () {
+                return reinitializeAllSwipers(element);
+              }, 100);
+              element.innerHTML = '';
+              element.insertAdjacentHTML('beforeend', response.data.content);
+            }
+          });
+          if (['list-1', 'list-2', 'list-3', 'list-4', 'list-5', 'grid-1', 'grid-2', 'grid-3', 'grid-4', 'grid-5'].includes(layoutType)) {
+            if (response.data.disable_button !== true) {
+              mainDivWrapper.insertAdjacentHTML('beforeend', window.zwssgrLoadMoreButton);
+            }
+          }
+          if (['popup-1', 'popup-2'].includes(layoutType)) {
+            if (response.data.disable_button !== true) {
+              var _document$querySelect;
+              (_document$querySelect = document.querySelector('.scrollable-content')) === null || _document$querySelect === void 0 || _document$querySelect.insertAdjacentHTML('beforeend', window.zwssgrLoadMoreButton);
+            }
+          }
+        }
+      };
+      var params = new URLSearchParams();
+      params.append('action', 'zwssgr_load_more_meta_data');
+      params.append('front_sort_by', selectedValue);
+      params.append('post_id', postId);
+      params.append('front_keyword', keyword);
+      params.append('nonce', load_more.nonce);
+      xhr.send(params);
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/front-swiper.js":
+/*!***************************************!*\
+  !*** ./assets/src/js/front-swiper.js ***!
+  \***************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var sliderConfigs = {
+    ".zwssgr-slider-1": {
+      slidesPerView: 1,
+      slidesPerGroup: 1,
+      breakpoints: {
+        1200: {
+          slidesPerView: 3,
+          slidesPerGroup: 3
+        },
+        768: {
+          slidesPerView: 2,
+          slidesPerGroup: 2
+        },
+        480: {
+          slidesPerView: 1,
+          slidesPerGroup: 1
+        }
+      }
+    },
+    ".zwssgr-slider-2": {
+      slidesPerView: 1,
+      slidesPerGroup: 1,
+      breakpoints: {
+        1200: {
+          slidesPerView: 3,
+          slidesPerGroup: 3
+        },
+        768: {
+          slidesPerView: 2,
+          slidesPerGroup: 2
+        },
+        480: {
+          slidesPerView: 1,
+          slidesPerGroup: 1
+        }
+      }
+    },
+    ".zwssgr-slider-3": {
+      slidesPerView: 1,
+      slidesPerGroup: 1,
+      breakpoints: {
+        1200: {
+          slidesPerView: 2,
+          slidesPerGroup: 2
+        },
+        480: {
+          slidesPerView: 1,
+          slidesPerGroup: 1
+        }
+      }
+    },
+    ".zwssgr-slider-4": {
+      slidesPerView: 1,
+      slidesPerGroup: 1
+    },
+    ".zwssgr-slider-5": {
+      slidesPerView: 1,
+      slidesPerGroup: 1,
+      breakpoints: {
+        1200: {
+          slidesPerView: 2,
+          slidesPerGroup: 2
+        },
+        480: {
+          slidesPerView: 1,
+          slidesPerGroup: 1
+        }
+      }
+    },
+    ".zwssgr-slider-6": {
+      slidesPerView: 1,
+      slidesPerGroup: 1,
+      breakpoints: {
+        1200: {
+          slidesPerView: 3,
+          slidesPerGroup: 3
+        },
+        768: {
+          slidesPerView: 2,
+          slidesPerGroup: 2
+        },
+        480: {
+          slidesPerView: 1,
+          slidesPerGroup: 1
+        }
+      }
+    }
+  };
+
+  // Store Swiper instances in an object
+  var swiperInstances = {};
+  function reinitializeAllSwipers(container) {
+    // Ensure container is a valid HTML element
+    if (!(container instanceof HTMLElement)) {
+      console.error("Invalid container element!", container);
+      return;
+    }
+
+    // Loop through all configured Swiper sliders
+    Object.keys(sliderConfigs).forEach(function (selector) {
+      var sliderElements = container.querySelectorAll(selector); // Get all sliders within the container
+
+      sliderElements.forEach(function (sliderElement) {
+        var slideCount = sliderElement.querySelectorAll('.swiper-slide').length;
+        var config = sliderConfigs[selector];
+        var minSlidesRequired = (config.slidesPerView || 1) + 1;
+        var enableLoop = slideCount >= minSlidesRequired;
+
+        // Destroy existing Swiper instance if it exists
+        if (swiperInstances[selector]) {
+          swiperInstances[selector].destroy(true, true);
+        }
+
+        // Initialize new Swiper instance
+        swiperInstances[selector] = new Swiper(sliderElement, {
+          slidesPerView: config.slidesPerView,
+          slidesPerGroup: config.slidesPerGroup,
+          spaceBetween: 20,
+          loop: enableLoop,
+          navigation: {
+            nextEl: sliderElement.closest(".zwssgr-slider").querySelector(".swiper-button-next"),
+            prevEl: sliderElement.closest(".zwssgr-slider").querySelector(".swiper-button-prev")
+          },
+          breakpoints: config.breakpoints || {}
+        });
+      });
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/get-url-parameter.js":
+/*!********************************************!*\
+  !*** ./assets/src/js/get-url-parameter.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   zwssgrGetUrlParameter: () => (/* binding */ zwssgrGetUrlParameter)
+/* harmony export */ });
+function zwssgrGetUrlParameter(zwssgrName) {
+  var zwssgrUrlParams = new URLSearchParams(window.location.search);
+  return zwssgrUrlParams.get(zwssgrName);
+}
 
 /***/ }),
 
@@ -5972,6 +6424,91 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./assets/src/js/load-more.js":
+/*!************************************!*\
+  !*** ./assets/src/js/load-more.js ***!
+  \************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  document.addEventListener('click', function (event) {
+    if (event.target.closest('.load-more-meta')) {
+      var _mainWrapper$querySel;
+      var button = event.target.closest('.load-more-meta');
+      var mainWrapper = button.closest('.zwssgr-main-wrapper');
+      if (!mainWrapper) return;
+      var page = button.getAttribute('data-page'); // Get the current page number
+      var postId = button.getAttribute('data-post-id'); // Get the post-id from the button data attribute
+      var selectedValue = ((_mainWrapper$querySel = mainWrapper.querySelector('.front-sort-by-select')) === null || _mainWrapper$querySel === void 0 ? void 0 : _mainWrapper$querySel.value) || '';
+      var selectedKeywordElement = mainWrapper.querySelector('.zwssgr-front-keywords-list li.selected');
+      var keyword = selectedKeywordElement ? selectedKeywordElement.getAttribute('data-zwssgr-keyword') : '';
+      var popupContentContainer = mainWrapper.querySelector('zwssgr-slider.zwssgr-grid-item.zwssgr-popup-list');
+
+      // Disable the button to prevent multiple clicks
+      button.setAttribute('disabled', true);
+      button.textContent = 'Loading...';
+
+      // AJAX request using Fetch API
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', load_more.ajax_url, true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.success) {
+              // Append new content to the popup if applicable
+              if (popupContentContainer) {
+                popupContentContainer.insertAdjacentHTML('beforeend', response.data.content);
+              }
+              var container = document.querySelector("#div-container[data-widget-id=\"".concat(postId, "\"]"));
+              if (container) {
+                var listContainer = container.querySelector('.zwssgr-list');
+                var gridContainer = container.querySelector('.zwssgr-grid-item');
+                if (listContainer) {
+                  listContainer.insertAdjacentHTML('beforeend', response.data.content);
+                }
+                if (gridContainer) {
+                  gridContainer.insertAdjacentHTML('beforeend', response.data.content);
+                }
+              }
+
+              // Update the page number for future requests
+              button.setAttribute('data-page', response.data.new_page);
+
+              // If no more posts, remove or disable the button
+              if (response.data.disable_button) {
+                button.remove();
+              } else {
+                button.removeAttribute('disabled');
+                button.textContent = 'Load More';
+              }
+            } else {
+              button.removeAttribute('disabled');
+              button.textContent = 'Error, try again';
+            }
+          } else {
+            button.removeAttribute('disabled');
+            button.textContent = 'Error, try again';
+          }
+        }
+      };
+      var params = new URLSearchParams();
+      params.append('action', 'zwssgr_load_more_meta_data');
+      params.append('post_id', postId);
+      params.append('page', page);
+      params.append('front_sort_by', selectedValue);
+      params.append('front_keyword', keyword);
+      params.append('nonce', load_more.nonce);
+      xhr.send(params);
+    }
+  });
+});
+
+/***/ }),
+
 /***/ "./assets/src/js/plugin-menu.js":
 /*!**************************************!*\
   !*** ./assets/src/js/plugin-menu.js ***!
@@ -6074,6 +6611,111 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+/***/ }),
+
+/***/ "./assets/src/js/process-batches.js":
+/*!******************************************!*\
+  !*** ./assets/src/js/process-batches.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   zwssgrProcessBatch: () => (/* binding */ zwssgrProcessBatch)
+/* harmony export */ });
+function zwssgrProcessBatch(zwssgrGmbDataType, zwssgrAccountNumber, zwssgrLocationNumber, zwssgrWidgetId, zwssgrLocationName, zwssgrLocationNewReviewUri, zwssgrAccountName, zwssgrLocationAllReviewUri) {
+  var _zwssgr_admin, _zwssgr_admin2;
+  function zwssgrReloadWithDelay() {
+    var zwssgrDelay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1500;
+    setTimeout(function () {
+      return location.reload();
+    }, zwssgrDelay);
+  }
+  fetch((_zwssgr_admin = zwssgr_admin) === null || _zwssgr_admin === void 0 ? void 0 : _zwssgr_admin.ajax_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      action: "zwssgr_fetch_gmb_data",
+      security: (_zwssgr_admin2 = zwssgr_admin) === null || _zwssgr_admin2 === void 0 ? void 0 : _zwssgr_admin2.zwssgr_queue_manager_nounce,
+      zwssgr_gmb_data_type: zwssgrGmbDataType,
+      zwssgr_account_number: zwssgrAccountNumber,
+      zwssgr_location_number: zwssgrLocationNumber,
+      zwssgr_widget_id: zwssgrWidgetId,
+      zwssgr_location_name: zwssgrLocationName,
+      zwssgr_location_new_review_uri: zwssgrLocationNewReviewUri,
+      zwssgr_account_name: zwssgrAccountName,
+      zwssgr_location_all_review_uri: zwssgrLocationAllReviewUri
+    })
+  }).then(function (zwssgrResponse) {
+    return zwssgrResponse.json();
+  }).then(function (zwssgrResponse) {
+    var zwssgrProgressBar = document.querySelector('#fetch-gmb-data .progress-bar');
+    var zwssgrResponseContainer = document.querySelector('#fetch-gmb-data .response');
+    if (zwssgrResponse.success) {
+      zwssgrProgressBar.style.display = 'block';
+    } else {
+      var _zwssgrResponse$data;
+      zwssgrResponseContainer.innerHTML = "<p class=\"error\">".concat(((_zwssgrResponse$data = zwssgrResponse.data) === null || _zwssgrResponse$data === void 0 ? void 0 : _zwssgrResponse$data.message) || 'An error occurred.', "</p>");
+      zwssgrReloadWithDelay();
+    }
+  })["catch"](function (zwssgrError) {
+    var zwssgrResponseContainer = document.querySelector('#fetch-gmb-data .response');
+    zwssgrResponseContainer.innerHTML = "<p class=\"error\">An unexpected error occurred.</p>";
+    zwssgrReloadWithDelay();
+  });
+}
+
+/***/ }),
+
+/***/ "./assets/src/js/read-more.js":
+/*!************************************!*\
+  !*** ./assets/src/js/read-more.js ***!
+  \************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('toggle-content')) {
+      var link = e.target;
+      var fullText = link.getAttribute('data-full-text');
+      var parentParagraph = link.closest('p');
+
+      // Replace the trimmed content with the full content
+      if (parentParagraph) {
+        parentParagraph.innerHTML = fullText;
+      }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/redirect-to-options-tab.js":
+/*!**************************************************!*\
+  !*** ./assets/src/js/redirect-to-options-tab.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   zwssgrRedirectToOptionsTab: () => (/* binding */ zwssgrRedirectToOptionsTab)
+/* harmony export */ });
+function zwssgrRedirectToOptionsTab() {
+  var zwssgrCurrentUrl = window.location.href;
+  if (zwssgrCurrentUrl.includes('tab=')) {
+    zwssgrCurrentUrl = zwssgrCurrentUrl.replace(/tab=[^&]+/, 'tab=tab-options');
+  } else {
+    zwssgrCurrentUrl += (zwssgrCurrentUrl.includes('?') ? '&' : '?') + 'tab=tab-options';
+  }
+  window.location.href = zwssgrCurrentUrl;
+}
 
 /***/ }),
 
@@ -7752,6 +8394,18 @@ document.addEventListener('DOMContentLoaded', function () {
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	
