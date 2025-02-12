@@ -46,7 +46,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleButtonVisibility() {
         let toggleCheckbox = document.getElementById('toggle-google-review');
         let buttons = document.querySelectorAll('.zwssgr-google-toggle');
-
+    
+        // Check if the checkbox element exists
+        if (!toggleCheckbox) {
+            // console.error("Element with ID 'toggle-google-review' not found.");
+            return;
+        }
+    
         buttons.forEach(button => {
             button.style.display = toggleCheckbox.checked ? 'inline-block' : 'none';
         });

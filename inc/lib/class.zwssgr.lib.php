@@ -35,15 +35,15 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 		function ZWSSGR_lib_public_enqueue() 
 		{
 			// script js
-			wp_register_script( ZWSSGR_PREFIX . '_script_js', ZWSSGR_URL .'assets/js/script.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '_script_js' );
+			// wp_register_script( ZWSSGR_PREFIX . '_script_js', ZWSSGR_URL .'assets/js/script.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			// wp_enqueue_script( ZWSSGR_PREFIX . '_script_js' );
 
-			wp_register_script( ZWSSGR_PREFIX . '-script-vanilla-js', ZWSSGR_URL . 'assets/js/script-vanilla.js', array(), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '-script-vanilla-js' );
+			// wp_register_script( ZWSSGR_PREFIX . '-script-vanilla-js', ZWSSGR_URL . 'assets/js/script-vanilla.js', array(), ZWSSGR_VERSION, true );
+			// wp_enqueue_script( ZWSSGR_PREFIX . '-script-vanilla-js' );
 
-			// style css
-			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
-			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
+			// // style css
+			// wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
+			// wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
 
 			// // Slick js
 			// wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
@@ -52,6 +52,12 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			// // Slick css
 			// wp_register_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', false, ZWSSGR_VERSION );
 			// wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css' );
+
+			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '-main-js' );
+
+			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
 
 			// Swiper css
 			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', false, ZWSSGR_VERSION );
@@ -86,7 +92,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				}
 			}
 
-			wp_localize_script(ZWSSGR_PREFIX . '_script_js', 'load_more', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'load_more', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('zwssgr_load_more_nonce')
 			));

@@ -1,3 +1,5 @@
+import { toggleElements } from './hide-element.js';
+import { reinitializeAllSwipers } from './swiper.js';
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
 
@@ -119,5 +121,4 @@ document.addEventListener('DOMContentLoaded', function () {
             xhr.send(formData);
         }
     });
-
 });
