@@ -87,108 +87,200 @@ $zwssgrbadge: ".zwssgr";
                         font-weight: 400;
                         margin: 10px 0;
                     }
+
+                    &-logo-wrap {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 25px;
+                            height: 25px;
+                            padding-right: 10px;
+                        }
+                    }
+                }
+            }
+
+            &-badge2 {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 20px;
+        
+                #{$zwssgrbadge} {
+                    &-badge-image {
+                        width: 90px;
+                    }
+        
+                    &-badge-info {
+                        width: calc(100% - 110px);
+                        padding-left: 20px;
+                        text-align: center;
+                    }
+                }
+            }
+        
+            &-badge3 {
+                #{$zwssgrbadge} {
+                    &-rating-wrap {
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    &-rating {
+                        margin-right: 0;
+                        margin-left: 10px;
+                    }
+                }
+                .final-rating {
+                    font-weight: 900;
+                    font-size: 20px;
+                    color: #000000;
+                    font-family: 'Poppins', sans-serif;
+                }
+            }
+        
+            &-badge4 {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 20px;
+        
+                #{$zwssgrbadge} {
+                    &-badge4-rating {
+                        width: 45%;
+                        padding-right: 20px;
+                        box-sizing: border-box;
+                    }
+                    &-badge4-info {
+                        width: 55%;
+                        text-align: center;
+                    }
+                }
+                .final-rating {
+                    color: #4285F4;
+                    font-size: 60px;
+                    font-weight: 700;
+                    font-family: 'Poppins', sans-serif;
+                    line-height: 1;
+                }
+            }
+        
+            &-badge5 {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0 ;
+                #{$zwssgrbadge} {
+                    &-badge5-rating {
+                        background-color: #4285F4;
+                        padding: 20px;
+                        border-radius: 16px 0 0 16px;
+                        width: 40%;
+                        box-sizing: border-box;
+                        text-align: center;
+                        max-height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    &-badge5-info {
+                        width: 60%;
+                        padding: 20px;
+                        box-sizing: border-box;
+                        text-align: center;
+                    }
+                }
+        
+                .final-rating {
+                    color: #FFFFFF;
+                    font-size: 62px;
+                    font-weight: 700;
+                    font-family: 'Poppins', sans-serif;
+                    line-height: 1;
+                }
+            }
+        
+            &-badge6 {
+                #{$zwssgrbadge} { 
+                    &-badge6-rating {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 30px;
+                    }
+                }
+                .final-rating {
+                    color: #F6BB06;
+                    font-weight: 700;
+                    font-size: 40px;
+                    font-family: 'Poppins', sans-serif;
+                    padding-right: 20px;
+                }
+            }
+        
+            &-badge7 {
+                #{$zwssgrbadge} { 
+                    &-badge7-rating {
+                        display: flex;
+                        align-items: center;
+                        margin-top: 20px;
+                        justify-content: center;
+                    }
+                }
+                .final-rating {
+                    font-weight: 900;
+                    font-size: 20px;
+                    color: #000000;
+                    font-family: 'Poppins', sans-serif;
+                    padding-right: 5px;
+                }
+            }
+        
+            &-badge8 {
+                #{$zwssgrbadge} { 
+                    &-final-review-wrap{
+                        margin: 5px auto;
+                    }
+                }
+                .final-rating {
+                    color: #6A6A6A;
+                    font-size: 56px;
+                    font-weight: 400;
+                    line-height: 60px;
+                }
+            }
+        
+
+            &-badge9 {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+        
+                #{$zwssgrbadge} { 
+                    &-badge-image{
+                        width: 90px;
+                    }
+                    &-badge-info {
+                        width: calc(100% - 110px);
+                        padding-left: 20px;
+                        text-align: left;
+                    }
+                    &-average {
+                        text-transform: capitalize;
+                        font-size: 18px;
+                    }
+
+                    &-final-review-wrap {
+                        margin: initial;
+                    }
+
+                    &-based-on {
+                        margin-bottom: 0;
+                        margin-top: 5px;
+                    }
                 }
             }
             
         } 
-    }
-
-    &-badge2 {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 20px;
-
-        #{$zwssgrbadge} {
-            &-badge-image {
-                width: 90px;
-            }
-
-            &-badge-info {
-                width: calc(100% - 110px);
-                padding-left: 20px;
-                text-align: center;
-            }
-        }
-    }
-
-    &-badge3 {
-        #{$zwssgrbadge} {
-            &-rating-wrap {
-                justify-content: center;
-                align-items: center;
-            }
-            &-rating {
-                margin-right: 0;
-                margin-left: 10px;
-            }
-        }
-        .final-rating {
-            font-weight: 900;
-            font-size: 20px;
-            color: #000000;
-            font-family: 'Poppins', sans-serif;
-        }
-    }
-
-    &-badge4 {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        padding: 20px;
-
-        #{$zwssgrbadge} {
-            &-badge4-rating {
-                width: 45%;
-                padding-right: 20px;
-                box-sizing: border-box;
-            }
-            &-badge4-info {
-                width: 55%;
-                text-align: center;
-            }
-        }
-        .final-rating {
-            color: #4285F4;
-            font-size: 60px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            line-height: 1;
-        }
-    }
-
-    &-badge5 {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0 !important;
-        #{$zwssgrbadge} {
-            &-badge5-rating {
-                background-color: #4285F4;
-                padding: 20px;
-                border-radius: 16px 0 0 16px;
-                width: 40%;
-                box-sizing: border-box;
-                text-align: center;
-                max-height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            &-badge5-info {
-                width: 60%;
-                padding: 20px;
-                box-sizing: border-box;
-                text-align: center;
-            }
-        }
-
-        .final-rating {
-            color: #FFFFFF;
-            font-size: 62px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            line-height: 1;
-        }
     }
 
     &-badge-link {
@@ -198,295 +290,3 @@ $zwssgrbadge: ".zwssgr";
     }
 }
 
-
-
-
-// .zwssgr-badge-item .zwssgr-average{
-//     color: #1B1B1B;
-//     font-weight: 700;
-//     font-size: 24px;
-//     font-family: 'Poppins', sans-serif;
-//     text-transform: uppercase;
-//     margin: 0 0 10px;
-// }
-
-// .zwssgr-badge-item .zwssgr-based-on {
-//     color: #1B1B1B;
-//     font-size: 16px;
-//     font-weight: 400;
-//     font-family: 'Poppins', sans-serif;
-//     margin: 15px 0;
-// }
-
-
-// .zwssgr-badge-item.zwssgr-badge1{
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     text-align: center;
-//     padding: 30px;
-//     background-color: #fff;
-//     border-radius: 16px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge2{
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     padding: 20px;
-//     display: flex;
-//     align-items: center;
-//     flex-wrap: wrap;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-image {
-//     width: 90px;
-    
-// }
-
-// .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info {
-//     width: calc(100% - 110px);
-//     padding-left: 20px;
-//     text-align: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info p {
-//     margin-bottom: 0;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge9{
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     padding: 20px;
-//     display: flex;
-//     align-items: center;
-//     flex-wrap: wrap;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge9 .zwssgr-badge-image {
-//     width: 90px;
-    
-// }
-
-// .zwssgr-badge-item.zwssgr-badge9 .zwssgr-badge-info {
-//     width: calc(100% - 110px);
-//     padding-left: 20px;
-//     text-align: left;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge9 .zwssgr-average {
-//     text-transform: capitalize;
-//     font-size: 18px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge9 .zwssgr-badge-info p {
-//     margin-bottom: 0;
-//     margin-top: 5px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge9 .zwssgr-final-review-wrap {
-//     margin: initial;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge3{ 
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     padding: 20px;
-//     text-align: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge3 .zwssgr-rating-wrap {
-//     justify-content: center;
-//     align-items: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge3 .final-rating {
-//     font-weight: 900;
-//     font-size: 20px;
-//     color: #000000;
-//     font-family: 'Poppins', sans-serif;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge3 .zwssgr-rating {
-//     margin-right: 0;
-//     margin-left: 10px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge4{ 
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     padding: 20px;
-//     display: flex;
-//     align-items: center;
-//     flex-wrap: wrap;
-//     justify-content: space-between;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge4 .final-rating {
-//     color: #4285F4;
-//     font-size: 60px;
-//     font-weight: 700;
-//     font-family: 'Poppins', sans-serif;
-//     line-height: 1;
-// }
-
-//  .zwssgr-badge4-info {
-//     width: 55%;
-//     text-align: center;
-// }
-
-// .zwssgr-badge4-rating {
-//     width: 45%;
-//     padding-right: 20px;
-//     box-sizing: border-box;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge5{ 
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     display: flex;
-//     flex-wrap: wrap;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge5 .zwssgr-badge5-rating {
-//     background-color: #4285F4;
-//     padding: 20px;
-//     border-radius: 16px 0 0 16px;
-//     width: 40%;
-//     box-sizing: border-box;
-//     text-align: center;
-//     max-height: 100%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge5 .zwssgr-badge5-info {
-//     width: 60%;
-//     padding: 20px;
-//     box-sizing: border-box;
-//     text-align: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge5 .zwssgr-badge5-rating .final-rating {
-//     color: #FFFFFF;
-//     font-size: 62px;
-//     font-weight: 700;
-//     font-family: 'Poppins', sans-serif;
-//     line-height: 1;
-// }
-
-// .zwssgr-badge-item .zwssgr-google {
-//     color: #6A6A6A;
-//     font-size: 28px;
-//     font-weight: 700;
-//     margin: 0;
-// }
-
-// .zwssgr-badge-item .zwssgr-avg-note {
-//     color: #6A6A6A;
-//     font-size: 16px;
-//     font-weight: 400;
-//     margin: 10px 0;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge6{
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     padding: 30px;
-//     background-color: #fff;
-//     border-radius: 16px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge6 .final-rating {
-//     color: #F6BB06;
-//     font-weight: 700;
-//     font-size: 40px;
-//     font-family: 'Poppins', sans-serif;
-//     padding-right: 20px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge6 .zwssgr-badge6-rating {
-//     display: flex;
-//     align-items: center;
-//     margin-bottom: 30px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge7{
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     padding: 30px;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     text-align: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge7 .zwssgr-badge7-rating {
-//     display: flex;
-//     align-items: center;
-//     margin-top: 20px;
-//     justify-content: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge7 .zwssgr-badge7-rating .final-rating {
-//     font-weight: 900;
-//     font-size: 20px;
-//     color: #000000;
-//     font-family: 'Poppins', sans-serif;
-//     padding-right: 5px;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge8{
-//     box-shadow: 10px 10px 30px 0px #00000005;
-//     padding: 30px;
-//     background-color: #fff;
-//     border-radius: 16px;
-//     text-align: center;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge8 .final-rating {
-//     color: #6A6A6A;
-//     font-size: 56px;
-//     font-weight: 400;
-//     line-height: 60px;
-// }
-
-// .selected-option-display .zwssgr-badge-item {
-//     max-width: 300px;
-// }
-
-// .zwssgr-badge-link {
-//     text-decoration: none;
-//     width: auto;
-//     display: inline-block;
-// }
-
-// .zwssgr-badge-link:focus {
-//     outline: none;
-//     box-shadow: none;
-// }
-
-// .zwssgr-badge-item.zwssgr-badge2 .zwssgr-badge-info .zwssgr-final-review-wrap {
-//     margin:  0 auto;
-// }
-
-// .zwssgr-badge1 .zwssgr-final-review-wrap,
-// .zwssgr-badge4 .zwssgr-final-review-wrap,
-// .zwssgr-badge8 .zwssgr-final-review-wrap {
-//     margin: 5px auto;
-// }
-
-// .zwssgr-slider .zwssgr-star,
-// .zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-star{
-//     color: #ccc;
-// }
-
-// .zwssgr-slider .zwssgr-star.filled,
-// .zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-star.filled {
-//     color: #f39c12;
-// }
-
-// .zwssgr-front-container .zwssgr-badge-item {
-//     max-width: 300px;
-//     margin: 0 auto;
-// }

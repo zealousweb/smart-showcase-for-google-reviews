@@ -682,62 +682,72 @@
   font-weight: 400;
   margin: 10px 0;
 }
-.zwssgr-badge2 {
+.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-logo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-logo-wrap img {
+  width: 25px;
+  height: 25px;
+  padding-right: 10px;
+}
+.zwssgr-badge-wrap .zwssgr-badge2 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   padding: 20px;
 }
-.zwssgr-badge2 .zwssgr-badge-image {
+.zwssgr-badge-wrap .zwssgr-badge2 .zwssgr-badge-image {
   width: 90px;
 }
-.zwssgr-badge2 .zwssgr-badge-info {
+.zwssgr-badge-wrap .zwssgr-badge2 .zwssgr-badge-info {
   width: calc(100% - 110px);
   padding-left: 20px;
   text-align: center;
 }
-.zwssgr-badge3 .zwssgr-rating-wrap {
+.zwssgr-badge-wrap .zwssgr-badge3 .zwssgr-rating-wrap {
   justify-content: center;
   align-items: center;
 }
-.zwssgr-badge3 .zwssgr-rating {
+.zwssgr-badge-wrap .zwssgr-badge3 .zwssgr-rating {
   margin-right: 0;
   margin-left: 10px;
 }
-.zwssgr-badge3 .final-rating {
+.zwssgr-badge-wrap .zwssgr-badge3 .final-rating {
   font-weight: 900;
   font-size: 20px;
   color: #000000;
   font-family: "Poppins", sans-serif;
 }
-.zwssgr-badge4 {
+.zwssgr-badge-wrap .zwssgr-badge4 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   padding: 20px;
 }
-.zwssgr-badge4 .zwssgr-badge4-rating {
+.zwssgr-badge-wrap .zwssgr-badge4 .zwssgr-badge4-rating {
   width: 45%;
   padding-right: 20px;
   box-sizing: border-box;
 }
-.zwssgr-badge4 .zwssgr-badge4-info {
+.zwssgr-badge-wrap .zwssgr-badge4 .zwssgr-badge4-info {
   width: 55%;
   text-align: center;
 }
-.zwssgr-badge4 .final-rating {
+.zwssgr-badge-wrap .zwssgr-badge4 .final-rating {
   color: #4285F4;
   font-size: 60px;
   font-weight: 700;
   font-family: "Poppins", sans-serif;
   line-height: 1;
 }
-.zwssgr-badge5 {
+.zwssgr-badge-wrap .zwssgr-badge5 {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 !important;
+  padding: 0;
 }
-.zwssgr-badge5 .zwssgr-badge5-rating {
+.zwssgr-badge-wrap .zwssgr-badge5 .zwssgr-badge5-rating {
   background-color: #4285F4;
   padding: 20px;
   border-radius: 16px 0 0 16px;
@@ -749,18 +759,76 @@
   align-items: center;
   justify-content: center;
 }
-.zwssgr-badge5 .zwssgr-badge5-info {
+.zwssgr-badge-wrap .zwssgr-badge5 .zwssgr-badge5-info {
   width: 60%;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
 }
-.zwssgr-badge5 .final-rating {
+.zwssgr-badge-wrap .zwssgr-badge5 .final-rating {
   color: #FFFFFF;
   font-size: 62px;
   font-weight: 700;
   font-family: "Poppins", sans-serif;
   line-height: 1;
+}
+.zwssgr-badge-wrap .zwssgr-badge6 .zwssgr-badge6-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.zwssgr-badge-wrap .zwssgr-badge6 .final-rating {
+  color: #F6BB06;
+  font-weight: 700;
+  font-size: 40px;
+  font-family: "Poppins", sans-serif;
+  padding-right: 20px;
+}
+.zwssgr-badge-wrap .zwssgr-badge7 .zwssgr-badge7-rating {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: center;
+}
+.zwssgr-badge-wrap .zwssgr-badge7 .final-rating {
+  font-weight: 900;
+  font-size: 20px;
+  color: #000000;
+  font-family: "Poppins", sans-serif;
+  padding-right: 5px;
+}
+.zwssgr-badge-wrap .zwssgr-badge8 .zwssgr-final-review-wrap {
+  margin: 5px auto;
+}
+.zwssgr-badge-wrap .zwssgr-badge8 .final-rating {
+  color: #6A6A6A;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 60px;
+}
+.zwssgr-badge-wrap .zwssgr-badge9 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-badge-image {
+  width: 90px;
+}
+.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-badge-info {
+  width: calc(100% - 110px);
+  padding-left: 20px;
+  text-align: left;
+}
+.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-average {
+  text-transform: capitalize;
+  font-size: 18px;
+}
+.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-final-review-wrap {
+  margin: initial;
+}
+.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-based-on {
+  margin-bottom: 0;
+  margin-top: 5px;
 }
 .zwssgr-badge-link {
   text-decoration: none;
