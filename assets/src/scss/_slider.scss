@@ -11,9 +11,8 @@ $zwssgrslider: ".zwssgr";
         
         #{$zwssgrslider} { 
             &-slide-item {
-                background: #FAFAFA;
-                border-radius: var(--border-radius-large);
-                height: auto;
+                background: transparent;
+                border-radius: 0;
         
                 &:focus {
                     outline: none;
