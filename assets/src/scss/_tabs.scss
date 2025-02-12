@@ -3,6 +3,29 @@
 $zwssgr: ".zwssgr";
 
 #{$zwssgr} { 
+
+    &-radio {
+        box-sizing: border-box;
+    }
+
+    &-layout-radio {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: var(--white-color);
+        box-shadow: 0px 0.5px 2px 0px #252A3B1C;
+        border-radius: 16px;
+        flex-wrap: wrap;
+    
+        label {
+            font-size: 15px;
+            font-family: var(--font-primary);
+            font-weight: var(--font-weight-400);
+            line-height: 1;
+            margin-right: 30px;
+        }
+    }
+
     &-nav-tab-wrapper {
         border-bottom: 1px solid rgba(221, 225, 231, 1);
 
