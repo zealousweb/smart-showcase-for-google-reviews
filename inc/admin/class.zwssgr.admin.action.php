@@ -195,7 +195,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			]);
 
 			//Toggle Ajax
-			wp_localize_script(ZWSSGR_PREFIX . '-admin-js', 'zwssgr_admin', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'zwssgr_admin', array(
 				'ajax_url' 					    => admin_url('admin-ajax.php'),
 				'nonce' 					    => wp_create_nonce('toggle-visibility-nonce'),
 				'zwssgr_queue_manager_nounce'    => wp_create_nonce('zwssgr_queue_manager_nounce'),
