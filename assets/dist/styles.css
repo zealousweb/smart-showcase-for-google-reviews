@@ -836,4 +836,200 @@
   display: inline-block;
 }
 
+.zwssgr-popup-wrap {
+  display: flex;
+  justify-content: flex-start;
+}
+.zwssgr-popup-wrap .zwssgr-option-item {
+  width: 50%;
+  padding: 20px;
+  box-shadow: none;
+  background: transparent;
+  box-sizing: border-box;
+}
+.zwssgr-popup-wrap .zwssgr-popup-item {
+  box-shadow: 10px 10px 30px 0px rgba(0, 0, 0, 0.0196078431);
+  text-align: center;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+.zwssgr-popup-wrap .zwssgr-profile-logo {
+  width: 50px;
+  height: 50px;
+  padding-right: 20px;
+}
+.zwssgr-popup-wrap .zwssgr-profile-logo img {
+  width: 50px;
+  height: 50px;
+}
+.zwssgr-popup-wrap .zwssgr-based-on {
+  font-size: 16px;
+}
+.zwssgr-popup-wrap .zwssgr-final-review-wrap {
+  position: relative;
+  width: 100px;
+  margin: 0 auto;
+}
+.zwssgr-popup-wrap .zwssgr-popup-list {
+  display: block;
+}
+.zwssgr-popup-wrap .zwssgr-slide-item, .zwssgr-popup-wrap .zwssgr-list-inner {
+  width: 100%;
+}
+.zwssgr-popup-wrap .zwssgr-review-info {
+  flex: 1 0 0%;
+  text-align: left;
+  padding-left: 20px;
+}
+.zwssgr-popup-wrap .zwssgr-final-review-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.zwssgr-popup-wrap .zwssgr-total-review {
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: underline;
+  font-family: "Poppins", sans-serif;
+  pointer-events: auto;
+  color: #6A6A6A;
+}
+.zwssgr-popup-wrap .zwssgr-popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+.zwssgr-popup-wrap .zwssgr-popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  background: #fff;
+  width: 40%;
+  height: 590px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.zwssgr-popup-wrap .zwssgr-popup-content .zwssgr-final-review-wrap {
+  margin: initial;
+}
+.zwssgr-popup-wrap .zwssgr-popup-content .zwssgr-profile-logo {
+  padding-right: 0;
+}
+.zwssgr-popup-wrap .zwssgr-close-popup {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+.zwssgr-popup-wrap .zwssgr-popup-wrap {
+  display: flex;
+  justify-content: flex-start;
+}
+.zwssgr-popup-wrap .zwssgr-profile-info {
+  text-align: left;
+  padding-left: 20px;
+  pointer-events: none;
+}
+.zwssgr-popup-wrap .zwssgr-profile-info h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1B1B1B;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+}
+.zwssgr-popup-wrap .zwssgr-profile-info .zwssgr-rating {
+  margin: 10px 0;
+}
+.zwssgr-popup-wrap .zwssgr-popup1 {
+  display: flex;
+  align-items: center;
+}
+.zwssgr-popup-wrap .zwssgr-popup1 .zwssgr-rating {
+  pointer-events: none;
+}
+.zwssgr-popup-wrap .zwssgr-popup1 .zwssgr-final-review-wrap {
+  margin: initial;
+}
+.zwssgr-popup-wrap .zwssgr-popup1 .zwssgr-profile-logo {
+  padding-right: 0;
+}
+.zwssgr-popup-wrap .zwssgr-popup2 .zwssgr-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.zwssgr-popup-wrap .zwssgr-popup2 .zwssgr-title-wrap h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  padding-left: 10px;
+  font-family: "Poppins", sans-serif;
+  color: #1B1B1B;
+}
+.zwssgr-popup-wrap .zwssgr-popup2 .zwssgr-info-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.zwssgr-popup-wrap .zwssgr-popup2 .zwssgr-rating {
+  padding: 0 10px;
+  pointer-events: none;
+}
+.zwssgr-popup-wrap .zwssgr-popup2 .final-rating {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  color: #1B1B1B;
+  pointer-events: none;
+}
+.zwssgr-popup-wrap .zwssgrpopup2 {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+.zwssgr-popup-wrap .zwssgrpopup2 .zwssgr-popup-content {
+  position: fixed;
+  right: 0;
+  top: 0;
+  transform: none;
+  left: auto;
+  width: 40%;
+  height: 100vh;
+  background: #fff;
+  border-radius: 0;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+.zwssgr-popup-wrap .zwssgrpopup2 .zwssgr-list-content-wrap {
+  padding-left: 80px;
+}
+
+.scrollable-content {
+  padding: 30px;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+  box-sizing: border-box;
+}
+
 /*# sourceMappingURL=styles.css.map*/
