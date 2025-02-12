@@ -1,3 +1,4 @@
+import { reinitializeAllSwipers } from './swiper.js';
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
 
