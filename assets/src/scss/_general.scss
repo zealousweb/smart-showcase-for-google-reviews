@@ -13,6 +13,37 @@ $zwssgrgeneral: ".zwssgr";
         padding-bottom: 20px;
     }
 
+    &-load-more-btn {
+        background-color: #000;
+        color: #fff;
+        padding: 10px 20px;
+        text-align: center;
+        margin: 0 auto;
+        display: block;
+        cursor: pointer;
+        font-size: 16px;
+        border: none;
+        line-height: inherit;
+    }
+
+    &-keywords-list {
+        margin-top: 10px;
+        #{$zwssgrgeneral} {
+            &-keyword-item {
+                display: inline-block;
+                background-color: #f0f0f0;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 5px;
+            }
+            &-remove-keyword {
+                cursor: pointer;
+                color: red;
+                margin-left: 5px;
+            }
+        }
+    }
+
     &-main-div-wrapper {
         max-width: 100%;
         margin-top: 20px;
@@ -20,6 +51,11 @@ $zwssgrgeneral: ".zwssgr";
 
     &-main-wrapper {
         max-width: 100%;
+        #{$zwssgrgeneral} {
+            &-toogle-display {
+                background-color: transparent;
+            }
+        }
     }
 
     &-front-review-filter-wrap {

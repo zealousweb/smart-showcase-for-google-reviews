@@ -2486,13 +2486,13 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<?php
 									$zwssgr_keywords = get_post_meta($zwssgr_post_id, 'keywords', true);
 									if (is_array($zwssgr_keywords) && !empty($zwssgr_keywords)) {
-										echo '<div id="keywords-list" class="keywords-list">';
+										echo '<div id="keywords-list" class="keywords-list zwssgr-keywords-list">';
 											foreach ($zwssgr_keywords as $zwssgr_keyword) {
-												echo '<div class="keyword-item">' . esc_html($zwssgr_keyword) . '<span class="remove-keyword"> ✖</span></div>';
+												echo '<div class="keyword-item zwssgr-keyword-item">' . esc_html($zwssgr_keyword) . '<span class="remove-keyword zwssgr-remove-keyword"> ✖</span></div>';
 											}
 										echo '</div>';
 									} else {
-										echo '<div id="keywords-list" class="keywords-list"></div>';
+										echo '<div id="keywords-list" class="keywords-list zwssgr-keywords-list"></div>';
 									}
 									?>
 
