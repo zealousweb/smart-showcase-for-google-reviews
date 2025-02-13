@@ -1,6 +1,7 @@
 /*!*********************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./assets/src/scss/style.scss ***!
   \*********************************************************************************************************************/
+@charset "UTF-8";
 :root {
   /* Fonts */
   --font-primary: "Poppins", sans-serif;
@@ -52,6 +53,23 @@
   --border-radius-extra-small: 0;
 }
 
+/** -----------------------------------------------------------------------------
+*** This file contains all application-wide Sass mixins.
+* -----------------------------------------------------------------------------
+* Media Query mixin
+* RESPOND ABOVE
+* –––––––––––––––––––––––––––––––––––––––––––––––––– */
+/** @include respond-above(sm) {} */
+/**  RESPOND BELOW
+* –––––––––––––––––––––––––––––––––––––––––––––––––– */
+/** @include respond-below(sm) {} */
+/**  RESPOND BETWEEN
+* –––––––––––––––––––––––––––––––––––––––––––––––––– */
+/** @include respond-between(sm, md) {} */
+/** Mini laptop resolution 1349 X 662 and 1246 X 681 and 1218 X 672 */
+/** Mobile only */
+/** Portrait mobile */
+/** Landscape mobile */
 .zwssgr-page-title {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-600);
@@ -267,6 +285,16 @@
 .zwssgr-widget-wrap .zwssgr-widget-setting {
   width: 45%;
 }
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-widget-wrap .zwssgr-widget-setting {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-widget-wrap .zwssgr-widget-setting {
+    width: 100%;
+  }
+}
 .zwssgr-widget-wrap .zwssgr-setting-star {
   cursor: pointer;
   display: inline-block;
@@ -436,6 +464,15 @@
   font-weight: var(--font-weight-400);
   line-height: 1;
   margin-right: 30px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 575px) {
+  .zwssgr-layout-radio label {
+    margin-bottom: 20px;
+  }
 }
 .zwssgr-nav-tab-wrapper {
   border-bottom: 1px solid rgb(221, 225, 231);
@@ -449,6 +486,18 @@
   font-size: var(--font-size-body);
   font-family: var(--font-primary);
   padding-bottom: 15px;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-nav-tab-wrapper .nav-tab {
+    margin: 0;
+    padding: 9px;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-nav-tab-wrapper .nav-tab {
+    margin: 0;
+    padding: 9px;
+  }
 }
 .zwssgr-nav-tab-wrapper .nav-tab-active {
   border-bottom: 3px solid var(--primary-color-100);
@@ -610,6 +659,7 @@
 .zwssgr-slider .zwssgr-slide-item {
   background: transparent;
   border-radius: var(--border-radius-extra-small);
+  height: auto;
 }
 .zwssgr-slider .zwssgr-slide-item:focus {
   outline: none;
@@ -619,6 +669,7 @@
   padding: 20px;
   border-radius: var(--border-radius-large);
   height: 100%;
+  box-sizing: border-box;
 }
 .zwssgr-slider .zwssgr-rating {
   width: 90px;
@@ -717,6 +768,11 @@
 .zwssgr-slider .zwssgr-swiper-button-prev {
   left: 0;
 }
+.zwssgr-slider2 .zwssgr-list-inner {
+  background-color: var(--white-color);
+  border: 1px solid var(--white-color-100);
+  box-sizing: border-box;
+}
 .zwssgr-slider3 {
   display: flex;
   justify-content: space-between;
@@ -727,8 +783,46 @@
   width: 240px;
   text-align: center;
 }
+.zwssgr-slider3 .zwssgr-slider-badge .zwssgr-average {
+  color: #1B1B1B;
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+.zwssgr-slider3 .zwssgr-slider-badge .zwssgr-rating {
+  margin: 0 auto;
+}
+.zwssgr-slider3 .zwssgr-slider-badge .zwssgr-based-on {
+  color: #1B1B1B;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Poppins", sans-serif;
+  margin: 15px 0;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-slider3 .zwssgr-slider-badge {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-slider3 .zwssgr-slider-badge {
+    width: 100%;
+  }
+}
 .zwssgr-slider3 .zwssgr-slider-3-wrap {
   width: calc(100% - 280px);
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-slider3 .zwssgr-slider-3-wrap {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-slider3 .zwssgr-slider-3-wrap {
+    width: 100%;
+  }
 }
 .zwssgr-slider4 {
   max-width: 650px;
@@ -787,6 +881,25 @@
   box-sizing: border-box;
   margin: 0;
   display: flex;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-grid-item .zwssgr-slide-item {
+    width: 50%;
+  }
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid-item .zwssgr-slide-item {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid-item .zwssgr-slide-item {
+    width: 100%;
+  }
 }
 .zwssgr-grid2 .zwssgr-grid-inner {
   background-color: var(--white-color);
@@ -802,6 +915,16 @@
   padding: 10px;
   box-sizing: border-box;
 }
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid3 .zwssgr-slide-item {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid3 .zwssgr-slide-item {
+    width: 100%;
+  }
+}
 .zwssgr-grid3 .zwssgr-grid-inner {
   background-color: var(--white-color);
   border: 1px solid var(--white-color-100);
@@ -812,6 +935,16 @@
 .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-review-detail {
   width: 30%;
   text-align: center;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-review-detail {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-review-detail {
+    width: 100%;
+  }
 }
 .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-profile {
   margin: 0 auto;
@@ -824,15 +957,58 @@
   margin: 10px auto 0;
   justify-content: center;
 }
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-rating-wrap {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-rating-wrap {
+    width: 100%;
+  }
+}
 .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-content-wrap {
-  padding: 20px;
+  padding: 0;
   width: 60%;
   background-color: var(--gray-color-light);
   border-radius: var(--border-radius-large);
+  text-align: center;
+}
+.zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-content-wrap .zwssgr-content {
+  padding: 20px;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-content-wrap {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid3 .zwssgr-slide-wrap .zwssgr-content-wrap {
+    width: 100%;
+  }
 }
 .zwssgr-grid4 .zwssgr-slide-item {
   text-align: center;
   width: 25%;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 1199px) {
+  .zwssgr-grid4 .zwssgr-slide-item {
+    width: 50%;
+  }
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid4 .zwssgr-slide-item {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid4 .zwssgr-slide-item {
+    width: 100%;
+  }
 }
 .zwssgr-grid4 .zwssgr-profile {
   margin: 0 auto 20px;
@@ -852,6 +1028,16 @@
 }
 .zwssgr-grid5 .zwssgr-slide-item {
   width: 50%;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid5 .zwssgr-slide-item {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid5 .zwssgr-slide-item {
+    width: 100%;
+  }
 }
 .zwssgr-grid5 .zwssgr-slide-wrap .zwssgr-review-info {
   width: calc(100% - 180px);
@@ -921,6 +1107,16 @@
   align-items: center;
   flex-wrap: wrap;
 }
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-list5 .zwssgr-prifile-wrap {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-list5 .zwssgr-prifile-wrap {
+    width: 100%;
+  }
+}
 .zwssgr-list5 .zwssgr-prifile-wrap .zwssgr-data {
   width: calc(100% - 80px);
 }
@@ -929,12 +1125,25 @@
   padding-left: 10px;
   box-sizing: border-box;
 }
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-list5 .zwssgr-content-wrap {
+    width: 100%;
+    padding-left: 0;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-list5 .zwssgr-content-wrap {
+    width: 100%;
+    padding-left: 0;
+  }
+}
 .zwssgr-list5 .zwssgr-content-wrap .zwssgr-review-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 10px;
+  padding-left: 0;
 }
 
 .zwssgr-badge-wrap {
@@ -952,21 +1161,39 @@
   box-sizing: border-box;
   text-align: center;
   margin: 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
 }
-.zwssgr-badge-wrap .zwssgr-layout-title-wrap {
-  margin-bottom: 20px;
+@media (max-width: 1199px) {
+  .zwssgr-badge-wrap .zwssgr-option-item {
+    width: calc(50% - 15px);
+  }
+}
+@media (max-width: 575px) {
+  .zwssgr-badge-wrap .zwssgr-option-item {
+    width: 100%;
+  }
 }
 .zwssgr-badge-wrap .zwssgr-layout-title {
   color: var(--black-color);
 }
-.zwssgr-badge-wrap .zwssgr-badge-item {
+.zwssgr-layout-title-wrap {
+  margin-bottom: 20px;
+}
+.zwssgr-badge-item {
   box-shadow: 10px 10px 30px 0px rgba(0, 0, 0, 0.0196078431);
   text-align: center;
   padding: 30px;
   background-color: var(--white-color);
   border-radius: var(--border-radius-extra-large);
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-average {
+.zwssgr-badge-item .zwssgr-average {
   color: var(--body-color);
   font-weight: var(--font-weight-700);
   font-size: var(--font-size-h3);
@@ -974,109 +1201,112 @@
   text-transform: uppercase;
   margin: 0 0 10px;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-final-review-wrap {
+.zwssgr-badge-item .zwssgr-final-review-wrap {
   position: relative;
   width: 100px;
   margin: 0 auto;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-based-on {
+.zwssgr-badge-item .zwssgr-based-on {
   color: var(--body-color);
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-400);
   font-family: var(--font-primary);
   margin: 15px 0;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-final-review-fill {
+.zwssgr-badge-item .zwssgr-final-review-fill {
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
   overflow: hidden;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-rating-wrap {
+.zwssgr-badge-item .zwssgr-rating-wrap {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
   align-items: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-google {
+.zwssgr-badge-item .zwssgr-google {
   color: var(--slate-gray);
   font-size: var(--font-size-h4);
   font-weight: var(--font-weight-700);
   margin: 0;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-avg-note {
+.zwssgr-badge-item .zwssgr-avg-note {
   color: var(--slate-gray);
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-400);
   margin: 10px 0;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-logo-wrap {
+.zwssgr-badge-item .zwssgr-logo-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge-item .zwssgr-logo-wrap img {
+.zwssgr-badge-item .zwssgr-logo-wrap img {
   width: 25px;
   height: 25px;
   padding-right: 10px;
 }
-.zwssgr-badge-wrap .zwssgr-badge2 {
+.zwssgr-badge2 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   padding: 20px;
 }
-.zwssgr-badge-wrap .zwssgr-badge2 .zwssgr-badge-image {
+.zwssgr-badge2 .zwssgr-badge-image {
   width: 90px;
 }
-.zwssgr-badge-wrap .zwssgr-badge2 .zwssgr-badge-info {
+.zwssgr-badge2 .zwssgr-badge-info {
   width: calc(100% - 110px);
   padding-left: 20px;
-  text-align: center;
+  text-align: left;
 }
-.zwssgr-badge-wrap .zwssgr-badge3 .zwssgr-rating-wrap {
+.zwssgr-badge2 .zwssgr-final-review-wrap {
+  margin: initial;
+}
+.zwssgr-badge3 .zwssgr-rating-wrap {
   justify-content: center;
   align-items: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge3 .zwssgr-rating {
+.zwssgr-badge3 .zwssgr-rating {
   margin-right: 0;
   margin-left: 10px;
 }
-.zwssgr-badge-wrap .zwssgr-badge3 .final-rating {
+.zwssgr-badge3 .final-rating {
   font-weight: var(--font-weight-900);
   font-size: var(--font-size-h1);
   color: var(--black-color);
   font-family: var(--font-primary);
 }
-.zwssgr-badge-wrap .zwssgr-badge4 {
+.zwssgr-badge4 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   padding: 20px;
 }
-.zwssgr-badge-wrap .zwssgr-badge4 .zwssgr-badge4-rating {
+.zwssgr-badge4 .zwssgr-badge4-rating {
   width: 45%;
   padding-right: 20px;
   box-sizing: border-box;
 }
-.zwssgr-badge-wrap .zwssgr-badge4 .zwssgr-badge4-info {
+.zwssgr-badge4 .zwssgr-badge4-info {
   width: 55%;
   text-align: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge4 .final-rating {
+.zwssgr-badge4 .final-rating {
   color: var(--secondary-color-200);
   font-size: var(--font-size-60);
   font-weight: var(--font-weight-700);
   font-family: var(--font-primary);
   line-height: 1;
 }
-.zwssgr-badge-wrap .zwssgr-badge5 {
+.zwssgr-badge5 {
   display: flex;
   flex-wrap: wrap;
   padding: 0;
 }
-.zwssgr-badge-wrap .zwssgr-badge5 .zwssgr-badge5-rating {
+.zwssgr-badge5 .zwssgr-badge5-rating {
   background-color: var(--secondary-color-200);
   padding: 20px;
   border-radius: 16px 0 0 16px;
@@ -1088,74 +1318,74 @@
   align-items: center;
   justify-content: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge5 .zwssgr-badge5-info {
+.zwssgr-badge5 .zwssgr-badge5-info {
   width: 60%;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge5 .final-rating {
+.zwssgr-badge5 .final-rating {
   color: var(--white-color);
   font-size: var(--font-size-62);
   font-weight: var(--font-weight-700);
   font-family: var(--font-primary);
   line-height: 1;
 }
-.zwssgr-badge-wrap .zwssgr-badge6 .zwssgr-badge6-rating {
+.zwssgr-badge6 .zwssgr-badge6-rating {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
-.zwssgr-badge-wrap .zwssgr-badge6 .final-rating {
-  color: #F6BB06;
+.zwssgr-badge6 .final-rating {
+  color: var(--tertiary-color);
   font-weight: var(--font-weight-700);
   font-size: var(--font-size-40);
   font-family: var(--font-primary);
   padding-right: 20px;
 }
-.zwssgr-badge-wrap .zwssgr-badge7 .zwssgr-badge7-rating {
+.zwssgr-badge7 .zwssgr-badge7-rating {
   display: flex;
   align-items: center;
   margin-top: 20px;
   justify-content: center;
 }
-.zwssgr-badge-wrap .zwssgr-badge7 .final-rating {
+.zwssgr-badge7 .final-rating {
   font-weight: var(--font-weight-900);
   font-size: var(--font-size-h1);
   color: var(--black-color);
   font-family: var(--font-primary);
   padding-right: 5px;
 }
-.zwssgr-badge-wrap .zwssgr-badge8 .zwssgr-final-review-wrap {
+.zwssgr-badge8 .zwssgr-final-review-wrap {
   margin: 5px auto;
 }
-.zwssgr-badge-wrap .zwssgr-badge8 .final-rating {
+.zwssgr-badge8 .final-rating {
   color: var(--slate-gray);
   font-size: var(--font-size-56);
   font-weight: var(--font-weight-400);
   line-height: 60px;
 }
-.zwssgr-badge-wrap .zwssgr-badge9 {
+.zwssgr-badge9 {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 }
-.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-badge-image {
+.zwssgr-badge9 .zwssgr-badge-image {
   width: 90px;
 }
-.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-badge-info {
+.zwssgr-badge9 .zwssgr-badge-info {
   width: calc(100% - 110px);
   padding-left: 20px;
   text-align: left;
 }
-.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-average {
+.zwssgr-badge9 .zwssgr-average {
   text-transform: capitalize;
   font-size: var(--font-size-h2);
 }
-.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-final-review-wrap {
+.zwssgr-badge9 .zwssgr-final-review-wrap {
   margin: initial;
 }
-.zwssgr-badge-wrap .zwssgr-badge9 .zwssgr-based-on {
+.zwssgr-badge9 .zwssgr-based-on {
   margin-bottom: 0;
   margin-top: 5px;
 }
@@ -1165,7 +1395,7 @@
   display: inline-block;
 }
 
-.zwssgr-selected-option-display .zwssgr-slide-item, .zwssgr-selected-option-display .zwssgr-list-inner {
+.zwssgr-selected-option-display .zwssgr-popup-content .zwssgr-slide-item, .zwssgr-selected-option-display .zwssgr-popup-content .zwssgr-list-inner {
   width: 100%;
 }
 .zwssgr-popup-wrap {
@@ -1178,6 +1408,16 @@
   box-shadow: none;
   background: transparent;
   box-sizing: border-box;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-popup-wrap .zwssgr-option-item {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-popup-wrap .zwssgr-option-item {
+    width: 100%;
+  }
 }
 .zwssgr-popup-wrap .zwssgr-slide-item, .zwssgr-popup-wrap .zwssgr-list-inner {
   width: 100%;
@@ -1251,12 +1491,45 @@
   overflow: hidden;
   border-radius: var(--border-radius-10);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
 }
 .zwssgr-popup-content .zwssgr-final-review-wrap {
   margin: initial;
 }
 .zwssgr-popup-content .zwssgr-profile-logo {
   padding-right: 0;
+}
+.zwssgr-popup-content .zwssgr-popup-wrap {
+  flex-wrap: nowrap;
+}
+@media (max-width: 1199px) {
+  .zwssgr-popup-content {
+    width: 60%;
+  }
+}
+@media (max-width: 991px) {
+  .zwssgr-popup-content {
+    width: 90%;
+  }
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-popup-content {
+    max-width: 750px;
+    width: 90%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-popup-content {
+    max-width: 750px;
+    width: 90%;
+  }
 }
 .zwssgr-close-popup {
   position: absolute;
@@ -1268,6 +1541,7 @@
 .zwssgr-popup-wrap {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 }
 .zwssgr-profile-info {
   text-align: left;
@@ -1330,7 +1604,7 @@
 }
 
 .scrollable-content {
-  padding: 30px;
+  padding: 50px 30px;
   height: 100%;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -1360,6 +1634,31 @@
   border-radius: var(--border-radius-extra-small);
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgrpopup2 .zwssgr-popup-content {
+    width: 70%;
+  }
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgrpopup2 .zwssgr-popup-content {
+    max-width: 750px;
+    width: 90%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgrpopup2 .zwssgr-popup-content {
+    max-width: 750px;
+    width: 90%;
+  }
+}
+.zwssgrpopup2 .zwssgr-list-inner {
+  background-color: var(--white-color);
+  border: 1px solid var(--white-color-100);
 }
 .zwssgrpopup2 .zwssgr-list-content-wrap {
   padding-left: 80px;

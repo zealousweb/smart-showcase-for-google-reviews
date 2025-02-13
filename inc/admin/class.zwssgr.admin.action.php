@@ -2067,7 +2067,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>
 					</div>',
-					'<div class="zwssgr-slider swiper zwssgr-slider4" id="zwssgr-slider4">
+					'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
 						<div class="zwssgr-slider-4 swiper">
 							<div class="swiper-wrapper">
 								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '

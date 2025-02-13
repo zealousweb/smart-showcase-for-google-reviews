@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 $zwssgrbadge: ".zwssgr";
 
@@ -9,8 +10,7 @@ $zwssgrbadge: ".zwssgr";
         flex-wrap: wrap;
         gap: 30px;
         padding-top: 20px;
-
-        #{$zwssgrbadge} {
+        #{$zwssgrbadge} { 
             &-option-item {
                 width: calc(33.33% - 20px);
                 padding: 20px;
@@ -19,15 +19,29 @@ $zwssgrbadge: ".zwssgr";
                 box-sizing: border-box;
                 text-align: center;
                 margin: 0;
-            }
 
-            &-layout-title-wrap {
-                margin-bottom: 20px;
+                @include respond-below('xl') {
+                    width: calc(50% - 15px);
+                }
+
+                @include respond-below('sm') {
+                    width: 100%;
+                }
             }
 
             &-layout-title {
                 color: var(--black-color);
             }
+        }
+    }
+
+            
+
+            &-layout-title-wrap {
+                margin-bottom: 20px;
+            }
+
+          
 
             &-badge-item {
                 box-shadow: 10px 10px 30px 0px #00000005;
@@ -116,7 +130,11 @@ $zwssgrbadge: ".zwssgr";
                     &-badge-info {
                         width: calc(100% - 110px);
                         padding-left: 20px;
-                        text-align: center;
+                        text-align: left;
+                    }
+
+                    &-final-review-wrap {
+                        margin: initial;
                     }
                 }
             }
@@ -209,7 +227,7 @@ $zwssgrbadge: ".zwssgr";
                     }
                 }
                 .final-rating {
-                    color: #F6BB06;
+                    color: var(--tertiary-color);
                     font-weight: var(--font-weight-700);
                     font-size: var(--font-size-40);
                     font-family: var(--font-primary);
@@ -280,8 +298,8 @@ $zwssgrbadge: ".zwssgr";
                 }
             }
             
-        } 
-    }
+        
+    
 
     &-badge-link {
         text-decoration: none;
