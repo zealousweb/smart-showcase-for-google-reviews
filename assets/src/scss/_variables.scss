@@ -54,3 +54,13 @@
     --border-radius-extra-small: 0;
 
 }
+
+
+
+$breakpoints: (
+	'sm': 576px,  /** 576px and up */
+	'md': 768px,  /** 768px and up */
+	'lg': 992px,  /** 992px and up */
+	'xl': 1200px, /** 1200px and up */
+	'xxl': 1400px /** 1400px and up */
+);
