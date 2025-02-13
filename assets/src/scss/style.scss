@@ -1,6 +1,7 @@
 @forward 'variables';
-//@forward 'general';
+@forward 'general';
 @forward 'buttons';
+@forward 'settings';
 // @forward 'checkbox';
 @forward 'options';
 // @forward 'switch';
@@ -11,3 +12,4 @@
 @forward 'list';
 @forward 'badge';
 @forward 'popup';
+
