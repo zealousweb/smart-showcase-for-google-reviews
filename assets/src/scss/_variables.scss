@@ -14,12 +14,16 @@
     --tertiary-color: #F08C3C;
     --tertiary-color-light: #F5B976;
     --gray-color: #8E8E8E;
+    --gray-color-100: #cccccc;
+    --gray-color-200: #e0e0e0;
+    --gray-color-300:#C1CFDE;
     --gray-color-light: #FAFAFA;
     --charcoal-gray: #4A494B;
     --slate-gray: #6A6A6A;
     --body-color: #1B1B1B;
     --white-color: #FFFFFF;
     --white-color-100: #E8EBEF;
+    --white-color-200: #FCFCFC;
     --black-color: #000000;
     --red-color: #FF0000;
 
@@ -46,9 +50,12 @@
     --font-weight-400: 400;
 
     /* Border Radius */
+    --border-radius-18: 18px;
     --border-radius-extra-large: 16px;
+    --border-radius-12: 12px;
     --border-radius-10: 10px;
     --border-radius-large: 8px;
+    --border-radius-5: 5px;
     --border-radius: 4px;
     --border-radius-small: 2px;
     --border-radius-extra-small: 0;
