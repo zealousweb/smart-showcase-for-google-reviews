@@ -37,8 +37,8 @@ $zwssgrpopup: ".zwssgr";
         box-shadow: 10px 10px 30px 0px #00000005;
         text-align: center;
         padding: 30px;
-        background-color: #fff;
-        border-radius: 16px;
+        background-color: var(--white-color);
+        border-radius: var(--border-radius-extra-large);
     }
 
     &-profile-logo{
@@ -53,7 +53,7 @@ $zwssgrpopup: ".zwssgr";
     }
 
     &-based-on {
-        font-size: 16px;
+        font-size: var(--font-size-body);
     }
 
     &-final-review-wrap {
@@ -81,12 +81,12 @@ $zwssgrpopup: ".zwssgr";
     }
 
     &-total-review {
-        font-size: 14px;
-        font-weight: 400;
+        font-size: var(--font-size-14);
+        font-weight: var(--font-weight-400);
         text-decoration: underline;
-        font-family: 'Poppins', sans-serif;
+        font-family: var(--font-primary);
         pointer-events: auto;
-        color: #6A6A6A;
+        color: var(--slate-gray);
     }
 
     &-popup-overlay {
@@ -106,11 +106,11 @@ $zwssgrpopup: ".zwssgr";
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 0;
-        background: #fff;
+        background: var(--white-color);
         width: 40%;
         height: 590px;
         overflow: hidden;
-        border-radius: 10px;
+        border-radius: var( --border-radius-10);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
         #{$zwssgrpopup} {
@@ -129,7 +129,7 @@ $zwssgrpopup: ".zwssgr";
         position: absolute;
         top: 10px;
         right: 20px;
-        font-size: 24px;
+        font-size: var(--font-size-h3);
         cursor: pointer;
     }
 
@@ -144,10 +144,10 @@ $zwssgrpopup: ".zwssgr";
         pointer-events: none;
 
         h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1B1B1B;
-            font-family: 'Poppins', sans-serif;
+            font-size: var(--font-size-h2);
+            font-weight: var(--font-weight-700);
+            color: var(--body-color);
+            font-family: var(--font-primary);
             margin: 0;
         }
 
@@ -187,12 +187,12 @@ $zwssgrpopup: ".zwssgr";
                 pointer-events: none;
 
                 h3 {
-                    font-size: 14px;
-                    font-weight: 700;
+                    font-size: var(--font-size-14);
+                    font-weight: var(--font-weight-700);
                     margin: 0;
                     padding-left: 10px;
-                    font-family: 'Poppins', sans-serif;
-                    color: #1B1B1B;
+                    font-family: var(--font-primary);
+                    color: var(--body-color);
                 }
             }
 
@@ -209,10 +209,10 @@ $zwssgrpopup: ".zwssgr";
             }
         }
         .final-rating {
-            font-size: 16px;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            color: #1B1B1B;
+            font-size: var(--font-size-body);
+            font-weight: var(--font-weight-700);
+            font-family: var(--font-primary);
+            color: var(--body-color);
             pointer-events: none;
         }
     }
@@ -249,8 +249,8 @@ $zwssgrpopup: ".zwssgr";
             left: auto;
             width: 40%;
             height: 100vh;
-            background: #fff;
-            border-radius: 0;
+            background: var(--white-color);
+            border-radius: var(--border-radius-extra-small);
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }

@@ -158,7 +158,7 @@ $zwssgrbadge: ".zwssgr";
                     }
                 }
                 .final-rating {
-                    color: #4285F4;
+                    color: var(--secondary-color-200);
                     font-size: var(--font-size-60);
                     font-weight: var(--font-weight-700);
                     font-family: var(--font-primary);
@@ -172,7 +172,7 @@ $zwssgrbadge: ".zwssgr";
                 padding: 0 ;
                 #{$zwssgrbadge} {
                     &-badge5-rating {
-                        background-color: #4285F4;
+                        background-color: var(--secondary-color-200);
                         padding: 20px;
                         border-radius: 16px 0 0 16px;
                         width: 40%;
