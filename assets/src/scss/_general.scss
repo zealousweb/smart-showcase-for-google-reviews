@@ -13,6 +13,102 @@ $zwssgrgeneral: ".zwssgr";
         padding-bottom: 20px;
     }
 
+    &-main-div-wrapper {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+
+    &-main-wrapper {
+        max-width: 100%;
+    }
+
+    &-front-review-filter-wrap {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+
+        #{$zwssgrgeneral} {
+            &-widget-setting-font {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                flex-wrap: wrap;
+
+                @include respond-below('sm') {
+                    width: 100%;
+                    padding-left: 0;
+                    justify-content: flex-start;
+                    margin-bottom: 20px;
+                }
+            }
+            &-front-keyword-list {
+                border-radius: 0;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                flex-wrap: wrap;
+                padding-left: 20px;
+
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    li {
+                        background-color: #fff;
+                        border: 1px solid #ddd;
+                        padding: 5px 20px;
+                        margin: 5px;
+                        border-radius: 18px;
+                        font-size: 16px;
+                        color: #000;
+                        cursor: pointer;
+
+                        &.selected {
+                            background-color: #bbb;
+                        }
+                    }
+                }
+
+                @include respond-below('sm') {
+                    width: 100%;
+                    padding-left: 0;
+                    justify-content: flex-start;
+                    margin-bottom: 20px;
+                }
+            }
+            &-label-font {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 1;
+                margin: 0;
+                margin-right: 10px;
+            }
+            &-input-text {
+                padding: 10px 30px 10px 16px;
+                border: 1px solid #C1CFDE;
+                height: 48px;
+                box-shadow: none;
+                color: #4A494B;
+                border-radius: 8px;
+                font-weight: 400;
+                width: auto;
+                font-size: 16px;
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.4;
+                background: #FCFCFC url(../../images/down-arrow.png) no-repeat right 7px top 55%;
+                background-size: 16px 10px;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+        }
+    }
+
     &-generated-shortcode-display {
         margin-top: 20px;
         padding: 10px;
@@ -253,8 +349,6 @@ $zwssgrgeneral: ".zwssgr";
     
     }
    
-  
-
     &-chechbox-label {
         font-size: 16px;
         font-weight: 400;

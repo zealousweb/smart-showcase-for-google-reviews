@@ -78,6 +78,103 @@
   border-bottom: 1px solid rgba(16, 41, 50, 0.1);
   padding-bottom: 20px;
 }
+.zwssgr-main-div-wrapper {
+  max-width: 100%;
+  margin-top: 20px;
+}
+.zwssgr-main-wrapper {
+  max-width: 100%;
+}
+.zwssgr-front-review-filter-wrap {
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.zwssgr-front-review-filter-wrap .zwssgr-widget-setting-font {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 575px) {
+  .zwssgr-front-review-filter-wrap .zwssgr-widget-setting-font {
+    width: 100%;
+    padding-left: 0;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+}
+.zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list {
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 20px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+.zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+.zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul li {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 5px 20px;
+  margin: 5px;
+  border-radius: 18px;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+}
+.zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list ul li.selected {
+  background-color: #bbb;
+}
+@media (max-width: 575px) {
+  .zwssgr-front-review-filter-wrap .zwssgr-front-keyword-list {
+    width: 100%;
+    padding-left: 0;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+}
+.zwssgr-front-review-filter-wrap .zwssgr-label-font {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  margin: 0;
+  margin-right: 10px;
+}
+.zwssgr-front-review-filter-wrap .zwssgr-input-text {
+  padding: 10px 30px 10px 16px;
+  border: 1px solid #C1CFDE;
+  height: 48px;
+  box-shadow: none;
+  color: #4A494B;
+  border-radius: 8px;
+  font-weight: 400;
+  width: auto;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.4;
+  background: #FCFCFC url(27298ad01d97acf7c3af.png) no-repeat right 7px top 55%;
+  background-size: 16px 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
 .zwssgr-generated-shortcode-display {
   margin-top: 20px;
   padding: 10px;
