@@ -2341,7 +2341,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</div>
 
 					<!-- Dynamically Render Layout Options Based on Selected Display Option -->
-					<div id="layout-options">
+					<div id="layout-options" class="zwssgr-layout-options">
 						<?php
 						foreach ($zwssgr_options as $option_type => $zwssgr_layouts) {
 							$zwssgr_layout_count = 1;
@@ -2349,7 +2349,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								echo '<div class="zwssgr-badge-wrap">';
 							}
 							if( $option_type == "popup") {
-								echo '<div class="zwssgr-popup-wrap">';
+								echo '<div class="zwssgr-popup-wrap zwssgr-popup-option-item">';
 							}
 							foreach ($zwssgr_layouts as $zwssgr_layout_content) { 
 								$zwssgr_element_id = $option_type . '-' . $zwssgr_layout_count;
@@ -2411,7 +2411,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-selected">
 					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
-					<div id="selected-option-display" class="selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
+					<div id="selected-option-display" class="selected-option-display zwssgr-selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
 					<div class="zwssgr-toogle-display">
 						<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($zwssgr_bg_color); ?>; color:<?php echo esc_attr($zwssgr_text_color); ?>;" class="zwssgr-google-toggle" target="_blank"><?php echo esc_html__('Review Us On G', 'smart-showcase-for-google-reviews'); ?></a>
 					</div>
