@@ -1029,7 +1029,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		{
 			$zwssgr_value = get_option('zwssgr_admin_notification_enabled', '0');
 			echo '<label class="switch zwssgr-switch">';
-			echo '<input type="checkbox" id="zwssgr_admin_notification_enabled" name="zwssgr_admin_notification_enabled" value="1" ' . checked(0, $zwssgr_value, false) . ' />';
+			echo '<input type="checkbox" id="zwssgr_admin_notification_enabled" class="zwssgr-input-check" name="zwssgr_admin_notification_enabled" value="1" ' . checked(0, $zwssgr_value, false) . ' />';
 			echo '<span class="slider zwssgr-toggle-slider"></span>';
 			echo '</label>';
 		}
@@ -1092,7 +1092,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_sync_reviews_callback()
 		{
 			$zwssgr_value = get_option('zwssgr_sync_reviews', 'daily');
-			echo '<select id="zwssgr_sync_reviews" name="zwssgr_sync_reviews" class="zwssgr-input-text">
+			echo '<select id="zwssgr_sync_reviews" name="zwssgr_sync_reviews" class="zwssgr-input-text zwssgr-input-select">
 					<option value="daily" ' . selected($zwssgr_value, 'daily', false) . '>'. esc_html__('Daily', 'smart-showcase-for-google-reviews').'</option>
 					<option value="weekly" ' . selected($zwssgr_value, 'weekly', false) . '>'. esc_html__('Weekly', 'smart-showcase-for-google-reviews').'</option>
 					<option value="monthly" ' . selected($zwssgr_value, 'monthly', false) . '>'. esc_html__('Monthly', 'smart-showcase-for-google-reviews').'</option>
@@ -1209,7 +1209,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_gmb_email = get_option('zwssgr_gmb_email');
 
 					if (!empty($zwssgr_jwt_token)) { ?>
-						<div class="disconnect-wrapper">
+						<div class="disconnect-wrapper zwssgr-disconnect-wrapper">
 							<a href="<?php echo esc_url(admin_url('admin.php?page=zwssgr_settings&tab=google&settings=disconnect-auth')); ?>" 
 							class="button zwssgr-submit-btn zwssgr-disconnect-btn">
 								<?php echo esc_attr($zwssgr_disconnect_text); ?>
@@ -2427,7 +2427,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 											$zwssgr_selected = ($i <= $zwssgr_rating_filter) ? 'selected' : '';  // Check if the current star is selected
 											$zwssgr_fillColor = ($i <= $zwssgr_rating_filter) ? '#FFD700' : '#ccc'; // Color for selected and non-selected stars
 											?>
-											<span class="star-filter <?php echo esc_attr($zwssgr_selected); ?>" data-rating="<?php echo esc_attr($i); ?>" title="<?php echo esc_attr($i); ?> Star">
+											<span class="zwssgr-setting-star star-filter <?php echo esc_attr($zwssgr_selected); ?>" data-rating="<?php echo esc_attr($i); ?>" title="<?php echo esc_attr($i); ?> Star">
 												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path class="star" d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.45 13.97L5.82 21L12 17.27Z" fill="<?php echo esc_attr($zwssgr_fillColor); ?>" />
 												</svg>
@@ -2504,7 +2504,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label"><?php echo esc_html__('Review us on Google', 'smart-showcase-for-google-reviews'); ?></h3>
 									<label class="switch zwssgr-switch">
-										<input type="checkbox" id="toggle-google-review" name="google_review_toggle" <?php echo ($zwssgr_google_review_toggle) ? 'checked' : ''; ?>>
+										<input type="checkbox" id="toggle-google-review" class="zwssgr-input-check" name="google_review_toggle" <?php echo ($zwssgr_google_review_toggle) ? 'checked' : ''; ?>>
 										<span class="slider zwssgr-toggle-slider"></span>
 									</label>
 
@@ -2528,7 +2528,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label"><?php echo esc_html__('Language', 'smart-showcase-for-google-reviews'); ?></h3>
-									<select id="language-select" name="language" class="zwssgr-input-text">
+									<select id="language-select" name="language" class="zwssgr-input-text zwssgr-input-select">
 										<option value="en" <?php echo ($zwssgr_language === 'en') ? 'selected' : ''; ?>><?php echo esc_html__('English', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="es" <?php echo ($zwssgr_language === 'es') ? 'selected' : ''; ?>><?php echo esc_html__('Spanish', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="fr" <?php echo ($zwssgr_language === 'fr') ? 'selected' : ''; ?>><?php echo esc_html__('French', 'smart-showcase-for-google-reviews'); ?></option>
@@ -2553,7 +2553,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label"><?php echo esc_html__('Sort By', 'smart-showcase-for-google-reviews'); ?></h3>
-									<select id="sort-by-select" name="sort_by" class="zwssgr-input-text">
+									<select id="sort-by-select" name="sort_by" class="zwssgr-input-text zwssgr-input-select">
 										<option value="newest" <?php echo ($zwssgr_sort_by === 'newest') ? 'selected' : ''; ?>><?php echo esc_html__('Newest', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="highest" <?php echo ($zwssgr_sort_by === 'highest') ? 'selected' : ''; ?>><?php echo esc_html__('Highest Rating', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="lowest" <?php echo ($zwssgr_sort_by === 'lowest') ? 'selected' : ''; ?>><?php echo esc_html__('Lowest Rating', 'smart-showcase-for-google-reviews'); ?></option>
@@ -2566,7 +2566,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		
 								<div class="zwssgr-widget-setting">
 									<h3 class="zwssgr-label"><?php echo esc_html__('Date Format', 'smart-showcase-for-google-reviews'); ?></h3>
-									<select id="date-format-select" name="date-format" class="zwssgr-input-text">
+									<select id="date-format-select" name="date-format" class="zwssgr-input-text zwssgr-input-select">
 										<option value="DD/MM/YYYY" <?php echo ($zwssgr_date_format === 'DD/MM/YYYY') ? 'selected' : ''; ?>><?php echo esc_html__('DD/MM/YYYY', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="MM-DD-YYYY" <?php echo ($zwssgr_date_format === 'MM-DD-YYYY') ? 'selected' : ''; ?>><?php echo esc_html__('MM-DD-YYYY', 'smart-showcase-for-google-reviews'); ?></option>
 										<option value="YYYY/MM/DD" <?php echo ($zwssgr_date_format === 'YYYY/MM/DD') ? 'selected' : ''; ?>><?php echo esc_html__('YYYY/MM/DD', 'smart-showcase-for-google-reviews'); ?></option>
@@ -2597,7 +2597,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 										<div class="zwssgr-load-more-wrapper">
 											<h3 class="zwssgr-label"><?php echo esc_html__('Load More', 'smart-showcase-for-google-reviews'); ?></h3>
 											<label class="switch zwssgr-switch">
-												<input type="checkbox" id="enable-load-more" name="enable_load_more" <?php echo ($zwssgr_enable_load_more ? 'checked' : ''); echo esc_attr($zwssgr_is_checked);?> />
+												<input type="checkbox" class="zwssgr-input-check" id="enable-load-more" name="enable_load_more" <?php echo ($zwssgr_enable_load_more ? 'checked' : ''); echo esc_attr($zwssgr_is_checked);?> />
 												<span class="slider zwssgr-toggle-slider"></span>
 											</label>
 											<div id="zwssgr-load-color-picker-options" style="display: <?php echo ($zwssgr_enable_load_more) ? 'flex' : 'none'; ?>" class="zwssgr-color-options_load">
@@ -2642,7 +2642,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-shortcode">
 					<h3><?php echo esc_html__('Generated Shortcode', 'smart-showcase-for-google-reviews'); ?></h3>
-					<div id="generated-shortcode-display" class="generated-shortcode-display">
+					<div id="generated-shortcode-display" class="generated-shortcode-display zwssgr-generated-shortcode-display">
 						<div class="zwssgr-shortcode">
 							<input type="text" class="zwssgr-input-text zwssgr-shortcode-input" value="<?php echo esc_attr($zwssgr_generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($zwssgr_post_id); ?>">
 							<span class="dashicons dashicons-admin-page zwssgr-copy-shortcode-icon" data-target="shortcode-<?php echo esc_attr($zwssgr_post_id); ?>" title="<?php echo esc_attr__('Copy Shortcode', 'smart-showcase-for-google-reviews'); ?>"></span>

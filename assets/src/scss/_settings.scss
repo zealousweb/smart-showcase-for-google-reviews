@@ -1,0 +1,67 @@
+@use 'variables' as *;
+
+$zwssgrsetting: ".zwssgr";
+
+#{$zwssgrsetting} {
+    &-disconnect-wrapper {
+        display: flex;
+        align-items: center;
+        margin: 20px 0 0 0;
+    }
+
+    &-section-wrap {
+        #{$zwssgrsetting} {
+            &-input-text {
+                padding: 10px 16px;
+                border: 1px solid #C1CFDE;
+                background: #FCFCFC;
+                height: 48px;
+                box-shadow: none;
+                color: #4A494B;
+                border-radius: 8px;
+                font-weight: 400;
+                font-size: 16px;
+                font-family: 'Poppins', sans-serif;
+                line-height: 1;
+                width: 100%;
+                max-width: 500px;
+            }
+        
+            &-input-select {
+                line-height: 1.3;
+                background: #FCFCFC url(../../images/down-arrow.png) no-repeat right 7px top 55%;
+                background-size: 16px 10px;
+            }
+
+            &-textarea {
+                padding: 10px 16px;
+                border: 1px solid #C1CFDE;
+                background: #FCFCFC;
+                height: 200px;
+                box-shadow: none;
+                color: #4A494B;
+                border-radius: 8px;
+                font-weight: 400;
+                font-size: 16px;
+                font-family: 'Poppins', sans-serif;
+                line-height: 1;
+                width: 100%;
+            }
+        }
+    }
+
+    &-notification-field {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px 0;
+        #{$zwssgrsetting} {
+            &-th-label {
+                width: 200px;
+            }
+            &-field{
+                width: 100%;
+                 max-width: 400px;
+            }
+        }
+    }
+}

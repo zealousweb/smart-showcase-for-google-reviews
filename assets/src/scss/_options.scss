@@ -3,6 +3,14 @@
 $zwssgroption: ".zwssgr";
 
 #{$zwssgroption} {
+
+    &-selected-option-display {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #e0e0e0;
+        border: 1px solid #ccc;
+        font-size: 18px;
+    }
     &-toogle-display {
         background-color: var(--gray-color-light);
         border: 1px solid var(--border-gray);
@@ -11,8 +19,6 @@ $zwssgroption: ".zwssgr";
         text-align: center;
     }
 
-
-    
     &-option-item {
         display: none;
         margin: 20px 0;

@@ -4,22 +4,41 @@ $zwssgrbtn: ".zwssgr";
 
 #{$zwssgrbtn} {
     &-submit-btn {
-        padding: 20px 24px;
-        border-radius: var(--border-radius);
-        border: 1px solid var(--secondary-color);
-        background-color: var(--white-color);
-        color: var(--secondary-color);
-        font-size: var(--font-size-body);
-        font-weight: var(--font-weight-500);
-        font-family: var(--font-primary);
-        line-height: 1;
-        cursor: pointer;
-    
-        &:hover {
-            background-color: var(--secondary-color);
-            color: var(--white-color);
+        &.button {
+            padding: 20px 24px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--secondary-color);
+            background-color: var(--white-color);
+            color: var(--secondary-color);
+            font-size: var(--font-size-body);
+            font-weight: var(--font-weight-500);
+            font-family: var(--font-primary);
+            line-height: 1;
+            cursor: pointer;
+            &:hover {
+                background-color: var(--secondary-color);
+                color: var(--white-color);
+            }
+        }   
+    }
+
+    &-disconnect-wrapper {
+        #{$zwssgrbtn} {
+            &-disconnect-btn {
+                background-color: red;
+                color: white;
+                border: 1px solid red;
+                margin: 0 10px 0 0;
+                &:hover {
+                    background-color: transparent;
+                    box-shadow: 0 0 0 1px red;
+                    color: red;
+                }
+            }
         }
     }
+
+   
 
     &-btn {
         background-color: var(--tertiary-color);
