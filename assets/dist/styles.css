@@ -19,6 +19,7 @@
   --gray-color-100: #cccccc;
   --gray-color-200: #e0e0e0;
   --gray-color-300:#C1CFDE;
+  --gray-color-400: #f0f0f1;
   --gray-color-light: #FAFAFA;
   --charcoal-gray: #4A494B;
   --slate-gray: #6A6A6A;
@@ -28,6 +29,11 @@
   --white-color-200: #FCFCFC;
   --black-color: #000000;
   --red-color: #FF0000;
+  --red-color-100: #a94442;
+  --red-color-200: #f2dede;
+  --success-color: #46b450;
+  --success-color-100: #3c763d;
+  --success-color-200: #dff0d8;
   /* Font Sizes */
   --font-size-62: 62px;
   --font-size-60: 60px;
@@ -87,55 +93,43 @@
   padding-bottom: 20px;
 }
 .zwssgr-notice {
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-color-100);
   border-left-width: 4px;
   padding: 15px;
   margin: 10px 0;
   position: sticky;
   top: 5%;
   z-index: 99;
-  background: #f9f9f9;
-  color: #333;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
 }
 .zwssgr-notice-success {
-  border-left-color: #46b450;
-  background: #dff0d8;
-  color: #3c763d;
+  border-left-color: var(--success-color);
+  background: var(--success-color-200);
+  color: var(--success-color-100);
 }
 .zwssgr-notice-error {
-  border-left-color: #dc3232;
-  background: #f2dede;
-  color: #a94442;
-}
-.zwssgr-notice-warning {
-  border-left-color: #ffba00;
-  background: #fcf8e3;
-  color: #8a6d3b;
-}
-.zwssgr-notice-info {
-  border-left-color: #0073aa;
-  background: #e7f3f8;
-  color: #31708f;
+  border-left-color: var(--red-color);
+  background: var(--red-color-200);
+  color: var(--red-color-100);
 }
 .zwssgr-notice p {
   margin: 0;
 }
 .zwssgr-email-error {
-  color: red;
+  color: var(--red-color);
   display: none;
 }
 .zwssgr-email-success {
-  color: green;
+  color: var(--success-color-100);
   display: none;
 }
 .zwssgr-keyword-error-message {
   display: none;
-  color: red;
+  color: var(--red-color);
 }
 .zwssgr-success-message {
   margin-bottom: 10px;
-  color: green;
+  color: var(--success-color-100);
 }
 .zwssgr-load-more-btn {
   background-color: var(--black-color);
@@ -152,7 +146,7 @@
 .zwssgr-no-found-message {
   padding: 20px;
   text-align: center;
-  font-size: 18px;
+  font-size: var(--font-size-h2);
   text-transform: capitalize;
 }
 .zwssgr-keywords-list {
@@ -521,8 +515,8 @@
 }
 
 .zwssgr-disable {
-  background-color: #ccc;
-  color: #999;
+  background-color: var(--gray-color-100);
+  color: var(--slate-gray);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -735,7 +729,7 @@
   position: relative;
   width: 18px;
   height: 19px;
-  background: var(--white-color);
+  background: var(--gray-color-400);
   border-radius: 200%;
   display: flex;
   justify-content: center;

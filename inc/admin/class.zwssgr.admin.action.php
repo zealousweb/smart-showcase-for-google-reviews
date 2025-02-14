@@ -2046,7 +2046,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
     					<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 					</div>',
-					'<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
+					'' . ( ($zwssgr_post_count > 0) 
+					? '
+					<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
 						<div class="zwssgr-slider-badge">
 							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item" id="zwssgr-badge1">
@@ -2060,13 +2062,16 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="zwssgr-slider-3-wrap">
 							<div class="zwssgr-slider-3 swiper">
 								<div class="swiper-wrapper">
-									' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									'.$zwssgr_slider_content3.'
 								</div>
 							</div>
 							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
 							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>
-					</div>',
+					</div>'
+					: '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>'
+				) . '
+				',
 					'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
 						<div class="zwssgr-slider-4 swiper">
 							<div class="swiper-wrapper">
@@ -2412,9 +2417,14 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-selected">
 					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="selected-option-display" class="selected-option-display zwssgr-selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
-					<div class="zwssgr-toogle-display">
-						<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($zwssgr_bg_color); ?>; color:<?php echo esc_attr($zwssgr_text_color); ?>;" class="zwssgr-google-toggle" target="_blank"><?php echo esc_html__('Review Us On G', 'smart-showcase-for-google-reviews'); ?></a>
-					</div>
+					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'], true)) : ?>
+						<div class="zwssgr-toogle-display">
+							<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($zwssgr_bg_color); ?>; color:<?php echo esc_attr($zwssgr_text_color); ?>;" class="zwssgr-google-toggle" target="_blank">
+								<?php echo esc_html__('Review Us On G', 'smart-showcase-for-google-reviews'); ?>
+							</a>
+						</div>
+					<?php endif; ?>
+
 					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
 						<div class="zwssgr-widget-settings">
 							<h2 class="zwssgr-page-title"><?php echo esc_html__('Widget Settings', 'smart-showcase-for-google-reviews'); ?></h2>
@@ -3449,7 +3459,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
     					<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 					</div>',
-					'<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
+					'' . ( $zwssgr_post_count > 0 
+					? '
+					<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
 						<div class="zwssgr-slider-badge">
 							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item" id="zwssgr-badge1">
@@ -3469,7 +3481,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
 							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>
-					</div>',
+					</div>'
+					: '<p class="zwssgr-no-found-message">' . esc_html__('', 'smart-showcase-for-google-reviews') . '</p>'
+				) . '
+				',
 					'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
 						<div class="zwssgr-slider-4 swiper">
 							<div class="swiper-wrapper">
