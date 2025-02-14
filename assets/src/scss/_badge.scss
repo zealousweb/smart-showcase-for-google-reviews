@@ -145,12 +145,12 @@ $zwssgrbadge: ".zwssgr";
                 margin-right: 0;
                 margin-left: 10px;
             }
-        }
-        .final-rating {
-            font-weight: var(--font-weight-900);
-            font-size: var(--font-size-h1);
-            color: var(--black-color);
-            font-family: var(--font-primary);
+            &-final-rating {
+                font-weight: var(--font-weight-900);
+                font-size: var(--font-size-h1);
+                color: var(--black-color);
+                font-family: var(--font-primary);
+            }
         }
     }
 
@@ -170,14 +170,16 @@ $zwssgrbadge: ".zwssgr";
                 width: 55%;
                 text-align: center;
             }
+
+            &-final-rating {
+                color: var(--secondary-color-200);
+                font-size: var(--font-size-60);
+                font-weight: var(--font-weight-700);
+                font-family: var(--font-primary);
+                line-height: 1;
+            }
         }
-        .final-rating {
-            color: var(--secondary-color-200);
-            font-size: var(--font-size-60);
-            font-weight: var(--font-weight-700);
-            font-family: var(--font-primary);
-            line-height: 1;
-        }
+        
     }
 
     &-badge5 {
@@ -203,15 +205,17 @@ $zwssgrbadge: ".zwssgr";
                 box-sizing: border-box;
                 text-align: center;
             }
+
+            &-final-rating {
+                color: var(--white-color);
+                font-size: var(--font-size-62);
+                font-weight: var(--font-weight-700);
+                font-family: var(--font-primary);
+                line-height: 1;
+            }
         }
 
-        .final-rating {
-            color: var(--white-color);
-            font-size: var(--font-size-62);
-            font-weight: var(--font-weight-700);
-            font-family: var(--font-primary);
-            line-height: 1;
-        }
+       
     }
 
     &-badge6 {
@@ -221,14 +225,16 @@ $zwssgrbadge: ".zwssgr";
                 align-items: center;
                 margin-bottom: 30px;
             }
+
+            &-final-rating {
+                color: var(--tertiary-color);
+                font-weight: var(--font-weight-700);
+                font-size: var(--font-size-40);
+                font-family: var(--font-primary);
+                padding-right: 20px;
+            }
         }
-        .final-rating {
-            color: var(--tertiary-color);
-            font-weight: var(--font-weight-700);
-            font-size: var(--font-size-40);
-            font-family: var(--font-primary);
-            padding-right: 20px;
-        }
+       
     }
 
     &-badge7 {
@@ -239,14 +245,16 @@ $zwssgrbadge: ".zwssgr";
                 margin-top: 20px;
                 justify-content: center;
             }
+
+            &-final-rating {
+                font-weight: var(--font-weight-900);
+                font-size: var(--font-size-h1);
+                color: var(--black-color);
+                font-family: var(--font-primary);
+                padding-right: 5px;
+            }
         }
-        .final-rating {
-            font-weight: var(--font-weight-900);
-            font-size: var(--font-size-h1);
-            color: var(--black-color);
-            font-family: var(--font-primary);
-            padding-right: 5px;
-        }
+        
     }
 
     &-badge8 {
@@ -254,13 +262,15 @@ $zwssgrbadge: ".zwssgr";
             &-final-review-wrap{
                 margin: 5px auto;
             }
+
+            &-final-rating {
+                color: var(--slate-gray);
+                font-size: var(--font-size-56);
+                font-weight: var(--font-weight-400);
+                line-height: 60px;
+            }
         }
-        .final-rating {
-            color: var(--slate-gray);
-            font-size: var(--font-size-56);
-            font-weight: var(--font-weight-400);
-            line-height: 60px;
-        }
+     
     }
 
 
@@ -298,6 +308,10 @@ $zwssgrbadge: ".zwssgr";
         text-decoration: none;
         width: auto;
         display: inline-block;
+
+        &:focus {
+            box-shadow: none;
+        }
     }
 }
 
