@@ -520,6 +520,10 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+.zwssgr-plugin-popup .zwssgr-btn {
+  padding: 10px 15px;
+  display: inline-block;
+}
 .zwssgr-submit-btn.button {
   padding: 20px 24px;
   border-radius: var(--border-radius);
@@ -982,6 +986,9 @@
   border: 1px solid var(--white-color-100);
   box-sizing: border-box;
 }
+.zwssgr-front-container .zwssgr-slider3 {
+  width: 100%;
+}
 .zwssgr-slider3 {
   display: flex;
   justify-content: space-between;
@@ -989,7 +996,7 @@
   align-items: center;
 }
 .zwssgr-slider3 .zwssgr-slider-badge {
-  width: 240px;
+  width: 20%;
   text-align: center;
 }
 .zwssgr-slider3 .zwssgr-slider-badge .zwssgr-average {
@@ -1021,7 +1028,7 @@
   }
 }
 .zwssgr-slider3 .zwssgr-slider-3-wrap {
-  width: calc(100% - 280px);
+  width: 80%;
 }
 @media (max-width: 720px) and (orientation: portrait) {
   .zwssgr-slider3 .zwssgr-slider-3-wrap {
@@ -1605,6 +1612,7 @@
 }
 .zwssgr-badge-link:focus {
   box-shadow: none;
+  outline: none;
 }
 
 .zwssgr-front-container .zwssgr-popup-item {
@@ -1614,6 +1622,61 @@
 }
 .zwssgr-selected-option-display .zwssgr-popup-content .zwssgr-slide-item, .zwssgr-selected-option-display .zwssgr-popup-content .zwssgr-list-inner, .zwssgr-main-wrapper .zwssgr-popup-content .zwssgr-slide-item, .zwssgr-main-wrapper .zwssgr-popup-content .zwssgr-list-inner {
   width: 100%;
+}
+.zwssgr-plugin-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: none;
+}
+.zwssgr-plugin-popup .zwssgr-plugin-popup-content {
+  background: #fff;
+  width: 450px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  position: relative;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+.zwssgr-plugin-popup .zwssgr-plugin-popup-content h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1B1B1B;
+  font-family: "Poppins", sans-serif;
+}
+@media (max-width: 575px) {
+  .zwssgr-plugin-popup .zwssgr-plugin-popup-content {
+    width: 80%;
+  }
+}
+.zwssgr-plugin-popup .zwssgr-plugin-popup-body {
+  margin-top: 15px;
+}
+.zwssgr-plugin-popup .zwssgr-plugin-caution-div {
+  margin-bottom: 15px;
+}
+.zwssgr-plugin-popup .zwssgr-plugin-caution-div label {
+  font-size: 14px;
+  color: #1B1B1B;
+  font-family: "Poppins", sans-serif;
+}
+.zwssgr-plugin-popup .zwssgr-plugin-danger-note {
+  font-size: 14px;
+  color: #d9534f;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
 }
 .zwssgr-popup-wrap {
   display: flex;

@@ -30,6 +30,64 @@ $zwssgrpopup: ".zwssgr";
         }
     }
 
+    &-plugin-popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        display: none;
+        #{$zwssgrpopup} {
+            &-plugin-popup-content {
+                background: #fff;
+                width: 450px;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+                text-align: center;
+                position: relative;
+
+                h2 {
+                    margin: 0;
+                    font-size: 20px;
+                    color: #1B1B1B;
+                    font-family: 'Poppins', sans-serif;
+                }
+
+                @include respond-below('sm') {
+                    width: 80%;
+                }
+            }
+
+            &-plugin-popup-body {
+                margin-top: 15px;
+            }
+
+            &-plugin-caution-div {
+                margin-bottom: 15px;
+
+                label {
+                    font-size: 14px;
+                    color: #1B1B1B;
+                    font-family: 'Poppins', sans-serif;
+                }
+            }
+
+            &-plugin-danger-note {
+                font-size: 14px;
+                color: #d9534f;
+                margin-bottom: 15px;
+                font-family: 'Poppins', sans-serif;
+            }
+        }
+    }
+
     &-popup-wrap {
         display: flex;
         justify-content: flex-start;
