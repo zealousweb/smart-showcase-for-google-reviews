@@ -3,6 +3,14 @@
 $zwssgrbtn: ".zwssgr";
 
 #{$zwssgrbtn} {
+
+    &-disable {
+        background-color: #ccc;
+        color: #999;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    
     &-submit-btn {
         &.button {
             padding: 20px 24px;

@@ -141,7 +141,10 @@ $zwssgrslider: ".zwssgr";
                 &::after {
                     font-size: var(--font-size-30);
                     font-weight: var(--font-weight-900);
-                    color: #3A4554;
+                    color: var(--black-color);
+                }
+                &:focus-visible {
+                    outline: none;
                 }
             }
 

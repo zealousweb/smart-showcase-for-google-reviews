@@ -5,7 +5,18 @@ $zwssgrpopup: ".zwssgr";
 
 #{$zwssgrpopup} { 
 
-    &-selected-option-display {
+    &-front-container {
+        #{$zwssgrpopup} {
+            &-popup-item {
+                max-width: 400px;
+                margin: 0 auto;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &-selected-option-display,
+    &-main-wrapper {
         #{$zwssgrpopup} {
             &-popup-content {
                 #{$zwssgrpopup} {
