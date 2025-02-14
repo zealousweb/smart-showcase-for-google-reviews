@@ -1311,7 +1311,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge3" id="zwssgr-badge3">
 									<div class="zwssgr-rating-wrap">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 									<img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
@@ -1321,7 +1321,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge4" id="zwssgr-badge4">
 									<div class="zwssgr-badge4-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 									<div class="zwssgr-badge4-info">
@@ -1335,7 +1335,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge5" id="zwssgr-badge5">
 									<div class="zwssgr-badge5-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									</div>
 									<div class="zwssgr-badge5-info">
 										<h3 class="zwssgr-google">'.esc_html__('Google', 'smart-showcase-for-google-reviews').'</h3>
@@ -1348,7 +1348,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge6" id="zwssgr-badge6">
 									<div class="zwssgr-badge6-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 									<div class="zwssgr-badge6-info">
@@ -1362,7 +1362,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								<div class="zwssgr-badge-item zwssgr-badge7" id="zwssgr-badge7">
 									<img src="' . $zwssgr_plugin_dir_path . 'assets/images/review-us.png" alt="Review Us">
 									<div class="zwssgr-badge7-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 								</div>
@@ -1374,7 +1374,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										<img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 										<p class="zwssgr-avg-note">'.esc_html__('Google Reviews', 'smart-showcase-for-google-reviews').'</p>
 									</div>
-									<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+									<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
 								</div>
@@ -1434,7 +1434,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
 								</div>
 								<div class="zwssgr-info-wrap">
-									<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+									<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
 								</div>

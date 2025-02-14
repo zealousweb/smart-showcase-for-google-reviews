@@ -5,8 +5,8 @@ $zwssgrbtn: ".zwssgr";
 #{$zwssgrbtn} {
 
     &-disable {
-        background-color: #ccc;
-        color: #999;
+        background-color: var(--gray-color-100);
+        color: var(--slate-gray);
         cursor: not-allowed;
         pointer-events: none;
     }
