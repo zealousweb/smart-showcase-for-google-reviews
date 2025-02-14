@@ -10,7 +10,16 @@ $zwssgrbtn: ".zwssgr";
         cursor: not-allowed;
         pointer-events: none;
     }
-    
+
+    &-plugin-popup  {
+        #{$zwssgrbtn} {
+            &-btn {
+                padding: 10px 15px;
+                display: inline-block;
+            }
+        }
+    }
+
     &-submit-btn {
         &.button {
             padding: 20px 24px;

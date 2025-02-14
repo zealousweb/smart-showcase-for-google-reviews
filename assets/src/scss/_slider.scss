@@ -169,6 +169,13 @@ $zwssgrslider: ".zwssgr";
         }
     }
 
+    &-front-container {
+        #{$zwssgrslider} {
+            &-slider3 { 
+                width: 100%;
+            }
+        }
+    }
     &-slider3 {
         display: flex;
         justify-content: space-between;
@@ -177,7 +184,7 @@ $zwssgrslider: ".zwssgr";
 
         #{$zwssgrslider} {
             &-slider-badge {
-                width: 240px;
+                width: 20%;
                 text-align: center;
 
                 #{$zwssgrslider} {
@@ -207,7 +214,7 @@ $zwssgrslider: ".zwssgr";
             }
 
             &-slider-3-wrap {
-                width: calc(100% - 280px);
+                width: 80%;
 
                 @include mobile() {
                     width: 100%;
