@@ -7,9 +7,9 @@ $zwssgroption: ".zwssgr";
     &-selected-option-display {
         margin-top: 20px;
         padding: 10px;
-        background-color: #e0e0e0;
-        border: 1px solid #ccc;
-        font-size: 18px;
+        background-color: var(--gray-color-200);
+        border: 1px solid var(--gray-color-100);
+        font-size: var(--font-size-h2);
     }
     &-toogle-display {
         background-color: var(--gray-color-light);

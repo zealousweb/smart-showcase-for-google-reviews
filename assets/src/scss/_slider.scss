@@ -85,7 +85,7 @@ $zwssgrslider: ".zwssgr";
             }
     
             &-star {
-                color: #ccc;
+                color: var(--gray-color-100);
                 font-size: var(--font-size-h1);
         
                 &.filled {
@@ -140,7 +140,7 @@ $zwssgrslider: ".zwssgr";
             &-swiper-button-prev {
                 &::after {
                     font-size: var(--font-size-30);
-                    font-weight: 900;
+                    font-weight: var(--font-weight-900);
                     color: #3A4554;
                 }
             }
@@ -179,10 +179,10 @@ $zwssgrslider: ".zwssgr";
 
                 #{$zwssgrslider} {
                     &-average {
-                        color: #1B1B1B;
-                        font-weight: 700;
-                        font-size: 24px;
-                        font-family: 'Poppins', sans-serif;
+                        color: var(--body-color);
+                        font-weight: var(--font-weight-700);
+                        font-size: var(--font-size-h3);
+                        font-family: var(--font-primary);
                         text-transform: uppercase;
                         margin: 0 0 10px;
                     }
@@ -190,10 +190,10 @@ $zwssgrslider: ".zwssgr";
                         margin: 0 auto;
                     }
                     &-based-on {
-                        color: #1B1B1B;
-                        font-size: 16px;
-                        font-weight: 400;
-                        font-family: 'Poppins', sans-serif;
+                        color: var(--body-color);
+                        font-size: var(--font-size-body);
+                        font-weight: var(--font-weight-400);
+                        font-family: var(--font-primary);
                         margin: 15px 0;
                     }
                 }

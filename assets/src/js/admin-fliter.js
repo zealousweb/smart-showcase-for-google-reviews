@@ -1,5 +1,6 @@
 import { toggleElements } from './hide-element.js';
 import { reinitializeAllSwipers } from './swiper.js';
+import { updateDisplayedDates, updateReadMoreLink } from './review-filter.js';
 document.addEventListener('DOMContentLoaded', function () {
     "use strict";
 
@@ -104,11 +105,24 @@ document.addEventListener('DOMContentLoaded', function () {
                         }, 100);
                     }
                     toggleElements();
-    
+            
+                    updateDisplayedDates(); // Ensure dates are updated after new content is loaded
+
+                    let lang = document.getElementById('language-select').value;
+                    console.log(lang);
+                    document.querySelectorAll('.zwssgr-content').forEach(function (element) {
+                        let fullText = element.getAttribute('data-full-text') || element.textContent;
+                        if (!element.getAttribute('data-full-text')) {
+                            element.setAttribute('data-full-text', fullText);
+                        }
+                        updateReadMoreLink(element, lang);
+                    });
+            
                     // Handle list layout reinitialization (if needed)
                     if (['list-1', 'list-2', 'list-3', 'list-4', 'list-5'].includes(selectedOption)) {
                         // console.log("List layout filtered");
                     }
+
                 } else {
                     console.error("AJAX Error: ", xhr.statusText, "Status Code:", xhr.status);
                 }

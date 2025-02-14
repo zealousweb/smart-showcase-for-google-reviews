@@ -13,15 +13,15 @@ $zwssgrsetting: ".zwssgr";
         #{$zwssgrsetting} {
             &-input-text {
                 padding: 10px 16px;
-                border: 1px solid #C1CFDE;
-                background: #FCFCFC;
+                border: 1px solid var(--gray-color-300);
+                background: var(--white-color-200);
                 height: 48px;
                 box-shadow: none;
-                color: #4A494B;
-                border-radius: 8px;
-                font-weight: 400;
-                font-size: 16px;
-                font-family: 'Poppins', sans-serif;
+                color: var(--charcoal-gray);
+                border-radius: var(--border-radius-large);
+                font-weight: var(--font-weight-400);
+                font-size: var(--font-size-body);
+                font-family: var(--font-primary);
                 line-height: 1;
                 width: 100%;
                 max-width: 500px;
@@ -29,21 +29,21 @@ $zwssgrsetting: ".zwssgr";
         
             &-input-select {
                 line-height: 1.3;
-                background: #FCFCFC url(../../images/down-arrow.png) no-repeat right 7px top 55%;
+                background: var(--white-color-200) url(../../images/down-arrow.png) no-repeat right 7px top 55%;
                 background-size: 16px 10px;
             }
 
             &-textarea {
                 padding: 10px 16px;
-                border: 1px solid #C1CFDE;
-                background: #FCFCFC;
+                border: 1px solid var(--gray-color-300);
+                background: var(--white-color-200);
                 height: 200px;
                 box-shadow: none;
-                color: #4A494B;
-                border-radius: 8px;
-                font-weight: 400;
-                font-size: 16px;
-                font-family: 'Poppins', sans-serif;
+                color: var(--charcoal-gray);
+                border-radius: var(--border-radius-large);
+                font-weight: var(--font-weight-400);
+                font-size: var(--font-size-body);
+                font-family: var(--font-primary);
                 line-height: 1;
                 width: 100%;
             }

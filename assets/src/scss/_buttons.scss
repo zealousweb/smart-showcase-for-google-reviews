@@ -25,14 +25,14 @@ $zwssgrbtn: ".zwssgr";
     &-disconnect-wrapper {
         #{$zwssgrbtn} {
             &-disconnect-btn {
-                background-color: red;
-                color: white;
-                border: 1px solid red;
+                background-color: var(--red-color);
+                color: var(--white-color);
+                border: 1px solid var(--red-color);
                 margin: 0 10px 0 0;
                 &:hover {
                     background-color: transparent;
-                    box-shadow: 0 0 0 1px red;
-                    color: red;
+                    box-shadow: 0 0 0 1px var(--red-color);
+                    color: var(--red-color);
                 }
             }
         }
