@@ -253,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function () {
           (0,_review_filter_js__WEBPACK_IMPORTED_MODULE_2__.updateDisplayedDates)(); // Ensure dates are updated after new content is loaded
 
           var lang = document.getElementById('language-select').value;
-          console.log(lang);
           document.querySelectorAll('.zwssgr-content').forEach(function (element) {
             var fullText = element.getAttribute('data-full-text') || element.textContent;
             if (!element.getAttribute('data-full-text')) {
@@ -6016,14 +6015,27 @@ function toggleElements() {
   }, {
     checkbox: "review-g-icon",
     target: ".zwssgr-google-icon"
+  }, {
+    checkbox: "review-rating",
+    target: ".zwssgr-profile-info .zwssgr-rating",
+    alwaysShow: true
+  }, {
+    checkbox: "review-rating",
+    target: ".zwssgr-info-wrap .zwssgr-rating",
+    alwaysShow: true
+  }, {
+    checkbox: "review-rating",
+    target: ".zwssgr-slider-badge .zwssgr-rating",
+    alwaysShow: true
   }];
   elements.forEach(function (_ref) {
     var checkbox = _ref.checkbox,
-      target = _ref.target;
+      target = _ref.target,
+      alwaysShow = _ref.alwaysShow;
     var checkboxElement = document.getElementById(checkbox);
     var targetElements = document.querySelectorAll(target);
     if (checkboxElement && targetElements.length) {
-      var shouldShow = !checkboxElement.checked;
+      var shouldShow = !checkboxElement.checked || alwaysShow;
       targetElements.forEach(function (el) {
         return el.style.display = shouldShow ? 'block' : 'none';
       });

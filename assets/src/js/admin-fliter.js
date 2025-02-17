@@ -109,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     updateDisplayedDates(); // Ensure dates are updated after new content is loaded
 
                     let lang = document.getElementById('language-select').value;
-                    console.log(lang);
                     document.querySelectorAll('.zwssgr-content').forEach(function (element) {
                         let fullText = element.getAttribute('data-full-text') || element.textContent;
                         if (!element.getAttribute('data-full-text')) {
