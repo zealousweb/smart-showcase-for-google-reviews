@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 	
 			const zwssgrLoader 			  = document.createElement("span");
-			zwssgrLoader.className  	  = "loader is-active";
+			zwssgrLoader.className  	  = "zwssgr-loader is-active";
 			zwssgrLoader.style.marginLeft = "10px";
 	
 			const zwssgrButtons = document.querySelectorAll("#gmb-review-data #add-reply, #gmb-review-data #update-reply, #gmb-review-data #delete-reply");
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				zwssgrJsonMessage.innerHTML = `<div class="notice notice-error"><p>Error: ${zwssgrError.message}</p></div>`;
 			})
 			.finally(() => {
-				document.querySelectorAll("#gmb-review-data .loader.is-active").forEach(zwssgrLoader => zwssgrLoader.remove());
+				document.querySelectorAll("#gmb-review-data .zwssgr-loader.is-active").forEach(zwssgrLoader => zwssgrLoader.remove());
 			});
 		});
 

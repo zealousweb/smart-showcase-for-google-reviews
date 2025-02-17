@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 $zwssgrbtn: ".zwssgr";
 
@@ -46,8 +47,12 @@ $zwssgrbtn: ".zwssgr";
                 color: var(--white-color);
                 border: 1px solid var(--red-color);
                 margin: 0 10px 0 0;
+                @include respond-below('md') {
+                    margin: 10px 0 0 0;
+                }
                 &:hover {
                     background-color: transparent;
+                    border-color: var(--red-color);
                     box-shadow: 0 0 0 1px var(--red-color);
                     color: var(--red-color);
                 }

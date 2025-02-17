@@ -78,7 +78,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     <div class="zwssgr-gmbc-container">
                         <div id="close-gmb-wrap" class="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="close-button"></a></div>
                         <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper disconnect-gmb-auth">
-                            <div id="disconnect-gmb-auth-response" class="disconnect-gmb-auth-response"></div>
+                            <div id="disconnect-gmb-auth-response" class="zwssgr-disconnect-gmb-auth-response"></div>
                             <div class="zwssgr-caution-div">
                                 <input type="checkbox" id="delete-all-data" name="delete_all_data" class="delete-all-data">
                                 <label for="delete-all-data" class="zwssgr-chechbox-label">
@@ -101,7 +101,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     <div class="zwssgr-gmbc-container">
                         <div id="fetch-gmb-auth-url-wrapper" class="zwssgr-gmbc-inner-wrapper">
                             <span> '. esc_html__('Connect with your Google account to seamlessly fetch and showcase reviews.', 'smart-showcase-for-google-reviews').'  </span>
-                            <div id="fetch-gmb-auth-url-response" class="fetch-gmb-auth-url-response"></div>   
+                            <div id="fetch-gmb-auth-url-response" class="zwssgr-fetch-gmb-auth-url-response"></div>   
                             <a href="" class="button button-primary zwssgr-submit-btn fetch-gmb-auth-url" id="fetch-gmb-auth-url">'. esc_html__('Connect with Google', 'smart-showcase-for-google-reviews').'</a>
                         </div>
                     </div>

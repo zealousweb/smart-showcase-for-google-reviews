@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
 				zwssgrAuthResponse.innerHTML      = "";
 				zwssgrAuthResponse.appendChild(zwssgrUnexpectedError);
 			});
-			
 		});
 
 	}

@@ -5,7 +5,7 @@ $zwssgrfetchgmbdata: ".zwssgr";
 
 #{$zwssgrfetchgmbdata} {
     &-fetch-gmb-data {
-        margin: 20px 0;
+        margin: 20px 0 0 0;
         padding: 20px;
         background-color: var(--white-color);
         box-shadow: 0px 0.5px 2px 0px var(--extra-dark-secondary-color);
@@ -13,13 +13,14 @@ $zwssgrfetchgmbdata: ".zwssgr";
         #{$zwssgrfetchgmbdata} {
             &-response {
                 width: 100%;
+                margin: 0 0 10px 0;
                 .error {
-                    color: red;
-                    font-size: 18px;
+                    color: var(--red-color);
+                    font-size: var(--font-size-h2);
                 }
                 .success {
-                    font-size: 18px;
-                    color: green;
+                    color: var(--green-color);
+                    font-size: var(--font-size-h2);
                 }
             }
         }
