@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const zwssgrGmbDataType = zwssgrButton.getAttribute("data-fetch-type");
             const zwssgrWidgetId 	= zwssgrGetUrlParameter("zwssgr_widget_id");
             
-            document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
+            document.querySelector("#fetch-gmb-data .zwssgr-progress-bar").classList.add("active");
             zwssgrButton.classList.add("disabled");
             zwssgrButton.innerHTML = '<span class="spinner is-active"></span> Fetching...';
             

@@ -242,13 +242,13 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 }
             }            
 
-            echo '<div id="fetch-gmb-data" class="fetch-gmb-data">
-                <div class="response"></div>
-                <div class="progress-bar '. esc_attr( $zwssgr_data_processing_init ) .'">
-                    <progress class="progress" id="progress" value="'. esc_attr( $zwssgr_batch_progress ) .'" max="100"></progress>
-                    <span id="progress-percentage" class="progress-percentage"> '. esc_attr( $zwssgr_batch_progress ) .'% </span>
+            echo '<div id="fetch-gmb-data" class="fetch-gmb-data zwssr-fetch-gmb-data">
+                <div class="response zwssgr-response"></div>
+                <div class="progress-bar zwssgr-progress-bar '. esc_attr( $zwssgr_data_processing_init ) .'">
+                    <progress class="progress zwssgr-progress" id="progress" value="'. esc_attr( $zwssgr_batch_progress ) .'" max="100"></progress>
+                    <span id="progress-percentage" class="progress-percentage zwssgr-progress-percentage"> '. esc_attr( $zwssgr_batch_progress ) .'% </span>
                 </div>
-                <div class="fetch-gmb-inner-data">';
+                <div class="fetch-gmb-inner-data zwssgr-fetch-gmb-inner-data">';
                     // Check if the widget ID is not empty
                     if (!empty($zwssgr_widget_id)) {
 
