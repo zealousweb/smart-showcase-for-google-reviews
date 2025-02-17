@@ -13,7 +13,6 @@ $zwssgrfetchgmbdata: ".zwssgr";
         #{$zwssgrfetchgmbdata} {
             &-response {
                 width: 100%;
-                margin: 0 0 10px 0;
                 .error {
                     color: var(--red-color);
                     font-size: var(--font-size-h2);
