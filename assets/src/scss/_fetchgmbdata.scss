@@ -14,12 +14,12 @@ $zwssgrfetchgmbdata: ".zwssgr";
             &-response {
                 width: 100%;
                 .error {
-                    color: red;
+                    color: var(--red-color);
                     font-size: 18px;
                 }
                 .success {
+                    color: var(--green-color);
                     font-size: 18px;
-                    color: green;
                 }
             }
         }

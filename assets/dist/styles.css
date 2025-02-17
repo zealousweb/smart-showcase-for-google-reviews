@@ -2128,12 +2128,12 @@
   width: 100%;
 }
 .zwssgr-fetch-gmb-data .zwssgr-response .error {
-  color: red;
+  color: var(--red-color);
   font-size: 18px;
 }
 .zwssgr-fetch-gmb-data .zwssgr-response .success {
+  color: var(--green-color);
   font-size: 18px;
-  color: green;
 }
 .zwssgr-fetch-gmb-inner-data {
   display: flex;
