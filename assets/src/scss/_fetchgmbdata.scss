@@ -42,8 +42,10 @@ $zwssgrfetchgmbdata: ".zwssgr";
                 width: fit-content;
                 flex-direction: row-reverse;
                 margin: 0;
+                .spinner {
+                    margin: 0;
+                }
             }
-
             &-input-text {
                 padding: 8px 26px 10px 16px;
                 max-width: 310px;
