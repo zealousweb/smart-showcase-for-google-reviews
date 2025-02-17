@@ -76,7 +76,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 // Display connected to  message and disconnect button if JWT token exists
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
-                        <div id="close-gmb-wrap" class="close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="close-button"></a></div>
+                        <div id="close-gmb-wrap" class="zwssgr-close-gmb-wrap"><a href="'.esc_url(admin_url('admin.php?page=zwssgr_settings')).'" class="zwssgr-close-button"></a></div>
                         <div id="disconnect-gmb-auth" class="zwssgr-gmbc-inner-wrapper disconnect-gmb-auth">
                             <div id="disconnect-gmb-auth-response" class="zwssgr-disconnect-gmb-auth-response"></div>
                             <div class="zwssgr-caution-div">
