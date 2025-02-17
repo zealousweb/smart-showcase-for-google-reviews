@@ -2117,4 +2117,65 @@
   font-weight: var(--font-weight-700);
 }
 
+.zwssgr-fetch-gmb-data {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: var(--white-color);
+  box-shadow: 0px 0.5px 2px 0px var(--extra-dark-secondary-color);
+  border-radius: var(--border-radius-extra-large);
+}
+.zwssgr-fetch-gmb-data .zwssgr-response {
+  width: 100%;
+}
+.zwssgr-fetch-gmb-data .zwssgr-response .error {
+  color: red;
+  font-size: 18px;
+}
+.zwssgr-fetch-gmb-data .zwssgr-response .success {
+  font-size: 18px;
+  color: green;
+}
+.zwssgr-fetch-gmb-inner-data {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-fetch-gmb-inner-data {
+    flex-direction: column;
+  }
+}
+.zwssgr-fetch-gmb-inner-data .zwssgr-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 24px;
+  width: fit-content;
+  flex-direction: row-reverse;
+  margin: 0;
+}
+.zwssgr-fetch-gmb-inner-data .zwssgr-input-text {
+  padding: 8px 26px 10px 16px;
+  max-width: 310px;
+  margin-right: 10px;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  background: var(--white-color-200) url(27298ad01d97acf7c3af.png) no-repeat right 7px top 55%;
+  background-size: 16px 10px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-fetch-gmb-inner-data .zwssgr-input-text {
+    max-width: 100%;
+    margin: 0 0 10px 0;
+  }
+}
+
 /*# sourceMappingURL=styles.css.map*/
