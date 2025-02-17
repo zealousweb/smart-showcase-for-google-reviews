@@ -195,7 +195,8 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                     ));
 
                     if ($zwssgr_new_widget_id) {
-                        $this->zwssgr_zqm->zwssgr_fetch_gmb_data(true, false, 'zwssgr_gmb_accounts');
+
+                        //$this->zwssgr_zqm->zwssgr_fetch_gmb_data(true, false, 'zwssgr_gmb_accounts');
 
                         // Store a flag or message in a transient or session to show the notice
                         set_transient('zwssgr_success_notice', 'Congratulations! Successfully connected to Google.', 30);
