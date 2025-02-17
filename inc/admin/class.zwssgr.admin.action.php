@@ -558,7 +558,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_review_id 		  	   = get_post_meta($zwssgr_review->ID, 'zwssgr_review_id', true);
 			$zwssgr_gmb_reviewer_image_uri = ZWSSGR_UPLOAD_URL . '/smart-showcase-for-google-reviews/gmb-reviewers/gmb-reviewer-'.$zwssgr_review_id.'.png';
 
-			echo '<table class="form-table test gmb-review-data" id="gmb-review-data" zwssgr-review-id="'.esc_attr( $zwssgr_review->ID ).'">
+			echo '<table class="form-table zwssgr-gmb-review-data" id="gmb-review-data" zwssgr-review-id="'.esc_attr( $zwssgr_review->ID ).'">
 				<tr>
 					<th>
 						<label for="zwssgr_reviewer_image">' . esc_html('', 'smart-showcase-for-google-reviews') . '</label>
@@ -605,7 +605,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<td><div class="separator"></div></td>
 				</tr>
 				<tr>
-					<th class="separator-cell" colspan="2">
+					<th class="zwssgr-separator-cell" colspan="2">
 						<hr class="separator">
 					</th>
 				</tr>';
@@ -629,14 +629,14 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<td>
 						<div id="json-response-message" class="json-response-message zwssgr-success-message"></div>
 						<textarea name="zwssgr_reply_comment" class="zwssgr-regular-text" rows="5">'. esc_textarea($zwssgr_reply_comment) .'</textarea>
-						<div class="cta-wrapper">';
+						<div class="zwssgr-cta-wrapper">';
 							if (!empty($zwssgr_reply_comment)) {
 								echo '<button class="button button-primary button-large zwssgr-submit-btn" id="update-reply"> ' . esc_html('Update', 'smart-showcase-for-google-reviews') . ' </button>';
 							} else {
 								echo '<button class="button button-primary button-large zwssgr-submit-btn" id="add-reply"> ' . esc_html('Add Reply', 'smart-showcase-for-google-reviews') . ' </button>';
 							}
 							if (!empty($zwssgr_reply_comment)) {
-								echo '<button class="button button-danger button-large zwssgr-submit-btn" id="delete-reply">' . esc_html('Delete', 'smart-showcase-for-google-reviews') . '</button>';
+								echo '<button class="button zwssgr-button-danger button-large zwssgr-submit-btn" id="delete-reply">' . esc_html('Delete', 'smart-showcase-for-google-reviews') . '</button>';
 							}
 						echo '</div>
 					</td>

@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			"use strict";
 			zwssgrEv.preventDefault();
 		
-			const zwssgrLoader = document.createElement("span");
-			zwssgrLoader.className = "loader is-active";
+			const zwssgrLoader 	   = document.createElement("span");
+			zwssgrLoader.className = "zwssgr-loader is-active";
 			zwssgrLoader.style.marginLeft = "10px";
 		
-			const zwssgrButtons = document.querySelectorAll("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
-			const zwssgrUrlParams = new URLSearchParams(window.location.search);
-			const zwssgrWpReviewId = zwssgrUrlParams.get("post");
+			const zwssgrButtons 	= document.querySelectorAll("#gmb-review-data #update-reply, #gmb-review-data #delete-reply");
+			const zwssgrUrlParams 	= new URLSearchParams(window.location.search);
+			const zwssgrWpReviewId  = zwssgrUrlParams.get("post");
 			const zwssgrJsonMessage = document.querySelector("#gmb-review-data #json-response-message");
 		
 			zwssgrButtons.forEach(btn => btn.classList.add("disabled"));
@@ -32,21 +32,20 @@ document.addEventListener('DOMContentLoaded', function () {
 					security: zwssgr_admin.zwssgr_delete_review_reply
 				})
 			})
-			.then(response => response.json())
-			.then(data => {
-				if (data.success) {
+			.then(zwssgrResponse => zwssgrResponse.json())
+			.then(zwssgrData => {
+				if (zwssgrData.success) {
 					const zwssgrSafeMessage = document.createElement("div");
-					zwssgrSafeMessage.textContent = data.data.message;
+					zwssgrSafeMessage.textContent = zwssgrData.data.message;
 					zwssgrJsonMessage.innerHTML = `<div class="notice notice-success"><p>${zwssgrSafeMessage.innerHTML}</p></div>`;
 					setTimeout(() => location.reload(), 2000);
 				}
 			})
 			.catch(zwssgrError => {
-				console.error("AJAX Error:", zwssgrError);
 				zwssgrJsonMessage.innerHTML = `<div class="notice notice-error"><p>Error: ${zwssgrError.message}</p></div>`;
 			})
 			.finally(() => {
-				document.querySelectorAll("#gmb-review-data .loader.is-active").forEach(zwssgrLoader => zwssgrLoader.remove());
+				document.querySelectorAll("#gmb-review-data .zwssgr-loader.is-active").forEach(zwssgrLoader => zwssgrLoader.remove());
 			});
 		
 		});
