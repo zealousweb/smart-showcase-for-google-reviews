@@ -2064,6 +2064,7 @@ document.addEventListener('DOMContentLoaded', function () {
       zwssgrDisconnectButton.disabled = true;
       zwssgrDisconnectButton.textContent = "Disconnecting...";
       var zwssgrDeletePluginData = document.querySelector("#disconnect-gmb-auth #delete-all-data").checked ? '1' : '0';
+      var zwssgrDeleteDataResponse = document.getElementById("disconnect-gmb-auth-response");
       fetch(zwssgr_admin.ajax_url, {
         method: "POST",
         headers: {
@@ -2081,7 +2082,7 @@ document.addEventListener('DOMContentLoaded', function () {
           var _zwssgrData$data;
           zwssgrDisconnectButton.disabled = false;
           zwssgrDisconnectButton.textContent = "Disconnected";
-          document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='success response'> OAuth Disconnected: " + (((_zwssgrData$data = zwssgrData.data) === null || _zwssgrData$data === void 0 ? void 0 : _zwssgrData$data.message) || "Unknown error") + "</p>";
+          zwssgrDeleteDataResponse.innerHTML = "<p class='success response'> OAuth Disconnected: " + (((_zwssgrData$data = zwssgrData.data) === null || _zwssgrData$data === void 0 ? void 0 : _zwssgrData$data.message) || "Unknown error") + "</p>";
           document.querySelector("#disconnect-gmb-auth .zwssgr-th-label").innerHTML = "";
           document.querySelector("#disconnect-gmb-auth .zwssgr-caution-div").style.display = "none";
           document.querySelector("#disconnect-gmb-auth .danger-note").style.display = "none";
@@ -2090,12 +2091,12 @@ document.addEventListener('DOMContentLoaded', function () {
           }, 1500);
         } else {
           var _zwssgrData$data2;
-          document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='error response'>Error disconnecting OAuth connection: " + (((_zwssgrData$data2 = zwssgrData.data) === null || _zwssgrData$data2 === void 0 ? void 0 : _zwssgrData$data2.message) || "Unknown error") + "</p>";
+          zwssgrDeleteDataResponse.innerHTML = "<p class='error response'>Error disconnecting OAuth connection: " + (((_zwssgrData$data2 = zwssgrData.data) === null || _zwssgrData$data2 === void 0 ? void 0 : _zwssgrData$data2.message) || "Unknown error") + "</p>";
         }
       })["catch"](function (zwssgrError) {
         zwssgrDisconnectButton.disabled = false;
         zwssgrDisconnectButton.textContent = "Disconnect";
-        document.getElementById("disconnect-gmb-auth-response").innerHTML = "<p class='error response'> An unexpected error occurred: " + zwssgrError + "</p>";
+        zwssgrDeleteDataResponse.innerHTML = "<p class='error response'> An unexpected error occurred: " + zwssgrError + "</p>";
       });
     });
   }
