@@ -963,24 +963,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		{
 
 			// SEO & Notifications Settings
-			register_setting(
-				'zwssgr_notification_settings',
-				'zwssgr_admin_notification_enabled',
-				array(
-					'type'              => 'boolean',
-					'sanitize_callback' => 'rest_sanitize_boolean',
-				)
-			);
+			register_setting('zwssgr_notification_settings', 'zwssgr_admin_notification_enabled', 'sanitize_text_field');
 
 			// Advanced Setting
-			register_setting(
-				'zwssgr_advanced_account_settings',
-				'zwssgr_sync_reviews',
-				array(
-					'type'              => 'string',
-					'sanitize_callback' => 'sanitize_text_field',
-				)
-			);
+			register_setting('zwssgr_advanced_account_settings', 'zwssgr_sync_reviews', 'sanitize_text_field');
 
 			// Google setting section & fields
 			add_settings_section(
@@ -2793,7 +2779,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				die(esc_html__('Permission Denied', 'smart-showcase-for-google-reviews'));
 			}
 
-			$rating_filter = isset($_POST['rating_filter']) ? json_decode(stripslashes($_POST['rating_filter']), true) : [];
+			$rating_filter = isset($_POST['rating_filter']) ? json_decode(sanitize_text_field(wp_unslash($_POST['rating_filter'])), true) 	: [];
 
 			// Validate if the decoded value is an array
 			if (!is_array($rating_filter)) {
@@ -3459,8 +3445,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
     					<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 					</div>',
-					'' . ( $zwssgr_post_count > 0 
-					? '
+					'' . ( $zwssgr_post_count > 0 ? '
 					<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
 						<div class="zwssgr-slider-badge">
 							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
@@ -3482,9 +3467,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>
 					</div>'
-					: '<p class="zwssgr-no-found-message">' . esc_html__('', 'smart-showcase-for-google-reviews') . '</p>'
-				) . '
-				',
+					: '') . '',
 					'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
 						<div class="zwssgr-slider-4 swiper">
 							<div class="swiper-wrapper">
