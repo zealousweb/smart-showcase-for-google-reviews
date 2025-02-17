@@ -2169,7 +2169,7 @@ document.addEventListener('DOMContentLoaded', function () {
       zwssgrEv.preventDefault();
       var zwssgrGmbDataType = zwssgrButton.getAttribute("data-fetch-type");
       var zwssgrWidgetId = (0,_get_url_parameter__WEBPACK_IMPORTED_MODULE_1__.zwssgrGetUrlParameter)("zwssgr_widget_id");
-      document.querySelector("#fetch-gmb-data .progress-bar").classList.add("active");
+      document.querySelector("#fetch-gmb-data .zwssgr-progress-bar").classList.add("active");
       zwssgrButton.classList.add("disabled");
       zwssgrButton.innerHTML = '<span class="spinner is-active"></span> Fetching...';
       try {
