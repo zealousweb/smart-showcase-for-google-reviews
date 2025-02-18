@@ -1009,7 +1009,7 @@
 }
 .zwssgr-slider3 {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
 }
