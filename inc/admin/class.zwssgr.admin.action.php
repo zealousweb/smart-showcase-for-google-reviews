@@ -128,16 +128,14 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			// wp_register_script( ZWSSGR_PREFIX . '-vanilla-js', ZWSSGR_URL . 'assets/js/vanilla.js', array(), ZWSSGR_VERSION, true );
 			// wp_enqueue_script( ZWSSGR_PREFIX . '-vanilla-js' );
 
+			// Google chart JS
+			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/src/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
+
 			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-main-js' );
 
-			// Google chart JS
-			// wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			// wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
-
-			// Enqueue Daterangepicker JS
-			wp_register_script( ZWSSGR_PREFIX . '-daterangepicker-min-js', ZWSSGR_URL .'assets/js/daterangepicker.min.js', array('jquery-core','moment'), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '-daterangepicker-min-js' );
+			
 
 			// admin css
 			// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', false, ZWSSGR_VERSION );
@@ -150,15 +148,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );	
 
-			// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.min.css', false, ZWSSGR_VERSION );
-			// wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );
-
-			
-			
-
-			// Enqueue Daterangepicker CSS
-			wp_register_style( ZWSSGR_PREFIX . '-daterangepicker-css', ZWSSGR_URL . 'assets/css/daterangepicker.css', false, ZWSSGR_VERSION );
-			wp_enqueue_style( ZWSSGR_PREFIX . '-daterangepicker-css' );
+			wp_register_style( ZWSSGR_PREFIX . '-flatpickr-css', ZWSSGR_URL . 'assets/src/scss/flatpickr.min.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . '-flatpickr-css' );
 		
 			// // Slick js
 			// wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
@@ -1323,8 +1314,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			) );
 
 			// Use wp_kses instead of wp_kses_post
-			echo '<div class="zwgr-dashboard">
-				<div class="zwgr-dashboard-header">'
+			echo '<div class="zwssgr-dashboard" id="zwssgr-dashboard">
+				<div class="zwssgr-dashboard-header">'
 					. wp_kses($this->zwssgr_dashboard->zwssgr_date_range_filter(), $zwssgr_allowed_html) .
 				'</div>'
 				. wp_kses($this->zwssgr_dashboard->zwssgr_data_render(), $zwssgr_allowed_html) .
