@@ -14,9 +14,9 @@ $zwssgrdashboard: ".zwssgr";
             display: inline-block;
             width: 50px;
             height: 50px;
-            border: 5px solid #F08C3C;
+            border: 5px solid var(--tertiary-color);
             border-radius: 50%;
-            border-top-color: #0074A2;
+            border-top-color: var(--secondary-color);
             animation: spin 1s ease-in-out infinite;
             -webkit-animation: spin 1s ease-in-out infinite;
         }
@@ -45,11 +45,11 @@ $zwssgrdashboard: ".zwssgr";
                 }
             }
             &-range-filter-title {
-                font-size: 20px;
-                font-weight: 500;
+                font-size: var(--font-size-h1);
+                font-weight: var(--font-weight-500);
                 line-height: 30px;
                 font-family: 'Poppins';
-                color: #1B1B1B;
+                color: var(--body-color);
                 margin: 0;
             }
             &-filters-wrapper {
@@ -74,7 +74,7 @@ $zwssgrdashboard: ".zwssgr";
                         }
                         &.filter-text {
                             margin: 0 20px 0 0;
-                            font-size: 18px;
+                            font-size: var(--font-size-h2);
                             @include respond-below('md') {
                                 margin: 0 20px 12px 0;
                             }
@@ -82,13 +82,13 @@ $zwssgrdashboard: ".zwssgr";
                     }
                     &-filter-button, &-date-range-picker {
                         min-height: 37px;
-                        color: white;
-                        background-color: #3caab4;
+                        color: var(--white-color);
+                        background-color: var(--primary-color);
                         padding: 10px 24px;
                         border-radius: 50px;
                         cursor: pointer;
-                        font-size: 14px;
-                        font-weight: 600;
+                        font-size: var(--font-size-14);
+                        font-weight: var(--font-weight-600);
                         line-height: 1.14;
                         border: none;
                         letter-spacing: 0.25px;
@@ -96,10 +96,10 @@ $zwssgrdashboard: ".zwssgr";
                         box-shadow: none;
                         text-align: center;
                         &:hover, &.active {
-                            background-color: #F08C3C;
+                            background-color: var(--tertiary-color);
                         }
                         &::placeholder {
-                            color: white !important;
+                            color: var(--white-color) !important;
                         }
                     }
                 }
@@ -135,7 +135,7 @@ $zwssgrdashboard: ".zwssgr";
                 max-width: 286px;
                 margin: 0 24px 0 0;
                 padding: 24px 27px;
-                background-color: white;
+                background-color: var(--white-color);
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
@@ -161,20 +161,20 @@ $zwssgrdashboard: ".zwssgr";
                 max-height: 72px;
             }
             &-card-title {
-                color: #1B1B1B;
+                color: var(--body-color);
                 font-family: 'Poppins';
-                font-size: 16px;
-                font-weight: 500;
+                font-size: var(--font-size-body);
+                font-weight: var(--font-weight-500);
                 line-height: 1.5;
                 text-align: left;
                 margin: 0 0 6px 0;
             }
             &-card-value {
                 display: inline-block;
-                color: #0074A2;
+                color: var(--secondary-color);
                 font-family: 'Poppins';
-                font-size: 32px;
-                font-weight: 600;
+                font-size: var(--font-size-32);
+                font-weight: var(--font-weight-600);
                 line-height: 48px;
                 text-align: left;
                 margin: 0;
@@ -209,12 +209,12 @@ $zwssgrdashboard: ".zwssgr";
                 box-shadow: 0px 0.5px 2px 0px rgba(37, 42, 59, 0.11);
                 border-radius: 12px;
                 h4 {
-                    color: #1B1B1B;
+                    color: var(--body-color);
                     margin: 0;
                     display: inline-block;
                     font-family: 'Poppins';
-                    font-size: 20px;
-                    font-weight: 500;
+                    font-size: var(--font-size-h1);
+                    font-weight: var(--font-weight-500);
                     line-height: 30px;
                     text-align: left;
                 }
@@ -236,7 +236,7 @@ $zwssgrdashboard: ".zwssgr";
             }
             &-dashboard-text {
                 text-align: center;
-                font-size: 16px;
+                font-size: var(--font-size-body);
                 color: #888;
                 padding: 50px;
             }
@@ -264,23 +264,23 @@ $zwssgrdashboard: ".zwssgr";
                 }
                 .guide {
                     font-family: 'Poppins';
-                    font-size: 14px;
-                    font-weight: 400;
+                    font-size: var(--font-size-14);
+                    font-weight: var(--font-weight-400);
                     line-height: 1.5;
                     text-align: left;
                 }
             }
             &-chart-lengend-orange {
-                background-color: #f08c3c;
+                background-color: var(--tertiary-color);
             }
             &-chart-lengend-cian {
-                background-color: #3caab4;
+                background-color: var(--primary-color);
             }
             &-chart-lengend-grey {
                 background-color: #a9c6cc;
             }
             &-chart-lengend-blue {
-                background-color: #285064;
+                background-color: var(--secondary-color-100);
             }
             &-chart-lengend-red {
                 background-color: #f44336;
@@ -288,12 +288,12 @@ $zwssgrdashboard: ".zwssgr";
             &-header-container {
                 margin: 0 0 20px 0;
                 h4 {
-                    color: #1B1B1B;
+                    color: var(--body-color);
                     margin: 0;
                     display: inline-block;
                     font-family: 'Poppins';
-                    font-size: 20px;
-                    font-weight: 500;
+                    font-size: var(--font-size-h1);
+                    font-weight: var(--font-weight-500);
                     line-height: 30px;
                     text-align: left;
                 }
@@ -309,10 +309,10 @@ $zwssgrdashboard: ".zwssgr";
                     border-radius: 4px;
                 }
                 &::-webkit-scrollbar-thumb {
-                    background: #0074A2;
+                    background: var(--secondary-color);
                     border-radius: 4px;
                     &:hover {
-                        background: #0074A2;
+                        background: var(--secondary-color);
                     }
                 }
             }
@@ -341,8 +341,8 @@ $zwssgrdashboard: ".zwssgr";
                         margin: 9px 0 0 0;
                         color: #1B1B1B;
                         font-family: 'Arial';
-                        font-size: 14px;
-                        font-weight: 400;
+                        font-size: var(--font-size-14);
+                        font-weight: var(--font-weight-400);
                         line-height: 1.42;
                         text-align: left;
                     }
@@ -366,18 +366,18 @@ $zwssgrdashboard: ".zwssgr";
                     &-title {
                         font-family: 'Arial';
                         margin: 0 0 2px 0;
-                        font-size: 14px;
-                        font-weight: 700;
+                        font-size: var(--font-size-14);
+                        font-weight: var(--font-weight-700);
                         line-height: 1.15;
                         text-align: left;
-                        color: #1B1B1B;
+                        color: var(--body-color);
                     }
                     &-date {
                         font-family: 'Arial';
-                        font-size: 14px;
+                        font-size: var(--font-size-14);
                         line-height: 1;
-                        font-weight: 400;
-                        color: #8E8E8E;
+                        font-weight: var(--font-weight-400);
+                        color: var(--gray-color);
                         margin: 5px 0 0 0;
                     }
                 }

@@ -28,8 +28,6 @@ export function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgr
         zwssgr_range_filter_data:    zwssgrRangeFilterData
     };
 
-    console.log(zwssgrFilterData, 'zwssgrFilterDatazwssgrFilterData');
-
     const zwssgrMinHeight     = zwssgrDashboard?.querySelector('#zwssgr-render-dynamic')?.offsetHeight || 200;
     const zwssgrRenderDynamic = zwssgrDashboard?.querySelector('#zwssgr-render-dynamic');
     
