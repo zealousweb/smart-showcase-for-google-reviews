@@ -147,9 +147,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );	
-
-			wp_register_style( ZWSSGR_PREFIX . '-flatpickr-css', ZWSSGR_URL . 'assets/src/scss/flatpickr.min.css', false, ZWSSGR_VERSION );
-			wp_enqueue_style( ZWSSGR_PREFIX . '-flatpickr-css' );
 		
 			// // Slick js
 			// wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), ZWSSGR_VERSION, true );

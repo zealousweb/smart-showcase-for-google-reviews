@@ -6783,7 +6783,6 @@ function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFi
     zwssgr_range_filter_type: zwssgrRangeFilterType,
     zwssgr_range_filter_data: zwssgrRangeFilterData
   };
-  console.log(zwssgrFilterData, 'zwssgrFilterDatazwssgrFilterData');
   var zwssgrMinHeight = (zwssgrDashboard === null || zwssgrDashboard === void 0 || (_zwssgrDashboard$quer = zwssgrDashboard.querySelector('#zwssgr-render-dynamic')) === null || _zwssgrDashboard$quer === void 0 ? void 0 : _zwssgrDashboard$quer.offsetHeight) || 200;
   var zwssgrRenderDynamic = zwssgrDashboard === null || zwssgrDashboard === void 0 ? void 0 : zwssgrDashboard.querySelector('#zwssgr-render-dynamic');
   if (zwssgrRenderDynamic) {
