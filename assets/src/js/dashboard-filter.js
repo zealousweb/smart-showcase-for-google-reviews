@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const zwssgrRangeFilterData = zwssgrButton.textContent.trim().toLowerCase();
 
         if (!zwssgrRangeFilterData) {
-            console.warn("Filter data is empty or invalid.");
             return;
         }
 
@@ -121,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const zwssgrDateInput = document.querySelector('.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker');
     
     if (!zwssgrDateInput) {
-        console.error("Date input field not found.");
         return;
     }
 
@@ -130,13 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
         dateFormat: "d-m-Y",
         altInput: true,
         altFormat: "d-m-Y",
+        maxDate: "today",
         onReady: function(selectedDates, dateStr, instance) {
             instance.altInput.setAttribute("placeholder", "Custom");
         },
         onChange: function (selectedDates, dateStr, instance) {
 
             if (selectedDates.length < 2) {
-                console.warn("Invalid date range selected.");
                 return;
             }
 
@@ -160,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (typeof zwssgrRenderDataCallback === "function") {
                 zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
             } else {
-                console.error("zwssgrRenderDataCallback is not defined.");
             }
 
         }

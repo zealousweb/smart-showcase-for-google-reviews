@@ -2020,7 +2020,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     var zwssgrRangeFilterData = zwssgrButton.textContent.trim().toLowerCase();
     if (!zwssgrRangeFilterData) {
-      console.warn("Filter data is empty or invalid.");
       return;
     }
     document.querySelectorAll('.zwssgr-filter-button').forEach(function (button) {
@@ -2031,7 +2030,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   var zwssgrDateInput = document.querySelector('.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker');
   if (!zwssgrDateInput) {
-    console.error("Date input field not found.");
     return;
   }
   (0,flatpickr__WEBPACK_IMPORTED_MODULE_0__["default"])(zwssgrDateInput, {
@@ -2039,12 +2037,12 @@ document.addEventListener('DOMContentLoaded', function () {
     dateFormat: "d-m-Y",
     altInput: true,
     altFormat: "d-m-Y",
+    maxDate: "today",
     onReady: function onReady(selectedDates, dateStr, instance) {
       instance.altInput.setAttribute("placeholder", "Custom");
     },
     onChange: function onChange(selectedDates, dateStr, instance) {
       if (selectedDates.length < 2) {
-        console.warn("Invalid date range selected.");
         return;
       }
       var zwssgrFilterButtons = document.querySelectorAll('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
@@ -2067,9 +2065,7 @@ document.addEventListener('DOMContentLoaded', function () {
       };
       if (typeof _render_data_callback__WEBPACK_IMPORTED_MODULE_1__.zwssgrRenderDataCallback === "function") {
         (0,_render_data_callback__WEBPACK_IMPORTED_MODULE_1__.zwssgrRenderDataCallback)(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
-      } else {
-        console.error("zwssgrRenderDataCallback is not defined.");
-      }
+      } else {}
     }
   });
 });
