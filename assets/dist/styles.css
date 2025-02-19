@@ -21,6 +21,7 @@
   --gray-color-200: #e0e0e0;
   --gray-color-300:#C1CFDE;
   --gray-color-400: #f0f0f1;
+  --gray-color-500: #d3d3d3;
   --gray-color-light: #FAFAFA;
   --charcoal-gray: #4A494B;
   --slate-gray: #6A6A6A;
@@ -2135,15 +2136,13 @@
   border-radius: var(--border-radius-10);
 }
 .zwssgr-progress-bar .progress::-webkit-progress-bar {
-  background-color: var(--gray-color-200);
+  background-color: var(--gray-color-500);
   border-radius: var(--border-radius-10);
 }
 .zwssgr-progress-bar .progress::-webkit-progress-value {
-  background-color: var(--success-color-100);
   border-radius: var(--border-radius-10);
 }
 .zwssgr-progress-bar .progress::-moz-progress-bar {
-  background-color: var(--success-color-100);
   border-radius: var(--border-radius-10);
 }
 .zwssgr-progress-bar .progress-percentage {
@@ -2261,6 +2260,477 @@
   border-top-color: var(--secondary-color);
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+.zwssgr-dashboard {
+  padding: 20px;
+  margin: 0 0 0 -20px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard {
+    margin: 0 0 0 -10px;
+  }
+}
+.zwssgr-dashboard .loader {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #F08C3C;
+  border-radius: 50%;
+  border-top-color: #0074A2;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+.zwssgr-dashboard .loader-outer-wrapper {
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.zwssgr-dashboard-header {
+  padding-bottom: 32px;
+  border-bottom: 1px solid rgba(27, 27, 27, 0.1);
+}
+.zwssgr-dashboard-header .zwssgr-date-range-filter-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 32px 0;
+  width: 100%;
+  flex-wrap: wrap;
+}
+.zwssgr-dashboard-header .zwssgr-title-wrapper {
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 1199px) {
+  .zwssgr-dashboard-header .zwssgr-title-wrapper {
+    margin: 0 0 15px 0;
+  }
+}
+.zwssgr-dashboard-header .zwssgr-range-filter-title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  font-family: "Poppins";
+  color: #1B1B1B;
+  margin: 0;
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filters-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filters-list {
+    flex-wrap: wrap;
+  }
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-item {
+  margin: 0 12px 0 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-item:last-child {
+  margin-right: 0;
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-item {
+    margin: 0 12px 12px 0;
+  }
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-item.filter-text {
+  margin: 0 20px 0 0;
+  font-size: 18px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-item.filter-text {
+    margin: 0 20px 12px 0;
+  }
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker {
+  min-height: 37px;
+  color: white;
+  background-color: #3caab4;
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.14;
+  border: none;
+  letter-spacing: 0.25px;
+  transition: all 0.1s ease-in-out;
+  box-shadow: none;
+  text-align: center;
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button:hover, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button.active, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker:hover, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker.active {
+  background-color: #F08C3C;
+}
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button::placeholder, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker::placeholder {
+  color: white !important;
+}
+.zwssgr-dashboard-header .zwssgr-input-text {
+  max-width: 310px;
+  margin-right: 10px;
+  background: var(--white-color-200) url(27298ad01d97acf7c3af.png) no-repeat right 16px top 53%;
+  background-size: 16px 10px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-header .zwssgr-input-text {
+    margin: 0 0 10px 0;
+  }
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-header .zwssgr-input-text {
+    max-width: 100%;
+  }
+}
+.zwssgr-render-dynamic {
+  padding: 32px 0 0 0;
+}
+.zwssgr-dashboard-body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 0 36px 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-body {
+    flex-direction: column;
+  }
+}
+.zwssgr-dashboard-body .zwssgr-data-card {
+  width: 100%;
+  max-width: 286px;
+  margin: 0 24px 0 0;
+  padding: 24px 27px;
+  background-color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  pointer-events: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+.zwssgr-dashboard-body .zwssgr-data-card:hover {
+  transform: scale(1.05);
+}
+@media (max-width: 767px) {
+  .zwssgr-dashboard-body .zwssgr-data-card {
+    margin: 0 0 24px 0;
+    max-width: -webkit-fill-available;
+  }
+  .zwssgr-dashboard-body .zwssgr-data-card:last-child {
+    margin: 0;
+  }
+}
+.zwssgr-dashboard-body .zwssgr-card-icon {
+  width: 100%;
+  margin-right: 20px;
+  max-width: 72px;
+  max-height: 72px;
+}
+.zwssgr-dashboard-body .zwssgr-card-title {
+  color: #1B1B1B;
+  font-family: "Poppins";
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  margin: 0 0 6px 0;
+}
+.zwssgr-dashboard-body .zwssgr-card-value {
+  display: inline-block;
+  color: #0074A2;
+  font-family: "Poppins";
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 48px;
+  text-align: left;
+  margin: 0;
+}
+.zwssgr-dashboard-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 0 -12px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard-footer {
+    flex-direction: column;
+    margin: 0;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-flex-column {
+  width: 50%;
+  padding: 0 12px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard-footer .zwssgr-flex-column {
+    width: 100%;
+    margin: 0 0 24px 0;
+    padding: 0;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-flex-column:last-child {
+  margin: 0;
+}
+.zwssgr-dashboard-footer .zwssgr-flex-inner-container {
+  height: 100%;
+  padding: 24px;
+  box-shadow: 0px 0.5px 2px 0px rgba(37, 42, 59, 0.11);
+  border-radius: 12px;
+}
+.zwssgr-dashboard-footer .zwssgr-flex-inner-container h4 {
+  color: #1B1B1B;
+  margin: 0;
+  display: inline-block;
+  font-family: "Poppins";
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: left;
+}
+.zwssgr-dashboard-footer .zwssgr-outer-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 32px 0 0 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard-footer .zwssgr-outer-wrapper {
+    justify-content: center;
+    flex-direction: column;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-chart-wrapper {
+  margin-right: 7vw;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard-footer .zwssgr-chart-wrapper {
+    margin: 0;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-dashboard-text {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+  padding: 50px;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-legend-wrapper {
+  justify-content: space-between;
+  margin: 32px 0 0 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard-footer .zwssgr-chart-legend-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-chart-legend {
+  margin: 0 0 32px 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 991px) {
+  .zwssgr-dashboard-footer .zwssgr-chart-legend {
+    margin: 0 14px 0 0;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-chart-legend:last-child {
+  margin: 0;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-legend .marker {
+  width: 40px;
+  height: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-legend .guide {
+  font-family: "Poppins";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-lengend-orange {
+  background-color: #f08c3c;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-lengend-cian {
+  background-color: #3caab4;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-lengend-grey {
+  background-color: #a9c6cc;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-lengend-blue {
+  background-color: #285064;
+}
+.zwssgr-dashboard-footer .zwssgr-chart-lengend-red {
+  background-color: #f44336;
+}
+.zwssgr-dashboard-footer .zwssgr-header-container {
+  margin: 0 0 20px 0;
+}
+.zwssgr-dashboard-footer .zwssgr-header-container h4 {
+  color: #1B1B1B;
+  margin: 0;
+  display: inline-block;
+  font-family: "Poppins";
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: left;
+}
+.zwssgr-dashboard-footer .zwssgr-reviews-container {
+  max-height: 400px;
+  overflow: auto;
+}
+.zwssgr-dashboard-footer .zwssgr-reviews-container::-webkit-scrollbar {
+  width: 8px;
+}
+.zwssgr-dashboard-footer .zwssgr-reviews-container::-webkit-scrollbar-track {
+  background: #F1F1F1;
+  border-radius: 4px;
+}
+.zwssgr-dashboard-footer .zwssgr-reviews-container::-webkit-scrollbar-thumb {
+  background: #0074A2;
+  border-radius: 4px;
+}
+.zwssgr-dashboard-footer .zwssgr-reviews-container::-webkit-scrollbar-thumb:hover {
+  background: #0074A2;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item {
+  margin: 0 20px 16px 0;
+  border-radius: 8px;
+  background-color: #F6F6F6;
+  padding: 16px;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item:last-child {
+  margin: 0 20px 0 0;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-review-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 575px) {
+  .zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-review-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-rating {
+  margin: 9px 0 9px 0;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-content {
+  margin: 9px 0 0 0;
+  color: #1B1B1B;
+  font-family: "Arial";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42;
+  text-align: left;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-profile {
+  margin: 0 11px 0 0;
+  border-radius: 50px;
+  width: 32px;
+  height: 32px;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 575px) {
+  .zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-profile {
+    margin: 0 0 11px 0;
+  }
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-profile img {
+  max-width: 32px;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-review-info {
+  flex: none;
+  text-align: left;
+  padding-left: 0;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-title {
+  font-family: "Arial";
+  margin: 0 0 2px 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  color: #1B1B1B;
+}
+.zwssgr-dashboard-footer .zwssgr-review-item .zwssgr-date {
+  font-family: "Arial";
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 400;
+  color: #8E8E8E;
+  margin: 5px 0 0 0;
 }
 
 /*# sourceMappingURL=styles.css.map*/
