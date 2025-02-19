@@ -169,16 +169,16 @@ $zwssgrslider: ".zwssgr";
         }
     }
 
-    &-front-container {
-        #{$zwssgrslider} {
-            &-slider3 { 
-                width: 100%;
-            }
-        }
-    }
+    // &-front-container {
+    //     #{$zwssgrslider} {
+    //         &-slider3 { 
+    //             width: 100%;
+    //         }
+    //     }
+    // }
     &-slider3 {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         flex-wrap: wrap;
         align-items: center;
 
