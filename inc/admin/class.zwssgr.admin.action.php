@@ -121,13 +121,6 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 */
 		function zwssgr_admin_enqueue() 
 		{
-			// admin js
-			// wp_register_script( ZWSSGR_PREFIX . '-admin-js', ZWSSGR_URL .'assets/js/admin.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			// wp_enqueue_script( ZWSSGR_PREFIX . '-admin-js' );
-
-			// wp_register_script( ZWSSGR_PREFIX . '-vanilla-js', ZWSSGR_URL . 'assets/js/vanilla.js', array(), ZWSSGR_VERSION, true );
-			// wp_enqueue_script( ZWSSGR_PREFIX . '-vanilla-js' );
-
 			// Google chart JS
 			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/src/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
@@ -135,29 +128,13 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-main-js' );
 
-			
-
-			// admin css
-			// wp_register_style( ZWSSGR_PREFIX . '-admin-css', ZWSSGR_URL . 'assets/css/admin.css', false, ZWSSGR_VERSION );
-			// wp_enqueue_style( ZWSSGR_PREFIX . '-admin-css' );	
-			
-			// style css
-			// wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
-			// wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
+			wp_register_script( ZWSSGR_PREFIX . '-backend-js', ZWSSGR_URL . 'assets/dist/backend.js', array(), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '-backend-js' );
 
 			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );	
-		
-			// // Slick js
-			// wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			// wp_enqueue_script( ZWSSGR_PREFIX . '-slick-min-js' );
-			
-			// // Slick css
-			// wp_register_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', false, ZWSSGR_VERSION );
-			// wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css' );
 
 			// font 
-			
 			wp_register_style( ZWSSGR_PREFIX . 'custom-admin-font', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . 'custom-admin-font' );
 
