@@ -125,24 +125,27 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/src/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
 
+			// Main js
 			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-main-js' );
 
+			// Backend js
 			wp_register_script( ZWSSGR_PREFIX . '-backend-js', ZWSSGR_URL . 'assets/dist/backend.js', array(), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-backend-js' );
 
 			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );	
 
-			// font 
+			// Font 
 			wp_register_style( ZWSSGR_PREFIX . 'custom-admin-font', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . 'custom-admin-font' );
 
-			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', false, ZWSSGR_VERSION );
+			// Swiper css
+			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', ZWSSGR_URL . 'assets/src/scss/swiper-bundle.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . 'swiper-css' );
 
-			// swiper js
-			wp_register_script( ZWSSGR_PREFIX . 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			// Swiper js
+			wp_register_script( ZWSSGR_PREFIX . 'swiper-js',  ZWSSGR_URL . 'assets/src/js/swiper-bundle.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . 'swiper-js' );
 
 
@@ -858,12 +861,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 *
 		 * @return array
 		 */
-		function zwssgr_filter_manage_data_posts_columns($zwssgr_columns)
-		{
+		function zwssgr_filter_manage_data_posts_columns($zwssgr_columns) {
 			unset($zwssgr_columns['date']);
 			unset($zwssgr_columns['title']);
 			$zwssgr_columns['title'] = __('Review', 'smart-showcase-for-google-reviews');
 			$zwssgr_columns[ZWSSGR_META_PREFIX . 'user_login'] = __('Hide', 'smart-showcase-for-google-reviews');
+			$zwssgr_columns['zwssgr_pin'] = __('Pin', 'smart-showcase-for-google-reviews');
 			$zwssgr_columns['date'] = __('Date', 'smart-showcase-for-google-reviews');
 			return $zwssgr_columns;
 		}
@@ -874,8 +877,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 * @param string $zwssgr_column
 		 * @param int $zwssgr_post_id
 		 */
-		function zwssgr_render_hide_column_content( $zwssgr_column, $zwssgr_post_id ) 
-		{
+		function zwssgr_render_hide_column_content( $zwssgr_column, $zwssgr_post_id ) {
 			if ( $zwssgr_column === ZWSSGR_META_PREFIX . 'user_login' ) {
 				$zwssgr_is_hidden = get_post_meta( $zwssgr_post_id, '_is_hidden', true );
 				$zwssgr_icon = $zwssgr_is_hidden ? 'hidden' : 'visibility';
@@ -885,25 +887,57 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					echo '<span class="dashicons dashicons-' . esc_attr( $zwssgr_icon ) . '"></span>';
 				echo '</a>';
 			}
+		
+			if ($zwssgr_column === 'zwssgr_pin') {
+				$zwssgr_is_pinned = get_post_meta($zwssgr_post_id, 'zwssgr_is_pinned', true);
+				$icon_url = $zwssgr_is_pinned ? ZWSSGR_URL . '/assets/images/pin.svg' : ZWSSGR_URL . '/assets/images/unpin.svg';
+		
+				echo '<a href="#" class="zwssgr-toggle-pin" data-post-id="' . esc_attr($zwssgr_post_id) . '">';
+				echo '<img src="' . esc_url($icon_url) . '" class="zwssgr-pin-icon" alt="' . ($zwssgr_is_pinned ? 'Pinned' : 'Unpinned') . '" />';
+				echo '</a>';
+			}
 		}
 
 		/**
 		 * Toggle visibility (AJAX callback)
 		 */
-		function zwssgr_toggle_visibility() 
-		{
+		function zwssgr_toggle_visibility() {
 			check_ajax_referer( 'toggle-visibility-nonce', 'nonce' );
 			$zwssgr_post_id = isset($_POST['post_id']) ? sanitize_text_field(wp_unslash($_POST['post_id'])) : 0;
 
 			if ( ! current_user_can( 'edit_post', $zwssgr_post_id ) ) {
 				wp_send_json_error( array( 'message' => 'Not authorized' ) );
 			}
+		
+			if (isset($_POST['action_type']) && $_POST['action_type'] === 'pin_toggle') {
 
-			$zwssgr_is_hidden = get_post_meta( $zwssgr_post_id, '_is_hidden', true );
+				 // Check current pin status
+				$zwssgr_is_pinned = get_post_meta($zwssgr_post_id, 'zwssgr_is_pinned', true);
 
-			if ( $zwssgr_is_hidden ) {
-				// If currently hidden, set to visibility and delete meta
-				delete_post_meta( $zwssgr_post_id, '_is_hidden' );
+				// Toggle pin status
+				if ($zwssgr_is_pinned) {
+					// Unpin if it is already pinned
+					update_post_meta($zwssgr_post_id, 'zwssgr_is_pinned',0);
+					$zwssgr_new_state = 'unpinned';
+					$zwssgr_icon = ZWSSGR_URL . '/assets/images/unpin.svg';
+				} else {
+					// Pin if it is not pinned
+					update_post_meta($zwssgr_post_id, 'zwssgr_is_pinned', 1);
+					$zwssgr_new_state = 'pinned';
+					$zwssgr_icon = ZWSSGR_URL . '/assets/images/pin.svg';
+				}
+			
+				// Send JSON response with updated pin state and icon
+				wp_send_json_success(array(
+					'icon' => $zwssgr_icon,
+					'state' => $zwssgr_new_state // Send the current state (pinned/unpinned)
+				));
+			}
+		
+			// Handle visibility toggle
+			$zwssgr_is_hidden = get_post_meta($zwssgr_post_id, '_is_hidden', true);
+			if ($zwssgr_is_hidden) {
+				delete_post_meta($zwssgr_post_id, '_is_hidden');
 				$zwssgr_new_state = 'show';
 				$zwssgr_icon = 'visibility';
 			} else {
