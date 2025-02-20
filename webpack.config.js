@@ -7,6 +7,7 @@ module.exports = {
   mode: 'development', // Change to 'production' for a production build
   entry: {
     main: './assets/src/js/index.js', // Main JavaScript entry
+    backend: './assets/src/js/backend/index.js',
     styles: {
       import: './assets/src/scss/style.scss', // SCSS entry
       dependOn: 'main', // Links SCSS to main.js so it doesn't generate styles.js
