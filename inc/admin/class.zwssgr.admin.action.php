@@ -122,7 +122,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		function zwssgr_admin_enqueue() 
 		{
 			// Google chart JS
-			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/src/js/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			wp_register_script( ZWSSGR_PREFIX . '-google-chart-js', ZWSSGR_URL .'assets/src/js/backend/google-chart.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . '-google-chart-js' );
 
 			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
