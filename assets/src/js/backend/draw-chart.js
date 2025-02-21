@@ -71,7 +71,6 @@ window.addEventListener('resize', () => {
         if (zwssgrChart && zwssgrData && zwssgrOptions) {
             zwssgrChart.draw(zwssgrData, zwssgrOptions);
         } else {
-            console.warn("Chart or data is not initialized. Skipping redraw.");
         }
     }, 200);
 

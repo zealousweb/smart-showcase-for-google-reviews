@@ -11,8 +11,8 @@ export function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgr
     const zwssgrGmbLocationDiv = document.getElementById('zwssgr-location-select');
 
     const zwssgrDashboard = document.querySelector('.zwssgr-dashboard');
+    
     if (!zwssgrDashboard) {
-        console.warn("Element .zwssgr-dashboard not found!");
         return;
     }
 

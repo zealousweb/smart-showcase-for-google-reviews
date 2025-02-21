@@ -92,76 +92,80 @@ document.addEventListener('DOMContentLoaded', function () {
 
     };
 
-    zwgrDashboard.addEventListener('click', function (zwssgrEv) {
-        "use strict";
-
-        const zwssgrButton = zwssgrEv.target.closest('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
+    if (zwgrDashboard) {
         
-        if (!zwssgrButton) {
-            return;
-        }
+        zwgrDashboard.addEventListener('click', function (zwssgrEv) {
+            "use strict";
 
-        const zwssgrRangeFilterData = zwssgrButton.textContent.trim().toLowerCase();
-
-        if (!zwssgrRangeFilterData) {
-            return;
-        }
-
-        document.querySelectorAll('.zwssgr-filter-button').forEach(button => {
-            button.classList.remove('active');
+            const zwssgrButton = zwssgrEv.target.closest('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
+            
+            if (!zwssgrButton) {
+                return;
+            }
+    
+            const zwssgrRangeFilterData = zwssgrButton.textContent.trim().toLowerCase();
+    
+            if (!zwssgrRangeFilterData) {
+                return;
+            }
+    
+            document.querySelectorAll('.zwssgr-filter-button').forEach(button => {
+                button.classList.remove('active');
+            });
+    
+            zwssgrButton.classList.add('active');
+    
+            zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, "rangeofdays");
+    
         });
 
-        zwssgrButton.classList.add('active');
-
-        zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, "rangeofdays");
-
-    });
+    }
 
     const zwssgrDateInput = document.querySelector('.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker');
     
-    if (!zwssgrDateInput) {
-        return;
-    }
-
-    flatpickr(zwssgrDateInput, {
-        mode: "range",
-        dateFormat: "d-m-Y",
-        altInput: true,
-        altFormat: "d-m-Y",
-        maxDate: "today",
-        onReady: function(selectedDates, dateStr, instance) {
-            instance.altInput.setAttribute("placeholder", "Custom");
-        },
-        onChange: function (selectedDates, dateStr, instance) {
-
-            if (selectedDates.length < 2) {
-                return;
+    if (zwssgrDateInput) {
+        
+        flatpickr(zwssgrDateInput, {
+            mode: "range",
+            dateFormat: "d-m-Y",
+            altInput: true,
+            altFormat: "d-m-Y",
+            maxDate: "today",
+            onReady: function(selectedDates, dateStr, instance) {
+                instance.altInput.setAttribute("placeholder", "Custom");
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+    
+                if (selectedDates.length < 2) {
+                    return;
+                }
+    
+                const zwssgrFilterButtons = document.querySelectorAll('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
+                zwssgrFilterButtons.forEach(button => button.classList.remove('active'));
+                zwssgrDateInput.classList.add('active');
+    
+                const zwssgrStartDate       = instance.formatDate(selectedDates[0], "d-m-Y");
+                const zwssgrEndDate         = instance.formatDate(selectedDates[1], "d-m-Y");
+                const zwssgrRangeFilterData = `${zwssgrStartDate} - ${zwssgrEndDate}`;
+    
+                const zwssgrEv = {
+                    type: "flatpickr-change",
+                    target: zwssgrDateInput,
+                    selectedDates: selectedDates,
+                    dateStr: dateStr,
+                    instance: instance,
+                    preventDefault: () => console.log("")
+                };
+    
+                if (typeof zwssgrRenderDataCallback === "function") {
+                    zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
+                } else {
+                }
+    
             }
+    
+        });
 
-            const zwssgrFilterButtons = document.querySelectorAll('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
-            zwssgrFilterButtons.forEach(button => button.classList.remove('active'));
-            zwssgrDateInput.classList.add('active');
-
-            const zwssgrStartDate       = instance.formatDate(selectedDates[0], "d-m-Y");
-            const zwssgrEndDate         = instance.formatDate(selectedDates[1], "d-m-Y");
-            const zwssgrRangeFilterData = `${zwssgrStartDate} - ${zwssgrEndDate}`;
-
-            const zwssgrEv = {
-                type: "flatpickr-change",
-                target: zwssgrDateInput,
-                selectedDates: selectedDates,
-                dateStr: dateStr,
-                instance: instance,
-                preventDefault: () => console.log("Custom preventDefault() called")
-            };
-
-            if (typeof zwssgrRenderDataCallback === "function") {
-                zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
-            } else {
-            }
-
-        }
-
-    });    
+    }    
 
 });
