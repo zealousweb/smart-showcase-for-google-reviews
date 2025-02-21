@@ -88,6 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 if (data.success) {
                     showNotification('Layout option saved successfully!', 'success'); // Show success message
+
+                    // Append post_id and selected option to the URL
+                    window.location.href = `${currentUrl}?page=zwssgr_widget_configurator&tab=tab-selected&selectedOption=${optionId}&zwssgr_widget_id=${postId}`;
+                    
                 } else {
                     showNotification('Failed to save layout option.', 'error'); // Show error message
                 }
@@ -96,28 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 showNotification('An error occurred.', 'error'); // Show error message
             });
 
-            // Append post_id and selected option to the URL
-            window.location.href = `${currentUrl}?page=zwssgr_widget_configurator&tab=tab-selected&selectedOption=${optionId}&zwssgr_widget_id=${postId}`;
         }
     });
-
-    // Handle the Save & Get Code Button
-    document.addEventListener('click', function (event) {
-        if (event.target.id === 'save-get-code-btn') {
-            let selectedOption = getQueryParam('selectedOption');
-            let postId = getQueryParam('zwssgr_widget_id');
-            let currentUrl = window.location.href.split('?')[0];
-
-            if (!postId) {
-                showNotification('Post ID not found!', 'error'); // Custom error notification
-                return;
-            }
-
-            // Redirect to the "Generated Shortcode" tab with selected option and post_id
-            window.location.href = `${currentUrl}?page=zwssgr_widget_configurator&tab=tab-shortcode&selectedOption=${selectedOption}&zwssgr_widget_id=${postId}`;
-        }
-    });
-
 
     document.body.addEventListener('click', function (e) {
         if (e.target && e.target.id === 'save-get-code-btn') {
@@ -127,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get(name);
             }
+            
+            let selectedOption = getQueryParam('selectedOption');
+            let currentUrl = window.location.href.split('?')[0];
     
             let postId = getQueryParam('zwssgr_widget_id');
             let displayOption = document.querySelector('input[name="display_option"]:checked')?.value || '';
@@ -172,6 +159,8 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('current_tab2', currentTab2);
             formData.append('enable_sort_by', enableSortBy);
             formData.append('custom_css', customCSS);
+
+            console.log(formData);
     
             fetch(ajaxurl, {
                 method: 'POST',
@@ -181,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 if (data.success) {
                     showNotification('Settings and shortcode saved successfully.', 'success');
+                    window.location.href = `${currentUrl}?page=zwssgr_widget_configurator&tab=tab-shortcode&selectedOption=${selectedOption}&zwssgr_widget_id=${postId}`;
                 } else {
                     showNotification('Error: ' + data.data, 'error');
                 }

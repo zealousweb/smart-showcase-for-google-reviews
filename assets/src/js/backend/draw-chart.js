@@ -8,8 +8,10 @@ google.charts.setOnLoadCallback(() => zwssgr_draw_chart(zwssgr_admin.zwssgr_dyna
 export function zwssgr_draw_chart(zwssgrChartData) {
     "use strict";
 
-    if (!Array.isArray(zwssgrChartData)) {
-        document.getElementById('zwssgr_chart_wrapper').innerHTML =
+    const chartWrapper = document.getElementById('zwssgr_chart_wrapper');
+
+    if (!Array.isArray(zwssgrChartData) && chartWrapper) {
+        chartWrapper.innerHTML =
             '<div class="zwssgr-dashboard-text"> No enough data available. </div>';
         return;
     }
@@ -18,8 +20,8 @@ export function zwssgr_draw_chart(zwssgrChartData) {
         (row) => Array.isArray(row) && row[1] === 0
     );
 
-    if (zwssgr_all_zero) {
-        document.getElementById('zwssgr_chart_wrapper').innerHTML =
+    if (zwssgr_all_zero && chartWrapper) {
+        chartWrapper.innerHTML =
             '<div class="zwssgr-dashboard-text"> No enough data available. </div>';
         return;
     }
@@ -47,14 +49,16 @@ export function zwssgr_draw_chart(zwssgrChartData) {
     };
 
     try {
-        const zwssgrChart = new google.visualization.PieChart(
-            document.getElementById('zwssgr_chart_wrapper')
-        );
-        zwssgrChart.draw(zwssgrData, zwssgrOptions);
+        if (chartWrapper) {
+            const zwssgrChart = new google.visualization.PieChart(
+                chartWrapper
+            );
+            zwssgrChart.draw(zwssgrData, zwssgrOptions);
+        }
     } catch (error) {
-        console.error("Error drawing the chart:", error);
-        document.getElementById('zwssgr_chart_wrapper').innerHTML =
-            '<div class="zwssgr-dashboard-text">Failed to render chart</div>';
+        if (chartWrapper) {
+            chartWrapper.innerHTML = '<div class="zwssgr-dashboard-text">Failed to render chart</div>';
+        }
     }
 
 }
@@ -67,7 +71,6 @@ window.addEventListener('resize', () => {
         if (zwssgrChart && zwssgrData && zwssgrOptions) {
             zwssgrChart.draw(zwssgrData, zwssgrOptions);
         } else {
-            console.warn("Chart or data is not initialized. Skipping redraw.");
         }
     }, 200);
 
