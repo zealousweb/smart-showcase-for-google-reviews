@@ -36,6 +36,10 @@ $zwssgrlist: ".zwssgr";
 
     &-list3 {
         #{$zwssgrlist} {
+            &-profile {
+                padding-right: 0;
+                margin-right: 20px;
+            }
             &-slide-item {
                 text-align: center;
             }
@@ -56,6 +60,10 @@ $zwssgrlist: ".zwssgr";
     &-list4,
     &-list5 {
         #{$zwssgrlist} {
+            &-profile {
+                padding-right: 0;
+                margin-right: 20px;
+            }
             &-slide-item {
                 background-color: var(--white-color);
                 border-bottom: 2px solid var(--white-color-100);
@@ -70,6 +78,10 @@ $zwssgrlist: ".zwssgr";
 
     &-list5 {
         #{$zwssgrlist} {
+            &-profile {
+                padding-right: 0;
+                margin-right: 0;
+            }
             &-list-wrap5 {
                 display: flex;
                 justify-content: space-between;

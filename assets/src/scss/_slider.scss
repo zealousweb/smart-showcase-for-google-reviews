@@ -61,7 +61,6 @@ $zwssgrslider: ".zwssgr";
 
                     &-review-info {
                         flex: 1 0 0%;
-                        padding-left: 20px;
                     }
                 }
               
@@ -104,6 +103,7 @@ $zwssgrslider: ".zwssgr";
             &-profile {
                 width: 62px;
                 position: relative;
+                padding-right: 20px;
     
                 img {
                     width: 62px;
@@ -183,6 +183,10 @@ $zwssgrslider: ".zwssgr";
         align-items: center;
 
         #{$zwssgrslider} {
+            &-profile {
+                padding-right: 0;
+                margin-right: 20px;
+            }
             &-slider-badge {
                 width: 20%;
                 text-align: center;
@@ -227,6 +231,12 @@ $zwssgrslider: ".zwssgr";
         max-width: 650px;
         margin: 0 auto;
         padding: 0 30px;
+        #{$zwssgrslider} {
+            &-profile {
+                padding-right: 0;
+                margin-right: 20px;
+            }
+        }
     }
 
     &-slider5 {
@@ -237,6 +247,7 @@ $zwssgrslider: ".zwssgr";
         #{$zwssgrslider} { 
             &-profile {
                 margin: 0 auto;
+                padding-right: 0;
             }
             &-slide-item {
                 background-color: transparent;
