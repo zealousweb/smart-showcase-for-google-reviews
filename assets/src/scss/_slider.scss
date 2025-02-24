@@ -291,6 +291,68 @@ $zwssgrslider: ".zwssgr";
         }
         
     }
+
+    &-slider7 {
+        #{$zwssgrslider} {
+            &-slide-wrap {
+                align-items: flex-start;
+            }
+            &-review-detail {
+                width: 30%;
+                text-align: center;
+
+                @include mobile() {
+                    width: 100%;
+                }
+            }
+            &-content-wrap {
+                padding: 0;
+                width: 70%;
+
+                @include mobile() {
+                    width: 100%;
+                }
+            }
+            &-profile {
+                margin: 0 auto 10px;
+                padding-right: 0;
+            }
+            &-google-icon {
+                position: absolute;
+                width: 20px;
+                bottom: 0;
+                right: 0;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+
+    &-slider8 {
+        max-width: 600px;
+        margin: 0 auto;
+        #{$zwssgrslider} {
+            &-list-inner {
+                text-align: center;
+                background-color: var(--white-color);
+            }
+            &-slider-wrap8 {
+                max-width: 250px;
+                margin: 20px auto 0;
+            }
+            &-rating {
+                margin: 0 auto;
+            }
+            &-profile {
+                margin: 0 auto;
+                padding-right: 0;
+                margin-right: 20px;
+            }
+        }
+    }
      
 }
 
