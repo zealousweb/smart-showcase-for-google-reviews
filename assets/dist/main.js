@@ -1902,6 +1902,24 @@ var sliderConfigs = {
         slidesPerGroup: 1
       }
     }
+  },
+  ".zwssgr-slider-7": {
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    breakpoints: {
+      1200: {
+        slidesPerView: 2,
+        slidesPerGroup: 2
+      },
+      480: {
+        slidesPerView: 1,
+        slidesPerGroup: 1
+      }
+    }
+  },
+  ".zwssgr-slider-8": {
+    slidesPerView: 1,
+    slidesPerGroup: 1
   }
 };
 
