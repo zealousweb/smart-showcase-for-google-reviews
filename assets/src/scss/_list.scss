@@ -130,5 +130,53 @@ $zwssgrlist: ".zwssgr";
             }
         }
     }
+
+    &-list6 {
+        #{$zwssgrlist} {
+            &-prifile-wrap {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            &-review-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+            &-profile {
+                padding-right: 0;
+            }
+            &-data {
+                padding-left: 20px;
+            }
+        }
+    }
+
+    &-list7 {
+        #{$zwssgrlist} {
+            &-list-wrap7 {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                margin-top: 0;
+            }
+            &-google-icon {
+                position: absolute;
+                width: 20px;
+                bottom: 0;
+                right: 0;
+            }
+            &-profile {
+                padding-right: 0;
+                margin-right: 20px;
+            }
+            &-rating {
+                padding-bottom: 5px;
+            }
+        }
+    }
 }
 

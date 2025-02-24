@@ -171,11 +171,60 @@ $zwssgrgrid: ".zwssgr";
                     }
                 }
             }
-        }
-
-        
+        }        
     }
 
+    &-grid6 {
+        #{$zwssgrgrid} {
+            &-profile {
+                padding-right: 0;
+            }
+            &-review-info {
+                padding-left: 20px;
+            }
+            &-rating {
+                margin: 0 auto;
+            }
+            &-content {
+                text-align: center;
+            }
+        }
+    }
+
+    &-grid7 {
+        #{$zwssgrgrid} {
+            &-slide-item {
+                text-align: center;
+                width: 25%;
+
+                @include respond-below('xl') {
+                    width: 50%;
+                }
+
+                @include mobile() {
+                    width: 100%;
+                }
+            }
+            &-google-icon {
+                position: absolute;
+                width: 20px;
+                bottom: 0;
+                right: 0;
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+            &-profile {
+                padding-right: 0;
+                margin: 0 auto;
+            }
+            &-rating {
+                margin: 0 auto;
+            }
+        }
+    }
     &-grid-inner {
         background: var(--gray-color-light);
         border-radius: var(--border-radius-large);
