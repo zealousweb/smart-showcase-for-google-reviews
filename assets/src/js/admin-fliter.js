@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
     
                     // Only reinitialize Slick slider if selectedOption is one of the slider options
-                    if (['slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6'].includes(selectedOption)) {
+                    if (['slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6', 'slider-7', 'slider-8'].includes(selectedOption)) {
                         setTimeout(function () {
                             reinitializeAllSwipers(document.querySelector('#selected-option-display'));
                         }, 100);
@@ -118,9 +118,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
             
                     // Handle list layout reinitialization (if needed)
-                    if (['list-1', 'list-2', 'list-3', 'list-4', 'list-5'].includes(selectedOption)) {
-                        // console.log("List layout filtered");
-                    }
+                    // if (['list-1', 'list-2', 'list-3', 'list-4', 'list-5', 'list-6', 'list-7'].includes(selectedOption)) {
+                    //     console.log("List layout filtered");
+                    // }
 
                 } else {
                     console.error("AJAX Error: ", xhr.statusText, "Status Code:", xhr.status);
