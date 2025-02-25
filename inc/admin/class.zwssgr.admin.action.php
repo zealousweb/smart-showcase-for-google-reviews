@@ -2390,6 +2390,22 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							</div>
 						</div>
 					</a>',
+
+					'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
+						<div class="zwssgr-badge-item zwssgr-badge10" id="zwssgr-badge10">
+							<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].' Star</span>
+							' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
+							<img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
+						</div>
+					</a>',
+
+					'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
+						<div class="zwssgr-badge-item zwssgr-badge11" id="zwssgr-badge11">
+							<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
+							' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
+							<div class="zwssgr-badge-info"><img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">Google Reviews</div>
+						</div>
+					</a>',
 				],
 				'popup' => [
 					'<div class="zwssgr-popup-item zwssgr-popup1" id="zwssgr-popup1" data-popup="zwssgrpopup1">
@@ -2566,7 +2582,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-selected">
 					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="selected-option-display" class="selected-option-display zwssgr-selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
-					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'], true)) : ?>
+					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9', 'badge-10', 'badge-11'], true)) : ?>
 						<div class="zwssgr-toogle-display">
 							<a href="<?php echo esc_url($zwssgr_location_new_review_uri); ?>" style="background-color:<?php echo esc_attr($zwssgr_bg_color); ?>; color:<?php echo esc_attr($zwssgr_text_color); ?>;" class="zwssgr-google-toggle" target="_blank">
 								<?php echo esc_html__('Review Us On G', 'smart-showcase-for-google-reviews'); ?>
@@ -2574,7 +2590,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						</div>
 					<?php endif; ?>
 
-					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'])): ?>
+					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9', 'badge-10', 'badge-11'])): ?>
 						<div class="zwssgr-widget-settings">
 							<h2 class="zwssgr-page-title"><?php echo esc_html__('Widget Settings', 'smart-showcase-for-google-reviews'); ?></h2>
 							<div class="zwssgr-widget-wrap">
