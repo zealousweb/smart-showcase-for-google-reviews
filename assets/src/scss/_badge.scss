@@ -304,6 +304,51 @@ $zwssgrbadge: ".zwssgr";
         }
     }
 
+    &-badge10 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 20px;
+        img {
+            width: 25px;
+            height: 25px;
+            padding-left: 10px;
+        }
+        #{$zwssgrbadge} {  
+            &-final-rating {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--black-color);
+            }
+            &-rating {
+                padding: 0 20px;
+            }
+            &-final-review-wrap {
+                line-height: 10px;
+            }
+        }
+    }
+
+    &-badge11 {
+        img {
+            width: 35px;
+            height: 35px;
+            padding-right: 10px;
+        }
+        #{$zwssgrbadge} {  
+            &-badge-info {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                color: var(--slate-gray);
+                font-weight: 500;
+                padding-top: 10px;
+            }
+        }
+    }
+
     &-badge-link {
         text-decoration: none;
         width: auto;
