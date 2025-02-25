@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			let selectedKeywordElement = mainWrapper.querySelector('.zwssgr-front-keywords-list li.selected');
 			let keyword = selectedKeywordElement ? selectedKeywordElement.getAttribute('data-zwssgr-keyword') : '';
 			let popupContentContainer = mainWrapper.querySelector('zwssgr-slider.zwssgr-grid-item.zwssgr-popup-list');
+			let isFirstLoad = mainWrapper.getAttribute('data-onload-first');
 	
 			// Disable the button to prevent multiple clicks
 			button.setAttribute('disabled', true);
@@ -76,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			params.append('page', page);
 			params.append('front_sort_by', selectedValue);
 			params.append('front_keyword', keyword);
+			params.append('onload_first', isFirstLoad);
 			params.append('nonce', load_more.nonce);
 	
 			xhr.send(params);

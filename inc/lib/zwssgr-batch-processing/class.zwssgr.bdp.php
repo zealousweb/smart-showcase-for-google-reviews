@@ -301,6 +301,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         //Update parent account & locations meta
                         update_post_meta( $zwssgr_wp_review_id, 'zwssgr_account_number', $this->zwssgr_account_number );
                         update_post_meta( $zwssgr_wp_review_id, 'zwssgr_location_number', $this->zwssgr_location_number);
+                        update_post_meta( $zwssgr_wp_review_id, 'zwssgr_is_pinned', 0);
 
                         $zwssgr_download_review_image_status = $this->zwssgr_download_review_image($zwssgr_review_dp_url, $zwssgr_save_path);
 
