@@ -1355,6 +1355,58 @@
   width: calc(100% - 180px);
   padding-left: 20px;
 }
+.zwssgr-grid6 .zwssgr-profile {
+  padding-right: 0;
+}
+.zwssgr-grid6 .zwssgr-review-info {
+  padding-left: 20px;
+}
+.zwssgr-grid6 .zwssgr-rating {
+  margin: 0 auto;
+}
+.zwssgr-grid6 .zwssgr-content {
+  text-align: center;
+}
+.zwssgr-grid7 .zwssgr-slide-item {
+  text-align: center;
+  width: 25%;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 1199px) {
+  .zwssgr-grid7 .zwssgr-slide-item {
+    width: 50%;
+  }
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .zwssgr-grid7 .zwssgr-slide-item {
+    width: 100%;
+  }
+}
+@media (max-width: 992px) and (orientation: landscape) {
+  .zwssgr-grid7 .zwssgr-slide-item {
+    width: 100%;
+  }
+}
+.zwssgr-grid7 .zwssgr-google-icon {
+  position: absolute;
+  width: 20px;
+  bottom: 0;
+  right: 0;
+}
+.zwssgr-grid7 .zwssgr-google-icon img {
+  width: 20px;
+  height: 20px;
+}
+.zwssgr-grid7 .zwssgr-profile {
+  padding-right: 0;
+  margin: 0 auto;
+}
+.zwssgr-grid7 .zwssgr-rating {
+  margin: 0 auto;
+}
 .zwssgr-grid-inner {
   background: var(--gray-color-light);
   border-radius: var(--border-radius-large);
@@ -1468,6 +1520,44 @@
   flex-wrap: wrap;
   margin-bottom: 10px;
   padding-left: 0;
+}
+.zwssgr-list6 .zwssgr-prifile-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.zwssgr-list6 .zwssgr-review-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.zwssgr-list6 .zwssgr-profile {
+  padding-right: 0;
+}
+.zwssgr-list6 .zwssgr-data {
+  padding-left: 20px;
+}
+.zwssgr-list7 .zwssgr-list-wrap7 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+.zwssgr-list7 .zwssgr-google-icon {
+  position: absolute;
+  width: 20px;
+  bottom: 0;
+  right: 0;
+}
+.zwssgr-list7 .zwssgr-profile {
+  padding-right: 0;
+  margin-right: 20px;
+}
+.zwssgr-list7 .zwssgr-rating {
+  padding-bottom: 5px;
 }
 
 .zwssgr-badge-wrap {
