@@ -1774,6 +1774,22 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									</div>
 								</div>
 							</a>',
+
+							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
+								<div class="zwssgr-badge-item zwssgr-badge10" id="zwssgr-badge10">
+									<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].' Star</span>
+									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
+									<img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
+								</div>
+							</a>',
+
+							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
+								<div class="zwssgr-badge-item zwssgr-badge11" id="zwssgr-badge11">
+									<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
+									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
+									<div class="zwssgr-badge-info"><img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">Google Reviews</div>
+								</div>
+							</a>'
 						],
 						'popup' => [
 							'<div class="zwssgr-popup-item zwssgr-popup1" id="zwssgr-popup1" data-popup="zwssgrpopup1">
