@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('change', function (event) {
 		if (event.target.matches('.front-sort-by-select')) {
+
+			document.querySelectorAll('.zwssgr-main-wrapper').forEach(function (element) {
+				element.setAttribute('data-onload-first', 'false');
+			});
+
 			const mainWrapper = event.target.closest('.zwssgr-main-wrapper');
 	
 			if (!mainWrapper) return;
@@ -30,6 +35,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			const bg_color_load = mainDivWrapper.getAttribute('data-bg-color');
 			const text_color_load = mainDivWrapper.getAttribute('data-text-color');
 			const enable_load_more = mainDivWrapper.getAttribute('data-enable-load-more');
+			let isFirstLoad = mainWrapper.getAttribute('data-onload-first')
+
+			// Set `data-onload-first` to false after first interaction
+			mainWrapper.setAttribute('data-onload-first', 'false');
 	
 			if (enable_load_more === "1") {
 				window.zwssgrLoadMoreButton = `<button class="load-more-meta zwssgr-load-more-btn" data-page="2" data-post-id="${postId}" data-rating-filter="${ratingFilter}" style="background-color: ${bg_color_load}; color: ${text_color_load};">Load More</button>`;
@@ -98,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			params.append('front_sort_by', selectedValue);
 			params.append('post_id', postId);
 			params.append('front_keyword', keyword);
+			params.append('onload_first', isFirstLoad);
 			params.append('nonce', load_more.nonce);
 	
 			xhr.send(params);
