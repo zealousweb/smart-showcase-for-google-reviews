@@ -2750,7 +2750,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									<?php 
 									$zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
 									// Check if layout option is not in 'slider-1' to 'slider-6'
-									$zwssgr_exclude_slider_options = array('slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6');
+									$zwssgr_exclude_slider_options = array('slider-1', 'slider-2', 'slider-3', 'slider-4', 'slider-5', 'slider-6','slider-7','slider-8');
 									if (!in_array($zwssgr_layout_option, $zwssgr_exclude_slider_options)) :
 									?>
 										<div class="zwssgr-load-more-wrapper">
@@ -3444,6 +3444,28 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							</div>
 						</div>';
 
+					$zwssgr_list_item7= '
+						<div class="zwssgr-slide-item">
+							<div class="zwssgr-list-inner">
+								<div class="zwssgr-list-wrap7 zwssgr-slide-wrap4">
+									<div class="zwssgr-profile">
+											'.(file_exists($zwssgr_gmb_reviewer_image_path) ? '<img src="' . esc_url($zwssgr_gmb_reviewer_image_uri) . '" class="fallback-user-dp" alt="'. esc_html($zwssgr_reviewer_name).'">' : '<img src="' . $zwssgr_plugin_dir_path . 'assets/images/fallback-user-dp.png" alt="'. esc_html($zwssgr_reviewer_name).'">').'
+										<div class="zwssgr-google-icon">
+											<img src="' . $zwssgr_plugin_dir_path . 'assets/images/google-icon.png" alt="Google Icon">
+										</div>
+									</div>
+									<div class="zwssgr-review-info">
+										' . (!empty($zwssgr_reviewer_name) ? '<h2 class="zwssgr-title">' . esc_html($zwssgr_reviewer_name) . '</h2>' : '') . '
+									</div>
+									<div>
+										' . (!empty($zwssgr_stars_html) ? '<div class="zwssgr-rating">' . $zwssgr_stars_html . '</div>' : '') . '
+										' . (!empty($zwssgr_published_date) ? '<h3 class="zwssgr-days-ago zwssgr-date" data-original-date="' . esc_attr($zwssgr_published_date) . '">' . esc_html($zwssgr_formatted_date) . ' </h3>' : '') . '
+									</div>
+								</div>
+									' . ( !empty($zwssgr_trimmed_content) ? '<p class="zwssgr-content">' . esc_html($zwssgr_trimmed_content) . ($zwssgr_is_trimmed ? ' <a class="toggle-content" data-full-text="' . esc_attr($zwssgr_review_content) . '">' . esc_html($this->zwssgr_translate_read_more($zwssgr_language)) . '</a>' : '') . '</p>' : '' ) . '	
+							</div>
+						</div>';
+
 					
 
 					$zwssgr_grid_item1 = '
@@ -3640,6 +3662,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_list_content4[] = $zwssgr_list_item4;
 					$zwssgr_list_content5[] = $zwssgr_list_item5;
 					$zwssgr_list_content6[] = $zwssgr_list_item6;
+					$zwssgr_list_content7[] = $zwssgr_list_item7;
 
 					$zwssgr_grid_content1[] = $zwssgr_grid_item1;
 					$zwssgr_grid_content2[] = $zwssgr_grid_item2;
@@ -3676,6 +3699,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_list_content4 = isset($zwssgr_list_content4) && !empty($zwssgr_list_content4) ? implode('', (array) $zwssgr_list_content4) : '';
 			$zwssgr_list_content5 = isset($zwssgr_list_content5) && !empty($zwssgr_list_content5) ? implode('', (array) $zwssgr_list_content5) : '';
 			$zwssgr_list_content6 = isset($zwssgr_list_content6) && !empty($zwssgr_list_content6) ? implode('', (array) $zwssgr_list_content6) : '';
+			$zwssgr_list_content7 = isset($zwssgr_list_content7) && !empty($zwssgr_list_content7) ? implode('', (array) $zwssgr_list_content7) : '';
 
 			$zwssgr_grid_content1 = isset($zwssgr_grid_content1) && !empty($zwssgr_grid_content1) ? implode('', (array) $zwssgr_grid_content1) : '';
 			$zwssgr_grid_content2 = isset($zwssgr_grid_content2) && !empty($zwssgr_grid_content2) ? implode('', (array) $zwssgr_grid_content2) : '';
@@ -3853,6 +3877,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list6" id="zwssgr-list6">
 						' . $zwssgr_list_content6 . '
+					</div>',
+					'<div class="zwssgr-slider zwssgr-list zwssgr-list7" id="zwssgr-list7">
+						' .  $zwssgr_list_content7 . '
 					</div>'
 				],
 				'popup' => [
