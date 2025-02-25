@@ -67,6 +67,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_action('admin_enqueue_scripts', array( $this,'zwssgr_deactivate_hook'));
 			add_action('admin_footer', array( $this,'zwssgr_custom_deactivation_popup'));
+
+			add_action('wp_ajax_zwssgr_update_shortcode', array($this, 'zwssgr_update_shortcode'));
+			add_action('wp_ajax_nopriv_zwssgr_update_shortcode', array($this, 'zwssgr_update_shortcode'));
 		}
 
 		/**
@@ -843,6 +846,63 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					echo '<span>' . esc_html__('Please select the appropriate options', 'smart-showcase-for-google-reviews') . '</span>';
 				}
 			}
+		}
+
+		function zwssgr_update_shortcode() {
+		    $zwssgr_post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+		    $zwssgr_layout = isset($_POST['layout']) ? sanitize_text_field($_POST['layout']) : '';
+		    $zwssgr_layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : '';
+
+		    // Define allowed layouts and layout-options
+		    $zwssgr_valid_layouts = [
+		        "slider" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8"],
+		        "grid" => ["grid-1", "grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7"],
+		        "list" => ["list-1", "list-2", "list-3", "list-4", "list-5", "list-6", "list-7"],
+		        "badge" => ["badge-1", "badge-2", "badge-3", "badge-4", "badge-5", "badge-6", "badge-7", "badge-8", "badge-9", "badge-10", "badge-11"],
+		        "popup" => ["popup-1", "popup-2"]
+		    ];
+
+		    // Validate post ID
+		    if ($zwssgr_post_id <= 0 || get_post_status($zwssgr_post_id) === false) {
+		        wp_send_json_error(["message" => "Invalid post ID!"]);
+		    }
+
+		    // Retrieve current stored values
+		    $zwssgr_current_layout = get_post_meta($zwssgr_post_id, 'display_option', true);
+		    $zwssgr_current_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
+
+		    // Track changes
+		    $zwssgr_updated = false;
+
+		    // Update only if new values are different from current values
+		    if ($zwssgr_layout && $zwssgr_layout !== $zwssgr_current_layout) {
+		        if (!array_key_exists($zwssgr_layout, $zwssgr_valid_layouts)) {
+		            wp_send_json_error(["message" => "Invalid layout!"]);
+		        }
+		        update_post_meta($zwssgr_post_id, 'display_option', $zwssgr_layout);
+		        $zwssgr_updated = true;
+		    }
+
+		    if ($zwssgr_layout_option && $zwssgr_layout_option !== $zwssgr_current_layout_option) {
+		        if (!in_array($zwssgr_layout_option, $zwssgr_valid_layouts[$zwssgr_layout])) {
+		            wp_send_json_error(["message" => "Invalid layout-option!"]);
+		        }
+		        update_post_meta($zwssgr_post_id, 'layout_option', $zwssgr_layout_option);
+		        $zwssgr_updated = true;
+		    }
+
+		    // Ensure update happens
+		    if (!$zwssgr_updated) {
+		        wp_send_json_error(["message" => "No changes detected."]);
+		    }
+
+		    // Redirect URL
+		    $zwssgr_redirect_url = admin_url('edit.php?post_type=zwssgr_data_widget');
+
+		    wp_send_json_success([
+		        "message" => "Shortcode updated successfully!",
+		        "redirect_url" => $zwssgr_redirect_url
+		    ]);
 		}
 
 		/**
@@ -2819,8 +2879,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					<h3><?php echo esc_html__('Generated Shortcode', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display zwssgr-generated-shortcode-display">
 						<div class="zwssgr-shortcode">
-							<input type="text" class="zwssgr-input-text zwssgr-shortcode-input" value="<?php echo esc_attr($zwssgr_generated_shortcode); ?>" readonly id="shortcode-<?php echo esc_attr($zwssgr_post_id); ?>">
+							<input type="text" class="zwssgr-input-text zwssgr-shortcode-input" value="<?php echo esc_attr($zwssgr_generated_shortcode); ?>" id="shortcode-<?php echo esc_attr($zwssgr_post_id); ?>">
 							<span class="dashicons dashicons-admin-page zwssgr-copy-shortcode-icon" data-target="shortcode-<?php echo esc_attr($zwssgr_post_id); ?>" title="<?php echo esc_attr__('Copy Shortcode', 'smart-showcase-for-google-reviews'); ?>"></span>
+							<span id="zwssgr-success-response"></span>
+							<span id="zwssgr-error-response"></span>
 						</div>
 					</div>
 				</div>
