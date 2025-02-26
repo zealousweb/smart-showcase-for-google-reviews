@@ -70,6 +70,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_zwssgr_update_shortcode', array($this, 'zwssgr_update_shortcode'));
 			add_action('wp_ajax_nopriv_zwssgr_update_shortcode', array($this, 'zwssgr_update_shortcode'));
+			add_action('admin_init', array($this,'zwssgr_redirect_selected_option'));
 		}
 
 		/**
@@ -365,6 +366,28 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		
 			}
 		
+		}
+
+		function zwssgr_redirect_selected_option() {
+			if (isset($_GET['zwssgr_widget_id']) && isset($_GET['selectedOption'])) {
+		        $zwssgr_post_id = intval($_GET['zwssgr_widget_id']); // Sanitize the ID
+
+		        // Get the stored layout option dynamically
+		        $zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
+
+		        // Prevent infinite loop: Redirect only if different from current selectedOption
+		        if ($_GET['selectedOption'] !== $zwssgr_layout_option) {
+		            $zwssgr_new_url = add_query_arg([
+		                'page' => 'zwssgr_widget_configurator',
+		                'tab' => 'tab-shortcode',
+		                'selectedOption' => $zwssgr_layout_option, // Uses the meta value dynamically
+		                'zwssgr_widget_id' => $zwssgr_post_id
+		            ], admin_url('admin.php'));
+
+		            wp_redirect($zwssgr_new_url);
+		            exit;
+		        }
+		    }
 		}
 
 		function zwssgr_register_review_cpt()
