@@ -174,7 +174,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 		/**
 		 * Hook to update the admin settings when a shortcode is updated and saved in a page
 		 */
-		public function zwssgr_update_admin_on_save($zwssgr_post_id, $zwssgr_post, $zwssgr_update) {
+		function zwssgr_update_admin_on_save($zwssgr_post_id, $zwssgr_post, $zwssgr_update) {
 
 			// Security: Prevent autosaves and unauthorized changes
 			if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
@@ -182,13 +182,10 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 			// Get the content of the post
 			$zwssgr_post_content = $zwssgr_post->post_content;
-
-			// Match the shortcode with attributes
-			if (preg_match('/\[zwssgr_widget post-id="(\d+)" layout="(\w+)" layout-option="(\w+-\d+)"\]/', $zwssgr_post_content, $zwssgr_matches)) {
-				$zwssgr_shortcode_post_id = intval($zwssgr_matches[1]);   
-				$zwssgr_layout_type       = sanitize_text_field($zwssgr_matches[2]);
-				$zwssgr_layout_option     = sanitize_text_field($zwssgr_matches[3]);
-
+		
+			// Match all occurrences of the shortcode with attributes
+			if (preg_match_all('/\[zwssgr_widget post-id="(\d+)" layout="(\w+)" layout-option="(\w+-\d+)"\]/', $zwssgr_post_content, $zwssgr_matches, PREG_SET_ORDER)) {
+				
 				// Define allowed layouts and layout-options
 				$zwssgr_valid_layouts = [
 					"slider" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8"],
@@ -197,41 +194,42 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					"badge" => ["badge-1", "badge-2", "badge-3", "badge-4", "badge-5", "badge-6", "badge-7", "badge-8", "badge-9", "badge-10", "badge-11"],
 					"popup" => ["popup-1", "popup-2"]
 				];
-
-				// Validate post ID
-				if ($zwssgr_shortcode_post_id <= 0 || get_post_status($zwssgr_shortcode_post_id) === false) {
-					return; // Invalid post ID, exit without updating
-				}
-
-				// Validate layout type
-				if (!array_key_exists($zwssgr_layout_type, $zwssgr_valid_layouts)) {
-					return; // Invalid layout, exit without updating
-				}
-
-				// Validate layout option
-				if (!in_array($zwssgr_layout_option, $zwssgr_valid_layouts[$zwssgr_layout_type])) {
-					return; // Invalid layout option, exit without updating
-				}
-
-				// Retrieve current stored values
-				$zwssgr_current_layout = get_post_meta($zwssgr_shortcode_post_id, 'display_option', true);
-				$zwssgr_current_layout_option = get_post_meta($zwssgr_shortcode_post_id, 'layout_option', true);
-
-				// Update only if new values are different from current values
-				$zwssgr_updated = false;
-				if ($zwssgr_layout_type !== $zwssgr_current_layout) {
-					update_post_meta($zwssgr_shortcode_post_id, 'display_option', $zwssgr_layout_type);
-					$zwssgr_updated = true;
-				}
-
-				if ($zwssgr_layout_option !== $zwssgr_current_layout_option) {
-					update_post_meta($zwssgr_shortcode_post_id, 'layout_option', $zwssgr_layout_option);
-					$zwssgr_updated = true;
-				}
-
-				// Ensure update happens
-				if (!$zwssgr_updated) {
-					return; // No changes detected, exit without updating
+		 
+				foreach ($zwssgr_matches as $match) {
+					$zwssgr_shortcode_post_id = intval($match[1]);   
+					$zwssgr_layout_type       = sanitize_text_field($match[2]);
+					$zwssgr_layout_option     = sanitize_text_field($match[3]);
+		
+					// Validate post ID
+					if ($zwssgr_shortcode_post_id <= 0 || get_post_status($zwssgr_shortcode_post_id) === false) {
+						continue; // Skip invalid post ID
+					}
+		
+					// Validate layout type
+					if (!array_key_exists($zwssgr_layout_type, $zwssgr_valid_layouts)) {
+						continue; // Skip invalid layout
+					}
+		
+					// Validate layout option
+					if (!in_array($zwssgr_layout_option, $zwssgr_valid_layouts[$zwssgr_layout_type])) {
+						continue; // Skip invalid layout option
+					}
+		
+					// Retrieve current stored values
+					$zwssgr_current_layout = get_post_meta($zwssgr_shortcode_post_id, 'display_option', true);
+					$zwssgr_current_layout_option = get_post_meta($zwssgr_shortcode_post_id, 'layout_option', true);
+		
+					// Update only if new values are different from current values
+					$zwssgr_updated = false;
+					if ($zwssgr_layout_type !== $zwssgr_current_layout) {
+						update_post_meta($zwssgr_shortcode_post_id, 'display_option', $zwssgr_layout_type);
+						$zwssgr_updated = true;
+					}
+		
+					if ($zwssgr_layout_option !== $zwssgr_current_layout_option) {
+						update_post_meta($zwssgr_shortcode_post_id, 'layout_option', $zwssgr_layout_option);
+						$zwssgr_updated = true;
+					}
 				}
 			}
 		}
