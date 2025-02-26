@@ -188,6 +188,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				
 				// Define allowed layouts and layout-options
 				$zwssgr_valid_layouts = [
+					"all" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8","grid-1", "grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7","list-1", "list-2", "list-3", "list-4", "list-5", "list-6", "list-7","badge-1", "badge-2", "badge-3", "badge-4", "badge-5", "badge-6", "badge-7", "badge-8", "badge-9", "badge-10", "badge-11","popup-1", "popup-2"],
 					"slider" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8"],
 					"grid" => ["grid-1", "grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7"],
 					"list" => ["list-1", "list-2", "list-3", "list-4", "list-5", "list-6", "list-7"],
