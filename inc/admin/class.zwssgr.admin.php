@@ -5,12 +5,14 @@
  * Handles the admin functionality.
  *
  * @package WordPress
- * @subpackage Smart Showcase for Google Reviews
+ * @subpackage Smart Google Reviews
  * @since 1.0.0
  */
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( !defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( !class_exists( 'ZWSSGR_Admin' ) ) {
 
@@ -19,12 +21,10 @@ if ( !class_exists( 'ZWSSGR_Admin' ) ) {
 	 */
 	class ZWSSGR_Admin {
 
-		public $action = null;
-		public $filter = null;
-		
-		function __construct() 
-		{
+		function __construct() {
+			
 
 		}
+
 	}
 }

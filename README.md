@@ -1,13 +1,14 @@
-# Smart Showcase for Google Reviews
+# Smart Google Reviews
 
-Smart Showcase for Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites. By syncing reviews directly from Google My Business, this plugin helps build trust and credibility with potential customers. With a range of display options including grids, lists, sliders, badges, and popups, you can showcase reviews in a format that best suits your site’s design.
+Smart Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites. By syncing reviews directly from Google My Business, this plugin helps build trust and credibility with potential customers. With a range of display options including grids, lists, sliders, badges, and popups, you can showcase reviews in a format that best suits your site’s design.
 
-Customize the look and feel with custom CSS, and place reviews anywhere on your site using shortcodes. The plugin also supports multiple languages, ensuring a seamless and secure user experience. Additionally, Smart Showcase for Google Reviews offers admin management features, including form fields for review replies, filters for sorting reviews, and notification systems for new reviews and replies. Whether you’re using Elementor, WPBakery, or Divi, this plugin integrates smoothly with your page builder to enhance your site’s functionality and appearance.
+Customize the look and feel with custom CSS, and place reviews anywhere on your site using shortcodes. The plugin also supports multiple languages and complies with GDPR, ensuring a seamless and secure user experience. Additionally, Smart Google Reviews offers admin management features, including form fields for review replies, filters for sorting reviews, and notification systems for new reviews and replies. Whether you’re using Elementor, WPBakery, or Divi, this plugin integrates smoothly with your page builder to enhance your site’s functionality and appearance.
 
-**Features of Smart Showcase for Google Reviews**
-- Unlimited Review Widgets - Display unlimited Google reviews widgets.
+**Features of Smart Google Reviews**
+
 - Syncing of Google reviews from Google My Business
-- Cron Job has Options daily, weekly, monthly
+- Cron Job has Option daily, weekly, monthly
+- Review Reply Form Feilds - name, email, review title, and review message - Admin manage Form
 - Filters for sorting reviews by Rating, Keywords
 - Display Option Grid, List, Slider, Badge, Popup
 - Custom CSS support for design tweaks
@@ -18,21 +19,21 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - Customize number of reviews displayed
 - 5+ Widget Design layouts
 - Compatibility with standard page builders like elementor, WPBakery, and Divi
-- Load more reviews and Limit Functionality
+- Load more review and Limit Functionlity
 - Trim long reviews with “read more” link
 - Responsive Slider, Grid, and List layouts
 - Notify admins of new reviews - with selection admin or other
 - Send notification emails to users after submitting reply to reviews
 - Keep all reviews in a WordPress database (CPT)
 - Multi-language support
+- Full GDPR support
+- Admin approval system for reviews
 - Multilingual support with automatic translation options for user-submitted reviews
 - Create and display review widgets in sidebars and footers, showing the latest reviews and average star ratings.
 - ‘Review us on G’ button to collect new Google Reviews
 - Show/hide any elements (business photo, name, rating, reviews, avatars, names, time and etc)
 
-<strong>[Demo for Smart Showcase for Google Reviews](https://demo.zealousweb.com/wordpress-plugins/smart-showcase-for-google-reviews/)</strong>
-
-**Features of Smart Showcase for Google Reviews Pro**
+**Features of Smart Google Reviews Pro**
 
 - Dashboard for review statistics
     - Total reviews
@@ -50,6 +51,8 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 - Advanced spam detection using AI or machine learning algorithms like adult content etc
 - Automatic replies to users based on their star rating (positive or negative) (Using AI)
 - Integration with Google Analytics to track user interaction with reviews
+
+<strong>[Demo for Smart Google Reviews Pro]()</strong>
 
 **OUR OTHER PLUGINS**
 
@@ -73,179 +76,7 @@ Customize the look and feel with custom CSS, and place reviews anywhere on your 
 5. Click ‘Activate Plugin’ to activate it.
 
 # How To Use
-How to Configure the Smart Showcase for Google Reviews Plugin
 
-**1. Install and Activate the Plugin**
-- Step 1: From your WordPress admin dashboard, navigate to Plugins > Add New.
-- Step 2: Search for Smart Showcase for Google Reviews.
-- Step 3: Click Install Now, then Activate to activate the plug
-
-**For Smart Showcase for Google Reviews > Connect with your Google**
-
-![Screenshot](resource/images/ssgr-image-1.png)
-
-- After activating the plugin, you'll need to connect your Google Reviews business account to fetch and display reviews on your site.
-- Click on the Connect with Google button to authorize the plugin with your Google account. You may be prompted to sign in to your Google account and grant the necessary permissions.
-- Once connected, the plugin will be able to fetch reviews from your business profile.
-
-**For Smart Showcase for Google Reviews > Smart Showcase for Google Reviews**
-
-![Screenshot](resource/images/ssgr-image-2.png)
-
--This section provides an overview of your Google reviews and the following statistics
- 
-- **Total Reviews:** Displays the total number of reviews for your business.
-- **Average Review:** Shows the average rating from all reviews.
-- **Statistics Chart:** Visualizes your reviews, providing insights into the overall rating distribution.
-- **Rating Top Reviews:** Highlights your highest-rated reviews for better engagement and social proof.
-
-**For Smart Showcase for Google Reviews > Widgets**
-
-![Screenshot](resource/images/ssgr-image-3.png)
-
-- In this section, you can configure the display settings for the Google Reviews widget on your site.
-**Configuration Steps**
-- **Fetch Data:**
-- Fetch the latest Google reviews from your business profile.
-
-![Screenshot](resource/images/ssgr-image-4.png)
-
-**Select Display Options:**
-- Choose how the reviews will appear on your site. Available display options include:
-
-**Slider:** 
-- Show reviews in a scrolling slider format.
-
-![Screenshot](resource/images/ssgr-image-5.png)
-
-**Grid:** 
-- Display reviews in a grid layout.
-
-![Screenshot](resource/images/ssgr-image-6.png)
-
-**List:** 
-- Show reviews in a simple list format.
-
-![Screenshot](resource/images/ssgr-image-7.png)
-
-**Badge:** 
-- Display a badge-style widget with reviews.
-
-![Screenshot](resource/images/ssgr-image-8.png)
-
-**Popup:** 
-- Show reviews in a popup window.
-
-![Screenshot](resource/images/ssgr-image-9.png)
-
-**Widget Settings:**
-
-- **Filter Rating:** Filter reviews based on a specific rating (e.g., 5-star reviews).
-- **Hide Element:** Show or hide specific elements (e.g., reviewer name, rating, date, review content, reviewer photo, Google icon).
-- **Keywords:** Filter reviews by entering keywords separated by commas.
-- **Review Us on Google:** Enable or disable a call-to-action for visitors to leave a review.
-- **Trim Long Reviews:** Set a character limit with a "Read More" link for longer reviews.
-- **Language:** Choose the language for displaying reviews.
-- **Date Format:** Select the preferred date format.
-- **Sort By:** Sort reviews by Newest, Highest Rating, or Lowest Rating.
-- **Show Sort By Filter:** Enable or disable the "Sort By" filter on the front end.
-- **Load More:** Enable or disable the "Load More" button for additional reviews.
-- **Number of Reviews:** Set the number of reviews to display.
-- **Custom CSS:** Add custom CSS for further widget styling.
-
-![Screenshot](resource/images/ssgr-image-10.png)
-
-**Generated Shortcode:**
-
-- Once the widget is configured, a shortcode will be generated. You can insert this shortcode into any page, post, or widget area to display the reviews.
-
-![Screenshot](resource/images/ssgr-image-11.png)
-
-**For Smart Showcase for Google Reviews > Reviews**
-
-![Screenshot](resource/images/ssgr-image-12.png)
-
-- This section allows you to view and manage the reviews collected from Google. You can list all reviews and choose to show or hide specific reviews based on your preferences.
-
-**For Smart Showcase for Google Reviews > settings**
-
-![Screenshot](resource/images/ssgr-image-13.png)
-
-- This section allows you to configure advanced settings for the plugin:
-
-**Google Settings:** 
-- Set your Google business account details and manage Google review settings.
-
-
-**SEO & Notifications:**
-
-![Screenshot](resource/images/ssgr-image-14.png)
-
-- **Enable Admin Notifications:** Enable email notifications to be sent to the admin when a new review is posted.
-- **Custom Email Addresses:** Set custom email addresses for receiving notifications.
-- **Custom Email Subject:** Customize the subject line for email notifications.
-- **Email Body:** Customize the content of the notification email.
-
-**Advanced:**
-
-![Screenshot](resource/images/ssgr-image-15.png)
-
-- **Sync Reviews:** 
-- Choose whether to automatically or manually sync new reviews from Google.
-- Google Analytics Tracking ID: Enter your Google Analytics Tracking ID for review tracking.
-
-**SMTP Settings:**
-
-![Screenshot](resource/images/ssgr-image-16.png)
-
-- Configure SMTP for sending email notifications.
-
-- **From Email Address:** Set the email address that will appear as the sender.
-- **From Name:** Set the sender's name.
-- **SMTP Host:** Specify the SMTP server host.
-- **Type of Encryption:** Choose the type of encryption for your SMTP server (None, SSL, TLS).
-- **Port:** Specify the SMTP server port.
-- **SMTP Authentication:** Toggle on/off SMTP authentication. If enabled, provide the SMTP username and password.
-
-**Test Mail:**
-
-![Screenshot](resource/images/ssgr-image-17.png)
-
-- Send a test email to verify the configuration.
-
-- **To Email:** Enter the recipient's email address.
-- **Subject:** Set the subject for the test email.
-- **Message:** Enter a message to send in the test email.
-
-**Background Processing:**
-
-- This plugin utilizes the [WP Background Processing](https://github.com/deliciousbrains/wp-background-processing) library by Delicious Brains to efficiently handle background tasks without affecting the user experience or website performance. 
-
-- The library enables asynchronous processing of large datasets and operations by leveraging the WordPress Cron system. This ensures that critical tasks such as API data fetching, batch processing, or heavy computations are handled smoothly and reliably.
-
-- We extend and integrate this library to manage the background processing of:
-- Fetching accounts, locations, and reviews in batches.
-- Importing large datasets into WordPress.
-- Performing other time-intensive operations.
-
-- For more information on this library, visit its [GitHub repository](https://github.com/deliciousbrains/wp-background-processing).
-
-**Use of External Services:**
-
-**Google My Business API**  
-   - **Purpose:** The plugin uses the Google My Business API to fetch Google My Business account-related locations and reviews, as well as to manage review replies. This includes adding, updating, editing, and deleting review replies.  
-   - **Data Sent:** Upon user authorization, the plugin collects and sends a refresh token to enable API interactions for retrieving location and review data, as well as for managing review replies.  
-   - **Conditions:** This data is only transmitted after explicit user consent during the "Connect with Google" process. No other personal or business information is shared or used.
-   - **Terms and Privacy:**  
-     - [Google Terms of Service](https://policies.google.com/terms)  
-     - [Google Privacy Policy](https://policies.google.com/privacy)
-
-**ZealousWeb Third-Party API Service (https://sgr.zealousweb.com/)**  
-   - **Purpose:** The plugin saves the Google My Business API refresh token in a secure third-party API service to generate temporary access tokens. These tokens are provided to the user's site, which uses them to securely fetch data from Google My Business and perform operations such as retrieving locations, reviews, and managing review replies.  
-   - **Data Sent:** The Google My Business refresh token is stored securely in the third-party service solely to facilitate access token generation. No additional personal or business information is shared.  
-   - **Conditions:** The data is transmitted only after user consent and is used exclusively for enabling the plugin's functionality. All operations are performed directly by the user's site.  
-   - **Terms and Privacy:**  
-     - [ZealousWeb Privacy Policy](https://zealousweb.com/privacy-policy)
 
 # Getting Help
 
