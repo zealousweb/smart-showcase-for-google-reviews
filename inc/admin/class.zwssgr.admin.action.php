@@ -70,6 +70,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_action('wp_ajax_zwssgr_update_shortcode', array($this, 'zwssgr_update_shortcode'));
 			add_action('wp_ajax_nopriv_zwssgr_update_shortcode', array($this, 'zwssgr_update_shortcode'));
+			add_action('admin_init', array($this,'zwssgr_redirect_selected_option'));
 		}
 
 		/**
@@ -365,6 +366,31 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		
 			}
 		
+		}
+
+		function zwssgr_redirect_selected_option() {
+			if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+				return;
+			}
+			if (isset($_GET['zwssgr_widget_id']) && isset($_GET['selectedOption'])) {
+		        $zwssgr_post_id = intval($_GET['zwssgr_widget_id']); // Sanitize the ID
+
+		        // Get the stored layout option dynamically
+		        $zwssgr_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
+
+		        // Prevent infinite loop: Redirect only if different from current selectedOption
+		        if ($_GET['selectedOption'] !== $zwssgr_layout_option) {
+		            $zwssgr_new_url = add_query_arg([
+		                'page' => 'zwssgr_widget_configurator',
+		                'tab' => 'tab-shortcode',
+		                'selectedOption' => $zwssgr_layout_option, // Uses the meta value dynamically
+		                'zwssgr_widget_id' => $zwssgr_post_id
+		            ], admin_url('admin.php'));
+
+		            wp_redirect($zwssgr_new_url);
+		            exit;
+		        }
+		    }
 		}
 
 		function zwssgr_register_review_cpt()
@@ -849,60 +875,66 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		}
 
 		function zwssgr_update_shortcode() {
-		    $zwssgr_post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-		    $zwssgr_layout = isset($_POST['layout']) ? sanitize_text_field($_POST['layout']) : '';
-		    $zwssgr_layout_option = isset($_POST['layout_option']) ? sanitize_text_field($_POST['layout_option']) : '';
+			
+			if(isset($_POST['security-zwssgr-get-form']) && wp_verify_nonce(sanitize_file_name(wp_unslash($_POST['security-zwssgr-get-form'])), 'zwssgr_get_form')){
+				return;
+			}
 
-		    // Define allowed layouts and layout-options
-		    $zwssgr_valid_layouts = [
-		        "slider" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8"],
-		        "grid" => ["grid-1", "grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7"],
-		        "list" => ["list-1", "list-2", "list-3", "list-4", "list-5", "list-6", "list-7"],
-		        "badge" => ["badge-1", "badge-2", "badge-3", "badge-4", "badge-5", "badge-6", "badge-7", "badge-8", "badge-9", "badge-10", "badge-11"],
-		        "popup" => ["popup-1", "popup-2"]
-		    ];
+			$zwssgr_post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+			$zwssgr_layout = isset($_POST['layout']) ? sanitize_text_field(wp_unslash($_POST['layout'])) : '';
+			$zwssgr_layout_option = isset($_POST['layout_option']) ? sanitize_text_field(wp_unslash($_POST['layout_option'])) : '';
 
-		    // Validate post ID
-		    if ($zwssgr_post_id <= 0 || get_post_status($zwssgr_post_id) === false) {
-		        wp_send_json_error(["message" => "Invalid post ID!"]);
-		    }
+			// Define allowed layouts and layout-options
+			$zwssgr_valid_layouts = [
+				"all" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8","grid-1", "grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7","list-1", "list-2", "list-3", "list-4", "list-5", "list-6", "list-7","badge-1", "badge-2", "badge-3", "badge-4", "badge-5", "badge-6", "badge-7", "badge-8", "badge-9", "badge-10", "badge-11","popup-1", "popup-2"],
+				"slider" => ["slider-1", "slider-2", "slider-3", "slider-4", "slider-5", "slider-6", "slider-7", "slider-8"],
+				"grid" => ["grid-1", "grid-2", "grid-3", "grid-4", "grid-5", "grid-6", "grid-7"],
+				"list" => ["list-1", "list-2", "list-3", "list-4", "list-5", "list-6", "list-7"],
+				"badge" => ["badge-1", "badge-2", "badge-3", "badge-4", "badge-5", "badge-6", "badge-7", "badge-8", "badge-9", "badge-10", "badge-11"],
+				"popup" => ["popup-1", "popup-2"]
+			];
 
-		    // Retrieve current stored values
-		    $zwssgr_current_layout = get_post_meta($zwssgr_post_id, 'display_option', true);
-		    $zwssgr_current_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
+			// Validate post ID
+			if ($zwssgr_post_id <= 0 || get_post_status($zwssgr_post_id) === false) {
+				wp_send_json_error(["message" => "Invalid post ID!"]);
+			}
 
-		    // Track changes
-		    $zwssgr_updated = false;
+			// Retrieve current stored values
+			$zwssgr_current_layout = get_post_meta($zwssgr_post_id, 'display_option', true);
+			$zwssgr_current_layout_option = get_post_meta($zwssgr_post_id, 'layout_option', true);
 
-		    // Update only if new values are different from current values
-		    if ($zwssgr_layout && $zwssgr_layout !== $zwssgr_current_layout) {
-		        if (!array_key_exists($zwssgr_layout, $zwssgr_valid_layouts)) {
-		            wp_send_json_error(["message" => "Invalid layout!"]);
-		        }
-		        update_post_meta($zwssgr_post_id, 'display_option', $zwssgr_layout);
-		        $zwssgr_updated = true;
-		    }
+			// Track changes
+			$zwssgr_updated = false;
 
-		    if ($zwssgr_layout_option && $zwssgr_layout_option !== $zwssgr_current_layout_option) {
-		        if (!in_array($zwssgr_layout_option, $zwssgr_valid_layouts[$zwssgr_layout])) {
-		            wp_send_json_error(["message" => "Invalid layout-option!"]);
-		        }
-		        update_post_meta($zwssgr_post_id, 'layout_option', $zwssgr_layout_option);
-		        $zwssgr_updated = true;
-		    }
+			// Update only if new values are different from current values
+			if ($zwssgr_layout && $zwssgr_layout !== $zwssgr_current_layout) {
+				if (!array_key_exists($zwssgr_layout, $zwssgr_valid_layouts)) {
+					wp_send_json_error(["message" => "Invalid layout!"]);
+				}
+				update_post_meta($zwssgr_post_id, 'display_option', $zwssgr_layout);
+				$zwssgr_updated = true;
+			}
 
-		    // Ensure update happens
-		    if (!$zwssgr_updated) {
-		        wp_send_json_error(["message" => "No changes detected."]);
-		    }
+			if ($zwssgr_layout_option && $zwssgr_layout_option !== $zwssgr_current_layout_option) {
+				if (!in_array($zwssgr_layout_option, $zwssgr_valid_layouts[$zwssgr_layout])) {
+					wp_send_json_error(["message" => "Invalid layout-option!"]);
+				}
+				update_post_meta($zwssgr_post_id, 'layout_option', $zwssgr_layout_option);
+				$zwssgr_updated = true;
+			}
 
-		    // Redirect URL
-		    $zwssgr_redirect_url = admin_url('edit.php?post_type=zwssgr_data_widget');
+			// Ensure update happens
+			if (!$zwssgr_updated) {
+				wp_send_json_error(["message" => "No changes detected."]);
+			}
 
-		    wp_send_json_success([
-		        "message" => "Shortcode updated successfully!",
-		        "redirect_url" => $zwssgr_redirect_url
-		    ]);
+			// Redirect URL
+			$zwssgr_redirect_url = admin_url('edit.php?post_type=zwssgr_data_widget');
+
+			wp_send_json_success([
+				"message" => "Shortcode updated successfully!",
+				"redirect_url" => $zwssgr_redirect_url
+			]);
 		}
 
 		/**

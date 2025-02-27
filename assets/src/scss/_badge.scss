@@ -317,8 +317,8 @@ $zwssgrbadge: ".zwssgr";
         }
         #{$zwssgrbadge} {  
             &-final-rating {
-                font-size: 20px;
-                font-weight: 700;
+                font-size: var(--font-size-h1);
+                font-weight: var(--font-weight-700);
                 color: var(--black-color);
             }
             &-rating {
@@ -341,9 +341,9 @@ $zwssgrbadge: ".zwssgr";
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 16px;
+                font-size: var(--font-size-body);
                 color: var(--slate-gray);
-                font-weight: 500;
+                font-weight: var(--font-weight-500);
                 padding-top: 10px;
             }
         }
