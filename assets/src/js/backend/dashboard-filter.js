@@ -2,55 +2,61 @@ import flatpickr from "flatpickr";
 import { zwssgrRenderDataCallback } from './render-data-callback';
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    const zwssgrAccountSelect = document.getElementById('zwssgr-account-select');
+
+    if (zwssgrAccountSelect) {
+
+        zwssgrAccountSelect.addEventListener('change', function (zwssgrEv) {
+            "use strict";
+
+            zwssgrEv.preventDefault();
+
+            const zwssgrAccountNumber = this.value;
+            const zwssgrDropdown = this;
+            const zwssgrDataFilter = document.getElementById('zwssgr-gmb-data-filter');
     
-    document.getElementById('zwssgr-account-select').addEventListener('change', function (zwssgrEv) {
-        "use strict";
-
-        zwssgrEv.preventDefault();
-
-        const zwssgrAccountNumber = this.value;
-        const zwssgrDropdown = this;
-        const zwssgrDataFilter = document.getElementById('gmb-data-filter');
-
-        zwssgrDropdown.classList.add('disabled');
-
-        const zwssgrLoader = document.createElement('span');
-        zwssgrLoader.className = 'loader is-active';
-
-        fetch(zwssgr_admin.ajax_url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                action: 'zwssgr_gmb_dashboard_data_filter',
-                zwssgr_account_number: zwssgrAccountNumber,
-                security: zwssgr_admin.zwssgr_gmb_dashboard_filter
+            zwssgrDropdown.classList.add('disabled');
+    
+            const zwssgrLoader = document.createElement('span');
+            zwssgrLoader.className = 'loader is-active';
+    
+            fetch(zwssgr_admin.ajax_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    action: 'zwssgr_gmb_dashboard_data_filter',
+                    zwssgr_account_number: zwssgrAccountNumber,
+                    security: zwssgr_admin.zwssgr_gmb_dashboard_filter
+                })
             })
-        })
-        .then(zwssgrResponse => zwssgrResponse.json())
-        .then(zwssgrData => {
-            const zwssgrLocationSelect = document.getElementById('zwssgr-location-select');
-            if (zwssgrLocationSelect) {
-                zwssgrLocationSelect.remove();
-            }
-            if (zwssgrData.success) {
-                zwssgrDataFilter.insertAdjacentHTML('beforeend', zwssgrData.data);
-            } else {
-                //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> No data available. </div>');
-            }
-        })
-        .catch(zwssgrError => {
-            //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> Error occurred while processing your request. </div>');
-        })
-        .finally(() => {
-            zwssgrDropdown.classList.remove('disabled');
-            if (zwssgrLoader.parentNode) {
-                zwssgrLoader.parentNode.removeChild(zwssgrLoader);
-            }
+            .then(zwssgrResponse => zwssgrResponse.json())
+            .then(zwssgrData => {
+                const zwssgrLocationSelect = document.getElementById('zwssgr-location-select');
+                if (zwssgrLocationSelect) {
+                    zwssgrLocationSelect.remove();
+                }
+                if (zwssgrData.success) {
+                    zwssgrDataFilter.insertAdjacentHTML('beforeend', zwssgrData.data);
+                } else {
+                    //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> No data available. </div>');
+                }
+            })
+            .catch(zwssgrError => {
+                //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> Error occurred while processing your request. </div>');
+            })
+            .finally(() => {
+                zwssgrDropdown.classList.remove('disabled');
+                if (zwssgrLoader.parentNode) {
+                    zwssgrLoader.parentNode.removeChild(zwssgrLoader);
+                }
+            });
+
         });
 
-    });
+    }
 
     const zwgrDashboard = document.getElementById('zwssgr-dashboard');
 

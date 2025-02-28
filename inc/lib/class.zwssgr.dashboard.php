@@ -325,24 +325,29 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 'fields'         => 'ids',
             ));
 
-            // Build the select dropdown
-            $zwssgr_data_filter_output = '<div id="gmb-data-filter" class="gmb-data-filter">
+            // Start the select dropdown container
+            $zwssgr_data_filter_output = '<div id="zwssgr-gmb-data-filter" class="zwssgr-gmb-data-filter">
                 <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
-                    <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews').'</option>';
-                    foreach ($zwssgr_request_data as $zwssgr_widget_id) {
-                        $zwssgr_account_number  = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
-                        $zwssgr_is_data_fetched = get_post_meta($zwssgr_widget_id, 'zwssgr_is_data_fetched', true);
-                        $zwssgr_account_name    = get_the_title($zwssgr_widget_id);
+                    <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews') .'</option>';
 
-                        if ($zwssgr_is_data_fetched === 'true') {
-                            $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
-                        }
+            $zwssgr_has_valid_options = false;
 
-                    }
-                $zwssgr_data_filter_output .= '</select>
-            </div>';
-            
-            return $zwssgr_data_filter_output;
+            foreach ($zwssgr_request_data as $zwssgr_widget_id) {
+                $zwssgr_account_number  = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
+                $zwssgr_is_data_fetched = get_post_meta($zwssgr_widget_id, 'zwssgr_is_data_fetched', true);
+                $zwssgr_account_name    = get_the_title($zwssgr_widget_id);
+
+                if ($zwssgr_is_data_fetched === 'true') {
+                    $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
+                    $zwssgr_has_valid_options = true;
+                }
+            }
+
+            $zwssgr_data_filter_output .= '</select></div>';
+
+            if ($zwssgr_has_valid_options) {
+                return $zwssgr_data_filter_output;
+            }
 
         }        
 

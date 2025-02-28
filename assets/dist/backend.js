@@ -206,47 +206,50 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('zwssgr-account-select').addEventListener('change', function (zwssgrEv) {
-    "use strict";
+  var zwssgrAccountSelect = document.getElementById('zwssgr-account-select');
+  if (zwssgrAccountSelect) {
+    zwssgrAccountSelect.addEventListener('change', function (zwssgrEv) {
+      "use strict";
 
-    zwssgrEv.preventDefault();
-    var zwssgrAccountNumber = this.value;
-    var zwssgrDropdown = this;
-    var zwssgrDataFilter = document.getElementById('gmb-data-filter');
-    zwssgrDropdown.classList.add('disabled');
-    var zwssgrLoader = document.createElement('span');
-    zwssgrLoader.className = 'loader is-active';
-    fetch(zwssgr_admin.ajax_url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        action: 'zwssgr_gmb_dashboard_data_filter',
-        zwssgr_account_number: zwssgrAccountNumber,
-        security: zwssgr_admin.zwssgr_gmb_dashboard_filter
-      })
-    }).then(function (zwssgrResponse) {
-      return zwssgrResponse.json();
-    }).then(function (zwssgrData) {
-      var zwssgrLocationSelect = document.getElementById('zwssgr-location-select');
-      if (zwssgrLocationSelect) {
-        zwssgrLocationSelect.remove();
-      }
-      if (zwssgrData.success) {
-        zwssgrDataFilter.insertAdjacentHTML('beforeend', zwssgrData.data);
-      } else {
-        //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> No data available. </div>');
-      }
-    })["catch"](function (zwssgrError) {
-      //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> Error occurred while processing your request. </div>');
-    })["finally"](function () {
-      zwssgrDropdown.classList.remove('disabled');
-      if (zwssgrLoader.parentNode) {
-        zwssgrLoader.parentNode.removeChild(zwssgrLoader);
-      }
+      zwssgrEv.preventDefault();
+      var zwssgrAccountNumber = this.value;
+      var zwssgrDropdown = this;
+      var zwssgrDataFilter = document.getElementById('zwssgr-gmb-data-filter');
+      zwssgrDropdown.classList.add('disabled');
+      var zwssgrLoader = document.createElement('span');
+      zwssgrLoader.className = 'loader is-active';
+      fetch(zwssgr_admin.ajax_url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          action: 'zwssgr_gmb_dashboard_data_filter',
+          zwssgr_account_number: zwssgrAccountNumber,
+          security: zwssgr_admin.zwssgr_gmb_dashboard_filter
+        })
+      }).then(function (zwssgrResponse) {
+        return zwssgrResponse.json();
+      }).then(function (zwssgrData) {
+        var zwssgrLocationSelect = document.getElementById('zwssgr-location-select');
+        if (zwssgrLocationSelect) {
+          zwssgrLocationSelect.remove();
+        }
+        if (zwssgrData.success) {
+          zwssgrDataFilter.insertAdjacentHTML('beforeend', zwssgrData.data);
+        } else {
+          //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> No data available. </div>');
+        }
+      })["catch"](function (zwssgrError) {
+        //zwssgrDataFilter.insertAdjacentHTML('beforeend', '<div class="notice notice-error"> Error occurred while processing your request. </div>');
+      })["finally"](function () {
+        zwssgrDropdown.classList.remove('disabled');
+        if (zwssgrLoader.parentNode) {
+          zwssgrLoader.parentNode.removeChild(zwssgrLoader);
+        }
+      });
     });
-  });
+  }
   var zwgrDashboard = document.getElementById('zwssgr-dashboard');
   if (zwgrDashboard) {
     zwgrDashboard.addEventListener('change', function (zwssgrEv) {
