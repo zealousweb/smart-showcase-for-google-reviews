@@ -88,6 +88,13 @@
 /** Mobile only */
 /** Portrait mobile */
 /** Landscape mobile */
+.zwssgr-toggle-content {
+  color: var(--black-color);
+}
+.zwssgr-toggle-pin img {
+  width: 20px;
+  height: 20px;
+}
 .zwssgr-page-title {
   font-size: var(--font-size-h2);
   font-weight: var(--font-weight-600);
@@ -965,6 +972,7 @@
 }
 .zwssgr-slider .zwssgr-profile {
   width: 62px;
+  height: 62px;
   position: relative;
   padding-right: 20px;
 }
@@ -1023,6 +1031,10 @@
 .zwssgr-slider3 .zwssgr-slider-badge {
   width: 20%;
   text-align: center;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
 }
 .zwssgr-slider3 .zwssgr-slider-badge .zwssgr-average {
   color: var(--body-color);
@@ -1042,25 +1054,19 @@
   font-family: var(--font-primary);
   margin: 15px 0;
 }
-@media (max-width: 720px) and (orientation: portrait) {
-  .zwssgr-slider3 .zwssgr-slider-badge {
-    width: 100%;
-  }
-}
-@media (max-width: 992px) and (orientation: landscape) {
+@media (max-width: 991px) {
   .zwssgr-slider3 .zwssgr-slider-badge {
     width: 100%;
   }
 }
 .zwssgr-slider3 .zwssgr-slider-3-wrap {
   width: 80%;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
 }
-@media (max-width: 720px) and (orientation: portrait) {
-  .zwssgr-slider3 .zwssgr-slider-3-wrap {
-    width: 100%;
-  }
-}
-@media (max-width: 992px) and (orientation: landscape) {
+@media (max-width: 991px) {
   .zwssgr-slider3 .zwssgr-slider-3-wrap {
     width: 100%;
   }
@@ -1560,6 +1566,9 @@
   padding-bottom: 5px;
 }
 
+.zwssgr-front-container .zwssgr-badge-item {
+  box-shadow: none;
+}
 .zwssgr-badge-wrap {
   display: flex;
   justify-content: flex-start;
