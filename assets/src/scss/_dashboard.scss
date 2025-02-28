@@ -110,8 +110,10 @@ $zwssgrdashboard: ".zwssgr";
             &-input-text {
                 max-width: 310px;
                 margin-right: 10px;
-                background: var(--white-color-200) url(../../images/down-arrow.png) no-repeat right 16px top 53%;
+                background: var(--white-color-200) url(../../images/down-arrow.png) no-repeat right 10px top 53%;
                 background-size: 16px 10px;
+                padding: 10px 30px 10px 10px;
+                line-height: 1.5;
                 @include respond-below('md') {
                     margin: 0 0 10px 0;
                 }

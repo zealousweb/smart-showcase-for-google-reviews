@@ -171,6 +171,7 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
             }
 
             switch ($this->zwssgr_gmb_data_type) {
+
                 case 'zwssgr_gmb_accounts':
                     $this->zwssgr_gmb_response = $this->zwssgr_gmb_api->zwssgr_get_accounts($zwssgr_next_page_token);
                     break;
@@ -324,6 +325,48 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                         if (!empty($zwssgr_location_name)) {
                             update_post_meta($this->zwssgr_widget_id, 'zwssgr_location_name', $zwssgr_location_name);
                         }
+
+                        $zwssgr_request_data_query = new WP_Query(
+                            array(
+                                'post_type'   => 'zwssgr_request_data',
+                                'meta_query'  => array(
+                                    array(
+                                        'key'     => 'zwssgr_account_number',
+                                        'value'   => strval($this->zwssgr_account_number),
+                                        'compare' => '='
+                                    )
+                                ),
+                                'posts_per_page' => 1
+                            )
+                        );
+
+                        if ($zwssgr_request_data_query->have_posts()) {
+                            while ($zwssgr_request_data_query->have_posts()) {
+                                $zwssgr_request_data_query->the_post();
+                                $zwssgr_request_data_ID = get_the_ID();
+
+                                update_post_meta($zwssgr_request_data_ID, 'zwssgr_is_data_fetched', 'true');
+
+                                $zwssgr_account_locations = get_post_meta($zwssgr_request_data_ID, 'zwssgr_account_locations', true);
+
+                                if (!empty($zwssgr_account_locations) && is_array($zwssgr_account_locations)) {
+
+                                    foreach ($zwssgr_account_locations as &$zwssgr_account_location) {
+                                        if ($zwssgr_account_location['name'] === 'locations/' . $this->zwssgr_location_number) {
+                                            $zwssgr_account_location['zwssgr_is_data_fetched'] = 'true';
+                                            break;
+                                        }
+                                    }
+
+                                    unset($zwssgr_account_location);
+                                    update_post_meta($zwssgr_request_data_ID, 'zwssgr_account_locations', $zwssgr_account_locations);
+
+                                }
+
+                            }
+                        }
+
+                        wp_reset_postdata();
 
                     }
 

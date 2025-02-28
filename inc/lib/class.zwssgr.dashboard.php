@@ -330,9 +330,14 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
                     <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews').'</option>';
                     foreach ($zwssgr_request_data as $zwssgr_widget_id) {
-                        $zwssgr_account_number      = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
-                        $zwssgr_account_name        = get_the_title($zwssgr_widget_id);
-                        $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
+                        $zwssgr_account_number  = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
+                        $zwssgr_is_data_fetched = get_post_meta($zwssgr_widget_id, 'zwssgr_is_data_fetched', true);
+                        $zwssgr_account_name    = get_the_title($zwssgr_widget_id);
+
+                        if ($zwssgr_is_data_fetched === 'true') {
+                            $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
+                        }
+
                     }
                 $zwssgr_data_filter_output .= '</select>
             </div>';
@@ -575,10 +580,15 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 $zwssgr_output .= '<option value="">'. esc_html__('Select a Location', 'smart-showcase-for-google-reviews').'</option>';
                 
                 foreach ($zwssgr_account_locations as $zwssgr_account_location) {
-                    // Use the title field for the location name
-                    $zwssgr_location_title = $zwssgr_account_location['title'] ?? ''; // Ensure the title is retrieved
+
+                    $zwssgr_location_title = $zwssgr_account_location['title'] ?? '';
                     $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim(strrchr($zwssgr_account_location['name'], '/'), '/') : '';
-                    $zwssgr_output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($zwssgr_location_title) . '</option>';
+                    $zwssgr_is_data_fetched = $zwssgr_account_location['zwssgr_is_data_fetched'] ?? '';
+
+                    if ($zwssgr_is_data_fetched === 'true') {
+                        $zwssgr_output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($zwssgr_location_title) . '</option>';
+                    }
+
                 }
 
                 $zwssgr_output .= '</select>';

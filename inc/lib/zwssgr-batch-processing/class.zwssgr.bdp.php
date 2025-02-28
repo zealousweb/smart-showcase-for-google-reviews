@@ -185,14 +185,16 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
             // If $zwssgr_account_number is not provided, use the class property
             $zwssgr_account_number = $zwssgr_account_number ?? $this->zwssgr_account_number;
 
-            $zwssgr_request_data_id = get_posts(array(
-                'post_type'      => 'zwssgr_request_data',
-                'posts_per_page' => 1,
-                'post_status'    => 'publish',
-                'meta_key'       => 'zwssgr_account_number',
-                'meta_value'     => $this->zwssgr_account_number,
-                'fields'         => 'ids',
-            ))[0] ?? null;
+            $zwssgr_request_data_id = get_posts(
+                array(
+                    'post_type'      => 'zwssgr_request_data',
+                    'posts_per_page' => 1,
+                    'post_status'    => 'publish',
+                    'meta_key'       => 'zwssgr_account_number',
+                    'meta_value'     => $this->zwssgr_account_number,
+                    'fields'         => 'ids',
+                )
+            )[0] ?? null;
         
             if (!$zwssgr_request_data_id) {
 
@@ -245,7 +247,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                 ),
             );
 
-        }              
+        }
 
         protected function process_zwssgr_gmb_reviews($zwssgr_gmb_data, $zwssgr_location_number,$zwssgr_account_number = null) {
 
@@ -473,6 +475,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         'message'   => 'Data processed successfully.'
                     ),
                 );
+
             }
         }
     }

@@ -2474,19 +2474,16 @@
 .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button::placeholder, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker::placeholder {
   color: var(--white-color) !important;
 }
-.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button.disabled, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker.disabled {
-  color: #a7aaad;
-  border-color: #dcdcde;
-  background: #f6f7f7;
-  box-shadow: none;
-  cursor: default;
-  transform: none;
+.zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-filter-button.active, .zwssgr-dashboard-header .zwssgr-filters-wrapper .zwssgr-date-range-picker.active {
+  pointer-events: none;
 }
 .zwssgr-dashboard-header .zwssgr-input-text {
   max-width: 310px;
   margin-right: 10px;
-  background: var(--white-color-200) url(27298ad01d97acf7c3af.png) no-repeat right 16px top 53%;
+  background: var(--white-color-200) url(27298ad01d97acf7c3af.png) no-repeat right 10px top 53%;
   background-size: 16px 10px;
+  padding: 10px 30px 10px 10px;
+  line-height: 1.5;
   /** If the breakpoint exists in the map. */
   /** Get the breakpoint value. */
   /** Write the media query. */
