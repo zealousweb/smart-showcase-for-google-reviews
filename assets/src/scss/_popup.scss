@@ -312,6 +312,21 @@ $zwssgrpopup: ".zwssgr";
             pointer-events: none;
         }
     }
+
+    &-popup3 {
+        #{$zwssgrpopup} {
+            &-popup-list {
+                display: flex;
+            }
+            &-grid-item {
+                #{$zwssgrpopup} {   
+                    &-slide-item {
+                        width: 33.33%;
+                    }
+                }
+            }   
+        }
+    }
 }
 
 .scrollable-content {
