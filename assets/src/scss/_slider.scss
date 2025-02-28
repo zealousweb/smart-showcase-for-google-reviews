@@ -102,6 +102,7 @@ $zwssgrslider: ".zwssgr";
 
             &-profile {
                 width: 62px;
+                height: 62px;
                 position: relative;
                 padding-right: 20px;
     
@@ -212,7 +213,7 @@ $zwssgrslider: ".zwssgr";
                     }
                 }
 
-                @include mobile() {
+                @include respond-below('lg') {
                     width: 100%;
                 }
             }
@@ -220,7 +221,7 @@ $zwssgrslider: ".zwssgr";
             &-slider-3-wrap {
                 width: 80%;
 
-                @include mobile() {
+                @include respond-below('lg') {
                     width: 100%;
                 }
             }

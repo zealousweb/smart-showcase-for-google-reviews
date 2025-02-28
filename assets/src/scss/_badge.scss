@@ -4,6 +4,13 @@
 $zwssgrbadge: ".zwssgr";
 
 #{$zwssgrbadge} { 
+    &-front-container {
+        #{$zwssgrbadge} {  
+            &-badge-item {
+                box-shadow: none;
+            }
+        }
+    }
     &-badge-wrap {
         display: flex;
         justify-content: flex-start;
