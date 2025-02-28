@@ -101,13 +101,8 @@ $zwssgrdashboard: ".zwssgr";
                         &::placeholder {
                             color: var(--white-color) !important;
                         }
-                        &.disabled {
-                            color: #a7aaad;
-                            border-color: #dcdcde;
-                            background: #f6f7f7;
-                            box-shadow: none;
-                            cursor: default;
-                            transform: none;
+                        &.active {
+                            pointer-events: none;
                         }
                     }
                 }
