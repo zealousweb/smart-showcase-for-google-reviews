@@ -4,6 +4,15 @@
 $zwssgrgeneral: ".zwssgr";
 
 #{$zwssgrgeneral} {
+    &-toggle-content {
+        color: var(--black-color);
+    }
+    &-toggle-pin {
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
     &-page-title {
         font-size: var(--font-size-h2);
         font-weight: var(--font-weight-600);

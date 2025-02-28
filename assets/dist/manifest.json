@@ -1,0 +1,13 @@
+{
+  "dist/main.js": "dist/main.js",
+  "dist/backend.js": "dist/backend.js",
+  "dist/styles.css": "dist/styles.css",
+  "dist/styles.js": "dist/styles.js",
+  "dist/step-done-icon.png": "dist/7bed242ae82c1d0575ce.png",
+  "dist/down-arrow.png": "dist/27298ad01d97acf7c3af.png",
+  "dist/checked-icon.png": "dist/1924611933bd7c576227.png",
+  "dist/main.js.map": "dist/main.js.map",
+  "dist/backend.js.map": "dist/backend.js.map",
+  "dist/styles.css.map": "dist/styles.css.map",
+  "dist/styles.js.map": "dist/styles.js.map"
+}
