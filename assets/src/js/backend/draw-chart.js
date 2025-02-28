@@ -9,8 +9,12 @@ export function zwssgr_draw_chart(zwssgrChartData) {
     "use strict";
 
     const chartWrapper = document.getElementById('zwssgr_chart_wrapper');
+    const zwssgrChartLegendWrapper = document.getElementById('zwsr_chart_legend_wrapper');
+    const zwssgrOuterWrapper = document.querySelector(".zwssgr-outer-wrapper");
 
     if (!Array.isArray(zwssgrChartData) && chartWrapper) {
+        zwssgrChartLegendWrapper.remove();
+        zwssgrOuterWrapper.style.justifyContent = "center";
         chartWrapper.innerHTML =
             '<div class="zwssgr-dashboard-text"> No enough data available. </div>';
         return;
@@ -21,6 +25,8 @@ export function zwssgr_draw_chart(zwssgrChartData) {
     );
 
     if (zwssgr_all_zero && chartWrapper) {
+        zwssgrChartLegendWrapper.remove();
+        zwssgrOuterWrapper.style.justifyContent = "center";
         chartWrapper.innerHTML =
             '<div class="zwssgr-dashboard-text"> No enough data available. </div>';
         return;
