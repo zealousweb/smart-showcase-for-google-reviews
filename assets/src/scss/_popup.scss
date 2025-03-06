@@ -318,6 +318,16 @@ $zwssgrpopup: ".zwssgr";
             &-popup-list {
                 display: flex;
             }
+            &-final-rating {
+                font-size: 20px;
+                font-weight: 700;
+            }
+            &-rating {
+                padding: 0 10px;
+            }
+            &-popup-wrap {
+                justify-content: center;
+            }
             &-grid-item {
                 #{$zwssgrpopup} {   
                     &-slide-item {
@@ -325,6 +335,31 @@ $zwssgrpopup: ".zwssgr";
                     }
                 }
             }   
+        }
+    }
+
+    &-popup4 { 
+        display: flex;
+        align-items: center;
+        #{$zwssgrpopup} {
+            &-final-rating {
+                font-weight: 700;
+                font-size: 30px;
+                line-height: inherit;
+                padding-right: 10px;
+            }
+            &-rating {
+                margin: 0;
+            }
+            &-review-wrap {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 15px 0;
+            }
+            &-based-on {
+                margin: 0;
+            }
         }
     }
 }
