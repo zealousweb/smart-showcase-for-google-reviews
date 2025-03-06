@@ -2585,14 +2585,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						</div>
 					</div>',
 					'<div class="zwssgr-popup-item zwssgr-popup3" id="zwssgr-popup3"  data-popup="zwssgrpopup3">
-						<div class="zwssgr-title-wrap">
-							<img src="' . $zwssgr_plugin_dir_path . 'assets/images/google.png" alt="Google">
-							<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
-						</div>
-						<div class="zwssgr-info-wrap">
-							<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+						<div class="zwssgr-popup-wrap">
+							<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].' Star</span>
 							' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
+							<div class="zwssgr-google-icon"><img src="' . $zwssgr_plugin_dir_path . 'assets/images/google-icon.png" alt="Google"></div>
 						</div>
 					</div>
 					<div id="zwssgrpopup3" class="zwssgr-popup-overlay zwssgrpopup3">
@@ -2600,14 +2596,10 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="scrollable-content">
 								<span class="zwssgr-close-popup">&times;</span>
 								<div class="zwssgr-popup-wrap">
-									<div class="zwssgr-profile-logo">
-										<img src="' . esc_url($zwssgr_image_url) . '" alt="Profile Logo">
-									</div>
-									<div class="zwssgr-profile-info">
-										<h3>'.$zwssgr_location_name.'</h3>
-										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-										<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
-									</div>
+									<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
+									<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
+									<div class="zwssgr-google-icon"><img src="' . $zwssgr_plugin_dir_path . 'assets/images/google-icon.png" alt="Google"></div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item">
 									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
@@ -2616,32 +2608,32 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 						</div>
 					</div>',
 					'<div class="zwssgr-popup-item zwssgr-popup4" id="zwssgr-popup4"  data-popup="zwssgrpopup4">
-						<div class="zwssgr-title-wrap">
-							<img src="' . $zwssgr_plugin_dir_path . 'assets/images/google.png" alt="Google">
-							<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
+						<div class="zwssgr-profile-logo">
+							<img src="' . esc_url($zwssgr_image_url) . '" alt="Profile Logo">
 						</div>
-						<div class="zwssgr-info-wrap">
-							<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
-							' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-							<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
+						<div class="zwssgr-profile-info">
+							<h3>Our Reviews</h3>
+							<div class="zwssgr-review-wrap"><span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '</div>
+							<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
 						</div>
 					</div>
 					<div id="zwssgrpopup4" class="zwssgr-popup-overlay zwssgrpopup4">
 						<div class="zwssgr-popup-content">
 							<div class="scrollable-content">
 								<span class="zwssgr-close-popup">&times;</span>
-								<div class="zwssgr-popup-wrap">
-									<div class="zwssgr-profile-logo">
-										<img src="' . esc_url($zwssgr_image_url) . '" alt="Profile Logo">
-									</div>
-									<div class="zwssgr-profile-info">
+								<div class="zwssgr-popup-inner4">
+									<div class="zwssgr-popup-wrap">
+										<div class="zwssgr-profile-logo">
+											<img src="' . esc_url($zwssgr_image_url) . '" alt="Profile Logo">
+										</div>
 										<h3>'.$zwssgr_location_name.'</h3>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
-										<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Google reviews', 'smart-showcase-for-google-reviews').'</b></p>
+										<p class="zwssgr-based-on"><b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</b></p>
 									</div>
-								</div>
-								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									<div class="zwssgr-slider zwssgr-grid-item">
+										' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									</div>
 								</div>
 							</div>
 						</div>
