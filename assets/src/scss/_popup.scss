@@ -373,6 +373,14 @@ $zwssgrpopup: ".zwssgr";
     box-sizing: border-box;
 }
 
+.zwssgrpopup1 {
+    #{$zwssgrpopup} { 
+        &-slide-item {
+            width: 100%;
+        }
+    }
+}
+
 .zwssgrpopup2 {
     display: none;
     position: fixed;
@@ -384,6 +392,9 @@ $zwssgrpopup: ".zwssgr";
     z-index: 1000;
 
     #{$zwssgrpopup} {
+        &-slide-item {
+            width: 100%;
+        }
         &-popup-content {
             position: fixed;
             right: 0;

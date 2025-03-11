@@ -2173,6 +2173,10 @@
   box-sizing: border-box;
 }
 
+.zwssgrpopup1 .zwssgr-slide-item {
+  width: 100%;
+}
+
 .zwssgrpopup2 {
   display: none;
   position: fixed;
@@ -2182,6 +2186,9 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000;
+}
+.zwssgrpopup2 .zwssgr-slide-item {
+  width: 100%;
 }
 .zwssgrpopup2 .zwssgr-popup-content {
   position: fixed;
