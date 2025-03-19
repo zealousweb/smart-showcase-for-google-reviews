@@ -27,31 +27,31 @@ if ( !defined( 'ABSPATH' ) ) exit;
  */
 
 if ( !defined( 'ZWSSGR_VERSION' ) ) {
-	define( 'ZWSSGR_VERSION', '1.0.0' ); // Version of plugin
+	define( 'ZWSSGR_VERSION', '1.0.0' );
 }
 
 if ( !defined( 'ZWSSGR_FILE' ) ) {
-	define( 'ZWSSGR_FILE', __FILE__ ); // Plugin File
+	define( 'ZWSSGR_FILE', __FILE__ );
 }
 
 if ( !defined( 'ZWSSGR_DIR' ) ) {
-	define( 'ZWSSGR_DIR', dirname( __FILE__ ) ); // Plugin dir
+	define( 'ZWSSGR_DIR', dirname( __FILE__ ) );
 }
 
 if ( !defined( 'ZWSSGR_URL' ) ) {
-	define( 'ZWSSGR_URL', plugin_dir_url( __FILE__ ) ); // Plugin url
+	define( 'ZWSSGR_URL', plugin_dir_url( __FILE__ ) );
 }
 
 if ( !defined( 'ZWSSGR_PLUGIN_BASENAME' ) ) {
-	define( 'ZWSSGR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // Plugin base name
+	define( 'ZWSSGR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 }
 
 if ( !defined( 'ZWSSGR_META_PREFIX' ) ) {
-	define( 'ZWSSGR_META_PREFIX', 'zwssgr_' ); // Plugin metabox prefix
+	define( 'ZWSSGR_META_PREFIX', 'zwssgr_' );
 }
 
 if ( !defined( 'ZWSSGR_PREFIX' ) ) {
-	define( 'ZWSSGR_PREFIX', 'zwssgr' ); // Plugin prefix
+	define( 'ZWSSGR_PREFIX', 'zwssgr' );
 }
 
 /**
@@ -70,8 +70,6 @@ if ( !function_exists( 'ZWSGR' ) ) {
 	require_once( ZWSSGR_DIR . '/inc/lib/class.' . ZWSSGR_PREFIX . '.gmbdp.php' );
 	require_once( ZWSSGR_DIR . '/inc/lib/api/class.' . ZWSSGR_PREFIX . '.zba.php' );
 	require_once( ZWSSGR_DIR . '/inc/lib/class.' . ZWSSGR_PREFIX . '.lib.php' );
-
-	//Initialize all the things.
 	require_once( ZWSSGR_DIR . '/inc/class.' . ZWSSGR_PREFIX . '.php' );
 
 }

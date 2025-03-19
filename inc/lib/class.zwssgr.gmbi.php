@@ -36,7 +36,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Initializer' ) ) {
             $this->client->setApplicationName('Smart Google Reviews');
             $this->client->setClientId('425400367447-r6rphvd0gcuriahkigm3mgs1v5pkmh1t.apps.googleusercontent.com');
             $this->client->setClientSecret('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');
-            $this->client->setRedirectUri('https://sgr.zealousweb.com/connect-google');
+            $this->client->setRedirectUri('https://siteproofs.com/projects/zealousweb/plugindev/user-demo-this/connect-google');
             $this->client->addScope('https://www.googleapis.com/auth/userinfo.email');
             $this->client->addScope('https://www.googleapis.com/auth/business.manage');
             $this->client->setAccessType('offline');

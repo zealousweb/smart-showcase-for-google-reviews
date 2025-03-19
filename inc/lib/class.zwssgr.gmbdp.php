@@ -66,8 +66,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Data_Processor' ) ) {
         public function action__zwssgr_handle_oauth_flow() {
 
             // Decode the 'state' parameter
-            $zwssgr_oauth_state = json_decode(urldecode($_GET['state']), true);
-
+            $zwssgr_oauth_state   = json_decode(urldecode($_GET['state']), true);
             $zwssgr_user_name     = sanitize_text_field($zwssgr_oauth_state['zwssgr_user_name']);
             $zwssgr_user_site_url = sanitize_text_field($zwssgr_oauth_state['zwssgr_user_site_url']);
 
@@ -77,151 +76,155 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Data_Processor' ) ) {
                 // Retrieve the user's ID, email, and site URL from the 'state' parameter
                 if ( $zwssgr_oauth_state['zwssgr_user_name'] && $zwssgr_oauth_state['zwssgr_user_site_url']) {
 
-                    // Get the post ID for the 'zwssgr_oauth_data' post that matches all meta fields
-                    $zwssgr_oauth_data_id = get_posts(array(
-                        'post_type'      => 'zwssgr_oauth_data',
-                        'posts_per_page' => 1,
-                        'post_status'    => 'publish',
-                        'meta_query'     => array(
-                            array(
-                                'key'     => 'zwssgr_user_name',
-                                'value'   => $zwssgr_user_name,
-                                'compare' => '='
-                            ),
-                            array(
-                                'key'     => 'zwssgr_user_site_url',
-                                'value'   => $zwssgr_user_site_url,
-                                'compare' => '='
-                            ),
-                        ),
-                        'fields'         => 'ids',
-                    ))[0] ?? null;
+                    // Exchange code for access token
+                    $zwssgr_oauth_code = sanitize_text_field( $_GET['code'] );
 
-                    // Check if we found a post
-                    if ($zwssgr_oauth_data_id) {
+                    try {
 
-                        // Exchange code for access token
-                        $zwssgr_oauth_code = sanitize_text_field( $_GET['code'] );
+                        $zwssgr_access_token = $this->client->fetchAccessTokenWithAuthCode($zwssgr_oauth_code);
+                    
+                        if (isset($zwssgr_access_token['access_token']) && isset($zwssgr_access_token['refresh_token'])) {
 
-                        try {
+                            $zwssgr_oauth2 = new Google_Service_Oauth2($this->client);
 
-                            $zwssgr_access_token = $this->client->fetchAccessTokenWithAuthCode($zwssgr_oauth_code);
-                        
-                            if (isset($zwssgr_access_token['access_token']) && isset($zwssgr_access_token['refresh_token'])) {
+                            $zwssgr_google_user_info = $zwssgr_oauth2->userinfo->get();
 
-                                // Update access token in post meta
-                                $access_token_updated = update_post_meta($zwssgr_oauth_data_id, 'zwssgr_gmb_access_token', $zwssgr_access_token['access_token']);
-                        
-                                // Update refresh token in post meta
-                                $refresh_token_updated = update_post_meta($zwssgr_oauth_data_id, 'zwssgr_gmb_refresh_token', $zwssgr_access_token['refresh_token']);
-                        
-                                // Check if both tokens were successfully updated
-                                if ($access_token_updated && $refresh_token_updated) {
+                            // Get the email from Google's response
+                            $zwssgr_google_email = $zwssgr_google_user_info->email;
 
-                                    // Update the OAuth status to "connected"
-                                    update_post_meta($zwssgr_oauth_data_id, 'zwssgr_oauth_status', 'CONNECTED');
+                            $zwssgr_oauth_gmb_accounts_data = array(
+                                'post_title'   => $zwssgr_user_name .' - '. $zwssgr_user_site_url,
+                                'post_content' => '',
+                                'post_status'  => 'publish',
+                                'post_type'    => 'zwssgr_oauth_accdata',
+                                'meta_input'   => array(
+                                    'zwssgr_user_name'     => $zwssgr_user_name,
+                                    'zwssgr_user_email'    => $zwssgr_google_email,
+                                    'zwssgr_user_site_url' => $zwssgr_user_site_url,
+                                    'zwssgr_gmb_refresh_token'  => $zwssgr_access_token['refresh_token'],
+                                    'zwssgr_oauth_status'   => 'CONNECTED'
+                                ),
+                            );
 
-                                    $zwssgr_oauth2 = new Google_Service_Oauth2($this->client);
-
-                                    $zwssgr_google_user_info = $zwssgr_oauth2->userinfo->get();
-
-                                    // Get the email from Google's response
-                                    $zwssgr_google_email = $zwssgr_google_user_info->email;
-
-                                    $zwssgr_jwt_secret = get_post_meta($zwssgr_oauth_data_id, 'zwssgr_jwt_secret', true);
-
-                                    if (empty($zwssgr_jwt_secret)) {
-                                        $zwssgr_jwt_secret = bin2hex(random_bytes(32)); // 256-bit key
-                                        update_post_meta($zwssgr_oauth_data_id, 'zwssgr_jwt_secret', $zwssgr_jwt_secret);
-                                    }
-
-                                    update_post_meta($zwssgr_oauth_data_id, 'zwssgr_user_email', $zwssgr_google_email);
-
-                                    // Generate JWT token for the verified user
-                                    $zwssgr_jwt_payload = [
-                                        'zwssgr_user_email'    => $zwssgr_google_email,
-                                        'zwssgr_user_site_url' => $zwssgr_user_site_url
-                                    ];
-
-                                    $zwssgr_jwt_token = $this->jwt_handler->zwssgr_generate_jwt_token($zwssgr_jwt_payload, $zwssgr_jwt_secret);
-
-                                    if ($zwssgr_jwt_token) {
-                                        // If successful, update the post meta
-                                        update_post_meta($zwssgr_oauth_data_id, 'zwssgr_jwt_token', $zwssgr_jwt_token);
-                                    }
-
-                                    // Generate a unique authorization code
-                                    $zwssgr_auth_code = bin2hex(random_bytes(16)); // Changed to use consistent variable name
-
-                                    update_post_meta($zwssgr_oauth_data_id, 'zwssgr_auth_code', $zwssgr_auth_code);
-                                    update_post_meta($zwssgr_oauth_data_id, 'zwssgr_auth_code_expiry', time() + 300);
-
-                                    // Ensure the URL is safe and properly formed
-                                    $zwssgr_user_site_url = esc_url_raw($zwssgr_user_site_url);
-
-                                    // Construct the redirect URL with the authorization code and consent
-                                    $zwssgr_redirect_url = add_query_arg(
-                                        array(
-                                            'auth_code'  => $zwssgr_auth_code,
-                                            'user_email' => $zwssgr_google_email,
-                                            'consent'    => 'true'
-                                        ),
-                                        $zwssgr_user_site_url
-                                    );
-
-                                    // Redirect to the URL safely
-                                    wp_redirect($zwssgr_redirect_url);
-                                    exit;
-
-                                } else {
-
-                                    $zwssgr_error_code = 'update_failed';
-                                    $redirect_url = esc_url($zwssgr_user_site_url);
-                                    wp_redirect(
-                                        add_query_arg(
-                                            'error', 
-                                            urlencode($zwssgr_error_code), 
-                                            $redirect_url
-                                        )
-                                    );
-                                    exit;
-
-                                }
-
-                            } else {
-
-                                $zwssgr_error_code = 'empty_tokens';
-                                $redirect_url = esc_url($zwssgr_user_site_url); // Ensure the URL is safe
-                                wp_redirect(
-                                    add_query_arg(
-                                        'error', 
-                                        urlencode($zwssgr_error_code), 
-                                        $redirect_url
+                            $zwssgr_oauth_gmb_account_id = get_posts(array(
+                                'post_type'       => 'zwssgr_oauth_accdata',
+                                'posts_per_page'  => 1,
+                                'post_status'     => 'publish',
+                                'meta_query'      => array(
+                                    array(
+                                        'key'     => 'zwssgr_user_email',
+                                        'value'   => $zwssgr_google_email,
+                                        'compare' => '='
+                                    ),
+                                    array(
+                                        'key'     => 'zwssgr_user_site_url',
+                                        'value'   => $zwssgr_user_site_url,
+                                        'compare' => '='
                                     )
-                                );
-                                exit;
+                                ),
+                                'fields'         => 'ids',
+                            ))[0] ?? null;
 
+                            $zwssgr_oauth_id = get_posts(array(
+                                'post_type'       => 'zwssgr_oauth_data',
+                                'posts_per_page'  => 1,
+                                'post_status'     => 'publish',
+                                'meta_query'      => array(
+                                    array(
+                                        'key'     => 'zwssgr_user_site_url',
+                                        'value'   => $zwssgr_user_site_url,
+                                        'compare' => '='
+                                    )
+                                ),
+                                'fields'         => 'ids',
+                            ))[0] ?? null;
+
+                            if ($zwssgr_oauth_gmb_account_id) {
+                                $zwssgr_oauth_gmb_accounts_data['ID'] = $zwssgr_oauth_gmb_account_id;
+                                $zwssgr_oauth_gmb_account_id          = wp_update_post($zwssgr_oauth_gmb_accounts_data);
+                            } else {
+                                $zwssgr_oauth_gmb_account_id = wp_insert_post($zwssgr_oauth_gmb_accounts_data);
                             }
-                        } catch (Exception $e) {
 
-                            $error_message = $e->getMessage();
-                            error_log($error_message);
+                            // Get existing GMB account IDs
+                            $zwssgr_existing_accounts = get_post_meta($zwssgr_oauth_id, 'zwssgr_oauth_gmb_accounts', true);
 
-                            $zwssgr_error_code = 'error_token_generation';
-                            $zwssgr_redirect_url = esc_url($zwssgr_user_site_url);
+                            $zwssgr_existing_accounts = $zwssgr_existing_accounts ? json_decode($zwssgr_existing_accounts, true) : [];
+                            if (!is_array($zwssgr_existing_accounts)) {
+                                $zwssgr_existing_accounts = [];
+                            }
+
+                            // Append new account ID if it's not already in the array
+                            if (!in_array($zwssgr_oauth_gmb_account_id, $zwssgr_existing_accounts)) {
+                                $zwssgr_existing_accounts[] = $zwssgr_oauth_gmb_account_id;
+                            }
+
+                            // Save updated meta as JSON
+                            update_post_meta($zwssgr_oauth_id, 'zwssgr_oauth_gmb_accounts', json_encode($zwssgr_existing_accounts));
+
+                            update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_gmb_access_token', $zwssgr_access_token['access_token']);
+
+                            $zwssgr_jwt_secret = get_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_jwt_secret', true);
+
+                            if (empty($zwssgr_jwt_secret)) {
+                                $zwssgr_jwt_secret = bin2hex(random_bytes(32));
+                                update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_jwt_secret', $zwssgr_jwt_secret);
+                            }
+
+                            $zwssgr_jwt_payload = [
+                                'zwssgr_user_email'    => $zwssgr_google_email,
+                                'zwssgr_user_site_url' => $zwssgr_user_site_url
+                            ];
+
+                            $zwssgr_jwt_token = $this->jwt_handler->zwssgr_generate_jwt_token($zwssgr_jwt_payload, $zwssgr_jwt_secret);
+
+                            if ($zwssgr_jwt_token) {
+                                update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_jwt_token', $zwssgr_jwt_token);
+                            }
+
+                            $zwssgr_auth_code = bin2hex(random_bytes(16));
+
+                            update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_auth_code', $zwssgr_auth_code);
+                            update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_auth_code_expiry', time() + 300);
+
+                            // Ensure the URL is safe and properly formed
+                            $zwssgr_user_site_url = esc_url_raw($zwssgr_user_site_url);
+
+                            // Construct the redirect URL with the authorization code and consent
+                            $zwssgr_redirect_url = add_query_arg(
+                                array(
+                                    'auth_code'  => $zwssgr_auth_code,
+                                    'user_email' => $zwssgr_google_email,
+                                    'consent'    => 'true'
+                                ),
+                                $zwssgr_user_site_url
+                            );
+
+                            // Redirect to the URL safely
+                            wp_redirect($zwssgr_redirect_url);
+                            exit;                            
+
+                        } else {
+
+                            $zwssgr_error_code = 'empty_tokens';
+                            $redirect_url = esc_url($zwssgr_user_site_url); // Ensure the URL is safe
                             wp_redirect(
                                 add_query_arg(
                                     'error', 
                                     urlencode($zwssgr_error_code), 
-                                    $zwssgr_redirect_url
+                                    $redirect_url
                                 )
                             );
+                            exit;
 
                         }
-                        
-                    } else {
 
-                        $zwssgr_error_code = 'missing_oauth_credentials';
+                    } catch (Exception $e) {
+
+                        $error_message = $e->getMessage();
+                        error_log($error_message);
+
+                        $zwssgr_error_code = 'error_token_generation';
                         $zwssgr_redirect_url = esc_url($zwssgr_user_site_url);
                         wp_redirect(
                             add_query_arg(

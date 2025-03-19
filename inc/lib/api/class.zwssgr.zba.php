@@ -71,7 +71,7 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
 
         }
 
-        /**
+          /**
          * Initiates the OAuth process for Google My Business authentication.
          * 
          * This method extracts user data from the incoming POST request, validates the data,
@@ -118,26 +118,22 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
 
             // Prepare the oAuth Data to save the OAuth details
             $zwssgr_oauth_data = array(
-                'post_title'   => $zwssgr_user_name .' - '. $zwssgr_user_site_url,
+                'post_title'   => $zwssgr_user_site_url,
                 'post_content' => '',
                 'post_status'  => 'publish',
                 'post_type'    => 'zwssgr_oauth_data',
                 'meta_input'   => array(
-                    'zwssgr_user_name'     => $zwssgr_user_name,
-                    'zwssgr_user_site_url' => $zwssgr_user_site_url,
-                    'zwssgr_oauth_status'  => 'IN_PROGRESS',
+                    'zwssgr_user_site_url' => $zwssgr_user_site_url
                 ),
             );
 
-             // Check if the oauth data already exists, and update or insert accordingly
+
             if ($zwssgr_oauth_id) {
 
-                // Update the existing post if it was found
                 $zwssgr_oauth_data['ID'] = $zwssgr_oauth_id;
                 $zwssgr_oauth_id         = wp_update_post($zwssgr_oauth_data);
 
-                // Handle any errors during the post update
-                if (is_wp_error($zwssgr_oauth_id)) {
+                if (is_wp_error($zwssgr_oauth_gmb_account_id)) {
 
                     $zwssgr_response = new WP_REST_Response([
                         'error' => 'oauth_update_failed',
@@ -151,11 +147,9 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
                 }
 
             } else {
-                
-                // Insert a new post if no existing post was found
+
                 $zwssgr_oauth_id = wp_insert_post($zwssgr_oauth_data);
 
-                // Handle any errors during the post insertion
                 if (is_wp_error($zwssgr_oauth_id)) {
 
                     $zwssgr_response = new WP_REST_Response([
@@ -168,6 +162,20 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
                     return $zwssgr_response;
 
                 }
+
+            }
+
+            // Handle any errors during the post insertion
+            if (is_wp_error($zwssgr_oauth_gmb_account_id) && is_wp_error($zwssgr_oauth_gmb_account_id)) {
+
+                $zwssgr_response = new WP_REST_Response([
+                    'error' => 'oauth_creation_failed',
+                    'message' => 'Failed to create OAuth data. Please try again later or contact support.'
+                ]);
+
+                $zwssgr_response->set_status(500);
+
+                return $zwssgr_response;
 
             }
 
@@ -224,7 +232,7 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
         
             // Find the oAuth ID associated with this authcode
             $zwssgr_oauth_id = get_posts([
-                'post_type' => 'zwssgr_oauth_data',
+                'post_type' => 'zwssgr_oauth_accdata',
                 'posts_per_page' => 1,
                 'fields' => 'ids',
                 'meta_query' => [
