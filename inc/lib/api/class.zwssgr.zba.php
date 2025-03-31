@@ -334,13 +334,18 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
         
             // Retrieve the oAuth ID associated with the user ID in the JWT payload
             $zwssgr_oauth_id = get_posts([
-                'post_type' => 'zwssgr_oauth_data',
+                'post_type' => 'zwssgr_oauth_accdata',
                 'posts_per_page' => 1,
                 'fields' => 'ids',
                 'meta_query' => [
                     [
                         'key' => 'zwssgr_user_site_url', 
                         'value' => $zwssgr_jwt_payload['zwssgr_user_site_url'], 
+                        'compare' => '='
+                    ],
+                    [
+                        'key' => 'zwssgr_user_email', 
+                        'value' => $zwssgr_jwt_payload['zwssgr_user_email'], 
                         'compare' => '='
                     ]
                 ]

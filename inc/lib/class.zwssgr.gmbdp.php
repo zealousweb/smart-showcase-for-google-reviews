@@ -93,7 +93,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Data_Processor' ) ) {
                             $zwssgr_google_email = $zwssgr_google_user_info->email;
 
                             $zwssgr_oauth_gmb_accounts_data = array(
-                                'post_title'   => $zwssgr_user_name .' - '. $zwssgr_user_site_url,
+                                'post_title'   => $zwssgr_google_email .' - '. $zwssgr_user_site_url,
                                 'post_content' => '',
                                 'post_status'  => 'publish',
                                 'post_type'    => 'zwssgr_oauth_accdata',
@@ -106,38 +106,42 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Data_Processor' ) ) {
                                 ),
                             );
 
-                            $zwssgr_oauth_gmb_account_id = get_posts(array(
-                                'post_type'       => 'zwssgr_oauth_accdata',
-                                'posts_per_page'  => 1,
-                                'post_status'     => 'publish',
-                                'meta_query'      => array(
-                                    array(
-                                        'key'     => 'zwssgr_user_email',
-                                        'value'   => $zwssgr_google_email,
-                                        'compare' => '='
+                            $zwssgr_oauth_gmb_account_id = get_posts(
+                                array(
+                                    'post_type'       => 'zwssgr_oauth_accdata',
+                                    'posts_per_page'  => 1,
+                                    'post_status'     => 'publish',
+                                    'meta_query'      => array(
+                                        array(
+                                            'key'     => 'zwssgr_user_email',
+                                            'value'   => $zwssgr_google_email,
+                                            'compare' => '='
+                                        ),
+                                        array(
+                                            'key'     => 'zwssgr_user_site_url',
+                                            'value'   => $zwssgr_user_site_url,
+                                            'compare' => '='
+                                        )
                                     ),
-                                    array(
-                                        'key'     => 'zwssgr_user_site_url',
-                                        'value'   => $zwssgr_user_site_url,
-                                        'compare' => '='
-                                    )
-                                ),
-                                'fields'         => 'ids',
-                            ))[0] ?? null;
+                                    'fields'         => 'ids',
+                                )
+                            )[0] ?? null;
 
-                            $zwssgr_oauth_id = get_posts(array(
-                                'post_type'       => 'zwssgr_oauth_data',
-                                'posts_per_page'  => 1,
-                                'post_status'     => 'publish',
-                                'meta_query'      => array(
-                                    array(
-                                        'key'     => 'zwssgr_user_site_url',
-                                        'value'   => $zwssgr_user_site_url,
-                                        'compare' => '='
-                                    )
-                                ),
-                                'fields'         => 'ids',
-                            ))[0] ?? null;
+                            $zwssgr_oauth_id = get_posts(
+                                array(
+                                    'post_type'       => 'zwssgr_oauth_data',
+                                    'posts_per_page'  => 1,
+                                    'post_status'     => 'publish',
+                                    'meta_query'      => array(
+                                        array(
+                                            'key'     => 'zwssgr_user_site_url',
+                                            'value'   => $zwssgr_user_site_url,
+                                            'compare' => '='
+                                        )
+                                    ),
+                                    'fields'         => 'ids',
+                                )
+                            )[0] ?? null;
 
                             if ($zwssgr_oauth_gmb_account_id) {
                                 $zwssgr_oauth_gmb_accounts_data['ID'] = $zwssgr_oauth_gmb_account_id;

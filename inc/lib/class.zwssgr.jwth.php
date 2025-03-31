@@ -112,7 +112,7 @@ if ( ! class_exists( 'Zwssgr_Jwt_Handler' ) ) {
         
             // Retrieve the secret for the site_url in the payload
             $zwssgr_oauth_id = get_posts([
-                'post_type' => 'zwssgr_oauth_data',
+                'post_type' => 'zwssgr_oauth_accdata',
                 'posts_per_page' => 1,
                 'fields' => 'ids',
                 'meta_query' => [
