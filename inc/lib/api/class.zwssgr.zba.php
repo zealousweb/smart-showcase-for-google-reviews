@@ -69,6 +69,13 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
                 'permission_callback' => '__return_true', // Set additional security if needed
             ]);
 
+            // A custom REST API route for verifying user avalible in database
+            register_rest_route('zwssgr/v1', '/verify-gmb-user', [
+                'methods' => 'POST',
+                'callback' => [$this, 'zwssgr_verify_gmb_user'],
+                'permission_callback' => '__return_true',
+            ]);
+
         }
 
           /**
@@ -431,6 +438,67 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
             return $zwssgr_response;
 
         }
+
+        /**
+         * Handles the request to verify gmb user using a SA JWT token.
+         *
+         *
+         * @param WP_REST_Request $zwssgr_request The request object containing the JWT token to be validated.
+         * @return void JSON response with either the new access token or an error message.
+         */
+        function zwssgr_verify_gmb_user($zwssgr_request) {
+
+            // Sanitize and retrieve the JWT token from the request
+            $zwssgr_sa_jwt_token  = sanitize_text_field($zwssgr_request->get_param('zwssgr_sa_jwt_token'));
+        
+            // Decode and verify the JWT token to extract the payload
+            $zwssgr_jwt_payload = $this->jwt_handler->zwssgr_verify_sa_jwt_token($zwssgr_sa_jwt_token);
+
+            // Retrieve the oAuth ID associated with the user ID in the JWT payload
+            $zwssgr_oauth_id = get_posts([
+                'post_type' => 'zwssgr_oauth_data',
+                'posts_per_page' => 1,
+                'fields' => 'ids',
+                'meta_query' => [
+                    [
+                        'key' => 'zwssgr_user_site_url', 
+                        'value' => $zwssgr_jwt_payload['zwssgr_user_site_url'], 
+                        'compare' => '='
+                    ],
+                    [
+                        'key' => 'zwssgr_sa_gmb_email', 
+                        'value' => $zwssgr_jwt_payload['zwssgr_user_email'], 
+                        'compare' => '='
+                    ]
+                ]
+            ])[0] ?? null;
+        
+            // If no OAuth connection is found, return an error
+            if (empty($zwssgr_oauth_id)) {
+
+                $zwssgr_response = new WP_REST_Response([
+                    'is_user_present' => false,
+                    'message' => 'OAuth SA connection not found. Please verify your connection settings or contact support for assistance.'
+                ]);
+
+                $zwssgr_response->set_status(404);
+
+            } else {
+
+                $zwssgr_response = new WP_REST_Response([
+                    'is_user_present' => true,
+                    'message' => 'OAuth SA connection found.'
+                ]);
+
+                $zwssgr_response->set_status(200);
+
+            }
+
+            return $zwssgr_response;
+
+        }
+
+        
 
     }
 

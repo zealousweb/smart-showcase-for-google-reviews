@@ -154,6 +154,91 @@ if ( ! class_exists( 'Zwssgr_Jwt_Handler' ) ) {
             
         }
 
+        /**
+         * Verifies the given JWT token by decoding its parts and checking the signature.
+         * 
+         * - Decodes the JWT header and payload from Base64 URL format.
+         * - Retrieves the JWT secret for the user from the database.
+         * - Verifies the token's signature using HMAC SHA256.
+         * - Returns the decoded payload if the signature is valid, otherwise returns false.
+         *
+         * @param string $zwssgr_jwt_token The JWT token to be verified.
+         * @return array|false The decoded payload if the signature is valid, otherwise false.
+         */
+        public function zwssgr_verify_sa_jwt_token($zwssgr_jwt_token) {
+
+            /**
+             * Decodes a Base64 URL encoded string.
+             * 
+             * - Replaces URL-safe characters with standard Base64 characters.
+             * - Adds padding if necessary to make the string length a multiple of 4.
+             * - Decodes the string using PHP's base64_decode function.
+             *
+             * @param string $data The Base64 URL encoded string to decode.
+             * @return string The decoded string.
+             */
+            function zwssgr_base64url_decode($data) {
+                $data = str_replace(['-', '_'], ['+', '/'], $data);
+                $padding = strlen($data) % 4;
+                if ($padding) {
+                    $data .= str_repeat('=', 4 - $padding);
+                }
+                return base64_decode($data);
+            }
+
+            $parts = explode('.', $zwssgr_jwt_token);
+            if (count($parts) !== 3) {
+                return false;
+            }            
+        
+            $header               = json_decode(zwssgr_base64url_decode($parts[0]), true);
+            $zwssgr_oauth_payload = json_decode(zwssgr_base64url_decode($parts[1]), true);
+            $signature_provided  = $parts[2];
+
+            // Retrieve the secret for the site_url in the payload
+            $zwssgr_oauth_id = get_posts([
+                'post_type' => 'zwssgr_oauth_data',
+                'posts_per_page' => 1,
+                'fields' => 'ids',
+                'meta_query' => [
+                    'relation' => 'AND', // Ensures all conditions must be met
+                    [
+                        'key' => 'zwssgr_sa_gmb_email',
+                        'value' => $zwssgr_oauth_payload['zwssgr_user_email'],
+                        'compare' => '='
+                    ],
+                    [
+                        'key' => 'zwssgr_user_site_url',
+                        'value' => $zwssgr_oauth_payload['zwssgr_user_site_url'],
+                        'compare' => '='
+                    ]
+                ]
+            ])[0] ?? null;
+
+            if (!$zwssgr_oauth_id) {
+                return false;
+            }
+        
+            $zwssgr_sa_jwt_secret = get_post_meta($zwssgr_oauth_id, 'zwssgr_sa_jwt_secret', true);
+
+            if (!$zwssgr_sa_jwt_secret) {
+                return false;
+            }
+        
+            // Verify the signature
+            $base64_url_header    = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($header)));
+            $base64_url_payload   = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode($zwssgr_oauth_payload)));
+            $signature            = hash_hmac('sha256', "$base64_url_header.$base64_url_payload", $zwssgr_sa_jwt_secret, true);
+            $base64_url_signature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
+        
+            if ($base64_url_signature !== $signature_provided) {
+                return false;
+            }
+        
+            return $zwssgr_oauth_payload;
+            
+        }
+
         // Getter method to access the client
         public function get_jwt_handler() {
             return new Zwssgr_Jwt_Handler();
