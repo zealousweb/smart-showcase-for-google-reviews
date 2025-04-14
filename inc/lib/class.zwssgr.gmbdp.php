@@ -153,6 +153,33 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Data_Processor' ) ) {
                             // Get existing GMB account IDs
                             $zwssgr_existing_accounts = get_post_meta($zwssgr_oauth_id, 'zwssgr_oauth_gmb_accounts', true);
 
+                            $zwssgr_jwt_payload = [
+                                'zwssgr_user_email'    => $zwssgr_google_email,
+                                'zwssgr_user_site_url' => $zwssgr_user_site_url
+                            ];   
+
+                            if (empty($zwssgr_existing_accounts)) {
+
+                                if ($zwssgr_google_email) {
+                                    update_post_meta($zwssgr_oauth_id, 'zwssgr_sa_gmb_email', $zwssgr_google_email);
+                                    update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_sa_gmb_email', $zwssgr_google_email);
+                                }
+
+                                if (empty($zwssgr_sa_jwt_secret)) {
+                                    $zwssgr_sa_jwt_secret = bin2hex(random_bytes(32));
+                                    update_post_meta($zwssgr_oauth_id, 'zwssgr_sa_jwt_secret', $zwssgr_sa_jwt_secret);
+                                    update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_sa_jwt_secret', $zwssgr_sa_jwt_secret);
+                                }
+
+                                $zwssgr_sa_jwt_token = $this->jwt_handler->zwssgr_generate_jwt_token($zwssgr_jwt_payload, $zwssgr_sa_jwt_secret);
+
+                                if ($zwssgr_sa_jwt_token) {
+                                    update_post_meta($zwssgr_oauth_id, 'zwssgr_sa_jwt_token', $zwssgr_sa_jwt_token);
+                                    update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_sa_jwt_token', $zwssgr_sa_jwt_token);
+                                }
+
+                            }
+
                             $zwssgr_existing_accounts = $zwssgr_existing_accounts ? json_decode($zwssgr_existing_accounts, true) : [];
                             if (!is_array($zwssgr_existing_accounts)) {
                                 $zwssgr_existing_accounts = [];
@@ -175,10 +202,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Data_Processor' ) ) {
                                 update_post_meta($zwssgr_oauth_gmb_account_id, 'zwssgr_jwt_secret', $zwssgr_jwt_secret);
                             }
 
-                            $zwssgr_jwt_payload = [
-                                'zwssgr_user_email'    => $zwssgr_google_email,
-                                'zwssgr_user_site_url' => $zwssgr_user_site_url
-                            ];
+                                                     
 
                             $zwssgr_jwt_token = $this->jwt_handler->zwssgr_generate_jwt_token($zwssgr_jwt_payload, $zwssgr_jwt_secret);
 

@@ -107,6 +107,9 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			$zwssgr_oauth_gmb_accounts = get_post_meta($zwssgr_oauth_post->ID, 'zwssgr_oauth_gmb_accounts', true);
 			$zwssgr_oauth_gmb_accounts = json_decode($zwssgr_oauth_gmb_accounts, true);
 
+			$zwssgr_sa_gmb_email = get_post_meta($zwssgr_oauth_post->ID, 'zwssgr_sa_gmb_email', true);
+			$zwssgr_sa_jwt_token = get_post_meta($zwssgr_oauth_post->ID, 'zwssgr_sa_jwt_token', true);
+
 			echo '<table class="form-table">
 				<tr>
 					<th> <strong>' . __('Connected GMB Accounts', 'zwssgr-smart-google-reviews') . '</strong> </th>
@@ -124,7 +127,21 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				} else {
 					echo '<tr><td>' . __('No connected GMB accounts.', 'zwssgr-smart-google-reviews') . '</td></tr>';
 				}
-			echo '</table>';
+			echo '</table>
+			<table class="form-table">
+				<tr>
+					<th colspan="2"> <strong>' . __('Personal Information', 'zw-smart-google-reviews') . '</strong> </th>
+				</tr>
+				<tr>
+					<th><label for="zwssgr_user_email">' . __('Email', 'zw-smart-google-reviews') . '</label></th>
+					<td><input type="text" value="' . esc_attr($zwssgr_sa_gmb_email) . '" readonly class="regular-text" style="width:100%;" /></td>
+				</tr>
+				<tr>
+					<th><label for="zwssgr_sa_jwt_token">' . __('JWT Token', 'zw-smart-google-reviews') . '</label></th>
+					<td><input type="text" value="' . esc_attr($zwssgr_sa_jwt_token) . '" readonly class="regular-text" style="width:100%;" /></td>
+				</tr>
+			</table>';
+
 		}
 
 		/**

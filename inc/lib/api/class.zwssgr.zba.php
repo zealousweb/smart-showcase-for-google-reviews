@@ -253,6 +253,8 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
 
                 // Retrieve the JWT token
                 $zwssgr_jwt_token = get_post_meta($zwssgr_oauth_id, 'zwssgr_jwt_token', true);
+                $zwssgr_sa_jwt_token = get_post_meta($zwssgr_oauth_id, 'zwssgr_sa_jwt_token', true);
+                $zwssgr_sa_gmb_email = get_post_meta($zwssgr_oauth_id, 'zwssgr_sa_gmb_email', true);
         
                 // Invalidate the authorization code after use
                 delete_post_meta($zwssgr_oauth_id, 'zwssgr_auth_code');
@@ -263,7 +265,9 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
 
                     // Return the JWT token as JSON on success
                     $zwssgr_response = new WP_REST_Response([
-                        'zwssgr_jwt_token' => $zwssgr_jwt_token
+                        'zwssgr_jwt_token'    => $zwssgr_jwt_token,
+                        'zwssgr_sa_gmb_email' => $zwssgr_sa_gmb_email,
+                        'zwssgr_sa_jwt_token' => $zwssgr_sa_jwt_token
                     ]);
 
                     $zwssgr_response->set_status(200);
