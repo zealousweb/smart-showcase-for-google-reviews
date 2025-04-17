@@ -70,7 +70,7 @@ if ( ! class_exists( 'Zwssgr_Backend_API' ) ) {
             ]);
 
             // A custom REST API route for verifying user avalible in database
-            register_rest_route('zwssgr/v1', '/verify-gmb-user', [
+            register_rest_route('zwssgr/v1', '/validate-token', [
                 'methods' => 'POST',
                 'callback' => [$this, 'zwssgr_verify_gmb_user'],
                 'permission_callback' => '__return_true',
