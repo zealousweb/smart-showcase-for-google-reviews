@@ -41,11 +41,11 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
 
 			// Swiper css
-			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', false, ZWSSGR_VERSION );
+			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', ZWSSGR_URL . 'assets/src/scss/swiper-bundle.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . 'swiper-css' );
 
 			// Swiper js
-			wp_register_script( ZWSSGR_PREFIX . 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			wp_register_script( ZWSSGR_PREFIX . 'swiper-js',  ZWSSGR_URL . 'assets/src/js/swiper-bundle.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . 'swiper-js' );
 
 			// Custom css

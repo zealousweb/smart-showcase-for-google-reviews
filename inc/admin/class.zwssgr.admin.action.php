@@ -138,11 +138,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			wp_register_style( ZWSSGR_PREFIX . 'custom-admin-font', 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . 'custom-admin-font' );
 
-			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', false, ZWSSGR_VERSION );
+			// Swiper css
+			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', ZWSSGR_URL . 'assets/src/scss/swiper-bundle.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . 'swiper-css' );
 
-			// swiper js
-			wp_register_script( ZWSSGR_PREFIX . 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			// Swiper js
+			wp_register_script( ZWSSGR_PREFIX . 'swiper-js',  ZWSSGR_URL . 'assets/src/js/swiper-bundle.js', array('jquery-core'), ZWSSGR_VERSION, true );
 			wp_enqueue_script( ZWSSGR_PREFIX . 'swiper-js' );
 
 

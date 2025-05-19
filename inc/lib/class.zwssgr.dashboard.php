@@ -46,9 +46,14 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
                 check_ajax_referer( 'zwssgr_data_render', 'security' );
 
-                $zwssgr_filter_data = json_decode(stripslashes($_POST['zwssgr_filter_data']), true);
+                $zwssgr_filter_data = [];
+                if (isset($_POST['zwssgr_filter_data'])) {
 
-                $zwssgr_filter_data = isset( $zwssgr_filter_data ) && is_array( $zwssgr_filter_data ) ? array_map( 'sanitize_text_field', wp_unslash( $zwssgr_filter_data ) ) : [];
+                    $zwssgr_raw_data = sanitize_text_field(wp_unslash($_POST['zwssgr_filter_data']));
+                    $zwssgr_filter_data = json_decode($zwssgr_raw_data, true);
+
+                }
+                $zwssgr_filter_data = is_array($zwssgr_filter_data) ? array_map('sanitize_text_field', $zwssgr_filter_data) : [];
             
             } else {
 
