@@ -1,0 +1,32 @@
+{
+  "name": "smart-showcase-for-google-reviews",
+  "version": "1.0.0",
+  "description": "Smart Showcase for Google Reviews is a comprehensive WordPress plugin that enables businesses to effortlessly display customer reviews from Google on their websites. By syncing reviews directly from Google My Business, this plugin helps build trust and credibility with potential customers. With a range of display options including grids, lists, sliders, badges, and popups, you can showcase reviews in a format that best suits your site’s design.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.26.8",
+    "@babel/preset-env": "^7.26.8",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.84.0",
+    "sass-loader": "^16.0.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  },
+  "dependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "flatpickr": "^4.6.13",
+    "moment": "^2.30.1",
+    "webpack-manifest-plugin": "^5.0.0"
+  }
+}

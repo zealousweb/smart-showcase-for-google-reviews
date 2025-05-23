@@ -1,0 +1,90 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+$zwssgrbtn: ".zwssgr";
+
+#{$zwssgrbtn} {
+
+    &-disable {
+        background-color: var(--gray-color-100);
+        color: var(--slate-gray);
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &-plugin-popup  {
+        #{$zwssgrbtn} {
+            &-btn {
+                padding: 10px 15px;
+                display: inline-block;
+            }
+        }
+    }
+
+    &-submit-btn {
+        &.button {
+            padding: 20px 24px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--secondary-color);
+            background-color: var(--white-color);
+            color: var(--secondary-color);
+            font-size: var(--font-size-body);
+            font-weight: var(--font-weight-500);
+            font-family: var(--font-primary);
+            line-height: 1;
+            cursor: pointer;
+            &:hover {
+                background-color: var(--secondary-color);
+                color: var(--white-color);
+            }
+        }   
+    }
+
+    &-disconnect-wrapper {
+        #{$zwssgrbtn} {
+            &-disconnect-btn {
+                background-color: var(--red-color);
+                color: var(--white-color);
+                border: 1px solid var(--red-color);
+                margin: 0 10px 0 0;
+                @include respond-below('md') {
+                    margin: 10px 0 0 0;
+                }
+                &:hover {
+                    background-color: transparent;
+                    border-color: var(--red-color);
+                    box-shadow: 0 0 0 1px var(--red-color);
+                    color: var(--red-color);
+                }
+            }
+        }
+    }
+
+   
+
+    &-btn {
+        background-color: var(--tertiary-color);
+        padding: 20px 24px;
+        border-radius: var(--border-radius);
+        color: var(--dark-secondary-color);
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-500);
+        font-family: var(--font-primary);
+        border: 1px solid var(--tertiary-color-light);
+        cursor: pointer;
+    
+        &:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--white-color);
+        }
+    }
+
+    &-select-btn {
+        padding: 10px;
+        font-size: var(--font-size-14);
+    }
+
+}
+
+

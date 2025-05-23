@@ -46,7 +46,15 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
                 check_ajax_referer( 'zwssgr_data_render', 'security' );
 
-                $zwssgr_filter_data = isset( $_POST['zwssgr_filter_data'] ) && is_array( $_POST['zwssgr_filter_data'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['zwssgr_filter_data'] ) ) : [];
+                $zwssgr_filter_data = [];
+                if (isset($_POST['zwssgr_filter_data'])) {
+
+                    $zwssgr_raw_data = sanitize_text_field(wp_unslash($_POST['zwssgr_filter_data']));
+                    $zwssgr_filter_data = json_decode($zwssgr_raw_data, true);
+
+                }
+                $zwssgr_filter_data = is_array($zwssgr_filter_data) ? array_map('sanitize_text_field', $zwssgr_filter_data) : [];
+            
             } else {
 
                 $zwssgr_filter_data = [
@@ -64,12 +72,12 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
 
             $zwssgr_chart_data = $this->zwssgr_dynamic_chart_data($zwssgr_data_render_args);
 
-            $zwssgr_data_render_output .= '<div id="render-dynamic" class="render-dynamic">
-                <div class="zwgr-dashboard-body">'
+            $zwssgr_data_render_output .= '<div id="zwssgr-render-dynamic" class="zwssgr-render-dynamic">
+                <div class="zwssgr-dashboard-body">'
                     . $this->zwssgr_total_reviews($zwssgr_data_render_args) .
                     $this->zwssgr_average_ratings($zwssgr_data_render_args) . 
                 '</div>
-                <div class="zwgr-dashboard-footer">'
+                <div class="zwssgr-dashboard-footer">'
                     . $this->zwssgr_reviews_statics_chart($zwssgr_chart_data) .
                     $this->zwssgr_top_reviews($zwssgr_data_render_args) .
                 '</div>
@@ -295,7 +303,7 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                             </button>
                         </li>
                         <li class="zwssgr-filter-item">
-                            <input type="text" name="dates" value="" id="zwssgr-date-range-picker" class="zwssgr-date-range-picker" data-type="rangeofdate">
+                            <input type="text" name="dates" value="Custom" id="zwssgr-date-range-picker" class="zwssgr-date-range-picker" data-type="rangeofdate">
                         </li>
                     </ul>
                 </div> 
@@ -322,19 +330,29 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 'fields'         => 'ids',
             ));
 
-            // Build the select dropdown
-            $zwssgr_data_filter_output = '<div id="gmb-data-filter" class="gmb-data-filter">
+            // Start the select dropdown container
+            $zwssgr_data_filter_output = '<div id="zwssgr-gmb-data-filter" class="zwssgr-gmb-data-filter">
                 <select id="zwssgr-account-select" name="zwssgr_account" class="zwssgr-input-text zwssgr-account-select">
-                    <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews').'</option>';
-                    foreach ($zwssgr_request_data as $zwssgr_widget_id) {
-                        $zwssgr_account_number      = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
-                        $zwssgr_account_name        = get_the_title($zwssgr_widget_id);
-                        $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
-                    }
-                $zwssgr_data_filter_output .= '</select>
-            </div>';
-            
-            return $zwssgr_data_filter_output;
+                    <option value="">'. esc_html__('Select an Account', 'smart-showcase-for-google-reviews') .'</option>';
+
+            $zwssgr_has_valid_options = false;
+
+            foreach ($zwssgr_request_data as $zwssgr_widget_id) {
+                $zwssgr_account_number  = get_post_meta($zwssgr_widget_id, 'zwssgr_account_number', true);
+                $zwssgr_is_data_fetched = get_post_meta($zwssgr_widget_id, 'zwssgr_is_data_fetched', true);
+                $zwssgr_account_name    = get_the_title($zwssgr_widget_id);
+
+                if ($zwssgr_is_data_fetched === 'true') {
+                    $zwssgr_data_filter_output .= '<option value="' . esc_attr($zwssgr_account_number) . '">' . esc_html($zwssgr_account_name) . '</option>';
+                    $zwssgr_has_valid_options = true;
+                }
+            }
+
+            $zwssgr_data_filter_output .= '</select></div>';
+
+            if ($zwssgr_has_valid_options) {
+                return $zwssgr_data_filter_output;
+            }
 
         }        
 
@@ -502,28 +520,28 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                     <h4>' . 
                         esc_html__( 'Review Statistics Chart', 'smart-showcase-for-google-reviews' ) . 
                     '</h4>
-                    <div class="zwssgr_outer_wrapper">
-                        <div id="zwssgr_chart_wrapper" class="zwssgr_chart_wrapper">
+                    <div class="zwssgr-outer-wrapper">
+                        <div id="zwssgr_chart_wrapper" class="zwssgr-chart-wrapper">
                             <div class="zwssgr-dashboard-text">'. esc_html__('No enough data available', 'smart-showcase-for-google-reviews').'</div>
                         </div>
-                        <div id="zwsr_chart_legend_wrapper" class="zwsr_chart_legend_wrapper">
-                            <div class="zwssgr_chart_legend">
+                        <div id="zwsr_chart_legend_wrapper" class="zwssgr-chart-legend-wrapper">
+                            <div class="zwssgr-chart-legend">
                                 <div class="marker zwssgr-chart-lengend-orange"></div>
                                 <div class="guide">'.esc_html__('5 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
-                            <div class="zwssgr_chart_legend">
+                            <div class="zwssgr-chart-legend">
                                 <div class="marker zwssgr-chart-lengend-cian"></div>
                                 <div class="guide">'.esc_html__('4 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
-                            <div class="zwssgr_chart_legend">
+                            <div class="zwssgr-chart-legend">
                                 <div class="marker zwssgr-chart-lengend-grey"></div>
                                 <div class="guide">'.esc_html__('3 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
-                            <div class="zwssgr_chart_legend">   
+                            <div class="zwssgr-chart-legend">
                                 <div class="marker zwssgr-chart-lengend-blue"></div>
                                 <div class="guide">'.esc_html__('2 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
-                            <div class="zwssgr_chart_legend">
+                            <div class="zwssgr-chart-legend">
                                 <div class="marker zwssgr-chart-lengend-red"></div>
                                 <div class="guide">'.esc_html__('1 Star', 'smart-showcase-for-google-reviews').'</div>
                             </div>
@@ -572,10 +590,15 @@ if ( !class_exists( 'ZWSSGR_Dashboard' ) ) {
                 $zwssgr_output .= '<option value="">'. esc_html__('Select a Location', 'smart-showcase-for-google-reviews').'</option>';
                 
                 foreach ($zwssgr_account_locations as $zwssgr_account_location) {
-                    // Use the title field for the location name
-                    $zwssgr_location_title = $zwssgr_account_location['title'] ?? ''; // Ensure the title is retrieved
+
+                    $zwssgr_location_title = $zwssgr_account_location['title'] ?? '';
                     $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim(strrchr($zwssgr_account_location['name'], '/'), '/') : '';
-                    $zwssgr_output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($zwssgr_location_title) . '</option>';
+                    $zwssgr_is_data_fetched = $zwssgr_account_location['zwssgr_is_data_fetched'] ?? '';
+
+                    if ($zwssgr_is_data_fetched === 'true') {
+                        $zwssgr_output .= '<option value="' . esc_attr($zwssgr_account_location_id) . '">' . esc_html($zwssgr_location_title) . '</option>';
+                    }
+
                 }
 
                 $zwssgr_output .= '</select>';

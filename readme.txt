@@ -4,12 +4,12 @@ Contributors: zealopensource
 Donate Link: http://www.zealousweb.com/payment/
 Tags: google reviews, reviews, widget, google-rating, google-business-reviews 
 Requires at least: 5.8
-Tested up to: 6.7
-Stable tag: 1.0.0
+Tested up to: 6.8
+Stable tag: 1.0.1
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Version: 1.0.0
+Version: 1.0.1
 
 
 Smart Showcase for Google Reviews is a WordPress plugin that lets businesses display Google customer reviews on their websites easily.
@@ -174,6 +174,11 @@ Installing the plugin is easy. Just follow these steps:
 18. Send Test Emails: Test your email notifications and integrations to ensure they are functioning properly.
 
 == Changelog ==
+
+= 1.0.1 =
+1. Converted jQuery to Vanilla JavaScript
+2. Migrated CSS to SCSS
+3. Replaced Slick Slider with Swiper.js
 
 = 1.0.0 =
 Initial release.

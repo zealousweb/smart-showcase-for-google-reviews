@@ -1,0 +1,53 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+$zwssgrreviewdata: ".zwssgr";
+
+#{$zwssgrreviewdata} {
+    &-gmb-review-data {
+        position: relative;
+        #{$zwssgrreviewdata} {
+            &-fallback-user-dp {
+                max-width: 50px;
+                height: auto;
+            }
+            &-regular-text {
+                width: 100%;
+            }
+            &-separator-cell {
+                .separator {
+                    border-top: 2px dashed var(--secondary-color);
+                    margin: 0;
+                }
+            }
+            &-button-danger {
+                margin-right: 0 !important;
+                color: var(--white-color);
+                border-color: var(--red-color);
+                background-color: var(--red-color);
+                transition: all 0.2s ease-in-out;
+            }
+            &-cta-wrapper {
+                position: relative;
+                margin: 7px 0 0 0;
+            }
+            &-submit-btn {
+                position: relative;
+                margin: 0 10px 0 0;
+            }
+            &-loader {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 2.5px solid var(--tertiary-color);
+                border-radius: 50%;
+                border-top-color: var(--secondary-color);
+                animation: spin 1s ease-in-out infinite;
+                -webkit-animation: spin 1s ease-in-out infinite;
+            }
+        }
+    }
+}

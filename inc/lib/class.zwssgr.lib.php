@@ -34,21 +34,19 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 		}
 		function ZWSSGR_lib_public_enqueue() 
 		{
-			// script js
-			wp_register_script( ZWSSGR_PREFIX . '_script_js', ZWSSGR_URL .'assets/js/script.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '_script_js' );
+			wp_register_script( ZWSSGR_PREFIX . '-main-js', ZWSSGR_URL . 'assets/dist/main.js', array(), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . '-main-js' );
 
-			// style css
-			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/css/style.css', false, ZWSSGR_VERSION );
+			wp_register_style( ZWSSGR_PREFIX . '-style-css', ZWSSGR_URL . 'assets/dist/styles.css', false, ZWSSGR_VERSION );
 			wp_enqueue_style( ZWSSGR_PREFIX . '-style-css' );
 
-			// Slick js
-			wp_register_script( ZWSSGR_PREFIX . '-slick-min-js', ZWSSGR_URL .'assets/js/slick.min.js', array('jquery-core'), ZWSSGR_VERSION, true );
-			wp_enqueue_script( ZWSSGR_PREFIX . '-slick-min-js' );
-			
-			// Slick css
-			wp_register_style( ZWSSGR_PREFIX . '-slick-css', ZWSSGR_URL . 'assets/css/slick.css', false, ZWSSGR_VERSION );
-			wp_enqueue_style( ZWSSGR_PREFIX . '-slick-css' );
+			// Swiper css
+			wp_register_style( ZWSSGR_PREFIX . 'swiper-css', ZWSSGR_URL . 'assets/src/scss/swiper-bundle.css', false, ZWSSGR_VERSION );
+			wp_enqueue_style( ZWSSGR_PREFIX . 'swiper-css' );
+
+			// Swiper js
+			wp_register_script( ZWSSGR_PREFIX . 'swiper-js',  ZWSSGR_URL . 'assets/src/js/swiper-bundle.js', array('jquery-core'), ZWSSGR_VERSION, true );
+			wp_enqueue_script( ZWSSGR_PREFIX . 'swiper-js' );
 
 			// Custom css
 			$zwssgr_wd_posts_args = array(
@@ -75,7 +73,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				}
 			}
 
-			wp_localize_script(ZWSSGR_PREFIX . '_script_js', 'load_more', array(
+			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'load_more', array(
 				'ajax_url' => admin_url('admin-ajax.php'),
 				'nonce'    => wp_create_nonce('zwssgr_load_more_nonce')
 			));
@@ -432,7 +430,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 							// Slider 
 							$zwssgr_slider_item1 = '
-								<div class="zwssgr-slide-item">' .
+								<div class="zwssgr-slide-item swiper-slide">' .
 									'<div class="zwssgr-list-inner">' .
 										'<div class="zwssgr-slide-wrap">' .
 											(!in_array('review-photo', $zwssgr_selected_elements) ? '<div class="zwssgr-profile">' .
@@ -462,7 +460,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								'</div>';
 
 							$zwssgr_slider_item2 = '
-								<div class="zwssgr-slide-item">
+								<div class="zwssgr-slide-item swiper-slide">
 									<div class="zwssgr-list-inner">'.
 										(!in_array('review-rating', $zwssgr_selected_elements) || !in_array('review-days-ago', $zwssgr_selected_elements)?'<div class="zwssgr-rating-wrap">
 										' . 
@@ -501,7 +499,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 
 							$zwssgr_slider_item3 = '
-								<div class="zwssgr-slide-item">
+								<div class="zwssgr-slide-item swiper-slide">
 									<div class="zwssgr-list-inner">
 										' . 
 										( !in_array('review-content', $zwssgr_selected_elements) ? '<p class="zwssgr-content">' . esc_html($zwssgr_trimmed_content) . ($zwssgr_is_trimmed 
@@ -535,7 +533,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								</div>';
 
 							$zwssgr_slider_item4 = '
-								<div class="zwssgr-slide-item">
+								<div class="zwssgr-slide-item swiper-slide">
 									<div class="zwssgr-list-inner">
 										' . 
 											( !in_array('review-content', $zwssgr_selected_elements) ? '<p class="zwssgr-content">' . esc_html($zwssgr_trimmed_content) . ($zwssgr_is_trimmed 
@@ -570,7 +568,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							
 
 							$zwssgr_slider_item5 = '
-								<div class="zwssgr-slide-item">' .
+								<div class="zwssgr-slide-item swiper-slide">' .
 									'<div>' .
 										(!in_array('review-photo', $zwssgr_selected_elements) ? '
 										<div class="zwssgr-profile">' .
@@ -596,7 +594,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								'</div>';
 
 							$zwssgr_slider_item6 = '
-								<div class="zwssgr-slide-item">
+								<div class="zwssgr-slide-item swiper-slide">
 									<div class="zwssgr-list-inner">
 										<div class="zwssgr-slide-wrap">
 											'.( !in_array('review-photo', $zwssgr_selected_elements)?'
@@ -1168,14 +1166,22 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					$zwssgr_options = [
 						'slider' => [
 							'<div class="zwssgr-slider zwssgr-slider1" id="zwssgr-slider1">
-								<div class="zwssgr-slider-1">
-									' . $zwssgr_slider_content1 . '
+								<div class="swiper zwssgr-slider-1">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content1 . '
+									</div>
 								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+								<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">
-								<div class="zwssgr-slider-2">
-									' . $zwssgr_slider_content2 . '
+								<div class="zwssgr-slider-2 swiper">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content2 . '
+									</div>
 								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
 								<div class="zwssgr-slider-badge">
@@ -1188,24 +1194,42 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										</div>
 									</a>
 								</div>
-								<div class="zwssgr-slider-3">
-									' . $zwssgr_slider_content3 . '
+								<div class="zwssgr-slider-3-wrap">
+									<div class="zwssgr-slider-3 swiper">
+										<div class="swiper-wrapper">
+											' . $zwssgr_slider_content3 . '
+										</div>
+									</div>
+									<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+									<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 								</div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
-								<div class="zwssgr-slider-4">
-									' . $zwssgr_slider_content4 . '
+								<div class="zwssgr-slider-4 swiper">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content4 . '
+									</div>
 								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider5" id="zwssgr-slider5">
-								<div class="zwssgr-slider-5">
-									' . $zwssgr_slider_content5 . '
+								<div class="zwssgr-slider-5 swiper">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content5 . '
+									</div>
 								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>',
 							'<div class="zwssgr-slider zwssgr-slider6" id="zwssgr-slider6">
-								<div class="zwssgr-slider-6">
-									' . $zwssgr_slider_content6 . '
+								<div class="zwssgr-slider-6 swiper">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content6 . '
+									</div>
 								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>'
 						],
 						'list' => [
@@ -1268,7 +1292,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge3" id="zwssgr-badge3">
 									<div class="zwssgr-rating-wrap">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 									<img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
@@ -1278,7 +1302,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge4" id="zwssgr-badge4">
 									<div class="zwssgr-badge4-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 									<div class="zwssgr-badge4-info">
@@ -1292,7 +1316,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge5" id="zwssgr-badge5">
 									<div class="zwssgr-badge5-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									</div>
 									<div class="zwssgr-badge5-info">
 										<h3 class="zwssgr-google">'.esc_html__('Google', 'smart-showcase-for-google-reviews').'</h3>
@@ -1305,7 +1329,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" class="zwssgr-badge-link">
 								<div class="zwssgr-badge-item zwssgr-badge6" id="zwssgr-badge6">
 									<div class="zwssgr-badge6-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 									<div class="zwssgr-badge6-info">
@@ -1319,7 +1343,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 								<div class="zwssgr-badge-item zwssgr-badge7" id="zwssgr-badge7">
 									<img src="' . $zwssgr_plugin_dir_path . 'assets/images/review-us.png" alt="Review Us">
 									<div class="zwssgr-badge7-rating">
-										<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+										<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 										' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									</div>
 								</div>
@@ -1331,7 +1355,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 										<img src="' . $zwssgr_plugin_dir_path . 'assets/images/Google_G_Logo.png" alt="G Icon">
 										<p class="zwssgr-avg-note">'.esc_html__('Google Reviews', 'smart-showcase-for-google-reviews').'</p>
 									</div>
-									<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+									<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									<p class="zwssgr-based-on">'.esc_html__('Based on', 'smart-showcase-for-google-reviews').' <b> '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').'</b></p>
 								</div>
@@ -1391,7 +1415,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									<h3>'.esc_html__('Reviews', 'smart-showcase-for-google-reviews').'</h3>
 								</div>
 								<div class="zwssgr-info-wrap">
-									<span class="final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
+									<span class="zwssgr-final-rating">'.$zwssgr_reviews_ratings['ratings'].'</span>
 									' . (!empty($zwssgr_final_rating) ? '<div class="zwssgr-rating">' . $zwssgr_final_rating . '</div>' : '') . '
 									<a href="'.$zwssgr_location_all_review_uri.'" target="_blank" 	class="zwssgr-total-review">(  '.$zwssgr_reviews_ratings['reviews'].' '.esc_html__('reviews', 'smart-showcase-for-google-reviews').' )</a>
 								</div>
@@ -1711,7 +1735,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 						// Slider 
 						$zwssgr_slider_item1 = '
-							<div class="zwssgr-slide-item">' .
+							<div class="zwssgr-slide-item swiper-slide">' .
 								'<div class="zwssgr-list-inner">' .
 									'<div class="zwssgr-slide-wrap">' .
 										(!in_array('review-photo', $zwssgr_selected_elements) ? '<div class="zwssgr-profile">' .
@@ -1741,7 +1765,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'</div>';
 
 						$zwssgr_slider_item2 = '
-							<div class="zwssgr-slide-item">
+							<div class="zwssgr-slide-item swiper-slide">
 								<div class="zwssgr-list-inner">'.
 									(!in_array('review-rating', $zwssgr_selected_elements) || !in_array('review-days-ago', $zwssgr_selected_elements) ?'
 									<div class="zwssgr-rating-wrap">
@@ -1781,7 +1805,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 
 						$zwssgr_slider_item3 = '
-							<div class="zwssgr-slide-item">
+							<div class="zwssgr-slide-item swiper-slide">
 								<div class="zwssgr-list-inner">
 									' . 
 										( !in_array('review-content', $zwssgr_selected_elements) ? '<p class="zwssgr-content">' . esc_html($zwssgr_trimmed_content) . ($zwssgr_is_trimmed 
@@ -1816,7 +1840,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							</div>';
 
 						$zwssgr_slider_item4 = '
-							<div class="zwssgr-slide-item">
+							<div class="zwssgr-slide-item swiper-slide">
 								<div class="zwssgr-list-inner">
 									' . 
 										( !in_array('review-content', $zwssgr_selected_elements) ? '<p class="zwssgr-content">' . esc_html($zwssgr_trimmed_content) . ($zwssgr_is_trimmed 
@@ -1851,7 +1875,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 						
 
 						$zwssgr_slider_item5 = '
-							<div class="zwssgr-slide-item">' .
+							<div class="zwssgr-slide-item swiper-slide">' .
 								'<div>' .
 									(!in_array('review-photo', $zwssgr_selected_elements) 
 										? '<div class="zwssgr-profile">' .
@@ -1885,7 +1909,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 							'</div>';
 
 						$zwssgr_slider_item6 = '
-							<div class="zwssgr-slide-item">
+							<div class="zwssgr-slide-item swiper-slide">
 								<div class="zwssgr-list-inner">
 									<div class="zwssgr-slide-wrap">
 										'.( !in_array('review-photo', $zwssgr_selected_elements)?'
@@ -2453,14 +2477,22 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				$zwssgr_filter_layout = [
 					'slider' => [
 						'<div class="zwssgr-slider zwssgr-slider1" id="zwssgr-slider1">
-							<div class="zwssgr-slider-1">
-								' . $zwssgr_slider_content1 . '
+							<div class="zwssgr-slider-1 swiper">
+								<div class="swiper-wrapper">
+									' . $zwssgr_slider_content1 . '
+								</div>
 							</div>
+							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    						<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>',
 						'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">
-							<div class="zwssgr-slider-2">
-								' . $zwssgr_slider_content2 . '
+							<div class="zwssgr-slider-2 swiper">
+								<div class="swiper-wrapper">
+									' . $zwssgr_slider_content2 . '
+								</div>
 							</div>
+							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    						<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>',
 						'<div class="zwssgr-slider zwssgr-slider3" id="zwssgr-slider3">
 							<div class="zwssgr-slider-badge">
@@ -2473,24 +2505,42 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 									</div>
 								</a>
 							</div>
-							<div class="zwssgr-slider-3">
-								' . $zwssgr_slider_content3 . '
+							<div class="zwssgr-slider-3-wrap">
+								<div class="zwssgr-slider-3 swiper">
+									<div class="swiper-wrapper">
+										' . $zwssgr_slider_content3 . '
+									</div>
+								</div>
+								<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+								<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 							</div>
 						</div>',
 						'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
-							<div class="zwssgr-slider-4">
-								' . $zwssgr_slider_content4 . '
+							<div class="zwssgr-slider-4 swiper">
+								<div class="swiper-wrapper">
+									' . $zwssgr_slider_content4 . '
+								</div>
 							</div>
+							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    						<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>',
 						'<div class="zwssgr-slider zwssgr-slider5" id="zwssgr-slider5">
-							<div class="zwssgr-slider-5">
-								' . $zwssgr_slider_content5 . '
+							<div class="zwssgr-slider-5 swiper">
+								<div class="swiper-wrapper">
+									' . $zwssgr_slider_content5 . '
+								</div>
 							</div>
+							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    						<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>',
 						'<div class="zwssgr-slider zwssgr-slider6" id="zwssgr-slider6">
-							<div class="zwssgr-slider-6">
-								' . $zwssgr_slider_content6 . '
+							<div class="zwssgr-slider-6 swiper">
+								<div class="swiper-wrapper">
+									' . $zwssgr_slider_content6 . '
+								</div>
 							</div>
+							<div class="swiper-button-next zwssgr-swiper-button-next"></div>
+    						<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>'
 					],
 					'list' => [
