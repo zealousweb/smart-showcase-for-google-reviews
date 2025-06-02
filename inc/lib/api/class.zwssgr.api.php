@@ -458,7 +458,8 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             // Prepare the payload for the request
             $zwssgr_payload_data = [
                 'zwssgr_user_name'     => $zwssgr_user_name,
-                'zwssgr_user_site_url' => $zwssgr_user_site_url
+                'zwssgr_user_site_url' => $zwssgr_user_site_url,
+                'zwssgr_request_origin' => 'zwssgr_free'
             ];
 
             // Make the API request to get oauth URl.

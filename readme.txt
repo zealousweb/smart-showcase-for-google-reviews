@@ -5,11 +5,11 @@ Donate Link: http://www.zealousweb.com/payment/
 Tags: google reviews, reviews, widget, google-rating, google-business-reviews 
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Version: 1.0.1
+Version: 1.0.2
 
 
 Smart Showcase for Google Reviews is a WordPress plugin that lets businesses display Google customer reviews on their websites easily.
@@ -68,7 +68,16 @@ Yes, you can display Google reviews on any page, post, or widget area of your si
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.0.2 =
+Improved overall plugin performance and stability.
+Minor changes - Doc update
+
+= 1.0.1 =
+1. Converted jQuery to Vanilla JavaScript
+2. Migrated CSS to SCSS
+3. Replaced Slick Slider with Swiper.js
+
+= 1.0.0 =
 Initial Release 
 
 == Features of Smart Showcase for Google Reviews Pro ==
@@ -89,6 +98,9 @@ Initial Release
 * Advanced spam detection using AI or machine learning algorithms like adult content etc
 * Automatic replies to users based on their star rating (positive or negative) (Using AI)
 * Integration with Google Analytics to track user interaction with reviews
+
+<strong>[Get more information of Pro version here](https://store.zealousweb.com/smart-showcase-for-google-reviews-pro)</strong>
+<strong>[Demo for Smart Showcase for Google Reviews Pro](https://demo.zealousweb.com/wordpress-plugins/smart-showcase-for-google-reviews-pro/)</strong>
 
 ## Background Processing  
 
@@ -130,17 +142,18 @@ Initial Release
 
 **OUR OTHER PLUGINS**
 
-* <strong>[Accept PayPal Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-paypal-payments-using-contact-form-7-pro)</strong>
-* <strong>[Accept Stripe Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-stripe-payments-using-contact-form-7-pro)</strong>
-* <strong>[Accept Authorize.NET Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-authorize-net-payments-using-contact-form-7-pro)</strong>
-* <strong>[Accept 2Checkout Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-2checkout-payments-using-contact-form-7-pro)</strong>
-* <strong>[Accept Sagepay(Opayo) Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-sage-pay-opayo-payments-using-contact-form-7-pro)</strong>
-* <strong>[User Registration Using Contact Form 7 Pro](https://store.zealousweb.com/user-registration-using-contact-form-7-pro)</strong>
-* <strong>[Abandoned Contact Form 7 Pro](https://store.zealousweb.com/abandoned-contact-form-7-pro)</strong>
-* <strong>[Smart Appointment & Booking Pro](https://store.zealousweb.com/smart-appointment-booking-pro)</strong>
-* <strong>[Custom Product Options WooCommerce Pro](https://store.zealousweb.com/custom-product-options-woocommerce-pro)</strong>
-* <strong>[Generate PDF Using Contact Form 7 Pro](https://store.zealousweb.com/generate-pdf-using-contact-form-7-pro)</strong>
-* <strong>[Accept Elavon Payments Using Contact Form 7 Pro](https://store.zealousweb.com/accept-elavon-payments-using-contact-form-7-pro)</strong>
+* <strong>[Abandoned Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/abandoned-contact-form-7-pro)</strong>
+* <strong>[Accept 2 Checkout Payments Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/accept-2checkout-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Authorize.NET Payments Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/accept-authorize-net-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Elavon Payments Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/accept-elavon-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept PayPal Payments Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/accept-paypal-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Sagepay(Opayo) Payments Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/accept-sage-pay-opayo-payments-using-contact-form-7-pro)</strong>
+* <strong>[Accept Stripe Payments Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/accept-stripe-payments-using-contact-form-7-pro)</strong>
+* <strong>[Custom Product Options WooCommerce Pro](https://store.zealousweb.com/wordpress-plugins/custom-product-options-woocommerce-pro)</strong>
+* <strong>[Generate PDF Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/generate-pdf-using-contact-form-7-pro)</strong>
+* <strong>[Smart Appointment & Booking Pro](https://store.zealousweb.com/wordpress-plugins/smart-appointment-booking-pro)</strong>
+* <strong>[Smart Showcase for Google Reviews Pro](https://store.zealousweb.com/wordpress-plugins/smart-showcase-for-google-reviews-pro)</strong>
+* <strong>[User Registration Using Contact Form 7 Pro](https://store.zealousweb.com/wordpress-plugins/user-registration-using-contact-form-7-pro)</strong>
 
 == Installation ==
 
@@ -174,6 +187,10 @@ Installing the plugin is easy. Just follow these steps:
 18. Send Test Emails: Test your email notifications and integrations to ensure they are functioning properly.
 
 == Changelog ==
+
+= 1.0.2 =
+Improved overall plugin performance and stability.
+Minor changes - Doc update
 
 = 1.0.1 =
 1. Converted jQuery to Vanilla JavaScript
