@@ -216,7 +216,8 @@ if (!class_exists('Zwssgr_Queue_Manager')) {
                     'zwssgr_widget_id'       => $this->zwssgr_widget_id,
                     'zwssgr_gmb_data'        => $this->zwssgr_gmb_data,
                     'zwssgr_account_number'  => $this->zwssgr_account_number,
-                    'zwssgr_location_number' => $this->zwssgr_location_number
+                    'zwssgr_location_number' => $this->zwssgr_location_number,
+                    'zwssgr_location_name'   => $this->zwssgr_location_name,
                 ];
 
                 // Push data to the queue

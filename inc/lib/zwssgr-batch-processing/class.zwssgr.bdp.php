@@ -67,6 +67,7 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
             $this->zwssgr_widget_id       = isset($zwssgr_batch_data['zwssgr_widget_id'])       ? $zwssgr_batch_data['zwssgr_widget_id']       : null;
             $this->zwssgr_account_number  = isset($zwssgr_batch_data['zwssgr_account_number'])  ? $zwssgr_batch_data['zwssgr_account_number']  : [];
             $this->zwssgr_location_number = isset($zwssgr_batch_data['zwssgr_location_number']) ? $zwssgr_batch_data['zwssgr_location_number'] : [];
+            $this->zwssgr_location_name   = isset($zwssgr_batch_data['zwssgr_location_name'])   ? $zwssgr_batch_data['zwssgr_location_name']   : [];
             $this->zwssgr_next_page_token = isset($zwssgr_gmb_data['nextPageToken'])            ? $zwssgr_gmb_data['nextPageToken']            : null;
             $this->zwssgr_total_reviews   = isset($zwssgr_gmb_data['totalReviewCount'])         ? $zwssgr_gmb_data['totalReviewCount']         : null;
             $this->zwssgr_average_rating  = isset($zwssgr_gmb_data['averageRating'])            ? $zwssgr_gmb_data['averageRating']            : null;
@@ -303,6 +304,8 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                         //Update parent account & locations meta
                         update_post_meta( $zwssgr_wp_review_id, 'zwssgr_account_number', $this->zwssgr_account_number );
                         update_post_meta( $zwssgr_wp_review_id, 'zwssgr_location_number', $this->zwssgr_location_number);
+                        update_post_meta( $zwssgr_wp_review_id, 'zwssgr_location_name', $this->zwssgr_location_name);
+
 
                         $zwssgr_download_review_image_status = $this->zwssgr_download_review_image($zwssgr_review_dp_url, $zwssgr_save_path);
 
@@ -434,6 +437,8 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
             parent::complete();
 
+            $this->zwssgr_clear_current_batch();
+
             $zwssgr_queue_manager = new Zwssgr_Queue_Manager();
 
             if (!empty($this->zwssgr_next_page_token)) {
@@ -478,6 +483,30 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
 
             }
         }
+
+        /**
+         * Clears the current batch data from database
+         */
+        protected function zwssgr_clear_current_batch() {
+            global $wpdb;
+
+            // Get the current batch key
+            $key = $this->get_batch_key();
+            if (!empty($key)) {
+                // Delete the batch option
+                delete_site_option($key);
+                $this->zwssgr_debug_function("Cleared completed batch: " . $key);
+            }
+        }
+
+        /**
+         * Get the current batch key
+         */
+        protected function get_batch_key() {
+            $batch = $this->get_batch();
+            return isset($batch->key) ? $batch->key : '';
+        }
+
     }
 }
 
