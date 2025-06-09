@@ -220,7 +220,22 @@ if ( !class_exists( 'ZWSSGR_Cron_Scheduler' ) ) {
 
                     $zwssgr_is_data_sync = $this->zwssgr_client->zwssgr_fetch_gmb_data(false, false, 'zwssgr_gmb_reviews', $zwssgr_account_number, $zwssgr_location_number);
 
-                    sleep(20);
+                    $zwssgr_batch_in_processing = get_option('zwssgr_batch_in_processing');
+
+                    $max_wait_time = 600;
+                    $wait_interval = 10;
+                    $total_waited = 0;
+
+                    while ($zwssgr_batch_in_processing['zwssgr_batch_in_processing'] === 'true') {
+                        if ($total_waited >= $max_wait_time) {
+                            $this->zwssgr_debug_function('Timeout waiting for previous process to complete for widget: ' . $zwssgr_widget_id);
+                            continue 2;
+                        }
+                        sleep($wait_interval);
+                        $total_waited += $wait_interval;
+                    }
+
+                    sleep(40);
 
                     if (!$zwssgr_is_data_sync) {
                         $this->zwssgr_debug_function('Data sync for widget:' . $zwssgr_widget_id . 'has been successfully processed');

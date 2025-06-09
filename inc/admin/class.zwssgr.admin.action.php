@@ -864,6 +864,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			unset($zwssgr_columns['date']);
 			unset($zwssgr_columns['title']);
 			$zwssgr_columns['title'] = __('Review', 'smart-showcase-for-google-reviews');
+			$zwssgr_columns['zwssgr_review_location'] = __('Location', 'smart-showcase-for-google-reviews');
 			$zwssgr_columns[ZWSSGR_META_PREFIX . 'user_login'] = __('Hide', 'smart-showcase-for-google-reviews');
 			$zwssgr_columns['date'] = __('Date', 'smart-showcase-for-google-reviews');
 			return $zwssgr_columns;
@@ -877,6 +878,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 		 */
 		function zwssgr_render_hide_column_content( $zwssgr_column, $zwssgr_post_id ) 
 		{
+
+			if ( $zwssgr_column === 'zwssgr_review_location' ) {
+				$zwssgr_location_name = get_post_meta( $zwssgr_post_id, 'zwssgr_location_name', true );
+				echo '<span class="zwssgr-location-name">' . esc_html( $zwssgr_location_name ) . '</span>';
+			}
+
 			if ( $zwssgr_column === ZWSSGR_META_PREFIX . 'user_login' ) {
 				$zwssgr_is_hidden = get_post_meta( $zwssgr_post_id, '_is_hidden', true );
 				$zwssgr_icon = $zwssgr_is_hidden ? 'hidden' : 'visibility';

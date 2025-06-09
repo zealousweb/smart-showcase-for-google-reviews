@@ -1,0 +1,7 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.post-type-zwssgr_data_widget .tablenav #post-query-submit,
+.post-type-zwssgr_reviews .tablenav #post-query-submit {
+    display: none;
+}

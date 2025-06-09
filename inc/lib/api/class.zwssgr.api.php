@@ -54,7 +54,7 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
                     'Authorization' => 'Bearer ' . $this->zwssgr_access_token,
                     'Accept'        => 'application/json',
                 ],
-                'timeout' => 30,
+                'timeout' => 90,
             ];
 
             if ( $zwssgr_api_method === 'GET' && ! empty( $zwssgr_api_params ) ) {
