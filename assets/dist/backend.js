@@ -17,6 +17,7 @@ var map = {
 	"./fetch-gmb-accounts-on-change.js": "./assets/src/js/backend/fetch-gmb-accounts-on-change.js",
 	"./fetch-gmb-accounts.js": "./assets/src/js/backend/fetch-gmb-accounts.js",
 	"./fetch-gmb-auth-url.js": "./assets/src/js/backend/fetch-gmb-auth-url.js",
+	"./fetch-gmb-location-on-change.js": "./assets/src/js/backend/fetch-gmb-location-on-change.js",
 	"./fetch-gmb-reviews.js": "./assets/src/js/backend/fetch-gmb-reviews.js",
 	"./get-url-parameter.js": "./assets/src/js/backend/get-url-parameter.js",
 	"./google-chart.js": "./assets/src/js/backend/google-chart.js",
@@ -24,7 +25,8 @@ var map = {
 	"./process-batches.js": "./assets/src/js/backend/process-batches.js",
 	"./redirect-to-options-tab.js": "./assets/src/js/backend/redirect-to-options-tab.js",
 	"./render-data-callback.js": "./assets/src/js/backend/render-data-callback.js",
-	"./widget-reviews-filter.js": "./assets/src/js/backend/widget-reviews-filter.js"
+	"./widget-reviews-filter.js": "./assets/src/js/backend/widget-reviews-filter.js",
+	"./zwssgr-create-widget.js": "./assets/src/js/backend/zwssgr-create-widget.js"
 };
 
 
@@ -681,6 +683,42 @@ document.addEventListener('DOMContentLoaded', function () {
         zwssgrAuthResponse.innerHTML = "";
         zwssgrAuthResponse.appendChild(zwssgrUnexpectedError);
       });
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/backend/fetch-gmb-location-on-change.js":
+/*!***************************************************************!*\
+  !*** ./assets/src/js/backend/fetch-gmb-location-on-change.js ***!
+  \***************************************************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  function zwssgrReloadWithDelay() {
+    var zwssgrDelay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1500;
+    setTimeout(function () {
+      return location.reload();
+    }, zwssgrDelay);
+  }
+  var zwssgrAccountSelect = document.querySelector('#fetch-gmb-data #zwssgr-account-select');
+  var zwssgrLocationSelect = document.querySelector("#fetch-gmb-data #zwssgr-location-select");
+  if (zwssgrLocationSelect) {
+    zwssgrLocationSelect.addEventListener("change", function () {
+      "use strict";
+
+      zwssgrLocationSelect.classList.add('disabled');
+      if (zwssgrAccountSelect) {
+        zwssgrAccountSelect.classList.add('disabled');
+      }
+      var zwssgrLocationNumber = this.value;
+      var zwssgrUrl = new URL(window.location.href);
+      zwssgrUrl.searchParams.set('zwssgr_location_number', zwssgrLocationNumber);
+      window.location.href = zwssgrUrl.toString();
+      zwssgrReloadWithDelay();
     });
   }
 });
@@ -4365,6 +4403,82 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     } else {}
   });
+});
+
+/***/ }),
+
+/***/ "./assets/src/js/backend/zwssgr-create-widget.js":
+/*!*******************************************************!*\
+  !*** ./assets/src/js/backend/zwssgr-create-widget.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _get_url_parameter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-url-parameter */ "./assets/src/js/backend/get-url-parameter.js");
+/* harmony import */ var _redirect_to_options_tab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./redirect-to-options-tab */ "./assets/src/js/backend/redirect-to-options-tab.js");
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  "use strict";
+
+  var zwssgrCreateWidgetBtn = document.querySelector("#fetch-gmb-data #zwssgr-create-widget");
+  var zwssgrCreateFetchReviewBtn = document.querySelector("#fetch-gmb-data #fetch-gmd-reviews");
+  if (zwssgrCreateWidgetBtn) {
+    zwssgrCreateWidgetBtn.addEventListener("click", function (zwssgrEv) {
+      zwssgrEv.preventDefault();
+      zwssgrCreateGmbWidget();
+    });
+  }
+  function zwssgrCreateGmbWidget() {
+    var _zwssgr_admin, _zwssgr_admin2;
+    var zwssgrAccountSelect = document.querySelector("#zwssgr-account-select");
+    var zwssgrLocationSelect = document.querySelector("#zwssgr-location-select");
+    if (!zwssgrAccountSelect || !zwssgrLocationSelect) {
+      console.error("Account or Location select element not found");
+      return null;
+    }
+    var zwssgrWidgetId = (0,_get_url_parameter__WEBPACK_IMPORTED_MODULE_0__.zwssgrGetUrlParameter)("zwssgr_widget_id");
+    var zwssgrAccountNumber = zwssgrAccountSelect.value;
+    var zwssgrLocationNumber = zwssgrLocationSelect.value;
+    var zwssgrAccountName = zwssgrAccountSelect.options[zwssgrAccountSelect.selectedIndex].text;
+    var zwssgrLocationName = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].text;
+    var zwssgrLocationNewReviewUri = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].getAttribute("data-new-review-url") || '';
+    var zwssgrLocationAllReviewUri = zwssgrLocationSelect.options[zwssgrLocationSelect.selectedIndex].getAttribute("data-all-reviews-url") || '';
+    zwssgrCreateWidgetBtn.classList.add('disabled');
+    zwssgrCreateFetchReviewBtn.classList.add('disabled');
+    if (zwssgrAccountSelect) {
+      zwssgrAccountSelect.classList.add('disabled');
+    }
+    if (zwssgrLocationSelect) {
+      zwssgrLocationSelect.classList.add('disabled');
+    }
+    fetch((_zwssgr_admin = zwssgr_admin) === null || _zwssgr_admin === void 0 ? void 0 : _zwssgr_admin.ajax_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        action: "zwssgr_create_gmb_widget",
+        security: (_zwssgr_admin2 = zwssgr_admin) === null || _zwssgr_admin2 === void 0 ? void 0 : _zwssgr_admin2.zwssgr_create_gmb_widget,
+        zwssgr_gmb_data_type: 'zwssgr_gmb_reviews',
+        zwssgr_account_number: zwssgrAccountNumber,
+        zwssgr_location_number: zwssgrLocationNumber,
+        zwssgr_data_sync_once: true,
+        zwssgr_location_new_review_uri: zwssgrLocationNewReviewUri,
+        zwssgr_location_all_review_uri: zwssgrLocationAllReviewUri,
+        zwssgr_account_name: zwssgrAccountName,
+        zwssgr_location_name: zwssgrLocationName,
+        zwssgr_widget_id: zwssgrWidgetId
+      })
+    }).then(function (zwssgrResponse) {
+      return zwssgrResponse.json();
+    }).then(function (zwssgrResponse) {
+      if (zwssgrResponse.success) {
+        (0,_redirect_to_options_tab__WEBPACK_IMPORTED_MODULE_1__.zwssgrRedirectToOptionsTab)();
+      }
+    })["catch"](function (zwssgrError) {});
+  }
 });
 
 /***/ }),

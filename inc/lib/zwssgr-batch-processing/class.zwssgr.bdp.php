@@ -410,20 +410,6 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                 $this->zwssgr_debug_function("Failed to save image to: " . $zwssgr_save_path);
             }
 
-            if ($zwssgr_put_image_content === false) {
-
-                $this->zwssgr_debug_function("Error: Failed to save the image to the specified path: " . $zwssgr_save_path . " for Widget ID " . $this->zwssgr_widget_id . ' & current index ' . $this->zwssgr_current_index);
-
-                return array(
-                    'success' => false,
-                    'data'    => array (
-                        'error'   => 'failed_to_save_image',
-                        'message'  => 'Failed to save image to specified path'
-                    ),
-                );
-
-            }
-
             // Return the path to the saved image
             return array(
                 'success' => true,
@@ -472,6 +458,20 @@ if (!class_exists('Zwssgr_GMB_Background_Data_Processor')) {
                 update_post_meta($this->zwssgr_widget_id, 'zwssgr_gmb_data_type', $this->zwssgr_gmb_data_type);
                 delete_post_meta($this->zwssgr_widget_id, 'zwssgr_batch_pages');
                 delete_post_meta($this->zwssgr_widget_id, 'zwssgr_batch_progress');
+
+                $zwssgr_account_meta_key = 'zwssgr_account_' . $this->zwssgr_account_number;
+
+                if ($this->zwssgr_gmb_data_type === 'zwssgr_gmb_reviews') {
+                    $zwssgr_account_locations = get_option($zwssgr_account_meta_key, '[]');
+
+                    $zwssgr_account_locations_array = !empty($zwssgr_account_locations) ? json_decode($zwssgr_account_locations, true) : [];
+
+                    if (!in_array($this->zwssgr_location_number, $zwssgr_account_locations_array)) {
+                        $zwssgr_account_locations_array[] = $this->zwssgr_location_number;
+
+                        update_option($zwssgr_account_meta_key, json_encode($zwssgr_account_locations_array));
+                    }
+                }
 
                 // Return the path to the saved image
                 return array(
