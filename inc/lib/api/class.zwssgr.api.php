@@ -29,6 +29,8 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             add_action('wp_ajax_zwssgr_delete_oauth_connection', array($this, 'zwssgr_delete_oauth_connection'));
             add_action('wp_ajax_zwssgr_add_update_review_reply', array($this, 'zwssgr_add_update_review_reply'));
             add_action('wp_ajax_zwssgr_delete_review_reply', array($this, 'zwssgr_delete_review_reply'));
+            add_action('wp_ajax_zwssgr_create_gmb_widget', array($this, 'zwssgr_create_gmb_widget'));
+
         }
 
         /**
@@ -506,6 +508,103 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
             $zwssgr_response = $this->zwssgr_api_request( 'zwssgr/v1/get-jwt-token', $zwssgr_payload_data, 'POST', '', 'https://sgr.zealousweb.com/wp-json/');
 
             return $zwssgr_response;
+        }
+
+         /**
+         * Creates a Google My Business widget.
+         *
+         * This function handles the AJAX request to create a new widget
+         * for displaying Google My Business information such as reviews,
+         * ratings, or other relevant business details.
+         *
+         * @return void This function sends a JSON response back to the client.
+         */
+        public function zwssgr_create_gmb_widget() {
+
+            check_ajax_referer('zwssgr_create_gmb_widget', 'security');
+
+            $zwssgr_required_fields = [
+                'zwssgr_gmb_data_type',
+                'zwssgr_account_number',
+                'zwssgr_location_number',
+                'zwssgr_data_sync_once',
+                'zwssgr_account_name',
+                'zwssgr_location_name',
+                'zwssgr_widget_id',
+                'zwssgr_location_new_review_uri',
+                'zwssgr_location_all_review_uri'
+            ];
+
+
+            $zwssgr_missing_fields = [];
+        
+            foreach ( $zwssgr_required_fields as $zwssgr_required_field ) {
+                if ( ! isset( $_POST[ $zwssgr_required_field ] ) || trim( $_POST[ $zwssgr_required_field ] ) === '' ) {
+                    $zwssgr_missing_fields[] = $zwssgr_required_field;
+                }
+            }
+
+            if ( ! empty( $zwssgr_missing_fields ) ) {
+                wp_send_json_error([
+                    'zwssgr_message'        => 'The following fields are required and cannot be empty: ' . implode(', ', $zwssgr_missing_fields),
+                    'zwssgr_missing_fields' => $zwssgr_missing_fields
+                ]);
+            }
+
+            $zwssgr_widget_id               = $_POST['zwssgr_widget_id'];
+            $zwssgr_gmb_data_type           = $_POST['zwssgr_gmb_data_type'];
+            $zwssgr_account_number          = $_POST['zwssgr_account_number'];
+            $zwssgr_location_number         = $_POST['zwssgr_location_number'];
+            $zwssgr_data_sync_once          = $_POST['zwssgr_data_sync_once'];
+            $zwssgr_location_new_review_uri = $_POST['zwssgr_location_new_review_uri'];
+            $zwssgr_location_all_review_uri = $_POST['zwssgr_location_all_review_uri'];
+            $zwssgr_account_name            = $_POST['zwssgr_account_name'];
+            $zwssgr_location_name           = $_POST['zwssgr_location_name'];
+
+            $zwssgr_widget_title = '';
+
+            if (!empty($zwssgr_account_name) && ($zwssgr_account_name !== 'null')) {
+                $zwssgr_widget_title .= $zwssgr_account_name;
+            }
+
+            if (!empty($zwssgr_location_name) && ($zwssgr_location_name !== 'null')) {
+                $zwssgr_widget_title .= ' - ' . $zwssgr_location_name;
+            }
+
+            if (!empty($zwssgr_widget_title)) {
+                $zwssgr_widget_data = [
+                    'ID'         => $zwssgr_widget_id,
+                    'post_title' => sanitize_text_field($zwssgr_widget_title),
+                ];
+
+                wp_update_post($zwssgr_widget_data);
+            }
+
+            $zwssgr_data_sync_once  = get_post_meta($zwssgr_widget_id, 'zwssgr_data_sync_once', true);
+
+            update_post_meta($zwssgr_widget_id, 'zwssgr_gmb_data_type', 'zwssgr_gmb_reviews');
+            update_post_meta($zwssgr_widget_id, 'zwssgr_account_number', $zwssgr_account_number);
+            update_post_meta($zwssgr_widget_id, 'zwssgr_location_number', $zwssgr_location_number);
+            update_post_meta($zwssgr_widget_id, 'zwssgr_data_sync_once', 'true');
+            update_post_meta($zwssgr_widget_id, 'zwssgr_location_new_review_uri', $zwssgr_location_new_review_uri);
+            update_post_meta($zwssgr_widget_id, 'zwssgr_location_all_review_uri', $zwssgr_location_all_review_uri);
+            update_post_meta($zwssgr_widget_id, 'zwssgr_account_name', $zwssgr_account_name);
+            update_post_meta($zwssgr_widget_id, 'zwssgr_location_name', $zwssgr_location_name);
+
+            if ($zwssgr_data_sync_once !== 'true') {
+                update_post_meta($zwssgr_widget_id, 'zwssgr_admin_display_option', null);
+                update_post_meta($zwssgr_widget_id, 'zwssgr_admin_layout_option', null);
+                update_post_meta($zwssgr_widget_id, 'zwssgr_display_option', null);
+                update_post_meta($zwssgr_widget_id, 'zwssgr_layout_option', null);
+            }
+
+            wp_send_json_success(
+                array(
+                    'message' => __('Widget Created Successfully!', 'smart-showcase-for-google-reviews-pro'),
+                    'code' => 'zwssgr_gmb_widget_created'
+                )
+            );
+
         }
 
         /**

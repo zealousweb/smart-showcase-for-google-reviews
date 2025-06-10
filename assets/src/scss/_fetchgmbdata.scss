@@ -45,6 +45,12 @@ $zwssgrfetchgmbdata: ".zwssgr";
                     margin: 0;
                 }
             }
+            &-create-widget {
+                margin: 0 10px 0 0;
+                @include respond-below('md') {
+                    margin: 0 0 10px 0;
+                }
+            }
             &-input-text {
                 padding: 8px 26px 10px 16px;
                 max-width: 310px;

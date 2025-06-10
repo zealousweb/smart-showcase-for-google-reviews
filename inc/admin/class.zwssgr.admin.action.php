@@ -162,16 +162,17 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			//Toggle Ajax
 			wp_localize_script(ZWSSGR_PREFIX . '-main-js', 'zwssgr_admin', array(
-				'ajax_url' 					    => admin_url('admin-ajax.php'),
-				'nonce' 					    => wp_create_nonce('toggle-visibility-nonce'),
+				'ajax_url' 					     => admin_url('admin-ajax.php'),
+				'nonce' 					     => wp_create_nonce('toggle-visibility-nonce'),
 				'zwssgr_queue_manager_nounce'    => wp_create_nonce('zwssgr_queue_manager_nounce'),
 				'zwssgr_delete_oauth_connection' => wp_create_nonce('zwssgr_delete_oauth_connection'),
 				'zwssgr_add_update_reply_nonce'  => wp_create_nonce('zwssgr_add_update_reply_nonce'),
-				'zwssgr_delete_review_reply'	    => wp_create_nonce('zwssgr_delete_review_reply'),
-				'zwssgr_gmb_dashboard_filter'	=> wp_create_nonce('zwssgr_gmb_dashboard_filter'),
-				'zwssgr_data_render'				=> wp_create_nonce('zwssgr_data_render'),
-				'zwssgr_dynamic_chart_data'		=> $this->zwssgr_dashboard->zwssgr_dynamic_chart_data($zwssgr_data_render_args),
-				'zwssgr_redirect'				=> admin_url('admin.php?page=zwssgr_connect_google')
+				'zwssgr_delete_review_reply'	 => wp_create_nonce('zwssgr_delete_review_reply'),
+				'zwssgr_gmb_dashboard_filter'	 => wp_create_nonce('zwssgr_gmb_dashboard_filter'),
+				'zwssgr_create_gmb_widget'	 	 => wp_create_nonce('zwssgr_create_gmb_widget'),
+				'zwssgr_data_render'			 => wp_create_nonce('zwssgr_data_render'),
+				'zwssgr_dynamic_chart_data'		 => $this->zwssgr_dashboard->zwssgr_dynamic_chart_data($zwssgr_data_render_args),
+				'zwssgr_redirect'				 => admin_url('admin.php?page=zwssgr_connect_google')
 			));
 
 			//Save Widget Ajax

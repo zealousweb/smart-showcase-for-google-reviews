@@ -2285,6 +2285,18 @@
 .zwssgr-fetch-gmb-inner-data .zwssgr-submit-btn .spinner {
   margin: 0;
 }
+.zwssgr-fetch-gmb-inner-data .zwssgr-create-widget {
+  margin: 0 10px 0 0;
+  /** If the breakpoint exists in the map. */
+  /** Get the breakpoint value. */
+  /** Write the media query. */
+  /** If the breakpoint doesn't exist in the map. */
+}
+@media (max-width: 767px) {
+  .zwssgr-fetch-gmb-inner-data .zwssgr-create-widget {
+    margin: 0 0 10px 0;
+  }
+}
 .zwssgr-fetch-gmb-inner-data .zwssgr-input-text {
   padding: 8px 26px 10px 16px;
   max-width: 310px;
