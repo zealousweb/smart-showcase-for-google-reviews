@@ -4342,6 +4342,21 @@ function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFi
   }).then(function (zwssgrData) {
     zwssgrLoaderWrapper.remove();
     if (zwssgrData.success) {
+      var zwssgrLoadGoogleCharts = function zwssgrLoadGoogleCharts() {
+        var script = document.createElement('script');
+        script.src = 'https://www.gstatic.com/charts/loader.js';
+        script.onload = function () {
+          google.charts.load('current', {
+            packages: ['corechart']
+          });
+          if (zwssgrData.data.zwssgr_chart_data) {
+            google.charts.setOnLoadCallback(function () {
+              return (0,_draw_chart__WEBPACK_IMPORTED_MODULE_0__.zwssgr_draw_chart)(zwssgrData.data.zwssgr_chart_data);
+            });
+          }
+        };
+        document.head.appendChild(script);
+      };
       zwssgrDashboard.insertAdjacentHTML('beforeend', zwssgrData.data.html);
       var zwssgrNewContent = zwssgrDashboard.lastElementChild;
       zwssgrNewContent.style.display = 'none';
@@ -4351,11 +4366,7 @@ function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgrRangeFi
       requestAnimationFrame(function () {
         zwssgrNewContent.style.opacity = 1;
       });
-      if (zwssgrData.data.zwssgr_chart_data) {
-        google.charts.setOnLoadCallback(function () {
-          return (0,_draw_chart__WEBPACK_IMPORTED_MODULE_0__.zwssgr_draw_chart)(zwssgrData.data.zwssgr_chart_data);
-        });
-      }
+      zwssgrLoadGoogleCharts();
     } else {
       zwssgrDashboard.innerHTML = '<p>Error loading data.</p>';
     }
