@@ -335,7 +335,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                                         
                                         $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim( strrchr( $zwssgr_account_location['name'], '/' ), '/' ) : '';
 
-                                        $zwssgr_selected_location_number = isset($_GET['zwssgr_location_number']) ? $_GET['zwssgr_location_number'] : null;
+                                        $zwssgr_selected_location_number = isset($_GET['zwssgr_location_number']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_location_number'])) : '';
 
                                         if (!empty($zwssgr_selected_location_number)) {
                                             $zwssgr_selected = ($zwssgr_account_location_id === $zwssgr_selected_location_number) ? 'selected' : '';
