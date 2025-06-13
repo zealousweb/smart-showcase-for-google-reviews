@@ -66,11 +66,24 @@ export function zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, zwssgr
                 zwssgrNewContent.style.opacity = 1;
             });
 
-            if (zwssgrData.data.zwssgr_chart_data) {
-                google.charts.setOnLoadCallback(() =>
-                    zwssgr_draw_chart(zwssgrData.data.zwssgr_chart_data)
-                );
-            }
+        function zwssgrLoadGoogleCharts() {
+            const script = document.createElement('script');
+            script.src = 'https://www.gstatic.com/charts/loader.js';
+            script.onload = function () {
+                google.charts.load('current', {
+                    packages: ['corechart']
+                });
+
+                if (zwssgrData.data.zwssgr_chart_data) {
+                    google.charts.setOnLoadCallback(() =>
+                        zwssgr_draw_chart(zwssgrData.data.zwssgr_chart_data)
+                    );
+                }
+            };
+            document.head.appendChild(script);
+        }
+
+        zwssgrLoadGoogleCharts();
 
         } else {
             zwssgrDashboard.innerHTML = '<p>Error loading data.</p>';

@@ -305,6 +305,12 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                                 // If no post is found, return early
                                 return;
                             }
+
+                            $zwssgr_account_meta_key = 'zwssgr_account_' . $zwssgr_account_number;
+
+                            $zwssgr_account_locations = get_option($zwssgr_account_meta_key);
+
+                            $zwssgr_account_locations_array = !empty($zwssgr_account_locations) ? json_decode($zwssgr_account_locations, true) : [];
                         
                             // Retrieve existing locations or initialize an empty array
                             $zwssgr_account_locations = get_post_meta($zwssgr_request_data_id, 'zwssgr_account_locations', true);
@@ -328,13 +334,34 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                                         }
                                         
                                         $zwssgr_account_location_id = $zwssgr_account_location['name'] ? ltrim( strrchr( $zwssgr_account_location['name'], '/' ), '/' ) : '';
-                                        $zwssgr_selected = ($zwssgr_account_location_id === $zwssgr_location_number) ? 'selected' : '';
-                                        echo '<option value="' . esc_attr($zwssgr_account_location_id) . '" ' . esc_attr($zwssgr_selected) . ' data-new-review-url="' . esc_url($zwssgr_new_review_uri) . '" data-all-reviews-url="http://search.google.com/local/reviews?placeid=' . esc_attr($zwssgr_place_id) . '">' . esc_html($zwssgr_account_location['title']) . '</option>';
+
+                                        $zwssgr_selected_location_number = isset($_GET['zwssgr_location_number']) ? sanitize_text_field(wp_unslash($_GET['zwssgr_location_number'])) : '';
+
+                                        if (!empty($zwssgr_selected_location_number)) {
+                                            $zwssgr_selected = ($zwssgr_account_location_id === $zwssgr_selected_location_number) ? 'selected' : '';
+                                        } else {
+                                            $zwssgr_selected = ($zwssgr_account_location_id === $zwssgr_location_number) ? 'selected' : '';
+                                        }
+
+                                        $zwssgr_data_fetched_attr = in_array($zwssgr_account_location_id, $zwssgr_account_locations_array) ? 'data-fetched=true' : 'data-fetched=';
+
+                                        echo '<option value="' . esc_attr($zwssgr_account_location_id) . '" ' . esc_attr($zwssgr_selected) . ' data-new-review-url="' . esc_url($zwssgr_new_review_uri) . '" data-all-reviews-url="http://search.google.com/local/reviews?placeid=' . esc_attr($zwssgr_place_id) . '" ' . esc_attr($zwssgr_data_fetched_attr) . '>' . esc_html($zwssgr_account_location['title']) . '</option>';
+
                                     }
-                                echo '</select>
-                                <a href="#" class="button button-secondary zwssgr-submit-btn ' . esc_attr($zwssgr_disabled_class) . '" id="fetch-gmd-reviews" data-fetch-type="zwssgr_gmb_reviews">
-                                    ' . esc_html($zwssgr_button_text) . '
-                                </a>';
+                                echo '</select>';
+
+                                if (in_array($zwssgr_selected_location_number, $zwssgr_account_locations_array) || (empty($zwssgr_selected_location_number) && in_array($zwssgr_location_number, $zwssgr_account_locations_array))) {
+                                    echo '<a href="#" class="button button-secondary zwssgr-submit-btn zwssgr-create-widget' . esc_attr($zwssgr_disabled_class) . '" id="zwssgr-create-widget">
+                                        Create Widget
+                                    </a>
+                                    <a href="#" class="button button-secondary zwssgr-submit-btn ' . esc_attr($zwssgr_disabled_class) . '" id="fetch-gmd-reviews" data-fetch-type="zwssgr_gmb_reviews">
+                                        Sync Reviews
+                                    </a>';
+                                } else {
+                                    echo '<a href="#" class="button button-secondary zwssgr-submit-btn ' . esc_attr($zwssgr_disabled_class) . '" id="fetch-gmd-reviews" data-fetch-type="zwssgr_gmb_reviews">
+                                        Fetch Reviews
+                                    </a>';
+                                }
                             }
                         } else {
                             echo ' <a href="#" class="button button-secondary zwssgr-submit-btn ' . esc_attr($zwssgr_disabled_class) . '" id="fetch-gmd-accounts" data-fetch-type="zwssgr_gmb_accounts">

@@ -118,6 +118,19 @@ document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.zwssgr-filter-button').forEach(button => {
                 button.classList.remove('active');
             });
+
+             document.querySelectorAll('.zwssgr-date-range-picker').forEach(zwssgrDateInput => {
+
+                zwssgrDateInput.classList.remove('active');            
+
+                const zwssgrFlatpickrInstance = zwssgrDateInput._flatpickr;
+
+                if (zwssgrFlatpickrInstance) {
+                    zwssgrFlatpickrInstance.clear();
+                    zwssgrFlatpickrInstance.altInput.setAttribute("placeholder", "Custom");
+                }
+
+            });
     
             zwssgrButton.classList.add('active');
     
@@ -149,6 +162,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const zwssgrFilterButtons = document.querySelectorAll('.zwssgr-filters-wrapper .zwssgr-filter-item .zwssgr-filter-button');
                 zwssgrFilterButtons.forEach(button => button.classList.remove('active'));
                 zwssgrDateInput.classList.add('active');
+
+                setTimeout(() => {
+                    instance.altInput.classList.add('active');
+                }, 0);
     
                 const zwssgrStartDate       = instance.formatDate(selectedDates[0], "d-m-Y");
                 const zwssgrEndDate         = instance.formatDate(selectedDates[1], "d-m-Y");
@@ -160,10 +177,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     selectedDates: selectedDates,
                     dateStr: dateStr,
                     instance: instance,
-                    preventDefault: () => console.log("")
+                    preventDefault: () => {}
                 };
     
                 if (typeof zwssgrRenderDataCallback === "function") {
+                    zwssgrDateInput.classList.add('active');
                     zwssgrRenderDataCallback(zwssgrEv, zwssgrRangeFilterData, 'rangeofdate');
                 } else {
                 }
