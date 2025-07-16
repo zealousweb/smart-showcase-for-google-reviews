@@ -190,6 +190,35 @@ Installing the plugin is easy. Just follow these steps:
 16. Review Syncing: Sync reviews periodically or on demand to ensure real-time updates, keeping your content fresh and accurate
 17. SMTP Configuration: Set up SMTP settings for smooth and reliable email functionality, ensuring secure and efficient email delivery.
 18. Send Test Emails: Test your email notifications and integrations to ensure they are functioning properly.
+19. Frontside Slider Layout - Slider 1
+20. Frontside Slider Layout - Slider 2
+21. Frontside Slider Layout - Slider 3
+22. Frontside Slider Layout - Slider 4
+23. Frontside Slider Layout - Slider 5
+24. Frontside Slider Layout - Slider 6
+25. Frontside Grid Layout - Grid 1
+26. Frontside Grid Layout - Grid 2
+27. Frontside Grid Layout - Grid 3
+28. Frontside Grid Layout - Grid 4
+29. Frontside Grid Layout - Grid 5
+30. Frontside List Layout - List 1
+31. Frontside List Layout - List 2
+32. Frontside List Layout - List 3
+33. Frontside List Layout - List 4
+34. Frontside List Layout - List 5
+35. Frontside Badge Layout - Badge 1
+36. Frontside Badge Layout - Badge 2
+37. Frontside Badge Layout - Badge 3
+38. Frontside Badge Layout - Badge 4
+39. Frontside Badge Layout - Badge 5
+40. Frontside Badge Layout - Badge 6
+41. Frontside Badge Layout - Badge 7
+42. Frontside Badge Layout - Badge 8
+43. Frontside Badge Layout - Badge 9
+44. Frontside Popup Layout - Popup 1
+45. When click on Popup1 then it look like this 
+46. Frontside Popup Layout - Popup 2
+47. When click on Popup2 then it look like this 
 
 == Changelog ==
 
