@@ -172,9 +172,9 @@ Installing the plugin is easy. Just follow these steps:
 
 == Screenshots ==
 
-1. Seamlessly connect your Google My Business account to fetch and display Google reviews, boosting your credibility and building customer trust
+1. Seamlessly connect your Google My Business account to fetch and display Google reviews, boosting your credibility and building customer trust.
 2. Showcase total reviews, average ratings, and provide advanced filtering options. Visualize ratings with a detailed pie chart (1 to 5 stars) and display the top 5 reviews based on selected filters.
-3. Create fully customizable widgets to showcase reviews on your website. Manage multiple widgets with filtering options by account and location for easy organization. Each widget provides a shortcode for seamless integration and reuse
+3. Create fully customizable widgets to showcase reviews on your website. Manage multiple widgets with filtering options by account and location for easy organization. Each widget provides a shortcode for seamless integration and reuse.
 4. Configure your account name and location to fetch data for widgets, giving you full control over what reviews are displayed and how they are presented.
 5. Display Google reviews in an interactive slider format for an enhanced user experience. Choose from various display options, including slider, grid, list, badge, and popup, to customize how reviews are presented.
 6. Grid Option: Organize and display reviews in a clean, structured grid layout for a visually appealing presentation.
@@ -183,42 +183,59 @@ Installing the plugin is easy. Just follow these steps:
 9. Popup Option: Showcase reviews dynamically with an engaging popup design for an interactive user experience.
 10. Selected Option Tab: View and manage the layouts you've selected, such as slider, grid, badge, list, and popup. Apply widget settings and instantly preview the changes in real-time. 
 11. Customize the widget's appearance and functionality with comprehensive settings, including star rating filters, element visibility options, keyword filters for the frontend, language support, date format settings, sorting options, trim settings, per-page listing count, and the ability to add custom CSS for further personalization.
-12. Generate Shortcodes Tab: Easily generate shortcodes to embed widgets and reviews anywhere on your site, providing seamless integration and flexibility
-13.Organized Review Listing: View and manage all fetched reviews in a structured list for easy browsing. Reviews can be hidden with a simple click on the 'hide' icon for better control and organization.
+12. Generate Shortcodes Tab: Easily generate shortcodes to embed widgets and reviews anywhere on your site, providing seamless integration and flexibility.
+13. Organized Review Listing: View and manage all fetched reviews in a structured list for easy browsing. Reviews can be hidden with a simple click on the 'hide' icon for better control and organization.
 14. Google Account Integration: Easily connect or disconnect your Google account directly from the plugin, allowing for seamless management of reviews and settings.
 15. SEO Optimization & Notifications: Enhance your reviews for better search engine visibility and set up notifications to stay updated on new reviews or changes.
-16. Review Syncing: Sync reviews periodically or on demand to ensure real-time updates, keeping your content fresh and accurate
+16. Review Syncing: Sync reviews periodically or on demand to ensure real-time updates, keeping your content fresh and accurate.
 17. SMTP Configuration: Set up SMTP settings for smooth and reliable email functionality, ensuring secure and efficient email delivery.
 18. Send Test Emails: Test your email notifications and integrations to ensure they are functioning properly.
-19. Frontside Slider Layout - Slider 1
-20. Frontside Slider Layout - Slider 2
-21. Frontside Slider Layout - Slider 3
-22. Frontside Slider Layout - Slider 4
-23. Frontside Slider Layout - Slider 5
-24. Frontside Slider Layout - Slider 6
-25. Frontside Grid Layout - Grid 1
-26. Frontside Grid Layout - Grid 2
-27. Frontside Grid Layout - Grid 3
-28. Frontside Grid Layout - Grid 4
-29. Frontside Grid Layout - Grid 5
-30. Frontside List Layout - List 1
-31. Frontside List Layout - List 2
-32. Frontside List Layout - List 3
-33. Frontside List Layout - List 4
-34. Frontside List Layout - List 5
-35. Frontside Badge Layout - Badge 1
-36. Frontside Badge Layout - Badge 2
-37. Frontside Badge Layout - Badge 3
-38. Frontside Badge Layout - Badge 4
-39. Frontside Badge Layout - Badge 5
-40. Frontside Badge Layout - Badge 6
-41. Frontside Badge Layout - Badge 7
-42. Frontside Badge Layout - Badge 8
-43. Frontside Badge Layout - Badge 9
-44. Frontside Popup Layout - Popup 1
-45. When click on Popup1 then it look like this 
-46. Frontside Popup Layout - Popup 2
-47. When click on Popup2 then it look like this 
+19. Frontside Slider Layout - Slider 1.
+20. Frontside Slider Layout - Slider 2.
+21. Frontside Slider Layout - Slider 3.
+22. Frontside Slider Layout - Slider 4.
+23. Frontside Slider Layout - Slider 5.
+24. Frontside Slider Layout - Slider 6.
+25. Frontside Grid Layout - Grid 1.
+26. Frontside Grid Layout - Grid 2.
+27. Frontside Grid Layout - Grid 3.
+28. Frontside Grid Layout - Grid 4.
+29. Frontside Grid Layout - Grid 5.
+30. Frontside List Layout - List 1.
+31. Frontside List Layout - List 2.
+32. Frontside List Layout - List 3.
+33. Frontside List Layout - List 4.
+34. Frontside List Layout - List 5.
+35. Frontside Badge Layout - Badge 1.
+36. Frontside Badge Layout - Badge 2.
+37. Frontside Badge Layout - Badge 3.
+38. Frontside Badge Layout - Badge 4.
+39. Frontside Badge Layout - Badge 5.
+40. Frontside Badge Layout - Badge 6.
+41. Frontside Badge Layout - Badge 7.
+42. Frontside Badge Layout - Badge 8.
+43. Frontside Badge Layout - Badge 9.
+44. Frontside Popup Layout - Popup 1.
+45. When click on Popup1 then it look like this. 
+46. Frontside Popup Layout - Popup 2.
+47. When click on Popup2 then it look like this. 
+
+== Video Tutorials ==
+
+1. [Plugin Activation + Dummy Setup in WordPress](https://www.youtube.com/watch?v=T3aKGjXsGoA&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ)
+2. [How to Connect Google Account](https://www.youtube.com/watch?v=zGBdH2J3qdw&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=2)
+3. [How to Sync Google Reviews](https://www.youtube.com/watch?v=JFnw2eRhaTo&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=3)
+4. [Sentiment Analysis for Google Reviews: Setup and Insights](https://www.youtube.com/watch?v=btNYINzkIf8&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=4)
+5. [How to Add Google Review Widget in WordPress](https://www.youtube.com/watch?v=SoZ2UF8Tv-I&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=5)
+6. [Full Setup Guide for Google Review Widgets](https://www.youtube.com/watch?v=6ju5jYWs7v4&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=6)
+7. [How to Customize Google Review Shortcodes](https://www.youtube.com/watch?v=Mp5QoZZweSs&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=7)
+8. [Gutenberg Support for Smart Showcase for Google Review](https://www.youtube.com/watch?v=qlaRkh9GtZg&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=8)
+9. [Add Tabbed Google Review Widgets in WordPress](https://www.youtube.com/watch?v=FsDbHZR2N9k&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=9)
+10. [Display Customer Reviews from Google in WooCommerce](https://www.youtube.com/watch?v=doWdRfoKE3o&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=10)
+11. [How to Respond to Google Reviews via WordPress](https://www.youtube.com/watch?v=hMf-OkYX_Nk&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=11)
+12. [How to Invite Customers for Google Reviews](https://www.youtube.com/watch?v=8bUEJyalL9Y&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=12)
+13. [How to Add Review Schema Markup](https://www.youtube.com/watch?v=4kX0a0-XVdI&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=13)
+14. [Import & Export Reviews and Widgets in WordPress](https://www.youtube.com/watch?v=y6IDEf4yJpc&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=14)
 
 == Changelog ==
 
