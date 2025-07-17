@@ -218,24 +218,14 @@ Installing the plugin is easy. Just follow these steps:
 44. Frontside Popup Layout - Popup 1.
 45. When click on Popup1 then it look like this. 
 46. Frontside Popup Layout - Popup 2.
-47. When click on Popup2 then it look like this. 
+47. When click on Popup2 then it look like this.
 
-== Video Tutorials ==
+== YouTube Video Tutorials ==
 
-1. [Plugin Activation + Dummy Setup in WordPress](https://www.youtube.com/watch?v=T3aKGjXsGoA&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ)
-2. [How to Connect Google Account](https://www.youtube.com/watch?v=zGBdH2J3qdw&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=2)
-3. [How to Sync Google Reviews](https://www.youtube.com/watch?v=JFnw2eRhaTo&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=3)
-4. [Sentiment Analysis for Google Reviews: Setup and Insights](https://www.youtube.com/watch?v=btNYINzkIf8&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=4)
-5. [How to Add Google Review Widget in WordPress](https://www.youtube.com/watch?v=SoZ2UF8Tv-I&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=5)
-6. [Full Setup Guide for Google Review Widgets](https://www.youtube.com/watch?v=6ju5jYWs7v4&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=6)
-7. [How to Customize Google Review Shortcodes](https://www.youtube.com/watch?v=Mp5QoZZweSs&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=7)
-8. [Gutenberg Support for Smart Showcase for Google Review](https://www.youtube.com/watch?v=qlaRkh9GtZg&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=8)
-9. [Add Tabbed Google Review Widgets in WordPress](https://www.youtube.com/watch?v=FsDbHZR2N9k&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=9)
-10. [Display Customer Reviews from Google in WooCommerce](https://www.youtube.com/watch?v=doWdRfoKE3o&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=10)
-11. [How to Respond to Google Reviews via WordPress](https://www.youtube.com/watch?v=hMf-OkYX_Nk&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=11)
-12. [How to Invite Customers for Google Reviews](https://www.youtube.com/watch?v=8bUEJyalL9Y&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=12)
-13. [How to Add Review Schema Markup](https://www.youtube.com/watch?v=4kX0a0-XVdI&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=13)
-14. [Import & Export Reviews and Widgets in WordPress](https://www.youtube.com/watch?v=y6IDEf4yJpc&list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ&index=14)
+Watch our complete video tutorial series on how to use Smart Showcase for Google Reviews:
+
+**Smart Showcase for Google Reviews – Video Playlist**  
+Link: [Watch on YouTube](https://www.youtube.com/playlist?list=PLBQXEmIlghW4_EPlfiqxRTARjPdvaPKEZ)
 
 == Changelog ==
 
