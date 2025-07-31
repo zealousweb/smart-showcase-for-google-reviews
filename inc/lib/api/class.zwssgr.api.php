@@ -179,7 +179,8 @@ if ( ! class_exists( 'ZWSSGR_GMB_API' ) ) {
 
             // Prepare the payload for the request
             $zwssgr_payload_data = [
-                'zwssgr_jwt_token' => $zwssgr_jwt_token
+                'zwssgr_jwt_token'      => $zwssgr_jwt_token,
+                'zwssgr_request_origin' => 'zwssgr_free'
             ];
 
             // Make the API request to get oauth URl.

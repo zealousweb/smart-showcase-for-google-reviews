@@ -100,7 +100,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
                         <div id="fetch-gmb-auth-url-wrapper" class="zwssgr-gmbc-inner-wrapper">
-                            <span> '. esc_html__('Connect with your Google account to seamlessly fetch and showcase reviews.', 'smart-showcase-for-google-reviews').'  </span>
+                            <span> '. esc_html__( 'The Smart Google Reviews plugin showcases reviews from your Google Business profile. It retrieves publicly available details using the Google Business API, such as the reviewer\'s name, profile picture, and review content. This plugin does not collect or store any personal data on this website. All displayed reviews are subject to Google’s Privacy Policy.', 'smart-showcase-for-google-reviews' ) . '</span>
                             <div id="fetch-gmb-auth-url-response" class="zwssgr-fetch-gmb-auth-url-response"></div>   
                             <a href="" class="button button-primary zwssgr-submit-btn fetch-gmb-auth-url" id="fetch-gmb-auth-url">'. esc_html__('Connect with Google', 'smart-showcase-for-google-reviews').'</a>
                         </div>
