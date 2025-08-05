@@ -3,7 +3,7 @@
  * Plugin Name: Smart Showcase for Google Reviews
  * Plugin URL: https://wordpress.org/plugins/smart-showcase-for-google-reviews/
  * Description: The Smart Showcase for Google Reviews enables users to easily embed Google Reviews on your WordPress site.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Requires at least: 5.8
  * Requires PHP: 7.0
  * Author: ZealousWeb
@@ -26,11 +26,11 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Basic plugin definitions
  *
  * @package Smart Showcase for Google Reviews
- * @since 1.0.3
+ * @since 1.0.4
  */
 
 if ( !defined( 'ZWSSGR_VERSION' ) ) {
-	define( 'ZWSSGR_VERSION', '1.0.3' ); // Version of plugin
+	define( 'ZWSSGR_VERSION', '1.0.4' ); // Version of plugin
 }
 
 if ( !defined( 'ZWSSGR_FILE' ) ) {
