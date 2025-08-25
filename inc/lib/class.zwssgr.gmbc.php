@@ -100,8 +100,13 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 echo '<div class="zwssgr-gmbc-outer-wrapper">
                     <div class="zwssgr-gmbc-container">
                         <div id="fetch-gmb-auth-url-wrapper" class="zwssgr-gmbc-inner-wrapper">
-                            <span> '. esc_html__( 'The Smart Google Reviews plugin showcases reviews from your Google Business profile. It retrieves publicly available details using the Google Business API, such as the reviewer\'s name, profile picture, and review content. This plugin does not collect or store any personal data on this website. All displayed reviews are subject to Google’s Privacy Policy.', 'smart-showcase-for-google-reviews' ) . '</span>
-                            <div id="fetch-gmb-auth-url-response" class="zwssgr-fetch-gmb-auth-url-response"></div>   
+                            <span> '. esc_html__( 'The Smart Google Reviews plugin showcases reviews from your Google Business profile. It retrieves publicly available details using the Google Business API, such as the reviewer\'s name, profile picture, and review content. This plugin does not collect or store any personal data on this website. All displayed reviews are subject to Google’s Privacy Policy.', 'smart-showcase-for-google-reviews' ) . '</span>';
+                            $zwssgr_error_notice = get_transient('zwssgr_error_notice');
+                            if ($zwssgr_error_notice) {
+                                echo '<div class="notice notice-error"><p>' . esc_html($zwssgr_error_notice) . '</p></div>';
+                                delete_transient('zwssgr_error_notice');
+                            }
+                            echo '<div id="fetch-gmb-auth-url-response" class="zwssgr-fetch-gmb-auth-url-response"></div>   
                             <a href="" class="button button-primary zwssgr-submit-btn fetch-gmb-auth-url" id="fetch-gmb-auth-url">'. esc_html__('Connect with Google', 'smart-showcase-for-google-reviews').'</a>
                         </div>
                     </div>
@@ -209,10 +214,11 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                         exit;
                     }
                 } else {
-                    set_transient('zwssgr_auth_status', false, 600);
+
+                    set_transient('zwssgr_error_notice', $zwssgr_fetch_jwt_token_response['message'], 30);
 
                     // Redirect back to the submenu page with error notice
-                    wp_redirect(admin_url('admin.php?page=zwssgr_connect_google'));
+                    wp_redirect(admin_url('admin.php?page=zwssgr_dashboard'));
                     exit;
                 }
             }
@@ -384,6 +390,7 @@ if ( ! class_exists( 'Zwssgr_Google_My_Business_Connector' ) ) {
                 echo '<div class="notice notice-success is-dismissible"><p>' . esc_html($zwssgr_success_notice) . '</p></div>';
                 delete_transient('zwssgr_success_notice');
             }
+            
         }
     }
     Zwssgr_Google_My_Business_Connector::get_instance();
