@@ -7151,8 +7151,8 @@ document.addEventListener('DOMContentLoaded', function () {
   window.zwssgrSelectedOption = getQueryParam('selectedOption'); // Get the selected option ID from URL
 
   // Hide all tab content
-  document.querySelectorAll('.tab-content').forEach(function (tab) {
-    tab.style.display = 'none';
+  document.querySelectorAll('.zwssgr-tab-content').forEach(function (tab) {
+    tab.style.display = 'display';
   });
 
   // Show the active tab content
