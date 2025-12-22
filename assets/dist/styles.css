@@ -1571,6 +1571,7 @@
   width: 25px;
   height: 25px;
   padding-right: 10px;
+  box-sizing: content-box;
 }
 .zwssgr-badge2 {
   display: flex;
