@@ -390,16 +390,28 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 							// Format the published date based on the selected format
 							$zwssgr_formatted_date = '';
+
+							// Get timestamp directly from post to avoid locale issues with strtotime()
+                            $zwssgr_timestamp = get_post_time('U', true); // 'U' returns Unix timestamp, true = GMT
+                            if ($zwssgr_timestamp === false) {
+                                // Fallback: try to get timestamp from post date if get_post_time fails
+                                $zwssgr_timestamp = strtotime(get_the_date('Y-m-d'));
+                            }
+                            // Ensure we have a valid timestamp, default to current time if still invalid
+                            if ($zwssgr_timestamp === false || $zwssgr_timestamp <= 0) {
+                                $zwssgr_timestamp = time();
+                            }
+
 							if ($zwssgr_date_format === 'DD/MM/YYYY') {
-								$zwssgr_formatted_date = gmdate('d/m/Y', strtotime($zwssgr_published_date));
+								$zwssgr_formatted_date = gmdate('d/m/Y', $zwssgr_timestamp);
 							} elseif ($zwssgr_date_format === 'MM-DD-YYYY') {
-								$zwssgr_formatted_date = gmdate('m-d-Y', strtotime($zwssgr_published_date));
+								$zwssgr_formatted_date = gmdate('m-d-Y', $zwssgr_timestamp);
 							} elseif ($zwssgr_date_format === 'YYYY/MM/DD') {
-								$zwssgr_formatted_date = gmdate('Y/m/d', strtotime($zwssgr_published_date));
+								$zwssgr_formatted_date = gmdate('Y/m/d', $zwssgr_timestamp);
 							} elseif ($zwssgr_date_format === 'full') {
-								$zwssgr_day = gmdate('j', strtotime($zwssgr_published_date));
-								$zwssgr_month = $zwssgr_months[(int)gmdate('n', strtotime($zwssgr_published_date)) - 1];
-								$zwssgr_year = gmdate('Y', strtotime($zwssgr_published_date));
+								$zwssgr_day = gmdate('j', $zwssgr_timestamp);
+								$zwssgr_month = $zwssgr_months[(int)gmdate('n', $zwssgr_timestamp) - 1];
+								$zwssgr_year = gmdate('Y', $zwssgr_timestamp);
 								
 								// Construct the full date
 								$zwssgr_formatted_date = "$zwssgr_month $zwssgr_day, $zwssgr_year";
@@ -1695,16 +1707,28 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 						$zwssgr_trimmed_content = $zwssgr_is_trimmed ? mb_substr($zwssgr_review_content, 0, $zwssgr_char_limit) . '...' : $zwssgr_review_content; // Trim the content if necessary
 
 						$zwssgr_formatted_date = '';
+
+						// Get timestamp directly from post to avoid locale issues with strtotime()
+                        $zwssgr_timestamp = get_post_time('U', true); // 'U' returns Unix timestamp, true = GMT
+                        if ($zwssgr_timestamp === false) {
+                            // Fallback: try to get timestamp from post date if get_post_time fails
+                            $zwssgr_timestamp = strtotime(get_the_date('Y-m-d'));
+                        }
+                        // Ensure we have a valid timestamp, default to current time if still invalid
+                        if ($zwssgr_timestamp === false || $zwssgr_timestamp <= 0) {
+                            $zwssgr_timestamp = time();
+                        }
+
 						if ($zwssgr_date_format === 'DD/MM/YYYY') {
-							$zwssgr_formatted_date = gmdate('d/m/Y', strtotime($zwssgr_published_date));
+							$zwssgr_formatted_date = gmdate('d/m/Y', $zwssgr_timestamp);
 						} elseif ($zwssgr_date_format === 'MM-DD-YYYY') {
-							$zwssgr_formatted_date = gmdate('m-d-Y', strtotime($zwssgr_published_date));
+							$zwssgr_formatted_date = gmdate('m-d-Y', $zwssgr_timestamp);
 						} elseif ($zwssgr_date_format === 'YYYY/MM/DD') {
-							$zwssgr_formatted_date = gmdate('Y/m/d', strtotime($zwssgr_published_date));
+							$zwssgr_formatted_date = gmdate('Y/m/d', $zwssgr_timestamp);
 						} elseif ($zwssgr_date_format === 'full') {
 							$zwssgr_day = gmdate('j', strtotime($zwssgr_published_date));
-							$zwssgr_month = $zwssgr_months[(int)gmdate('n', strtotime($zwssgr_published_date)) - 1];
-							$zwssgr_year = gmdate('Y', strtotime($zwssgr_published_date));
+							$zwssgr_month = $zwssgr_months[(int)gmdate('n', $zwssgr_timestamp) - 1];
+							$zwssgr_year = gmdate('Y', $zwssgr_timestamp);
 							
 							// Construct the full date
 							$zwssgr_formatted_date = "$zwssgr_month $zwssgr_day, $zwssgr_year";

@@ -311,7 +311,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'labels' => $zwssgr_labels,
 				'description' => '',
 				'public' => true,
-				'publicly_queryable' => true,
+				'publicly_queryable' => false,
 				'show_ui' => true,
 				'delete_with_user' => true,
 				'show_in_rest' => false,
@@ -386,7 +386,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'labels' => $zwssgr_labels,
 				'description' => '',
 				'public' => true,
-				'publicly_queryable' => true,
+				'publicly_queryable' => false,
 				'show_ui' => true,
 				'delete_with_user' => true,
 				'show_in_rest' => false,
@@ -635,7 +635,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'labels'              => $zwssgr_labels,
 				'description'         => '',
 				'public'              => true,
-				'publicly_queryable'  => true,
+				'publicly_queryable'  => false,
 				'show_ui'             => true,
 				'delete_with_user'    => true,
 				'show_in_rest'        => false,
@@ -1491,7 +1491,17 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 
 					$zwssgr_formatted_date = '';
-					$zwssgr_timestamp = strtotime($zwssgr_published_date); // Calculate the timestamp once for better performance
+					
+					// Get timestamp directly from post to avoid locale issues with strtotime()
+                    $zwssgr_timestamp = get_post_time('U', true); // 'U' returns Unix timestamp, true = GMT
+                    if ($zwssgr_timestamp === false) {
+                        // Fallback: try to get timestamp from post date if get_post_time fails
+                        $zwssgr_timestamp = strtotime(get_the_date('Y-m-d'));
+                    }
+                    // Ensure we have a valid timestamp, default to current time if still invalid
+                    if ($zwssgr_timestamp === false || $zwssgr_timestamp <= 0) {
+                        $zwssgr_timestamp = time();
+                    }
 
 					if ($zwssgr_date_format === 'DD/MM/YYYY') {
 						$zwssgr_formatted_date = gmdate('d/m/Y', $zwssgr_timestamp);
@@ -2291,12 +2301,12 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				</ul>
 
 				<!-- Tab Data Fetch Areas -->
-				<div class="tab-content zwssgr-tab-content" id="tab-fetch-data">
+				<div class="zwssgr-tab-content" id="tab-fetch-data">
 					<?php zwssgr_Google_My_Business_Connector::get_instance()->zwssgr_fetch_gmb_data_callback(); ?>
 				</div>
 
 				<!-- Tab Content Areas -->
-				<div class="tab-content zwssgr-tab-content" id="tab-options">
+				<div class="zwssgr-tab-content" id="tab-options">
 					<!-- Dynamically Render Radio Buttons -->
 					<div class="zwssgr-layout-radio"> 
 						<label><input type="radio" name="display_option" class="zwssgr-radio" value="all" checked> <span><?php echo esc_html__('All', 'smart-showcase-for-google-reviews'); ?></span></label>
@@ -2374,7 +2384,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</div>
 				</div>
 
-				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-selected">
+				<div class="zwssgr-tab-content zwssgr-tab-content-display" id="tab-selected">
 					<h3><?php echo esc_html__('Selected Option', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="selected-option-display" class="selected-option-display zwssgr-selected-option-display" data-layout-option="<?php echo esc_attr( $zwssgr_layout_option ); ?>"></div>
 					<?php if (!in_array($zwssgr_layout_option, ['badge-1', 'badge-2', 'badge-3', 'badge-4', 'badge-5', 'badge-6', 'badge-7', 'badge-8', 'badge-9'], true)) : ?>
@@ -2610,7 +2620,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					</button>
 				</div>
 
-				<div class="tab-content zwssgr-tab-content zwssgr-tab-content-display" id="tab-shortcode">
+				<div class="zwssgr-tab-content zwssgr-tab-content-display" id="tab-shortcode">
 					<h3><?php echo esc_html__('Generated Shortcode', 'smart-showcase-for-google-reviews'); ?></h3>
 					<div id="generated-shortcode-display" class="generated-shortcode-display zwssgr-generated-shortcode-display">
 						<div class="zwssgr-shortcode">
@@ -2900,7 +2910,17 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					$zwssgr_trimmed_content = $zwssgr_is_trimmed ? mb_substr($zwssgr_review_content, 0, $zwssgr_char_limit) . '...' : $zwssgr_review_content; // Trim the content if necessary
 
 					$zwssgr_formatted_date = '';
-					$zwssgr_timestamp = strtotime($zwssgr_published_date); // Calculate the timestamp once for better performance
+
+					// Get timestamp directly from post to avoid locale issues with strtotime()
+                    $zwssgr_timestamp = get_post_time('U', true); // 'U' returns Unix timestamp, true = GMT
+                    if ($zwssgr_timestamp === false) {
+                        // Fallback: try to get timestamp from post date if get_post_time fails
+                        $zwssgr_timestamp = strtotime(get_the_date('Y-m-d'));
+                    }
+                    // Ensure we have a valid timestamp, default to current time if still invalid
+                    if ($zwssgr_timestamp === false || $zwssgr_timestamp <= 0) {
+                        $zwssgr_timestamp = time();
+                    }
 
 					if ($zwssgr_date_format === 'DD/MM/YYYY') {
 						$zwssgr_formatted_date = gmdate('d/m/Y', $zwssgr_timestamp);
