@@ -95,7 +95,7 @@ foreach ( $matched_blogs as $blog ) {
 	);
 }
 
-$faq_api_url   = 'https://store.zealousweb.com/productfaq/products/faqs?sku=ssgr';
+$faq_api_url   = 'https://store.zealousweb.com/productfaq/products/faqs?sku=sgrwp';
 $faq_cache_key = 'zwssgr_faqs_cache_v1';
 $faqs_raw      = get_transient( $faq_cache_key );
 
