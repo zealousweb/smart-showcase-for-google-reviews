@@ -285,6 +285,22 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				'zwssgr_settings',
 				array($this, 'zwssgr_settings_callback')
 			);
+
+			add_submenu_page(
+				'zwssgr_dashboard',
+				__( 'Help & Support', 'smart-showcase-for-google-reviews-pro' ),
+				__( 'Help & Support', 'smart-showcase-for-google-reviews-pro' ),
+				'manage_options',
+				'zwssgr_help_support',
+				array( $this, 'zwssgr_help_support_page' )
+			);
+		}
+
+		/**
+		 * Help & Support admin page.
+		 */
+		function zwssgr_help_support_page() {
+			require_once ZWSSGR_DIR . '/inc/admin/template/class.' . ZWSSGR_PREFIX . '.help.support.php';
 		}
 
 		// Register Custom Post Type: Widget

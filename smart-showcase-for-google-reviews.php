@@ -73,6 +73,10 @@ if ( !defined( 'ZWSSGR_UPLOAD_URL' ) ) {
     define( 'ZWSSGR_UPLOAD_URL', $zwssgr_upload_url['baseurl'] ); // Define constant for the base URL
 }
 
+if ( ! defined( 'ZWSSGR_FRONTEND_BLOG_URL' ) ) {
+    define( 'ZWSSGR_FRONTEND_BLOG_URL', 'https://www.zealousweb.com/blog/' );
+}
+
 
 
 /**
