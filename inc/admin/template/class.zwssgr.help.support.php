@@ -11,130 +11,130 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-$plugin_data           = get_plugin_data( ZWSSGR_FILE );
-$current_plugin_name   = isset( $plugin_data['Name'] ) ? $plugin_data['Name'] : '';
+$zwssgr_plugin_data           = get_plugin_data( ZWSSGR_FILE );
+$zwssgr_current_plugin_name   = isset( $zwssgr_plugin_data['Name'] ) ? $zwssgr_plugin_data['Name'] : '';
 
 /*--------------------------------------------------------------
 # Remote data (blogs + FAQs) with transient cache
 --------------------------------------------------------------*/
 
-$api_url    = 'https://api.zealousweb.com/wp-json/acf/v3/options/options/plugin_blogs/';
-$cache_key  = 'zwssgr_plugin_blogs_cache_v1';
-$data       = get_transient( $cache_key );
-$needs_refetch = (
-	false === $data
-	|| ! is_array( $data )
-	|| empty( $data['plugin_blogs'] )
-	|| ! is_array( $data['plugin_blogs'] )
+$zwssgr_api_url    = 'https://api.zealousweb.com/wp-json/acf/v3/options/options/plugin_blogs/';
+$zwssgr_cache_key  = 'zwssgr_plugin_blogs_cache_v1';
+$zwssgr_data       = get_transient( $zwssgr_cache_key );
+$zwssgr_needs_refetch = (
+	false === $zwssgr_data
+	|| ! is_array( $zwssgr_data )
+	|| empty( $zwssgr_data['plugin_blogs'] )
+	|| ! is_array( $zwssgr_data['plugin_blogs'] )
 );
 
-if ( $needs_refetch ) {
-	$data = array();
-	$response = wp_remote_get(
-		$api_url,
+if ( $zwssgr_needs_refetch ) {
+	$zwssgr_data = array();
+	$zwssgr_response = wp_remote_get(
+		$zwssgr_api_url,
 		array(
 			'timeout'   => 20,
 			'sslverify' => true,
 		)
 	);
 
-	if ( ! is_wp_error( $response ) ) {
-		$body = wp_remote_retrieve_body( $response );
-		$decoded = json_decode( $body, true );
-		if ( is_array( $decoded ) ) {
-			$data = $decoded;
+	if ( ! is_wp_error( $zwssgr_response ) ) {
+		$zwssgr_body = wp_remote_retrieve_body( $zwssgr_response );
+		$zwssgr_decoded = json_decode( $zwssgr_body, true );
+		if ( is_array( $zwssgr_decoded ) ) {
+			$zwssgr_data = $zwssgr_decoded;
 		}
 	}
 
 	// Cache only valid payloads, so a temporary API failure does not hide blogs for 24h.
-	if ( ! empty( $data['plugin_blogs'] ) && is_array( $data['plugin_blogs'] ) ) {
-		set_transient( $cache_key, $data, DAY_IN_SECONDS );
+	if ( ! empty( $zwssgr_data['plugin_blogs'] ) && is_array( $zwssgr_data['plugin_blogs'] ) ) {
+		set_transient( $zwssgr_cache_key, $zwssgr_data, DAY_IN_SECONDS );
 	} else {
-		delete_transient( $cache_key );
+		delete_transient( $zwssgr_cache_key );
 	}
 }
 
 
-$matched_blogs = array();
+$zwssgr_matched_blogs = array();
 
-if ( ! empty( $data['plugin_blogs'] ) && is_array( $data['plugin_blogs'] ) ) {
-	$current_name = strtolower( preg_replace( '/[^a-z0-9]/i', '', (string) $current_plugin_name ) );
-	foreach ( $data['plugin_blogs'] as $plugin_item ) {
-		if ( empty( $plugin_item['plugin_name'] ) || empty( $plugin_item['blogs'] ) || ! is_array( $plugin_item['blogs'] ) ) {
+if ( ! empty( $zwssgr_data['plugin_blogs'] ) && is_array( $zwssgr_data['plugin_blogs'] ) ) {
+	$zwssgr_current_name = strtolower( preg_replace( '/[^a-z0-9]/i', '', (string) $zwssgr_current_plugin_name ) );
+	foreach ( $zwssgr_data['plugin_blogs'] as $zwssgr_plugin_item ) {
+		if ( empty( $zwssgr_plugin_item['plugin_name'] ) || empty( $zwssgr_plugin_item['blogs'] ) || ! is_array( $zwssgr_plugin_item['blogs'] ) ) {
 			continue;
 		}
 
-		$api_name = strtolower( preg_replace( '/[^a-z0-9]/i', '', (string) $plugin_item['plugin_name'] ) );
+		$zwssgr_api_name = strtolower( preg_replace( '/[^a-z0-9]/i', '', (string) $zwssgr_plugin_item['plugin_name'] ) );
 
 		// Keep matching flexible: exact match first, then "contains" for minor naming variants.
 		if (
-			$api_name === $current_name
-			|| ( '' !== $api_name && '' !== $current_name && false !== strpos( $api_name, $current_name ) )
-			|| ( '' !== $api_name && '' !== $current_name && false !== strpos( $current_name, $api_name ) )
+			$zwssgr_api_name === $zwssgr_current_name
+			|| ( '' !== $zwssgr_api_name && '' !== $zwssgr_current_name && false !== strpos( $zwssgr_api_name, $zwssgr_current_name ) )
+			|| ( '' !== $zwssgr_api_name && '' !== $zwssgr_current_name && false !== strpos( $zwssgr_current_name, $zwssgr_api_name ) )
 		) {
-			$matched_blogs = $plugin_item['blogs'];
+			$zwssgr_matched_blogs = $zwssgr_plugin_item['blogs'];
 			break;
 		}
 	}
 }
 
 
-$help_blog_posts = array();
+$zwssgr_help_blog_posts = array();
 
-foreach ( $matched_blogs as $blog ) {
-	$blog_slug  = isset( $blog['post_name'] ) ? sanitize_title( $blog['post_name'] ) : '';
-	$blog_title = isset( $blog['post_title'] ) ? $blog['post_title'] : '';
+foreach ( $zwssgr_matched_blogs as $zwssgr_blog ) {
+	$zwssgr_blog_slug  = isset( $zwssgr_blog['post_name'] ) ? sanitize_title( $zwssgr_blog['post_name'] ) : '';
+	$zwssgr_blog_title = isset( $zwssgr_blog['post_title'] ) ? $zwssgr_blog['post_title'] : '';
 
-	if ( '' === $blog_slug || '' === $blog_title ) {
+	if ( '' === $zwssgr_blog_slug || '' === $zwssgr_blog_title ) {
 		continue;
 	}
 
-	$help_blog_posts[] = array(
-		'url'   => trailingslashit( ZWSSGR_FRONTEND_BLOG_URL ) . $blog_slug . '/',
-		'title' => $blog_title,
+	$zwssgr_help_blog_posts[] = array(
+		'url'   => trailingslashit( ZWSSGR_FRONTEND_BLOG_URL ) . $zwssgr_blog_slug . '/',
+		'title' => $zwssgr_blog_title,
 	);
 }
 
-$faq_api_url   = 'https://store.zealousweb.com/productfaq/products/faqs?sku=sgrwp';
-$faq_cache_key = 'zwssgr_faqs_cache_v1';
-$faqs_raw      = get_transient( $faq_cache_key );
+$zwssgr_faq_api_url   = 'https://store.zealousweb.com/productfaq/products/faqs?sku=sgrwp';
+$zwssgr_faq_cache_key = 'zwssgr_faqs_cache_v1';
+$zwssgr_faqs_raw      = get_transient( $zwssgr_faq_cache_key );
 
-if ( false === $faqs_raw || ! is_array( $faqs_raw ) ) {
-	$faqs_raw = array();
-	$faq_response = wp_remote_get(
-		$faq_api_url,
+if ( false === $zwssgr_faqs_raw || ! is_array( $zwssgr_faqs_raw ) ) {
+	$zwssgr_faqs_raw = array();
+	$zwssgr_faq_response = wp_remote_get(
+		$zwssgr_faq_api_url,
 		array(
 			'timeout'   => 20,
 			'sslverify' => true,
 		)
 	);
 
-	if ( ! is_wp_error( $faq_response ) ) {
-		$faq_body = wp_remote_retrieve_body( $faq_response );
-		$faq_data = json_decode( $faq_body, true );
+	if ( ! is_wp_error( $zwssgr_faq_response ) ) {
+		$zwssgr_faq_body = wp_remote_retrieve_body( $zwssgr_faq_response );
+		$zwssgr_faq_data = json_decode( $zwssgr_faq_body, true );
 
-		if ( ! empty( $faq_data['faqs'] ) && is_array( $faq_data['faqs'] ) ) {
-			$faqs_raw = $faq_data['faqs'];
+		if ( ! empty( $zwssgr_faq_data['faqs'] ) && is_array( $zwssgr_faq_data['faqs'] ) ) {
+			$zwssgr_faqs_raw = $zwssgr_faq_data['faqs'];
 		}
 	}
 
-	set_transient( $faq_cache_key, $faqs_raw, DAY_IN_SECONDS );
+	set_transient( $zwssgr_faq_cache_key, $zwssgr_faqs_raw, DAY_IN_SECONDS );
 }
 
-$help_faqs = array();
+$zwssgr_help_faqs = array();
 
-foreach ( $faqs_raw as $faq_index => $faq ) {
-	$question = isset( $faq['question'] ) ? $faq['question'] : '';
-	$answer   = isset( $faq['answer'] ) ? $faq['answer'] : '';
+foreach ( $zwssgr_faqs_raw as $zwssgr_faq_index => $zwssgr_faq ) {
+	$zwssgr_question = isset( $zwssgr_faq['question'] ) ? $zwssgr_faq['question'] : '';
+	$zwssgr_answer   = isset( $zwssgr_faq['answer'] ) ? $zwssgr_faq['answer'] : '';
 
-	if ( '' === $question || '' === $answer ) {
+	if ( '' === $zwssgr_question || '' === $zwssgr_answer ) {
 		continue;
 	}
 
-	$help_faqs[] = array(
-		'id'       => isset( $faq['id'] ) ? $faq['id'] : (string) ( $faq_index + 1 ),
-		'question' => $question,
-		'answer'   => $answer,
+	$zwssgr_help_faqs[] = array(
+		'id'       => isset( $zwssgr_faq['id'] ) ? $zwssgr_faq['id'] : (string) ( $zwssgr_faq_index + 1 ),
+		'question' => $zwssgr_question,
+		'answer'   => $zwssgr_answer,
 	);
 }
 
@@ -142,12 +142,12 @@ foreach ( $faqs_raw as $faq_index => $faq ) {
 # Newsletter embed (cached HTML string)
 --------------------------------------------------------------*/
 
-$newsletter_embed_html = get_transient( 'zwssgr_help_newsletter_embed_html_v1' );
+$zwssgr_newsletter_embed_html = get_transient( 'zwssgr_help_newsletter_embed_html_v1' );
 
-if ( false === $newsletter_embed_html || ! is_string( $newsletter_embed_html ) || '' === $newsletter_embed_html ) {
-	$newsletter_embed_html  = '<iframe src="//api.zealousweb.com/gfembed/?f=55" width="100%" frameborder="0" scrolling="no" loading="lazy" class="gfiframe" style="display:block;border:0;overflow:hidden;min-height:170px;"></iframe>';
-	$newsletter_embed_html .= '<script src="//api.zealousweb.com/wp-content/plugins/gravity-forms-iframe-develop/assets/scripts/gfembed.min.js" type="text/javascript"></script>';
-	set_transient( 'zwssgr_help_newsletter_embed_html_v1', $newsletter_embed_html, DAY_IN_SECONDS );
+if ( false === $zwssgr_newsletter_embed_html || ! is_string( $zwssgr_newsletter_embed_html ) || '' === $zwssgr_newsletter_embed_html ) {
+	$zwssgr_newsletter_embed_html  = '<iframe src="//api.zealousweb.com/gfembed/?f=55" width="100%" frameborder="0" scrolling="no" loading="lazy" class="gfiframe" style="display:block;border:0;overflow:hidden;min-height:170px;"></iframe>';
+	$zwssgr_newsletter_embed_html .= '<script src="//api.zealousweb.com/wp-content/plugins/gravity-forms-iframe-develop/assets/scripts/gfembed.min.js" type="text/javascript"></script>';
+	set_transient( 'zwssgr_help_newsletter_embed_html_v1', $zwssgr_newsletter_embed_html, DAY_IN_SECONDS );
 }
 
 ?>
@@ -218,7 +218,7 @@ if ( false === $newsletter_embed_html || ! is_string( $newsletter_embed_html ) |
 				<div class="zwssgr-help-card-footer zwssgr-help-newsletter-embed">
 					<?php
 					echo wp_kses(
-						$newsletter_embed_html,
+						$zwssgr_newsletter_embed_html,
 						array(
 							'iframe' => array(
 								'src'         => true,
@@ -243,7 +243,7 @@ if ( false === $newsletter_embed_html || ! is_string( $newsletter_embed_html ) |
 		</div>
 
 		<div class="zwssgr-help-bottom-grid">
-			<?php if ( ! empty( $help_blog_posts ) ) : ?>
+			<?php if ( ! empty( $zwssgr_help_blog_posts ) ) : ?>
                 <div class="zwssgr-help-card zwssgr-help-card-wide">
                     <div class="zwssgr-help-card-icon" aria-hidden="true">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -260,10 +260,10 @@ if ( false === $newsletter_embed_html || ! is_string( $newsletter_embed_html ) |
                     </p>
 
                     <ul class="zwssgr-help-list" aria-label="<?php esc_attr_e( 'Related blog posts', 'smart-showcase-for-google-reviews' ); ?>">
-                        <?php foreach ( $help_blog_posts as $help_blog_post ) : ?>
+                        <?php foreach ( $zwssgr_help_blog_posts as $zwssgr_help_blog_post ) : ?>
                             <li>
-                                <a href="<?php echo esc_url( $help_blog_post['url'] ); ?>" target="_blank" rel="noopener noreferrer">
-                                    <?php echo esc_html( $help_blog_post['title'] ); ?>
+                                <a href="<?php echo esc_url( $zwssgr_help_blog_post['url'] ); ?>" target="_blank" rel="noopener noreferrer">
+                                    <?php echo esc_html( $zwssgr_help_blog_post['title'] ); ?>
                                 </a>
                             </li>
                         <?php endforeach; ?>
@@ -281,27 +281,27 @@ if ( false === $newsletter_embed_html || ! is_string( $newsletter_embed_html ) |
 				<h2 class="zwssgr-help-card-title"><?php esc_html_e( 'Frequently Asked Questions', 'smart-showcase-for-google-reviews' ); ?></h2>
 
 				<div class="zwssgr-help-faq-list" role="list">
-					<?php if ( ! empty( $help_faqs ) ) : ?>
-						<?php foreach ( $help_faqs as $faq_index => $help_faq ) : ?>
+					<?php if ( ! empty( $zwssgr_help_faqs ) ) : ?>
+						<?php foreach ( $zwssgr_help_faqs as $zwssgr_faq_index => $zwssgr_help_faq ) : ?>
 							<?php
-							$faq_id        = isset( $help_faq['id'] ) ? preg_replace( '/[^a-zA-Z0-9_-]/', '', (string) $help_faq['id'] ) : (string) ( $faq_index + 1 );
-							$faq_suffix    = $faq_id . '-' . (int) $faq_index;
-							$is_first_open = ( 0 === (int) $faq_index );
-							$question_id   = 'zwssgr-faq-question-' . $faq_suffix;
-							$answer_id     = 'zwssgr-faq-answer-' . $faq_suffix;
+							$zwssgr_faq_id        = isset( $zwssgr_help_faq['id'] ) ? preg_replace( '/[^a-zA-Z0-9_-]/', '', (string) $zwssgr_help_faq['id'] ) : (string) ( $zwssgr_faq_index + 1 );
+							$zwssgr_faq_suffix    = $zwssgr_faq_id . '-' . (int) $zwssgr_faq_index;
+							$zwssgr_is_first_open = ( 0 === (int) $zwssgr_faq_index );
+							$zwssgr_question_id   = 'zwssgr-faq-question-' . $zwssgr_faq_suffix;
+							$zwssgr_answer_id     = 'zwssgr-faq-answer-' . $zwssgr_faq_suffix;
 							?>
-							<div class="zwssgr-help-faq-item<?php echo $is_first_open ? ' is-open' : ''; ?>" role="listitem">
+							<div class="zwssgr-help-faq-item<?php echo $zwssgr_is_first_open ? ' is-open' : ''; ?>" role="listitem">
 								<button type="button" class="zwssgr-help-faq-question"
-									aria-expanded="<?php echo $is_first_open ? 'true' : 'false'; ?>"
-									aria-controls="<?php echo esc_attr( $answer_id ); ?>"
-									id="<?php echo esc_attr( $question_id ); ?>">
-									<?php echo esc_html( $help_faq['question'] ); ?>
-									<span aria-hidden="true"><?php echo $is_first_open ? '&minus;' : '+'; ?></span>
+									aria-expanded="<?php echo $zwssgr_is_first_open ? 'true' : 'false'; ?>"
+									aria-controls="<?php echo esc_attr( $zwssgr_answer_id ); ?>"
+									id="<?php echo esc_attr( $zwssgr_question_id ); ?>">
+									<?php echo esc_html( $zwssgr_help_faq['question'] ); ?>
+									<span aria-hidden="true"><?php echo $zwssgr_is_first_open ? '&minus;' : '+'; ?></span>
 								</button>
-								<div class="zwssgr-help-faq-answer" id="<?php echo esc_attr( $answer_id ); ?>" role="region"
-									aria-labelledby="<?php echo esc_attr( $question_id ); ?>"
-									aria-hidden="<?php echo $is_first_open ? 'false' : 'true'; ?>">
-									<?php echo wp_kses_post( $help_faq['answer'] ); ?>
+								<div class="zwssgr-help-faq-answer" id="<?php echo esc_attr( $zwssgr_answer_id ); ?>" role="region"
+									aria-labelledby="<?php echo esc_attr( $zwssgr_question_id ); ?>"
+									aria-hidden="<?php echo $zwssgr_is_first_open ? 'false' : 'true'; ?>">
+									<?php echo wp_kses_post( $zwssgr_help_faq['answer'] ); ?>
 								</div>
 							</div>
 						<?php endforeach; ?>

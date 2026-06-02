@@ -288,8 +288,8 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 
 			add_submenu_page(
 				'zwssgr_dashboard',
-				__( 'Help & Support', 'smart-showcase-for-google-reviews-pro' ),
-				__( 'Help & Support', 'smart-showcase-for-google-reviews-pro' ),
+				__( 'Help & Support', 'smart-showcase-for-google-reviews' ),
+				__( 'Help & Support', 'smart-showcase-for-google-reviews' ),
 				'manage_options',
 				'zwssgr_help_support',
 				array( $this, 'zwssgr_help_support_page' )
