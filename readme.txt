@@ -69,7 +69,9 @@ Yes, you can display Google reviews on any page, post, or widget area of your si
 == Upgrade Notice ==
 
 = 1.0.7 =
-* Added a new "Open Support Ticket" button to provide quick and direct access to support
+* Access helpful resources including documentation, FAQs, and support options in one place.
+* Easily submit support tickets or explore guides to resolve issues quickly.
+* Stay updated with the latest insights through blogs and newsletter subscriptions.
 
 = 1.0.6 =
 * Fixed issues and improved icon design
@@ -243,7 +245,9 @@ Link: [Watch on YouTube](https://www.youtube.com/playlist?list=PLBQXEmIlghW4_EPl
 == Changelog ==
 
 = 1.0.7 =
-* Added a new "Open Support Ticket" button to provide quick and direct access to support
+* Access helpful resources including documentation, FAQs, and support options in one place.
+* Easily submit support tickets or explore guides to resolve issues quickly.
+* Stay updated with the latest insights through blogs and newsletter subscriptions.
 
 = 1.0.6 =
 * Fixed issues and improved icon design
