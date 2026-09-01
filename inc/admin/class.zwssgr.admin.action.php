@@ -1445,7 +1445,21 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'compare' => '=',
 					'type'    => 'CHAR'
 				);
-			}			
+			}
+
+			$zwssgr_active_keyword = '';
+			if ( is_array( $zwssgr_keywords ) ) {
+				$zwssgr_filtered_keywords = array_values( array_filter( array_map( 'trim', $zwssgr_keywords ), 'strlen' ) );
+				if ( count( $zwssgr_filtered_keywords ) === 1 ) {
+					$zwssgr_active_keyword = $zwssgr_filtered_keywords[0];
+					$zwssgr_reviews_args['meta_query'][] = array(
+						'key'     => 'zwssgr_review_comment',
+						'value'   => stripslashes( $zwssgr_active_keyword ),
+						'compare' => 'LIKE',
+					);
+				}
+			}
+			$zwssgr_no_reviews_message = ZWSSGR()->zwssgr_lib->zwssgr_get_no_reviews_message( $zwssgr_active_keyword );
 
 			// Add sort_by filters
 			switch ($zwssgr_sort_by) {
@@ -2017,7 +2031,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<div class="zwssgr-slider zwssgr-slider1" id="zwssgr-slider1"> 
 						<div class="swiper zwssgr-slider-1">
 							<div class="swiper-wrapper">
-								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content1  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 							</div>
 						</div>
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
@@ -2026,7 +2040,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<div class="zwssgr-slider zwssgr-slider2" id="zwssgr-slider2">
 						<div class="swiper zwssgr-slider-2">
 							<div class="swiper-wrapper">
-								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content2  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 							</div>
 						</div>
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
@@ -2055,13 +2069,13 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 							<div class="swiper-button-prev zwssgr-swiper-button-prev"></div>
 						</div>
 					</div>'
-					: '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>'
+					: '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>'
 				) . '
 				',
 					'<div class="zwssgr-slider zwssgr-slider4" id="zwssgr-slider4">
 						<div class="zwssgr-slider-4 swiper">
 							<div class="swiper-wrapper">
-								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content4  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 							</div>
 						</div>
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
@@ -2070,7 +2084,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<div class="zwssgr-slider zwssgr-slider5" id="zwssgr-slider5">
 						<div class="zwssgr-slider-5 swiper">
 							<div class="swiper-wrapper">
-								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content5  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content5  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 							</div>
 						</div>
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
@@ -2079,7 +2093,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'<div class="zwssgr-slider zwssgr-slider6" id="zwssgr-slider6">
 						<div class="zwssgr-slider-6 swiper">
 							<div class="swiper-wrapper">
-								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content6  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+								' . (($zwssgr_post_count > 0) ? $zwssgr_slider_content6  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 							</div>
 						</div>
 						<div class="swiper-button-next zwssgr-swiper-button-next"></div>
@@ -2088,36 +2102,36 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 				],
 				'grid' => [
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid1" id="zwssgr-grid1">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content1  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid2" id="zwssgr-grid2">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content2  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid3" id="zwssgr-grid3">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content3  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid4" id="zwssgr-grid4">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content4  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-grid-item zwssgr-grid5" id="zwssgr-grid5">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content5  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_grid_content5  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>'
 				],
 				'list' => [
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list1" id="zwssgr-list1">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content1  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list2" id="zwssgr-list2">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content2  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list3" id="zwssgr-list3">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content3  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content3  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list4" id="zwssgr-list4">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content4  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content4  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>',
 					'<div class="zwssgr-slider zwssgr-list zwssgr-list5" id="zwssgr-list5">
-						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content5  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+						' . (($zwssgr_post_count > 0) ? $zwssgr_list_content5  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 					</div>'
 				],
 				'badge' => [
@@ -2254,7 +2268,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2285,7 +2299,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 								</div>
 							</div>
 						</div>
@@ -2867,7 +2881,23 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 					'compare' => '=',
 					'type'    => 'CHAR'
 				);
-			}			
+			}
+
+			$zwssgr_active_keyword = '';
+			$zwssgr_keywords = get_post_meta( $zwssgr_post_id, 'keywords', true );
+			if ( is_array( $zwssgr_keywords ) ) {
+				$zwssgr_filtered_keywords = array_values( array_filter( array_map( 'trim', $zwssgr_keywords ), 'strlen' ) );
+				if ( count( $zwssgr_filtered_keywords ) === 1 ) {
+					$zwssgr_active_keyword = $zwssgr_filtered_keywords[0];
+					$zwssgr_args['meta_query'][] = array(
+						'key'     => 'zwssgr_review_comment',
+						'value'   => stripslashes( $zwssgr_active_keyword ),
+						'compare' => 'LIKE',
+					);
+				}
+			}
+			$zwssgr_no_reviews_message = ZWSSGR()->zwssgr_lib->zwssgr_get_no_reviews_message( $zwssgr_active_keyword );
+
 			// Add sorting logic
 			switch ($zwssgr_sort_by) {
 				case 'newest':
@@ -3374,7 +3404,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 			} 
 			else {
 				if ($zwssgr_layout_option != "popup-1" && $zwssgr_layout_option != "popup-2") {
-					echo '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>';
+					echo '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>';
 				}				
 			}
 
@@ -3566,7 +3596,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content1  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 								</div>
 							</div>
 						</div>
@@ -3597,7 +3627,7 @@ if ( !class_exists( 'ZWSSGR_Admin_Action' ) ){
 									</div>
 								</div>
 								<div class="zwssgr-slider zwssgr-grid-item zwssgr-popup-list">
-									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.esc_html__('No reviews found for the selected ratings', 'smart-showcase-for-google-reviews').'</p>') . '
+									' . (($zwssgr_post_count > 0) ? $zwssgr_popup_content2  : '<p class="zwssgr-no-found-message">'.$zwssgr_no_reviews_message.'</p>') . '
 								</div>
 							</div>
 						</div>
