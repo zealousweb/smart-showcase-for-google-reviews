@@ -148,26 +148,91 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 			}
 		}
 
+		/**
+		 * Return the single configured keyword when the widget has exactly one keyword.
+		 * Multiple keywords return an empty string so the existing chip UI stays in use.
+		 *
+		 * @param int $zwssgr_post_id Widget post ID.
+		 * @return string
+		 */
+		function zwssgr_get_single_locked_keyword( $zwssgr_post_id ) {
+			$zwssgr_keywords = get_post_meta( $zwssgr_post_id, 'keywords', true );
+
+			if ( ! is_array( $zwssgr_keywords ) ) {
+				return '';
+			}
+
+			$zwssgr_keywords = array_values( array_filter( array_map( 'trim', $zwssgr_keywords ), 'strlen' ) );
+
+			if ( count( $zwssgr_keywords ) === 1 ) {
+				return $zwssgr_keywords[0];
+			}
+
+			return '';
+		}
+
+		/**
+		 * Meta query clause to match a keyword inside review comments.
+		 *
+		 * @param string $zwssgr_keyword Keyword to search for.
+		 * @return array
+		 */
+		function zwssgr_keyword_comment_meta_query( $zwssgr_keyword ) {
+			return array(
+				'key'     => 'zwssgr_review_comment',
+				'value'   => stripslashes( $zwssgr_keyword ),
+				'compare' => 'LIKE',
+			);
+		}
+
+		/**
+		 * Empty-state message based on the active keyword filter.
+		 *
+		 * @param string $active_keyword Active keyword, if any.
+		 * @return string
+		 */
+		function zwssgr_get_no_reviews_message( $active_keyword = '' ) {
+			$active_keyword = trim( (string) $active_keyword );
+
+			if ( ! empty( $active_keyword ) && 'all' !== $active_keyword ) {
+				return sprintf(
+					/* translators: %s: keyword */
+					esc_html__( 'No reviews found for the keyword "%s".', 'smart-showcase-for-google-reviews' ),
+					esc_html( $active_keyword )
+				);
+			}
+
+			return esc_html__( 'No reviews found for the selected ratings.', 'smart-showcase-for-google-reviews' );
+		}
+
 		function zwssgr_keyword_search($zwssgr_post_id) {
 			// Get the keywords meta data for the given post ID
 			$zwssgr_keywords = get_post_meta($zwssgr_post_id, 'keywords', true);
-		
-			// Check if keywords are available and is an array
-			if (is_array($zwssgr_keywords) && !empty($zwssgr_keywords)) {
-				echo "<div id='zwssgr-front-keywords-list-" . esc_attr( $zwssgr_post_id ) . "' class='zwssgr-front-keywords-list zwssgr-front-keyword-list'>";
-					echo '<h3 class="zwssgr-label-font">'.esc_html__('Keywords', 'smart-showcase-for-google-reviews').'</h3>';
-					echo '<ul>';  // Start an unordered list
-			
-						// Add "All" as the first keyword
-						echo '<li class="zwssgr-keyword-item zwssgr-all-keyword selected" data-zwssgr-keyword="all">'.esc_html__('All', 'smart-showcase-for-google-reviews').'</li>';
-				
-						foreach ($zwssgr_keywords as $zwssgr_keyword) {
-							// Display each keyword as a list item
-							echo '<li class="zwssgr-keyword-item" data-zwssgr-keyword="' . esc_attr($zwssgr_keyword) . '">' . esc_html($zwssgr_keyword) . '</li>';
-						}
-					echo '</ul>';
-				echo '</div>';
+
+			if ( ! is_array( $zwssgr_keywords ) || empty( $zwssgr_keywords ) ) {
+				return;
 			}
+
+			$zwssgr_keywords = array_values( array_filter( array_map( 'trim', $zwssgr_keywords ), 'strlen' ) );
+
+			// One keyword: hide the All / chip bar. Reviews are already scoped to that word.
+			if ( count( $zwssgr_keywords ) <= 1 ) {
+				return;
+			}
+
+			echo "<div id='zwssgr-front-keywords-list-" . esc_attr( $zwssgr_post_id ) . "' class='zwssgr-front-keywords-list zwssgr-front-keyword-list'>";
+				echo '<h3 class="zwssgr-label-font">'.esc_html__('Keywords', 'smart-showcase-for-google-reviews').'</h3>';
+				echo '<ul>';  // Start an unordered list
+		
+					// Add "All" as the first keyword
+					echo '<li class="zwssgr-keyword-item zwssgr-all-keyword selected" data-zwssgr-keyword="all">'.esc_html__('All', 'smart-showcase-for-google-reviews').'</li>';
+			
+					foreach ($zwssgr_keywords as $zwssgr_keyword) {
+						// Display each keyword as a list item
+						echo '<li class="zwssgr-keyword-item" data-zwssgr-keyword="' . esc_attr($zwssgr_keyword) . '">' . esc_html($zwssgr_keyword) . '</li>';
+					}
+				echo '</ul>';
+			echo '</div>';
 		}
 
 
@@ -302,7 +367,12 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 					'compare' => '=',
 					'type'    => 'CHAR'
 				);
-			}		
+			}
+
+			$zwssgr_locked_keyword = $this->zwssgr_get_single_locked_keyword( $zwssgr_post_id );
+			if ( ! empty( $zwssgr_locked_keyword ) ) {
+				$zwssgr_args['meta_query'][] = $this->zwssgr_keyword_comment_meta_query( $zwssgr_locked_keyword );
+			}
 			
 			// Adjust sorting based on the 'sort_by' value
 			switch ($zwssgr_sort_by) {
@@ -1507,7 +1577,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 						echo '</div>';
 					}
 				} else {
-					echo '<p class="zwssgr-no-found-message">' . esc_html__('No reviews found for the selected ratings.', 'smart-showcase-for-google-reviews') . '</p>';
+					echo '<p class="zwssgr-no-found-message">' . $this->zwssgr_get_no_reviews_message( $zwssgr_locked_keyword ) . '</p>';
 				}
 
 			echo '</div>';
@@ -1569,6 +1639,10 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 			$zwssgr_sort_by = isset($_POST['front_sort_by']) ? sanitize_text_field(wp_unslash($_POST['front_sort_by'])) : (get_post_meta($zwssgr_post_id, 'sort_by', true) ?: 'newest');
 			$zwssgr_front_keyword = isset($_POST['front_keyword']) ? sanitize_text_field(wp_unslash($_POST['front_keyword'])) : '';
+			$zwssgr_locked_keyword = $this->zwssgr_get_single_locked_keyword( $zwssgr_post_id );
+			if ( ! empty( $zwssgr_locked_keyword ) ) {
+				$zwssgr_front_keyword = $zwssgr_locked_keyword;
+			}
 
 			
 			$zwssgr_language = get_post_meta($zwssgr_post_id, 'language', true) ?: 'en'; 
@@ -1626,11 +1700,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 
 			// Add the LIKE condition if front_keyword is present
 			if ($zwssgr_front_keyword && $zwssgr_front_keyword !== 'all') {
-				$zwssgr_args['meta_query'][]= array(
-					'key'     => 'zwssgr_review_comment', // Replace with the actual meta key for the keyword
-					'value'   => stripslashes($zwssgr_front_keyword),
-					'compare' => 'LIKE',
-				);
+				$zwssgr_args['meta_query'][] = $this->zwssgr_keyword_comment_meta_query( $zwssgr_front_keyword );
 			}else{
 				$zwssgr_args['meta_query'][]=array(
 					'key'     => 'zwssgr_review_star_rating',
@@ -2602,7 +2672,7 @@ if ( !class_exists( 'ZWSSGR_Lib' ) ) {
 				wp_reset_postdata();
 			} else {
 				// No more posts available
-				$zwssgr_response['err_msg'] = esc_html__('No Review Founds.', 'smart-showcase-for-google-reviews');
+				$zwssgr_response['err_msg'] = $this->zwssgr_get_no_reviews_message( $zwssgr_front_keyword );
 			}
 			$zwssgr_response['disable_button'] = ( $zwssgr_query->max_num_pages <= $zwssgr_page ) ? true : false;
 			wp_send_json_success($zwssgr_response);
